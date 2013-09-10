@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<project name="openuap-plugin-cms" default="dist-plugin" basedir=".">
+	<!--初始化属性-->
+
+	<target name="init">
+		<echo message="##### openuap-plugin-cms #####" />
+		<property name="app.name" value="openuap-plugin-cms" />
+		<property name="app.version" value="1.0.0" />
+		<!---->
+		<property environment="env" />
+		<property name="main.project.dir" value=".." />
+		<property file="./build.properties" />
+		<property name="classes.dir" value="./classes" />
+		<property name="src.dir" value="./src" />
+		<property name="javadoc.dir" value="./docs/api" />
+		<property name="doc.dir" value="./docs" />
+		<property name="cms.sdk.dir" value="../openuap-cms-sdk" />
+		<property name="jar.dist.dir" value="./dist" />
+		<property name="plugin.dist.dir" value="./dist" />
+		<property name="jarfile.name" value="${jar.dist.dir}/openuap-plugin-cms-core.jar" />
+		<property name="jocky.jarfile.name" value="${jar.dist.dir}/openuap-plugin-user-jocky.jar" />
+		<property name="jocky.jar" value="${lib.jar.dir}/tools/jocky/jocky.jar" />
+		<property name="jocky.output.dir" value="jocky" />
+		<property name="jocky.scramble.level" value="package" />
+		<property name="target" value="1.5" />
+		<path id="project.classpath">
+			<pathelement path="${classpath}" />
+			<fileset dir="./web/WEB-INF/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="./libc">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<!--<taskdef resource="jockytasks" classpath="${main.project.dir}/openuap-lib/lib/tools/jocky/jocky-ant.jar" />-->
+	</target>
+
+	<!--编译文件-->
+	<target name="compile" depends="init">
+		<mkdir dir="${classes.dir}" />
+		<javac target="1.5" encoding="UTF-8" classpathref="project.classpath" debug="${javac.debug}" deprecation="${javac.deprecation}" destdir="${classes.dir}" fork="${javac.fork}" memoryMaximumSize="${javac.memoryMaximumSize}" nowarn="${javac.nowarn}" srcdir="${src.dir}">
+		</javac>
+	</target>
+	<target name="jocky-compile" depends="init">
+		<jocky jar="${jocky.jar}" level="${jocky.scramble.level}" />
+		<mkdir dir="${jocky.output.dir}" />
+		<mkdir dir="${jocky.output.dir}/classes" />
+		<jocky enable="true" />
+		<javac target="1.5" encoding="UTF-8" classpathref="project.classpath" debug="${javac.debug}" deprecation="${javac.deprecation}" destdir="${jocky.output.dir}/classes" fork="${javac.fork}" memoryMaximumSize="${javac.memoryMaximumSize}" nowarn="${javac.nowarn}" srcdir="${src.dir}">
+		</javac>
+	</target>
+
+	<!--清除编译结果-->
+	<target name="clean" depends="init">
+		<delete dir="${classes.dir}" />
+	</target>
+	<target name="jocky-clean" depends="init">
+		<delete dir="${jocky.output.dir}/classes" />
+	</target>
+	<!--重新编译文件-->
+	<target name="build" depends="clean,compile" />
+	<target name="jocky-build" depends="jocky-clean,jocky-compile" />
+	<!--目标提示-->
+	<target name="usage">
+		<echo message="" />
+		<echo message="${name} build file" />
+		<echo message="------------------------------------------------------" />
+		<echo message="" />
+		<echo message="请选择以下目标之一:" />
+		<echo message="" />
+		<echo message="compile    --编译文件" />
+		<echo message="clean      --清除编译结果" />
+		<echo message="build      --重新编译文件" />
+		<echo message="jar        --打包jar文件" />
+		<echo message="zip-src    --打包源代码" />
+
+		<echo message="" />
+	</target>
+
+	<!--打包jar文件-->
+	<target name="jar" depends="build">
+		<mkdir dir="${jar.dist.dir}" />
+		<delete file="${jarfile.name}" />
+		<jar jarfile="${jarfile.name}">
+			<fileset dir="${classes.dir}">
+				<include name="**/**" />
+				<exclude name="package cache/**" />
+			</fileset>
+			<fileset dir="${src.dir}">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="images/**" />
+			</fileset>
+		</jar>
+	</target>
+	<target name="jocky-jar" depends="jocky-build">
+		<mkdir dir="${jar.dist.dir}" />
+		<delete file="${jarfile.name}" />
+		<jar jarfile="${jarfile.name}">
+			<fileset dir="${jocky.output.dir}/classes">
+				<include name="**/**" />
+				<exclude name="package cache/**" />
+				<exclude name="**/.svn" />
+				<exclude name="**/CVS" />
+			</fileset>
+			<fileset dir="${src.dir}">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="images/**" />
+				<exclude name="**/.svn" />
+				<exclude name="**/CVS" />
+			</fileset>
+		</jar>
+	</target>
+	<target name="javadoc" description="Generate framework Javadocs" depends="init">
+		<delete dir="${javadoc.dir}" failonerror="false" />
+		<mkdir dir="${javadoc.dir}" />
+
+		<javadoc Encoding="UTF-8" charset="UTF-8" sourcepath="${src.dir}" destdir="${javadoc.dir}" windowtitle="openuap-plugin-cms API 1.0" source="1.5" access="protected" author="true" version="true" use="true" defaultexcludes="true" stylesheetfile="${doc.dir}/stylesheet.css" header='&lt;a href=\"http://www.openuap.org/plugin/cms/docs/api/\" target=\"_top\"&gt;The openuap-plugin-cms&lt;/a&gt;'>
+			<arg value="-breakiterator" />
+			<arg value="-J-Xmx128m" />
+			<arg value="-J-XX:MaxPermSize=128m" />
+			<arg value="-J-Dhttp.proxyHost=${javadoc.proxyhost}" />
+			<arg value="-J-Dhttp.proxyPort=${javadoc.proxyport}" />
+			<doctitle>${doc.title}</doctitle>
+			<bottom>${doc.bottom}</bottom>
+			<classpath refid="project.classpath" />
+			<packageset dir="${src.dir}">
+				<include name="org/openuap/**" />
+			</packageset>
+			<link href="http://java.sun.com/j2ee/1.4/docs/api" />
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api" />
+			<link href="http://aopalliance.sourceforge.net/doc" />
+			<!-- Caucho Burlap/Hessian -->
+			<link href="http://cglib.sourceforge.net/apidocs" />
+			<!-- COS -->
+			<!-- EasyMock -->
+			<link href="http://ehcache.sourceforge.net/apidocs" />
+			<link href="http://freemarker.sourceforge.net/docs/api/" />
+			<link href="http://www.hibernate.org/hib_docs/v3/api" />
+			<!-- iBATIS -->
+			<!-- iText -->
+			<!-- Commons Attributes -->
+			<link href="http://jakarta.apache.org/commons/collections/apidocs-COLLECTIONS_3_0/" />
+			<link href="http://jakarta.apache.org/commons/dbcp/apidocs/" />
+			<link href="http://jakarta.apache.org/commons/fileupload/apidocs/" />
+			<link href="http://jakarta.apache.org/commons/httpclient/apidocs/" />
+			<link href="http://jakarta.apache.org/commons/logging/apidocs/" />
+			<link href="http://jakarta.apache.org/commons/pool/apidocs/" />
+			<!-- JasperReports -->
+			<!-- JDO -->
+			<!-- JMX -->
+			<!-- JOTM -->
+			<!-- JPA -->
+			<!-- JSF -->
+			<link href="http://www.junit.org/junit/javadoc/" />
+			<link href="http://logging.apache.org/log4j/docs/api/" />
+			<link href="http://jakarta.apache.org/regexp/apidocs/" />
+			<link href="http://jakarta.apache.org/poi/apidocs/" />
+			<link href="http://portals.apache.org/pluto/multiproject/portlet-api/apidocs/" />
+			<link href="http://quartz.sourceforge.net/javadoc/" />
+			<link href="http://struts.apache.org/struts-doc-1.2.9/api/" />
+			<link href="http://jakarta.apache.org/velocity/api/" />
+			<link href="http://www.springframework.org/docs/api/" />
+			<link href="http://www.openuap.org/sdk/base/docs/api/" />
+			<link href="http://www.openuap.org/sdk/core/docs/api/" />
+			<link href="http://www.openuap.org/sdk/runtime/docs/api/" />
+		</javadoc>
+	</target>
+	<!--打包源代码-->
+	<target name="zip-src" depends="init">
+		<tstamp>
+			<format property="TODAY_zh" pattern="yyyyMMdd" locale="en" />
+		</tstamp>
+		<tstamp>
+			<format property="Time_zh" pattern="hhmmss" locale="zh" />
+		</tstamp>
+		<property name="version.number" value="${TODAY_zh}_${Time_zh}" />
+		<zip destfile="${jar.dist.dir}/${version.number}.zip">
+			<fileset dir="${src.dir}">
+				<include name="**/**/*.java" />
+				<exclude name="**/**/.svn" />
+			</fileset>
+
+		</zip>
+	</target>
+	<target name="releash-to-sdk" depends="jocky-jar">
+		<copy tofile="${cms.sdk.dir}/lib/openuap-plugin-cms-core.jar" file="${jar.dist.dir}/openuap-plugin-cms-core.jar" preservelastmodified="true" />
+	</target>
+	<target name="init-plugin">
+		<property name="lib.jar.dir" value="./libc" />
+		<path id="plugin.classpath">
+			<fileset dir="${lib.jar.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+
+		<typedef resource="org/openuap/plugin/tools/ant/jpf-tasks.properties">
+			<classpath refid="plugin.classpath" />
+		</typedef>
+		<jpf-info manifest="${basedir}/web/WEB-INF/plugins/platform/plugin.xml" propertyid="plugin.id" propertyversion="plugin.version" />
+		<property name="plugin.home" value="${basedir}/dist/plugins/${plugin.id}" />
+		<mkdir dir="${plugin.home}" />
+		<copy todir="${plugin.home}" includeemptydirs="false">
+			<fileset dir="${basedir}/web/WEB-INF/plugins/platform" includes="**/*" />
+		</copy>
+		<jpf-path pathidref="project.classpath" pluginid="${plugin.id}">
+			<fileset dir="${plugin.home}" includes="*/plugin*.xml" excludes="${plugin.id}/**" />
+			<fileset file="plugin.xml" />
+		</jpf-path>
+	</target>
+	<target name="clean-plugin" depends="init">
+		<delete dir="dist" />
+	</target>
+	<target name="build-plugin" depends="init-plugin,build">		
+		<copy todir="${plugin.home}/classes">
+			<fileset dir="${basedir}/classes" includes="**/*" excludes="**/.*,**/*.java" />
+		</copy>
+		<copy todir="${plugin.home}" includeemptydirs="false">
+			<fileset dir="${basedir}" includes="web/fckeditor/**,web/html/**,web/WEB-INF/config/**,web/WEB-INF/templates/**" excludes="classes/,docs/,lib/,dist/,web/META-INF/,web/WEB-INF/classes/,web/WEB-INF/lib/,jocky/,nbproject/,.*,*build*,src/,*.log,.settings/" />
+		</copy>
+		<copy todir="${plugin.home}/classes">
+			<fileset dir="${basedir}/src" includes="org/openuap/cms/*.xml,org/openuap/cms/*.properties" />
+		</copy>
+	</target>
+	<target name="docs-plugin" depends="init-plugin">
+		<echo>Generating javadoc for plug-in ${plugin.id} to folder ${plugin.home}/docs/api</echo>
+		<javadoc destdir="${plugin.home}/docs/api" classpathref="project.classpath" sourcepath="${basedir}/src" packagenames="${plugin.id}.*">
+		</javadoc>
+	</target>
+	<target name="dist-plugin" depends="clean-plugin,build-plugin" description="Prepares distribution packages">
+		<jpf-zip basedir="${plugin.dist.dir}/plugins" includes="*/plugin.xml,*/plugin-fragment.xml" excludes="*jocky/" destdir="${plugin.dist.dir}/plugins" />
+	</target>
+</project>
