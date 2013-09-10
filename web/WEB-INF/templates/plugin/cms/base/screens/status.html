@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Tool Bar</title>
+<base href="${baseUrl}" />
+<link type="text/css" rel="stylesheet" href="html/plugin/cms/workbench/images/style.css" />
+</head>
+<body style="background: #395E9F;">
+<div style="position: absolute; top: 0px; left 0;background: #395E9F;color:#FFFFFF">
+	<#if securityUtil.isAnonymous()>
+		<a style="color:#FFFFFF" href="admin/login.jhtml" target="_top">登录</a>
+	<#else>
+		您好，${securityUtil.getUserSession().getName()}&nbsp;<a style="color:#00FFFF" href="admin/logout.jhtml" target="_top">退出后台</a>
+		
+	</#if>
+	登录ip：${securityUtil.getUserSession().getIp()!''},
+	版本：${version}
+</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-stat.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<beans>
+	<!-- DAO -->
+	<import resource="cms-module-stat-dao.xml"/>
+	<!-- BIZ -->
+	<bean id="countManager"
+		class="org.openuap.cms.stat.manager.impl.CountManagerDBImpl">
+		<property name="countDao">
+			<ref bean="countDao" />
+		</property>
+	</bean>
+</beans>

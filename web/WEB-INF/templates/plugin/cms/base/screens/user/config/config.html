@@ -1,0 +1,76 @@
+
+<#assign actionTitle="通行证设置" />
+<#assign _TITLE_="通行证设置" />
+<#assign actions=[
+{"action":"","title":"通行证设置","url":"${baseUrl}admin/user/config.jhtml","class":"view"}
+]>
+<#include "/plugin/cms/common/includes/header.htm"/>
+<br/>
+<#assign passportEnable=config.getBoolean("passport.enable") />
+<#if passportEnable>
+	<#assign showSetting=""/>
+<#else>
+	<#assign showSetting="none"/>
+</#if>
+<script type="text/javaScript" language="javaScript" src="html/plugin/cms/workbench/js/jquery-lastest.pack.js"></script>
+<form name='passportForm' action='admin/user/config.jhtml' method='post'>
+<table border=0 cellspacing=0 cellpadding=0 width='100%' class="maintable">
+<tr class="header">
+<th colspan=2>
+<b>通行证设置</b>
+</th>
+</tr>
+
+<tr><th>是否启用登录安全校验码<p>打开安全校验码会防止一些恶意登录</p></th><td class="altbg2">
+<#if config.getBoolean('passport.securecode.enable')>
+<input class="radio" type='radio' name='passport.securecode.enable' value='true' checked="checked"/> 是&nbsp;
+<input class="radio" type='radio' name='passport.securecode.enable' value='false' />否
+<#else>
+<input class="radio" type='radio' name='passport.securecode.enable' value='true' /> 是&nbsp;
+<input class="radio" type='radio' name='passport.securecode.enable' value='false' checked="checked" />否
+</#if>
+</td></tr>
+<tr>
+<th>
+启用通行证<p>请在确实需要时，根据实际情况开启通行证的各项功能。注意: 开启会替换应用自身的注册与登录功能，因此使用前请务必仔细阅读 《用户使用说明书》关于通行证的部分，并仅在确定确实需要此特性的时候开启
+</p>
+</th>
+<td>
+<#if passportEnable>
+<input class="radio" type='radio' name='passport.enable' onclick="$('#hidden_passport_status').show();" value='true'  checked="checked" /> 是&nbsp;
+<input class="radio" type='radio' name='passport.enable' onclick="$('#hidden_passport_status').hide();" value='false' />否
+<#else>
+<input class="radio" type='radio' name='passport.enable' onclick="$('#hidden_passport_status').show();" value='true'  /> 是&nbsp;
+<input class="radio" type='radio' name='passport.enable' onclick="$('#hidden_passport_status').hide();" value='false' checked="checked" />
+否
+</#if>
+</td>
+</tr>
+<tbody class="sub" id="hidden_passport_status" style="display: ${showSetting}">
+<tr><th  >通行证Cookie保存域:<p>请正确填写通行证所用Cookie 保存的应用域名，如.openuap.org</p></th><td class="altbg2"><input type="text" size="50" name="passport.domain" value="${config.getString('passport.domain')!''}" />
+</td></tr>
+<tr><th>通行证私有密匙<p>私有密匙用于在应用程序和通行证之间传输信息的加密，请在应用程序与 Passport 通信的部分设置完全相同的私有密匙，以确保两套系统能够正常通信</p></th><td class="altbg2"><input type="text" size="50" name="sys.security.key"  value="${config.getString('sys.security.key')!''}" />
+</td></tr>
+<tr><th>通行证注册地址<p>通行证注册页面的地址，例如 reg.htm。注意: 请包含应用程序的完整URL地址</p></th><td class="altbg2"><input type="text" size="50" name="passport.reg_url" value="${config.getString('passport.reg_url')!''}" />
+</td></tr>
+<tr><th>通行证登录地址<p>通行证登录页面的地址，例如 login.htm。注意: 请包含应用程序的完整URL地址</p></th><td class="altbg2"><input type="text" size="50" name="passport.login_url" value="${config.getString('passport.login_url')!''}" />
+</td></tr>
+<tr><th>通行证退出地址<p>通行证退出页面的地址，例如 logout.htm。注意: 请包含应用程序的完整URL地址</p></th><td class="altbg2"><input type="text" size="50" name="passport.logout_url" value="${config.getString('passport.logout_url')!''}" />
+</td></tr>
+<tr><th>是否允许用户在应用中修改密码<p>通行证一般会接管密码修改功能，若论坛不能实现数据双向同步则必须开启此功能，否则会使用户无法正常登录。</p></th><td class="altbg2">
+<#if config.getBoolean('passport.allow.client.changepwd')>
+<input class="radio" type='radio' name='passport.allow.client.changepwd' value='true' checked="checked"/> 是&nbsp;
+<input class="radio" type='radio' name='passport.allow.client.changepwd' value='false' />否
+<#else>
+<input class="radio" type='radio' name='passport.allow.client.changepwd' value='true' /> 是&nbsp;
+<input class="radio" type='radio' name='passport.allow.client.changepwd' value='false' checked="checked" />否
+</#if>
+</td></tr>
+</tbody>
+</table>
+<br/>
+<center>
+<input type='submit' class="button" value =" 保 存 " name='action_save'/>
+</center>
+</form>
+<#include "/plugin/cms/base/includes/footer.html">

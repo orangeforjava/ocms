@@ -1,0 +1,282 @@
+[#assign actionTitle="内容模型管理" /]
+[#assign _TITLE_="内容模型管理" /]
+[#assign actions=[
+{"action":"","title":"内容模型管理","url":"${baseUrl}admin/content.jhtml","class":"view"},
+{"action":"Add","title":"新建内容模型","url":"${baseUrl}admin/contentEdit.jhtml","class":"add"},
+{"action":"Load","title":"装载预定内容模型","url":"${baseUrl}admin/content.jhtml?action=LoadSystemModel","class":"view"}
+
+]]
+
+[#include "/plugin/cms/common/includes/header.htm"/]
+
+<script type="text/javascript" src="html/plugin/cms/base/js/common.js"></script>
+
+<script type="text/javascript" language="javaScript">
+function loadSystemModel(){
+	window.location="${baseUrl}admin/content.jhtml?action=LoadSystemModel";
+}
+function doAction(action,p){
+	switch(action){
+		case'UpdateRSEM':{
+		    //alert('${baseUrl}admin/contentIndex.jhtml?action=UpdateRSEM&tableId='+p+'&r='+document.location);
+			document.location ='${baseUrl}admin/contentIndex.jhtml?action=UpdateRSEM&tableId='+p+'&r='+document.location;
+			
+			break;
+		}
+		case 'UpdateIndex':{
+			document.location ='${baseUrl}admin/contentIndex.jhtml?action=UpdateIndex&tableId='+p+'&r='+document.location;
+			break;
+		}		
+		default:{
+			break;
+		}
+	}
+}
+function batch_doing(vAction,vForm){
+	with(vForm) {
+		var count = 0;
+      	var checkboxObj = pData;
+		//alert(vAction);
+      	if(checkboxObj == null)
+      	{
+      		alert('有误');
+        	return ;
+      	}
+      	else
+      	{
+        	for (var i = 0; i < checkboxObj.length; i++)
+        	{
+          		if(checkboxObj[i].checked)
+          		count++;
+        	}
+      	}
+		if(count > 0 || (checkboxObj.length == null && checkboxObj.checked))
+		{
+			switch(vAction) {
+				case 'UpdateSchema':
+				{
+					if(confirm("您是否确认更新上述内容模型的表定义？")){
+						vForm.action ="${baseUrl}admin/content.jhtml?action=UpdateSchema&multi=1";
+						vForm.submit();
+					}
+					//
+					break;
+				}
+				case "UpdateRSEM":
+				{
+					if(confirm("您是否确认更新上述内容模型的索引定义？")){
+						vForm.action ="${baseUrl}admin/contentIndex.jhtml?action=UpdateRSEM&multi=1&r="+document.location;
+						vForm.submit();
+					}					
+					//
+					break;
+				}
+				case "UpdateIndex":
+				{
+					if(confirm("您是否确认更新上述内容模型的索引数据？")){
+						vForm.action ="${baseUrl}admin/contentIndex.jhtml?action=UpdateIndex&multi=1&r="+document.location;
+						vForm.submit();
+					}					
+					//
+					break;
+				}
+				case "SetIndexProp":
+				{
+					if(confirm("您是否确认更新上述内容模型的索引属性？")){
+						vForm.action ="${baseUrl}admin/content.jhtml?action=SetIndexProp&multi=1";
+						vForm.submit();
+					}					
+					//
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}//end switch
+		}else{
+			alert("请选择一个或多个内容！");
+		}
+	}
+}
+function refreshContentNums(id){
+	//var id=$(this).attr('id');
+	var tid=id.substr(6);
+	var d=new Date();
+	
+	var url="${baseUrl}admin/content.jhtml?action=GetContentCount&tid="+tid+"&t="+d.getMilliseconds();
+	$.get(url,function(res){
+		if(res=='-1'){
+			$('#'+id).html('<a href="void(0)" onclick="return refreshContentNums(\''+id+'\')"><font color="red">无效</font></a>');
+			$('#updateTbl-'+tid).css('color','red');
+		}else{
+			$('#'+id).html('<a href="void(0)" onclick="return refreshContentNums(\''+id+'\')"><font color="green">'+res+'</font></a>');
+			$('#updateTbl-'+tid).css('color','green');
+		}
+	});
+	return false;
+}
+$(document).ready(function () {
+	$('[id|="rnums"]').each(
+		function(index,ele)
+		{
+			//alert(index+$(this).attr('id'));
+			//提取表ID
+			var id=$(this).attr('id');
+			refreshContentNums(id);
+	});
+	//设定表格样式
+	$('.ct-highlight').mouseover(function(){
+		
+		$(this).css('background-color','silver');
+	}).mouseout(function(){
+		
+		$(this).css('background-color','white');
+	});
+});
+</script>
+<br/>
+		
+	 	[#if messageCode?exists]
+		<center>
+			<div class='errormessage' style='width: 400px;'>
+				<img class='errormessage' src='html/images/info.gif'
+					align='absmiddle'>
+					&nbsp; 
+				<span class='tab-r'>${messageCode}</span>
+			</div>
+		</center>
+		<br/>
+		[/#if]
+		<form name="formList" method="post">
+		<table border="0" cellspacing="1" cellpadding="2" width="100%"
+			align=center class="maintable">
+			<tr>
+			    <td width="1" align="center" nowrap>
+					&nbsp;
+				</td>
+				<td align="center">
+					<B>TableID</B>
+				</td>
+				<td align="center">
+					<B>内容模型</B>
+				</td>
+				<td align="center">
+					<B>系统表</B>
+				</td>
+				<td align="center">
+					<B>表名</B>
+				</td>
+				<td align="center">
+					<B>数据量</B>
+				</td>
+				<td align="center">
+					<B>执行操作</B>
+				</td>
+			</tr>
+			[#list tables as tb]
+			<tr class="ct-highlight">
+			    <td noWrap > 
+			    <input type='checkbox' name='pData' value='${tb.tableId?c}' id="p_${tb.tableId?c}" />
+			    </td>
+				<td align=center>
+					${tb.tableId?c}
+				</td>
+				<td>
+					[#if tb.system?default(0)==0]
+					<a href="admin/contentEdit.jhtml?tableId=${tb.tableId}" style="color:blue">${tb.name}</a>
+					[#else]
+					<a href="admin/contentEdit.jhtml?tableId=${tb.tableId}">${tb.name}</a>
+					[/#if]
+				</td>
+				<td  align="center" >
+					[#if tb.system?default(0)==0] 否 [#else] 是 [/#if]
+				</td>
+				<td align="center">
+					[#if tb.tableName?default("")==""] 
+					缺省
+					[#else]
+					${tb.tableName?default("")}&nbsp; 
+					[/#if]
+				</td>
+				<td align="center">
+					<div id="rnums-${tb.tableId?c}"></div>
+				</td>
+				<td align="center" >
+					
+					<A HREF="admin/contentEdit.jhtml?tableId=${tb.tableId}">编辑</A>
+
+					
+					<a id="updateTbl-${tb.tableId?c}"
+						href="admin/content.jhtml?action=UpdateSchema&tableId=${tb.tableId?c}"
+						onclick="return confirm('确认更新表定义吗?')">更新表定义</a>
+					[#if tb.allowIndex==1]
+					<a
+						href="javaScript:doAction('UpdateRSEM','${tb.tableId}');"
+						onclick="return confirm('您确认要更新索引定义?')">更新索引定义</A>
+
+					<a
+						HREF="javaScript:doAction('UpdateIndex','${tb.tableId}')"
+						onclick="return confirm('您确认要更新索引?')">更新索引</A>
+					<a href="admin/search.jhtml?tid=${tb.tableId?c}">全文</a>
+					
+					[/#if]
+					<a href="admin/content.jhtml?action=Delete&tableId=${tb.tableId}"
+						onclick="return confirm('确认删除吗?')">删除</a>
+					<a
+						HREF="admin/content.jhtml?action=ExportModel&tableId=${tb.tableId}">导出</a>
+				</td>
+			</tr>
+			[/#list]
+			<tr >
+      <td colspan="7" align="left" bgcolor="#F5F5F5"> 
+      <table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align=left>
+            <input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  >
+              <label for="chkall" >全选</label>&nbsp;&nbsp;
+
+				 <select name="actionMap" id="actionMap" >
+				 	 <option value="" selected>--选择操作--</option>
+		         	 <option value="UpdateSchema">更新表定义</option>
+		         	 <option value="SetIndexProp">设置模型索引定义</option>		         	 
+		             <option value="UpdateRSEM">更新索引定义</option>
+		          	 <option value="UpdateIndex">更新索引数据</option>
+		          	 <option value="ExportModel">导出模型定义</option>
+				 </select>
+			  <input type="button" value="执行" class="button" onClick="batch_doing(this.form.actionMap.options[actionMap.selectedIndex].value,this.form)">
+
+            </td>
+          </tr>
+        </table></td>
+    		</tr>
+		</table>
+	    </form>
+		<br/>
+		<script language='JavaScript'>
+function edit(form,id)
+{
+	eval("var isdisabled = " + form + "." + id + ".disabled");
+
+	if(isdisabled) {
+		eval(form + "." + id + ".disabled = false");
+	} else {
+		eval(form + "." + id + ".disabled = true");
+
+	}
+
+}
+function formCheck(form)
+{
+	if(form.tname.value == '') {
+		alert("请填写内容模型名称");
+		form.tname.focus();
+		form.tname.style.background = '#FFFFE1';
+		return false;
+	}
+}
+
+</script>
+
+<br/>
+[#include "/plugin/cms/common/includes/footer.htm"/]

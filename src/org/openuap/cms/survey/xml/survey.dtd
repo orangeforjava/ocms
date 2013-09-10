@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+<!DOCTYPE plugin-fragment PUBLIC "-//SURVEY//Java XML SURVEY  Manifest 1.0" "http://www.openuap.org/survey_1_0.dtd">
+
+-->
+<!ELEMENT survey  (name?, attributes?, requires?, runtime?,
+                  (extension-point|extension)*)>

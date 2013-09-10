@@ -1,0 +1,173 @@
+
+<#assign actionTitle="FTP信息编辑" />
+<#assign _TITLE_="FTP信息编辑" />
+<#if ftp.id??>
+<#assign actions=[
+{"action":"List","title":"FTP信息管理","url":"${baseUrl}admin/vfs/ftp.jhtml","class":"view"},
+{"action":"","title":"FTP信息编辑","url":"${baseUrl}admin/vfs/ftpEdit.jhtml?id=${ftp.id}","class":"add"}
+]>
+<#else>
+<#assign actions=[
+{"action":"List","title":"FTP信息管理","url":"${baseUrl}admin/vfs/ftp.jhtml","class":"view"},
+{"action":"","title":"新建FTP","url":"${baseUrl}admin/vfs/ftpEdit.jhtml","class":"add"}
+]>
+</#if>
+
+<#include "/plugin/cms/common/includes/header.htm"/>
+<#if messageCode?exists>
+ <center><div class='errormessage' style='width: 400px;' ><img class='errormessage' src='html/common/images/info.gif' align='absmiddle'/>&nbsp;<span class='tab-r'>${messageCode}</span></div></center><br></center>
+</#if>
+<script language="JavaScript">
+
+</script>
+<#import "/spring.ftl" as spring />
+<form action="${baseUrl}admin/vfs/ftpEdit.jhtml" method="post"  name="clientform" id="clientform">
+    <input type="hidden" name="mode" value="${mode!'add'}"/>
+	<div class="colorarea02">
+			<h2>
+				FTP基本信息
+			</h2>
+	<table border="0" cellspacing="0" cellpadding="4" width="98%"  align=center class="maintable">
+
+    <tr>
+      <th>FTP显示名:</th>
+      <td>
+	  <@spring.bind "ftp.title"/>
+	  <input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" value="${spring.status.value?default("")}" tabindex="8" />
+        &nbsp;必填，可以是中文</td>
+    </tr>
+	<tr>
+      <th>FTP描述:</th>
+      <td>
+	  <@spring.bind "ftp.description"/>
+	  <textarea name="${spring.status.expression}" cols="50" rows="5" class="flat" id="${spring.status.expression}" tabindex="8">${spring.status.value?default("")}</textarea>
+        &nbsp;选填</td>
+    </tr>	
+	</table>
+	</div>
+	<div class="colorarea02">
+			<h2>
+				连接信息
+			</h2>
+	<table border="0" cellspacing="0" cellpadding="4" width="100%"  align=center class="maintable">
+    <!-- -->
+    <tr>
+	  <th>类型:</th>
+	<td>
+	<@spring.bind "ftp.type"/>
+	<select name="${spring.status.expression}" id="${spring.status.expression}">
+			<#list types as ftpType>
+			<#if spring.status.value?default("")==ftpType>
+				<option value="${ftpType}" selected="selected">${ftpType}</option>
+			<#else>
+				<option value="${ftpType}">${ftpType}</option>
+			</#if>
+			</#list>
+    </select>
+    </td>
+    </tr>
+	<tr>
+	  <th>主机:</th>
+	<td>
+	<@spring.bind "ftp.host"/>
+	<input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" value="${spring.status.value?default("")}" tabindex="8" />
+        &nbsp;必填，主机域名或者IP地址</td>
+	</td>
+	</tr>
+	<tr>
+	  <th>端口:</th>
+	<td>
+	<@spring.bind "ftp.port"/>
+	<input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" value="${spring.status.value?default(21)?c}" tabindex="8" />
+        &nbsp;必填，数字类型</td>
+	</td>
+	</tr>
+	<!-- 登录信息 -->
+	<tr>
+	  <th>用户名:</th>
+	<td>
+	<@spring.bind "ftp.username"/>
+	<input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" value="${spring.status.value?default("")}" tabindex="8" />
+        &nbsp;必填，FTP用户名</td>
+	</td>
+	</tr>
+	<tr>
+	  <th>密码:</th>
+	<td>
+	<@spring.bind "ftp.password"/>
+	<input name="${spring.status.expression}" type="password" class="flat" id="${spring.status.expression}" value="${spring.status.value?default("")}" tabindex="8" />
+        &nbsp;必填，FTP用户密码</td>
+	</td>
+	</tr>	
+    </table>    
+    </div>
+    <div class="colorarea02">
+			<h2>
+				额外信息
+			</h2>
+	<table border="0" cellspacing="0" cellpadding="4" width="100%"  align=center class="maintable">
+    <!-- -->
+    <tr>
+	  <th>传输类型:</th>
+	<td>
+	<@spring.bind "ftp.mode"/>
+	<select name="${spring.status.expression}" id="${spring.status.expression}">
+			<#list modes as ftpMode>
+			<#if spring.status.value?default("")==ftpMode>
+				<option value="${ftpMode}" selected="selected">${ftpMode}</option>
+			<#else>
+				<option value="${ftpMode}">${ftpMode}</option>
+			</#if>
+			</#list>
+    </select>
+    </td>
+    </tr>
+    <tr>
+	  <th>显示字符编码:</th>
+	<td>
+	<@spring.bind "ftp.encoding"/>
+	<input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" value="${spring.status.value?default("utf-8")}" tabindex="8" />
+        &nbsp;选填
+    </td>
+    </tr>
+    <tr>
+	  <th>缺省远程路经:</th>
+	<td>
+	<@spring.bind "ftp.remotePath"/>
+	<input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" value="${spring.status.value?default("")}" tabindex="8" />
+        &nbsp;选填</td>
+	</td>
+	</tr>
+    </table>
+    </div>
+    <br />
+	<div class="buttons">
+		<input type="submit" name="submit" value="提交保存" class="submit">
+		<input type="reset" name="reset" value=" 重 置 ">
+	</div>
+</form>
+<script language='JavaScript'>
+function check(form,id)
+{
+	eval("var ischecked = " + form + "." + id + ".checked");
+
+	if(ischecked) {
+		eval( form + "." + id + "_hidden.value = '1'");
+	} else {
+		eval( form + "." + id + "_hidden.value = '0'");
+
+	}
+
+}
+function doing(action)
+{
+	switch(action) {
+		
+		default:
+		break;
+
+	}
+}
+</script>
+<br/>
+<#include "/plugin/cms/base/includes/footer.html">

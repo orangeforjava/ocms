@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+    <appender name="ERROR_LOG_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+       <param name="File" value="error_log.log" />
+       <param name="DatePattern" value="_yyyy-MM-dd" />
+       <layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern"
+         value="%d %-5p - %m\n"/>
+                <!-- value="%d %-5p [%t] %C{4} (%F:%L) %M - %m\n"/> -->
+       </layout>
+    </appender>
+	
+    <appender name="ADMIN_LOG_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+       <param name="File" value="admin_log.log" />
+       <param name="DatePattern" value="_yyyy-MM-dd" />
+       <layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern"
+         value="%d %-5p - %m\n"/>
+                <!-- value="%d %-5p [%t] %C{4} (%F:%L) %M - %m\n"/> -->
+       </layout>
+    </appender>
+    <appender name="USER_LOG_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+       <param name="File" value="user_log.log" />
+       <param name="DatePattern" value="_yyyy-MM-dd" />
+       <layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern"
+         value="%d %-5p - %m\n"/>
+                <!-- value="%d %-5p [%t] %C{4} (%F:%L) %M - %m\n"/> -->
+       </layout>
+    </appender>    
+	<appender name="DEBUG_LOG_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+       <param name="File" value="debug_log.log" />
+       <param name="DatePattern" value="_yyyy-MM-dd" />
+       <layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern"
+         value="%d %-5p - %m\n"/>
+                <!-- value="%d %-5p [%t] %C{4} (%F:%L) %M - %m\n"/> -->
+       </layout>
+    </appender>
+	<!--
+	<appender name="DATABASE" class="org.jute.util.log.DatabaseAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="INSERT INTO SYS_LOG (id,category,message, create_on, create_by,priority) VALUES (SEQ_SYS_LOG.nextval, &apos;%c&apos;, &apos;%m&apos;,sysdate, &apos;esys&apos;,&apos;%-5p&apos;)"/>
+		</layout>
+	</appender>
+	
+	<category name="sys.test">
+		<priority value="debug"/>
+		<appender-ref ref="DATABASE"/>
+	</category>
+	-->
+	<category name="sys.entity.debug">
+		<priority value="error"/>
+		<appender-ref ref="DEBUG_LOG_FILE"/>
+	</category>
+	<category name="sys.entity">
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>
+	</category>
+
+	<category name="sys.helper">
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>
+	</category>
+
+	<category name="sys.cache">
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>
+	</category>
+
+	<category name="sys.mail">
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>
+	</category>
+	
+	<category name="sys.session">
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>	
+	</category>
+	<category name="sys.servlet">
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>
+	</category>
+	<category name="sys.template">
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>
+	</category>
+	<category name="sys.business">
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>
+	</category>
+	<category name="sys.controller">
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>
+	</category>	
+	<category name="sys.schedule">
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>
+	</category>
+
+	<category name="sys.index">
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>
+	</category>
+
+	<category name="sys.search">
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>
+	</category>
+
+	<category name="sys.service">
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>
+	</category>
+	
+	<category name="sys.user">
+		<priority value="info"/>
+		<appender-ref ref="USER_LOG_FILE"/>
+	</category>
+	
+	<category name="sys.moderator">
+		<priority value="info"/>
+		<appender-ref ref="ADMIN_LOG_FILE"/>
+	</category>
+
+	<category name="sys.admin">
+		<priority value="info"/>
+		<appender-ref ref="ADMIN_LOG_FILE"/>
+	</category>		
+	
+	<!--
+	<category name="sys.user.register" additivity="false">
+		<priority value="info"/>
+		<appender-ref ref="DATABASE"/>
+	</category>
+	-->
+	
+	<category name="sys" additivity="false">
+		<priority value="error"/>
+	</category>
+	
+	<!--其他用Log4j的设置-->
+		
+	<category name="org.apache.stratum.jcs">
+		<priority value="error"/>
+	</category>
+	
+	<!--poolman设置-->
+	<category name="default" additivity="false">
+		<priority value="error"/>
+	    <appender-ref ref="ERROR_LOG_FILE"/>
+	</category>
+	
+	<root>
+		<priority value="error"/>
+		<appender-ref ref="ERROR_LOG_FILE"/>
+	</root>
+</log4j:configuration>

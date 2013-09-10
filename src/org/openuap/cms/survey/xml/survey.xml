@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<survey:survey id="0" xmlns:survey="http://www.openuap.org/survey"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.openuap.org/survey survey.xsd ">
+	<name>name</name>
+	<description>description</description>
+	<survey:creationDate>2001-12-31T12:00:00</survey:creationDate>
+	<type>0</type>
+	<status>0</status>
+	<guid>token</guid>
+	<userId>0</userId>
+	<userName>token</userName>
+	<survey:questions>
+		<survey:question id="1">
+			<title>token</title>
+			<type>1</type>
+			<filter>0</filter>
+			
+			<pos>1</pos>
+			<groupId>1</groupId>
+			<groupTitle>token</groupTitle>
+			<pageId>1</pageId>
+			<survey:items/>
+				
+		</survey:question>
+	</survey:questions>
+</survey:survey>

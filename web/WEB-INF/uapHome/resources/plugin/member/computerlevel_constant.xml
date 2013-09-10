@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<directory>
+  <computerLevels>
+    <computerLevel key="无">无</computerLevel>   
+	<computerLevel key="精通">精通</computerLevel>
+	<computerLevel key="优秀">优秀</computerLevel>
+	<computerLevel key="良好">良好</computerLevel>
+	<computerLevel key="一般">一般</computerLevel>
+	<computerLevel key="较差">较差</computerLevel>
+  </computerLevels>
+</directory>

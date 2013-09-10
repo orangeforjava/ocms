@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench>
+	<tab id="tab-modules" name="模块" url="admin/modules.jhtml"
+		description="功能模块" pos="010">
+		<sidebar id="extras-member-manager" name="会员管理" pos="010">
+			<item id="extras-member-list" name="会员管理"
+				url="admin/member/member.jhtml" description="会员管理" />
+			<item id="extras-member-vip" name="VIP会员管理"
+				url="admin/member/vip.jhtml" description="VIP会员管理" />
+		</sidebar>
+		<sidebar id="extras-area-manager" name="区域管理" pos="020">
+			<item id="extras-area-list" name="区域管理"
+				url="admin/member/area.jhtml" description="区域管理" />
+		</sidebar>
+		<sidebar id="extras-ask-manager" name="问吧管理" pos="030">
+			<item id="extras-ask-list" name="问吧管理"
+				url="admin/member/ask.jhtml" description="问吧管理" />
+		</sidebar>
+		<sidebar id="extras-company-manager" name="企业黄页" pos="040">
+			<item id="extras-company-list" name="企业管理"
+				url="admin/member/company.jhtml" description="企业管理" />
+			<item id="extras-sdinfo-list" name="供求信息管理"
+				url="admin/member/sdinfo.jhtml" description="供求信息管理" />
+			<item id="extras-product-list" name="产品信息管理"
+				url="admin/member/product.jhtml" description="产品信息管理" />
+		</sidebar>
+		<sidebar id="extras-edu-manager" name="教育黄页" pos="050">
+			<item id="extras-school-list" name="学校管理"
+				url="admin/member/school.jhtml" description="学校管理" />
+			<item id="extras-recruit-list" name="招生信息管理"
+				url="admin/member/recruit.jhtml" description="招生信息管理" />
+			<item id="extras-recommend-list" name="推荐信息管理"
+				url="admin/member/recommend.jhtml" description="推荐信息管理" />
+		</sidebar>
+		<sidebar id="extras-hospital-manager" name="医院黄页" pos="060">
+			<item id="extras-hospital-list" name="医院管理"
+				url="admin/member/hospital.jhtml" description="医院管理" />
+		</sidebar>
+		<sidebar id="extras-hr-manager" name="求职招聘" pos="070">
+			<item id="extras-resume-list" name="简历管理"
+				url="admin/member/resume.jhtml" description="简历管理" />
+			<item id="extras-recruitment-list" name="招聘管理"
+				url="admin/member/recruitment.jhtml" description="招聘管理" />
+		</sidebar>
+		<sidebar id="extras-zx-manager" name="在线咨询" pos="080">
+			<item id="extras-zx-list" name="咨询管理"
+				url="admin/member/consultation.jhtml" description="咨询管理" />
+		</sidebar>
+	</tab>
+</workbench>

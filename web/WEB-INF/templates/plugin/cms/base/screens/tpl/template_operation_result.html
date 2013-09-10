@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title></title>
+<base  href="${baseUrl}"/>
+</head>
+<body>
+<script type="text/javascript" language="javascript">
+	var operation='${operation}';
+	var rs='${result}';
+	var msg='${msg}';
+	var PATH='${path}';
+	var filename='${targetFile!}';
+	var nodeId='${nodeId!}';
+	var indexId='${indexId?default("")}';
+	//
+	if(operation=="upload"){
+		alert(msg);
+		if(rs=="success"){
+			parent.location=parent.location;
+		}
+	}else if(operation=="save"){
+		if(rs=="success"){
+		    alert(msg);
+			this.parent.location='${baseUrl}admin/template.jhtml?action=EditorFrameset&mode=edit&path='+encodeURIComponent(PATH)+'&targetFile=' + encodeURIComponent(filename) + '&nodeId=' + nodeId + '&indexId=' + indexId;
+		}else{
+			alert(msg);
+			history.back();
+		}
+	}
+</script>
+</body>
+</html>

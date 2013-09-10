@@ -1,0 +1,205 @@
+ <#assign actionTitle="全文检索" /> 
+ <#assign _TITLE_="全文检索" /> 
+ <#assign actions=[ ]> 
+ 
+ <#include "/plugin/cms/common/includes/header.htm"/>
+ 
+ <#import "/plugin/cms/base/macros/node-macros.html" as mynode />
+ <#import "/plugin/cms/base/macros/tabler-macros.html" as tabler />
+ <script type="text/javascript" src="html/common/js/jquery-1.4.3.min.js"></script>
+ <link rel="stylesheet" type="text/css" media="all" href="/html/common/cal/calendar-blue2.css" title="system" />
+<script type="text/javascript" src="/html/common/cal/calendar.js"></script>
+<script type="text/javascript" src="/html/common/cal/calendar-zh.js"></script>
+<script type="text/javascript" src="/html/common/cal/calendar-setup.js"></script>
+<script type="text/javascript" src="html/plugin/cms/base/js/table.js"></script>
+ <script type="text/javascript">
+</script>
+ <script type="text/javascript">
+<!--
+var authorAry=[];
+function addAuthor(form,authorName){
+	var authors=form.author.value;
+	if(authorName!=""){
+		if(authors!=""){
+			if(jQuery.inArray(authorName, authorAry)==-1){
+				authorAry.push(authorName);
+				form.author.value=authors+","+authorName;
+			}
+			
+		}else{
+			form.author.value=authorName;
+		}
+	}
+	return true;
+}
+function clearAuthor(form){
+	form.author.value="";
+	authorAry.length=0;
+}
+
+//数据表排序
+var order_desc='${order!""}';
+var order_mode='${order_mode!""}';
+var baseUrl='${baseUrl}';
+
+function searchPre(vform){
+	vform.keyword.value=encodeURI(vform.keyword.value);
+	vform.submit();
+	
+	return true;
+}
+
+//-->
+</script>
+ 
+<div class="colorarea02">
+	<h3>搜索条件</h3>
+	<form name="searchForm" method="post"
+		action='${baseUrl}admin/search.jhtml' onSubmit="searchPre(this);">
+		 <input type="hidden" name="action" value="Search"/>
+		 <input name="order" type="hidden" value="${order!''}"/>
+		 <input name="order_mode" type="hidden" value="${order_mode!''}"/>
+		 <input name="order_name" type="hidden" value="${order_name!''}"/>
+		 <input name="page" type="hidden" value="${page!'1'}"/>	 
+		 <input name="pageNum" type="hidden" value="${pageNum!'15'}"/>
+		 <input name="tid" type="hidden" value="${tid}"/>
+	<table cellspacing="0" cellpadding="0" width="100%" border="0"
+			class="maintable">
+
+			<tbody>
+				<tr>
+					<th width="20%">
+						搜索关键字
+					</th>
+					<td width="80%">
+						<input name="keyword" type='text' class='flat' tabindex='8'
+							size='80' value="${keyword!''}">
+					</td>
+				</tr>
+				<tr>
+					<th>
+						搜索字段						
+					</th>
+					<td>
+						<select name="fields" >
+						<option value="">不限</option>
+						<#list ct.contentFieldsSet as field>
+							<#if field.indexType!='NO'>
+								<#if fields?default("")==field.fieldName>
+								<option value="${field.fieldName}" selected="selected">${field.fieldName}</option>
+								<#else>
+								<option value="${field.fieldName}">${field.fieldName}</option>							
+								</#if>
+							</#if>
+						</#list>
+						</select>
+					</td>
+
+				</tr>
+				
+				
+				<#--<tr>
+					<th>
+						搜索结点:
+						<br />
+						(可多选，不选择则搜索该内容模型下的所有结点)
+					</th>
+					<td>						
+						<input type="text" name="nodeName" id="nodeName" value="${nodeName!''}"/>
+						<input type="hidden" name="nodeId" id="nodeId" value="${nodeId?c}"/>
+						<input type="checkbox" name="sub" id="sub" value="1" checked>
+						<label for="sub">
+							包含子分类
+						</label>
+					</td>
+
+				</tr>-->
+				<tr>
+					<td colspan="2" class="table_td2" align=center>
+						<input type='submit' name='submit1' value=' 开始搜索 ' tabindex='13'>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="reset" name="reset1" value=" 重 置 ">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</form>
+</div>
+
+<#if ac?default('')=='search'>
+<form method="post" action="${baseUrl}admin/search.jhtml?action=Search" name="documentlist" >
+
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"  class="table_border" >
+  <tbody>
+ 
+    <tr class="table_td2">
+	  <@tabler.table_header orderBy=order_name sort=order_mode header_content=" 
+      <td align='center' height=25></td>
+      <td align='center'><B><a href='javascript:sorter(@indexId@,@asc@,@I^D@);'>ID</a></B></td>
+      <td align='center'><B><a href='javascript:sorter(@nodeId@,@asc@,@结^点@);'>结点</a></B></td>
+	  <td align='center'><B><a href='javascript:sorter(@Title@,@asc@,@标^题@);'>标题</a></B></td>
+	  <td align='center'><B><a href='javascript:sorter(@creationUserName@,@asc@,@作^者@);'>作者</a></B></td>	  
+	  <td align='center'><B><a href='javascript:sorter(@KeyWords@,@asc@,@关键^字@);'>关键字</a></B></td>      
+      <td align='center'><B><a href='javascript:sorter(@publishDate@,@asc@,@发布^日期@);'>发布日期</a></B></td>">	  
+	  </@tabler.table_header>
+     
+  </tr>
+  <!--start-->
+<#list rs as var>  
+ 
+  <#assign node=nodeManager.getNode(var['nodeId'])/>
+  <#assign nodeName=node['name']/>
+  
+  <tr class="table_td1" id="${var['indexId']?c}" onmouseover='this.style.backgroundColor="#FFFFFF"'
+                    onmouseout='this.style.backgroundColor=""' >
+      <td noWrap > <input type='checkbox' name='pData' value='${var["indexId"]?c}' id="p_${var['indexId']?c}" ></td>
+      <td noWrap > ${var['indexId']?c}</td>
+      
+	  <td noWrap ><a href="${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}">${nodeName}</a></td>
+	  <td align="center" noWrap   ><div class="subtitleholder">${var["Title"]}</div></td>
+	  <td noWrap > ${var["creationUserName"]}</td>
+	  <td align="center" noWrap   ><div class="subtitleholder">${var["KeyWords"]!''}</div></td>
+	  <td   noWrap  style="cursor:hand" id="">${(action.getDate(var["publishDate"]))?string("yyyy-MM-dd HH:mm")}</td>
+ </tr>
+ </#list>
+ <!--end-->
+    <tr class="Tablelistbg">
+      <td colspan="17" align="left" bgcolor="#F5F5F5"> 
+      <table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align=left>
+            <input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  >
+              <label for="chkall" >全选</label>&nbsp;&nbsp;
+
+			  <input type="button" value="执行" class="button" onClick="going(this.form,actionMap.options[actionMap.selectedIndex].value)">
+
+            </td>
+			<td height="20" align="right" nowrap="nowrap"> <INPUT name="go_display" TYPE="button" value="显示:" onClick="doing('display_record')" ></td>
+	  <td   height="20" nowrap="nowrap" align="right"  width=80> &nbsp;&nbsp;<INPUT TYPE="text" NAME="offset" size=1 value="${pageNum}"> 条记录
+
+   </td>
+          </tr>
+        </table></td>
+    </tr>
+	
+  
+  <#if pb.pages() gt 1>
+  <tr class="Tablelistbg">
+    <td colspan="15" height=25 >
+	<table border=0 align="right" width="100%" bgcolor="#FFFFFF">
+	<tr>
+	<td align=right>
+	<#assign pageUrl=""/>
+	<@mypager.pageBuilder2 pb=pb baseUrl=pageUrl closeUrl=""/>
+	</td>
+	</tr>
+	</table>
+	 </td>
+  </tr>
+  </#if>
+  </tbody>
+</table>
+</form>
+</#if>
+<br/>
+<#include "/plugin/cms/common/includes/footer.htm"/>

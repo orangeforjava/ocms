@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+  $Id: TemplateRef.hbm.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.tpl.model">
+  <class name="TemplateRef" table="cms_template_ref">
+    <composite-id name="id" class="TemplateRefId">
+      <key-property name="indexId" type="long">
+        <column name="indexId"/>
+      </key-property>
+      <key-property name="templateId" type="long">
+        <column name="templateId"/>
+      </key-property>
+    </composite-id>
+    <property name="indexId" type="long" insert="false" update="false">
+      <column name="indexId" not-null="true"/>
+    </property>
+    <property name="templateId" type="long" insert="false" update="false">
+      <column name="templateId" not-null="true"/>
+    </property>
+    <property name="nodeId" type="long">
+      <column name="nodeId" not-null="true"/>
+    </property>
+    <property name="templateCateId" type="long">
+      <column name="templateCateId" not-null="true"/>
+    </property>
+  </class>
+</hibernate-mapping>

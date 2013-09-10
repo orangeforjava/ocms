@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <constants>
+    <constant key="1">单选</constant>
+    <constant key="2">多选</constant>
+	<constant key="3">填空</constant>
+	<constant key="4">下拉选择</constant>
+	<constant key="5">单选+备注</constant>
+	<constant key="6">多选+备注</constant>
+  </constants>
+</directory>

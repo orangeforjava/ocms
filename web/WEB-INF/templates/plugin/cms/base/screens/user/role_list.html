@@ -1,0 +1,238 @@
+
+<#assign actionTitle="角色管理" />
+<#assign _TITLE_="角色管理" />
+<#assign actions=[
+{"action":"RoleList","title":"角色管理","url":"${baseUrl}admin/user.jhtml?action=UserList","class":"view"},
+{"action":"","title":"添加角色","url":"${baseUrl}admin/roleEdit.jhtml","class":"add"}
+
+]>
+<#include "/plugin/cms/common/includes/header.htm"/>
+
+<#import "./macros/pager-macros.html" as mypager />
+
+<style>
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 100;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.subtitleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.timeholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 90;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.table_plan_td1 {
+	background-color: #FDEEB9
+}
+</style>
+
+<script language='JavaScript'>
+
+function refreshWorkArea()
+{
+ document.location =  document.location
+}
+
+var doImage = doImage;
+var TType = TType;
+
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	if (document.getElementById)
+		t = document.getElementById(tbl);
+	else
+		t = document.all(tbl);
+	if (t == null) return;
+	if (t.getElementsByTagName)
+		d = t.getElementsByTagName("TD");
+	else
+		d = t.all.tags("TD");
+	if (d == null) return;
+	if (d.length <= idx) return;
+	d[idx].className = cls;
+}
+
+</script>
+
+<SCRIPT>
+
+/**
+* single process!
+**/
+function doing(action, userId) {
+	
+	switch(action) {
+		case 'edit':
+		{
+			//alert(userId);
+			document.location="${baseUrl}/admin/userEdit.jhtml?mode=edit&userId="+userId;
+			alert('${baseUrl}/admin/userEdit.jhtml?mode=edit&userId='+userId);
+			break;
+		}
+	}	
+}
+
+</SCRIPT>
+
+<SCRIPT language=JavaScript>
+<!--
+function CheckAll(form)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall' && e.name !='copy')       e.checked = form.chkall.checked;
+   }
+  }
+
+//-->
+
+
+</script>
+<script>
+var mousemovecolor="#D4D4D4";
+var selectcolor ="#DDDDDD";
+var oldcolor;
+
+function GetRow(oElem)
+{
+	while (oElem)
+	{	//alert(oElem.tagName.toLowerCase())
+		if (oElem.tagName.toLowerCase() == "tr" || oElem.parentElement.tagName.toLowerCase() == "tbody")
+		    return oElem;
+		if (oElem.tagName.toLowerCase() == "table" || oElem.tagName.toLowerCase() == "th") return false;
+		oElem = oElem.parentElement;
+	}
+}
+/**
+* batch process!
+**/
+function going(form, o)
+{
+	
+}
+</script>
+
+<form action="" method="get"> 
+  <table cellpadding="0" cellspacing="2" width="100%" height="19" border="0" class="toptable">
+   <tr>
+      <td  height="20" nowrap="nowrap" >显示:
+ 	<select name="FId" id="select2" onChange="doing('advanced_search', this.options[this.selectedIndex].value)">
+	  <#if state?default("")=="">
+	  	<option selected>所有角色</option>
+        <option value="1">所有角色</option>
+	  </#if>
+	</select>按日期查询:
+        <INPUT TYPE="text" NAME="dTime"   id="dTime" onFocus="return showCalendar('dTime', 'y-mm-dd');" value="" >
+        <INPUT name="Go" TYPE="button" value="执行" onClick="doing('date_search')">
+      角色名查询: <INPUT TYPE="text" NAME="SearchKeywords" id="SearchKeywords"   value="">
+        <INPUT name="Go" TYPE="button"  value="执行" onClick="doing('keyword_search')">
+
+   </td>
+   </tr>
+  </table>
+</form>
+
+<table width="100%" border="0" align="center" cellpadding="1" cellspacing="0"  class="table_border" >
+  <TBODY>
+  <form method="post" action="" name="documentlist" >
+
+    <tr class="table_td2">
+      <td align="center" height=25></td>
+      <td align="center"><B>ID</B></td>
+      <td align="center"><B>排序</B></td>
+	  <td align="center"><B>角色名</B></td>      
+      <td align="center"><B>状态</B></td>
+	  <td align="center"><B>产生日期</B></td>
+	  <td align="center"><B>修改日期</B></td>
+      <td colspan="5" align="center"><B>执行操作</B></td>
+  </tr>
+  <!--start-->
+<#list roles as role>
+  <tr class="table_td1" id="${role.roleId}" onmouseover='this.style.backgroundColor="#FFFFFF"' onmouseout='this.style.backgroundColor=""' >
+      <td noWrap > <input type='checkbox' name='pData' value='${role.roleId}' id="p_${role.roleId}" ></td>
+      <td align="center" noWrap   ><div class="subtitleholder">${role.roleId}</div></td>
+	  <td noWrap >${role.pos}</td>
+	 <td   noWrap  style="cursor:hand" id="">
+<table  border="0"  cellpadding="0" cellspacing="0"  >
+<tr>
+<td style="border:0">
+<#compress>
+	  <div class="titleholder">
+	  &nbsp;&nbsp;
+	  <A HREF="javascript:void(0);" onClick="javascript:void(0);" class="o" style="cursor:hand"   oncontextmenu="javascript:void(0);" title="${role.name}">${role.name}</A>	  	  
+	  </div>
+</#compress>
+</td>
+<td></td>
+</tr>
+</table>
+	  </td>
+	  <td align="center" noWrap  ><div class="subtitleholder">${role.status}</div></td>
+      <td align="center" noWrap ><div class="timeholder">${(action.getDate(role.creationDate?default(0)))?string("yyyy-MM-dd HH:mm")}</div></td>
+	  <td align="center" noWrap ><div class="timeholder">${(action.getDate(role.modificationDate?default(0)))?string("yyyy-MM-dd HH:mm")}</div></td>
+     <td colspan="5" align="center" noWrap>
+	 <#assign userCount=roleManager.getRoleUserCount(role.roleId)/>
+	 <A HREF="${baseUrl}/admin/user.jhtml?action=ViewRolePermission2&roleId=${role.roleId}" onClick="javascript:void(0);">权限组权限</A>&nbsp;<A HREF="${baseUrl}/admin/user.jhtml?action=ViewRoleUsers&roleId=${role.roleId}" onClick="javascript:void(0);">包含用户(<font color=red>${userCount}</font>)</A>&nbsp;<A HREF="${baseUrl}/admin/roleEdit.jhtml?mode=edit&roleId=${role.roleId}" onClick="javascript:void(0);">编辑</A>&nbsp;<A HREF="javascript:void(0);" onClick="return confirm('确认删除吗?')">删除</A>
+	  </td>
+ </tr>
+ </#list>
+ <!--end-->
+    <tr class="Tablelistbg">
+      <td colspan="12" align="left" bgcolor="#F5F5F5"> <table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align=left>
+            <input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  >
+              <label for="chkall" >全选</label>&nbsp;&nbsp;
+
+			 <select name="actionMap" id="actionMap" >
+            	 <option value="del">删除</option>
+			 </select>
+
+			  <input type="button" value="执行" class=button onClick="going(this.form,actionMap.options[actionMap.selectedIndex].value)">
+
+            </td>
+			<td height="20" align="right" nowrap="nowrap"> <INPUT name="go_display" TYPE="button" value="显示:" onClick="doing('display_record')" ></td>
+	  <td   height="20" nowrap="nowrap" align="right"  width=80> &nbsp;&nbsp;<INPUT TYPE="text" NAME="offset" size=1 value="${pageNum}"> 条记录
+
+   </td>
+          </tr>
+        </table></td>
+    </tr>
+  </form>
+
+  <#if pb.pages() gt 1>
+  <tr bgcolor="#FFFFFF">
+    <td colspan="16" height=25 >
+	<table border=0 align="right" width="100%">
+	<tr>
+	<td align=right>
+	<#assign pageUrl=baseUrl+"admin/user.jhtml?action=RoleList&pageNum="+pageNum+"&page="/>
+	<@mypager.pageBuilder pb=pb baseUrl=pageUrl closeUrl=""/>
+	</td>
+	</tr>
+	</table>
+	 </td>
+  </tr>
+  </#if>
+  </tbody>
+</table>
+<br/>
+<#include "/plugin/cms/base/includes/footer.html">

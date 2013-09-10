@@ -1,0 +1,128 @@
+<#assign noLayout="true"/>
+
+<#import "/plugin/cms/base/macros/cms-macros.html" as cms />
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<base  href="${baseUrl}"/>
+<TITLE>内容查看-</TITLE>
+<link type="text/css" rel="StyleSheet" href="html/plugin/cms/base/css/style.css" />
+<style type="text/css">
+<!--
+.tablebg {
+	background-color: #F5F5F5;
+}
+-->
+</style>
+<script language="javascript">
+function mytext_zoomin(){	mytext.style.fontSize="10.5pt";}function mytext_zoomout(){	mytext.style.fontSize="9pt";}
+
+function MM_openBrWindow(theURL,winName,features) { 
+  window.open(theURL,winName,features);
+}
+
+</script>
+</HEAD>
+<BODY>
+<!-------------------------->
+<CENTER>[ <A HREF="javascript:window.close();">关闭</A> ]</CENTER>
+<table width="100%" border="0" align="center" cellpadding="5" cellspacing="1"  class="table_border" >
+<tr > 
+              <td align=right width=90 class="table_td1"><b>发布日期:</b></td>
+              <td class="table_td2">
+			  <#if content["publishDate"]?default(0)!=0> ${(action.getDate(content["publishDate"]))?string("yyyy-MM-dd HH:mm")}
+			  </#if>
+			  </td>
+</tr>
+<#list cfs as cf>
+	<#assign fieldInputPicker=cf.fieldInputPicker?default("")/>
+	<#assign fieldTitle=cf.fieldTitle/>
+	<#assign fieldName=cf.fieldName/>
+	<#if cf.fieldInputPicker??&&cf.fieldInputPicker=="content">
+		 <tr >
+		 <td align=right class='table_td1'><b>${fieldTitle}:</b></td>
+		 <td class="table_td2">
+		<#if content[fieldName]?default("")!=""&&content[fieldName]?default("")!="undefined">
+			<@cms.content return="contentList" IndexID=content[fieldName]/>
+	 		<#if contentList?is_sequence>
+	 			<#list contentList as cl>
+					<a  href='${cl["url"]}' target='_blank'>${cl["Title"]}</a><br>
+				</#list>
+	 		<#else>
+	 			<a  href='${contentList["url"]}' target='_blank'>${contentList["Title"]}</a><br>
+	 		</#if>
+		</#if>
+		</td>
+		</tr>
+	<#else>
+		<#if cf.photoField==1>
+		<tr class='table_td1'>
+		<td align=right ><b>${fieldTitle}:</b></td>
+		<td class="table_td2">${StringUtil.highlightWords(content[fieldName]!'',keyword)}
+		<br/>
+		<#if content[fieldName]?default('')!=''>
+		<a href="${content[fieldName]!''}" target="_blank"><img src="${content[fieldName]!''}" height="200"/></a>
+		</#if>
+		</td>
+		</tr>
+		<#elseif cf.fieldInput='MultiImg'>
+		<tr class='table_td1'>
+		<td align=right ><b>${fieldTitle}:</b></td>
+		<td class="table_td2">
+		<#assign ct=content[fieldName]?default('')/>
+		<@cms.multiRes return="reses" content=ct />
+		<#list reses as res>
+		
+			<img src="${res['url']}" width=100/><br/>
+			<div>${res['description']}</div>
+			
+		</#list>
+		</td>
+		</tr>
+		<#else>
+		<tr class='table_td1'>
+		<td align=right ><b>${fieldTitle}:</b></td>
+		<td class="table_td2">${StringUtil.highlightWords(content[fieldName]!'',keyword)}
+		</td>
+		</tr>
+		</#if>
+	</#if>
+</#list>
+<tr > 
+              <td align=right   class="table_td1"><b>创建日期:</b></td>
+              <td class="table_td2">
+			  <#if content["creationDate"]?default(0)!=0>${(action.getDate(content["creationDate"]))?string("yyyy-MM-dd HH:mm")}
+			  </#if>
+			  </td>
+</tr>
+<tr > 
+              <td align=right  class="table_td1"><b>上次修改日期:</b></td>
+              <td class="table_td2">
+			  <#if content["modifiedDate"]?default(0)!=0>${(action.getDate(content["modifiedDate"]))?string("yyyy-MM-dd HH:mm")}
+			  </#if>
+			  </td>
+</tr>
+<tr > 
+              <td align=right   class="table_td1"><b>创建用户:</b></td>
+              <td class="table_td2">${content["creationUserName"]?default("")}</td>
+</tr>
+
+<tr > 
+              <td align=right   class="table_td1"><b>上次修改用户:</b></td>
+              <td class="table_td2">${content["lastModifiedUserName"]?default("")}</td>
+</tr>
+<tr > 
+              <td align=right   class="table_td1"><b>投稿人:</b></td>
+              <td class="table_td2">${content["contributionUserName"]?default("")}</td>
+</tr>
+<tr > 
+              <td align=right   class="table_td1"><b>稿源ID:</b></td>
+              <td class="table_td2">${content["contributionId"]?default(0)}</td>
+</tr>
+</table>
+<CENTER>[ <A HREF="javascript:window.close();">关闭</A> ]</CENTER>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <roles>
+    <role key="全职">全职</role>
+    <role key="兼职">兼职</role>
+	<role key="二者均可">二者均可</role>
+  </roles>
+</directory>

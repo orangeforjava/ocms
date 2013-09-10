@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: Keywords.hbm.xml 4026 2011-03-22 14:58:42Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.keywords.model">
+	<class name="Keywords" table="common_keywords">
+		<id name="id" type="integer">
+			<column name="id" />
+			<generator class="native" />
+		</id>
+		<property name="keyword" type="string">
+			<column name="keyword" length="250" not-null="true"/>
+		</property>
+		<property name="scope" type="integer">
+			<column name="scope" />
+		</property>
+		<property name="nodeId" type="long">
+			<column name="nodeId" />
+		</property>
+		<property name="style" type="string">
+			<column name="style"/>
+		</property>
+		<property name="url" type="string">
+			<column name="url" length="300"/>
+		</property>
+		<property name="status" type="integer">
+			<column name="status" not-null="true"/>
+		</property>
+		<property name="pos" type="integer">
+			<column name="pos" not-null="true" />
+		</property>
+		<property name="createdDate" type="long">
+			<column name="createdDate" not-null="true" />
+		</property>
+		<property name="editedDate" type="long">
+			<column name="editedDate" not-null="true" />
+		</property>
+		<property name="createUser" type="string">
+			<column name="createUser" not-null="true" />
+		</property>
+		<property name="editUser" type="string">
+			<column name="editUser" />
+		</property>
+	</class>
+</hibernate-mapping>

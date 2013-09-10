@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-repo-dao.xml 3938 2010-10-27 03:25:16Z orangeforjava $
+-->
+<beans>
+	<!-- ORM -->
+	<import resource="cms-module-repo-orm.xml"/>
+	<!-- DAO -->
+	<bean id="dynamicContentDaoImpl"
+		class="org.openuap.cms.repo.dao.hibernate.DynamicContentDaoImpl">
+		<property name="sessionFactory" ref="dynamicSessionFactory" />
+	</bean>
+	<bean id="dynamicContentDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<property name="transactionManager"
+			ref="dynamicTransactionManager" />
+		<property name="target" ref="dynamicContentDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="search*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="execute*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="contentIndexDaoImpl"
+		class="org.openuap.cms.repo.dao.hibernate.ContentIndexDaoImpl">
+		<description>内容索引Dao.</description>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="contentIndexDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<property name="transactionManager" ref="cmsTransactionManager" />
+		<property name="target" ref="contentIndexDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="execute*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

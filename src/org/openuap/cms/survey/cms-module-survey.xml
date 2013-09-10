@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<description>Survey CMS插件</description>
+	<import resource="cms-module-survey-orm.xml" />
+	<import resource="cms-module-survey-orm-oracle.xml" />
+	<!--
+		**DAO**
+	-->
+	<!--area-->
+	<bean id="surveyAreaDaoImpl"
+		class="org.openuap.cms.survey.dao.hibernate.AreaDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="surveyAreaDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target" ref="surveyAreaDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<!--survey-->
+	<bean id="surveyDaoImpl"
+		class="org.openuap.cms.survey.dao.hibernate.SurveyDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="surveyDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target" ref="surveyDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<!--question-->
+	<bean id="questionDaoImpl"
+		class="org.openuap.cms.survey.dao.hibernate.QuestionDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="questionDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target" ref="questionDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="execute*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<!--questionItem-->
+	<bean id="questionItemDaoImpl"
+		class="org.openuap.cms.survey.dao.hibernate.QuestionItemDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="questionItemDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target" ref="questionItemDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="execute*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<!--voter-->
+	<bean id="surveyVoterDaoImpl"
+		class="org.openuap.cms.survey.dao.hibernate.VoterDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="surveyVoterDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target" ref="surveyVoterDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="execute*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="surveyRecordDaoImpl"
+		class="org.openuap.cms.survey.dao.hibernate.SurveyRecordDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="surveyRecordDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target" ref="surveyRecordDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="questionItemRecordDaoImpl"
+		class="org.openuap.cms.survey.dao.hibernate.QuestionItemRecordDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="questionItemRecordDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target" ref="questionItemRecordDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<!--
+		**MANAGER**
+	-->
+	<bean id="surveyAreaManager"
+		class="org.openuap.cms.survey.manager.impl.SurveyAreaManagerImpl">
+		<property name="areaDao">
+			<ref bean="surveyAreaDao" />
+		</property>
+	</bean>
+	<bean id="surveyManager"
+		class="org.openuap.cms.survey.manager.impl.SurveyManagerImpl">
+		<property name="surveyDao">
+			<ref bean="surveyDao" />
+		</property>
+		<property name="surveyRecordDao">
+			<ref bean="surveyRecordDao" />
+		</property>
+		<property name="questionItemRecordDao">
+			<ref bean="questionItemRecordDao" />
+		</property>
+		<property name="voterDao">
+			<ref bean="surveyVoterDao" />
+		</property>
+	</bean>
+	<bean id="questionManager"
+		class="org.openuap.cms.survey.manager.impl.QuestionManagerImpl">
+		<property name="questionDao">
+			<ref bean="questionDao" />
+		</property>
+		<property name="questionItemDao">
+			<ref bean="questionItemDao" />
+		</property>
+		<property name="voterDao">
+			<ref bean="surveyVoterDao" />
+		</property>
+	</bean>
+
+	<bean id="surveyXMLService"
+		class="org.openuap.cms.survey.xml.impl.Dom4jSurveyXMLService">
+	</bean>
+	<bean id="surveyAreaEngine"
+		class="org.openuap.cms.survey.engine.support.DefaultSurveyAreaEngine">
+		<property name="nodeManager" ref="nodeManager"></property>
+		<property name="psnManager" ref="psnManager"></property>
+		<property name="questionManager" ref="questionManager"></property>
+		<property name="surveyAreaManager" ref="surveyAreaManager"></property>
+		<property name="surveyManager" ref="surveyManager"></property>
+	</bean>
+	<bean id="surveyEngine"
+		class="org.openuap.cms.survey.engine.support.DefaultSurveyEngine">
+		
+		<property name="questionManager" ref="questionManager"></property>
+	</bean>
+	<bean id="surveyFreeMarkerEngineContentFilter"
+		class="org.openuap.cms.survey.engine.filter.SurveyFreeMarkerEngineContentFilter">
+		<property name="surveyAreaEngine" ref="surveyAreaEngine"></property>
+		<property name="surveyEngine" ref="surveyEngine"></property>
+	</bean>
+</beans>

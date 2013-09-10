@@ -1,0 +1,540 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<#include "/includes/admin/meta.html"/>
+<title>template_var_edit</title>
+</head>
+<body  topmargin=0 leftmargin=0 >
+<table width="100%"  border="0" align="center" cellspacing="1" class="table_border">
+  <tr> 
+    <td height="25" class="table_td1" style="padding-left: 10px;">
+	<table width="100%"  border="0"  cellspacing="1"  >
+	<tr>
+	<td>当前位置：系统管理 -> 模板变量管理 -> 新增模板变量</td>
+	<td align="right">
+	
+	
+	</tr>
+	</table>	
+	</td>
+  </tr>
+</table>&nbsp;
+
+
+ 
+ <script language="JavaScript">
+function setIsGlobal(mode)
+{
+	switch(mode) {
+		case 1 :
+			Layer_IsGlobal.style.display = 'none';
+			break;
+		case 0: 
+ 			Layer_IsGlobal.style.display = '';
+			break;
+	}
+}
+</script>
+
+<table width="90%" border=0 align=center cellspacing=1>
+<tbody>
+<form action="${baseUrl}/admin/tplVarEdit.jhtml" method="post">
+<tr>
+<td valign=top align=middle width="50%">
+<table width="100%" border=0 cellspacing="1" cellpadding="4" class="table_border">
+            <tbody>
+              <tr class="table_header"> 
+                <td height=25 colspan=2 ><strong>
+								新增模板变量								</strong></td>
+              </tr>
+              <tr >
+                <td width="90" height=30  class="table_td1">
+                  <p> 变量标识：</p></td>
+                <td   height=30  class="table_td2">
+                  <input name=data_VarTitle type="text" class=button id="author"  value="" size=30></td>
+              </tr>
+              <tr >
+                <td height=30  class="table_td1">
+                  <p> 变量名：</p></td>
+                <td height=30  class="table_td2">
+                  <input name=data_VarName type="text" class=button id="author"  value="" size=30></td>
+              </tr>
+              <tr class="table_td1"> 
+                <td height=30 bgcolor="" id=id2>变量值：</td>
+                <td height=30 align=left class="table_td2"> <textarea name=data_VarValue cols=50 rows=6 id="content" ></textarea> 
+                </td>
+              </tr>
+
+			   <tr class="table_td1" > 
+                <td  id=id2>是否全局变量：</td>
+                <td  id=id2><table cellspacing=1 cellpadding=1 border=0>
+                <tr>
+                	<td> 
+                  <input type="radio" name="data_IsGlobal" value="1" onclick="setIsGlobal(1);" id="data_IsGlobal1" >
+                  <label for="data_IsGlobal1"  >是</label>
+                  <input name="data_IsGlobal" type="radio" value="0"  onclick="setIsGlobal(0);" id="data_IsGlobal2" checked>
+                  <label for="data_IsGlobal2"  >否</label>
+                   
+</td>
+                	<td></td>
+                </tr>
+                </table> </td>
+              </tr>              
+            </tbody>
+</table>
+				  <div id="Layer_IsGlobal" >
+		
+<table width="100%" border=0 cellspacing="1" cellpadding="4" class="table_border">
+               <tr class="table_header"> 
+                <td height=25 colspan=3 >变量作用结点范围</td>
+              </tr>
+ <tr>
+ <td class="table_td1" align="center" width="50">不包含子结点  </td>
+  <td class="table_td1" align="center" width="60">
+  包含子结点  </td>
+
+<td class="table_td1"></td>
+ </tr>
+
+ 
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="1">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="1">
+   </td>
+
+<td class="table_td1">
+<b> - &nbsp;资讯中心</b>
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="2">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="2">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;重要消息
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="3">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="3">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;IT资讯
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="20">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="20">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;财经资讯
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="21">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="21">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;软件编程
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="22">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="22">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;网络技术
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="23">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="23">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;网络文学
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="24">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="24">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;生活休闲
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="4">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="4">
+   </td>
+
+<td class="table_td1">
+<b> - &nbsp;下载中心</b>
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="6">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="6">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;PHP源码
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="7">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="7">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;ASP源码
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="8">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="8">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;CGI 源码
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="9">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="9">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;JSP 源码
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="10">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="10">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;.NET 源码
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="11">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="11">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp; 服务器类
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="12">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="12">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;素材模板
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="13">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="13">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;常用工具
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="14">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="14">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;书籍教程
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="15">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="15">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;其他源码
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="17">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="17">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;新闻快讯
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="18">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="18">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;友情链接
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="5">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="5">
+   </td>
+
+<td class="table_td1">
+<b> - &nbsp;WAP</b>
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="34">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="34">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;IT资讯
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="35">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="35">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;重要消息
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="36">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="36">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;财经资讯
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="37">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="37">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;生活休闲
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="19">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="19">
+   </td>
+
+<td class="table_td1">
+<b> - &nbsp;技术论坛</b>
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="25">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="25">
+   </td>
+
+<td class="table_td1">
+<b> - &nbsp;图库中心</b>
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="26">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="26">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;自然风景
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="27">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="27">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;个人相册
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="28">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="28">
+   </td>
+
+<td class="table_td1">
+<b> - &nbsp;搜索</b>
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="30">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="30">
+   </td>
+
+<td class="table_td1">
+<b> - &nbsp;Flash中心</b>
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="31">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="31">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;音乐MTV
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="32">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="32">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;Flash游戏
+</td>
+ </tr>
+  <tr>
+ <td class="table_td2" align="center">
+     <input type="checkbox" name="NodeIDs[]" value="33">
+ </td>
+  <td class="table_td2" align="center">
+  <input type="checkbox" name="SubNodeIDs[]" value="33">
+   </td>
+
+<td class="table_td1">
+&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;故事小品
+</td>
+ </tr>
+ 
+
+</tbody>
+	 </table> 
+		  
+</div><br>	
+			  <input name="submit" type=submit class=button value="修改">
+                  &nbsp;&nbsp; 
+                  <input type=reset value="重置" class=button> 
+	  
+		  
+		  </td></tr></tbody>
+		    </form>
+		  </table>
+		
+	  
+
+
+
+		  </body>
+</html>

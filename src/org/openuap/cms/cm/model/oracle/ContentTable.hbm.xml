@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+                            "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<!--
+	$Id: ContentTable.hbm.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.cm.model">
+  <class name="ContentTable" table="cms_content_table">
+    <id name="tableId" column="TableID" type="long" unsaved-value="0">
+      <generator class="sequence">
+			<param name="sequence">cms_content_table_seq</param>
+	  </generator>
+    </id>
+    <property name="name" type="string">
+      <column name="Name" not-null="true"/>
+    </property>
+    <property name="dsnid" type="long">
+      <column name="DSNID" not-null="true"/>
+    </property>
+    <property name="system" type="integer">
+      <column name="IsSystem" not-null="true"/>
+    </property>
+    <property name="tableName" type="string">
+      <column name="TableName"/>
+    </property>
+    <property name="entityName" type="string">
+      <column name="EntityName"/>
+    </property>
+    <property name="entityPublishName" type="string">
+      <column name="EntityPublishName"/>
+    </property>
+    <property name="allowIndex" type="integer">
+      <column name="allowIndex" default="'0'" not-null="true"></column>
+    </property>
+    <property name="lastIndexDate" type="long">
+      <column name="lastIndexDate" default="'0'" not-null="true"></column>
+    </property>
+    <set name="contentFieldsSet" order-by="fieldOrder" inverse="true" lazy="false" cascade="delete">
+      <key column="TableID"/>
+      <one-to-many class="ContentField"/>
+    </set>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,184 @@
+<html>
+<head>
+<title>OCMS MENU</title>
+<base href="${baseUrl}" target="main" />
+<link rel="stylesheet" href="html/plugin/cms/workbench3/img/base.css" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script language="javascript" type="text/javascript" src="html/plugin/cms/workbench3/js/leftmenu.js"></script>
+<style>
+
+div {
+	padding:0px;
+	margin:0px;
+}
+
+body {
+ padding:0px;
+ margin:auto;
+ text-align:center;
+ background-color:#eff5ed;
+ background:url(html/plugin/cms/workbench3/img/leftmenu_bg.gif);
+ padding-left:3px;
+ overflow:scroll;
+ overflow-x:hidden;
+}
+
+dl.bitem {
+	clear:both;
+	width:140px;
+	margin:0px 0px 5px 12px;
+	background:url(html/plugin/cms/workbench3/img/menunewbg.gif) repeat-x;
+}
+
+dl.bitem dt {
+  height:25px;
+  line-height:25px;
+  padding-left:35px;
+  cursor:pointer;
+}
+
+dl.bitem dt b {
+	color:#4D6C2F;
+}
+
+dl.bitem dd {
+  padding:3px 3px 3px 3px;
+  background-color:#fff;
+}
+
+div.items {
+	clear:both;
+	padding:0px;
+	height:0px;
+}
+
+.fllct {
+	float:left;
+	width:115px;
+}
+
+.flrct {
+	padding-top:3px;
+	float:left;
+}
+
+.sitemu li {
+	padding:0px 0px 0px 18px;
+	line-height:22px;
+	background:url(html/plugin/cms/workbench3/img/arr4.gif) no-repeat 5px 9px;
+}
+
+ul {
+  padding-top:3px;
+}
+
+li {
+  height:22px;
+}
+
+a.mmac div
+{
+	background:url(html/plugin/cms/workbench3/img/leftbg2.gif) no-repeat;
+	height:37px!important;height:47px;
+	padding:6px 4px 4px 10px;
+	word-wrap: break-word;
+	word-break : break-all;
+	font-weight:bold;
+	color:#325304;
+}
+
+a.mm div
+{
+	background:url(html/plugin/cms/workbench3/img/leftmbg1.gif) no-repeat;
+	height:37px!important;height:47px;
+	padding:6px 4px 4px 10px;
+	word-wrap: break-word;
+	word-break : break-all;
+	font-weight:bold;
+	color:#475645;
+	cursor:pointer;
+}
+
+a.mm:hover div
+{
+	background:url(html/plugin/cms/workbench3/img/leftbg2.gif) no-repeat;
+	color:#4F7632;
+}
+
+.mmf
+{
+	height:1px;
+	padding:5px 7px 5px 7px;
+}
+
+#mainct
+{
+	padding-top:8px;background: url(html/plugin/cms/workbench3/img/idnbg1.gif) repeat-y;
+}
+</style>
+
+</head>
+<body target="main">
+<table width="180" align="center" border='0' cellspacing='0' cellpadding='0'>
+    <tr>
+    	<td width="10"></td>	
+  		<td width='160' align="center" id='mainct' valign="top"><h3>${node.name}[${node.nodeId?c}]</h3></td>
+  	</tr>
+	<tr> 
+  <td width="10"></td>	
+  <td width='160' id='mainct' valign="top">
+  <div id='ct1'>
+<#assign sideBars=workbench.getSubMenu("tab-node-plugin")/> 
+		 <#list sideBars as sidebar>
+				<#assign pid = sidebar.attributeValue("id")/> 
+				<#assign pname = sidebar.attributeValue("name")/>  
+				<#assign purl = sidebar.attributeValue("url")!"#"/>
+				<#assign display ="none"/>
+				<#assign background ="#BCD4F9"/>
+				<#if (sideBarID??&&sideBarID==pid)||(!(sideBarID??)&&sidebar_index==0)>
+					<#assign display =""/>
+					<#assign background ="#F6C35D"/>
+					<#assign lastCk=pid/>
+				</#if>
+				<#assign ptype = sidebar.attributeValue("type")!"url"/>
+				<#if ptype=='url'>
+					<#assign menu_box_css='menu_box'/>
+				<#else>
+					<#assign menu_box_css='menu_box2'/>
+				</#if>
+			<dl class='bitem'><dt onClick='showHide("items${pid}")'><b>${pname}</b></dt>
+			<dd style='display:block' class='sitem' id='items${pid}'>
+			<ul class='sitemu'>
+				<#if workbench.getItems(sidebar)??>
+					<#assign items=workbench.getItems(sidebar)/>
+					<#list items as item>
+						<#assign id = item.attributeValue("id")/> 
+						<#assign name = item.attributeValue("name")/>
+						<#assign url = item.attributeValue("url")!"#"?replace("NODE_ID",nodeId?c)/>
+						<#assign url=url?replace("NODE_ID",nodeId?c)/>
+						<#assign type = item.attributeValue("type")!"url"/>
+						<#assign target = item.attributeValue("target")!"main"/>
+						<li>
+						<#if type=='js'>
+							<script type="text/javascript" language="javascript" src="${url}"></script>
+						<#else>
+						    <a href="${url}" target="${target}">${name}</a>					
+						</#if>
+						</li>
+					</#list>
+				</#if>
+			 </ul>
+			</dd>
+			</dl>
+			</#list>
+</div>
+	</td>
+	</tr>
+	<tr>
+	<td width="10"></td>	
+  	<td width='160' valign='top'><img src='html/plugin/cms/workbench3/img/idnbgfoot.gif' /></td>
+	</tr>
+</table>
+</body>
+</html>

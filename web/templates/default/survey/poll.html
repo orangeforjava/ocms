@@ -1,0 +1,162 @@
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>
+${survey.surveyName}
+<br/>
+${survey.surveyDescription!''}
+<br/>
+<#assign totalPages=pages?size>
+<#if totalPages gt 1>
+第${pageId?default(1)}步/共${totalPages}步
+</#if>
+</td>
+</tr>
+</table>
+<br/>
+<script type="text/javaScript">
+	function viewSurveyResult(){
+		window.open("${baseUrl}plugin/survey/statics.jhtml?sid=${sid}&rid=${rid}");
+	}
+</script>
+<form action="${baseUrl}plugin/survey/simplePoll.jhtml" method="post" target="_blank">
+ <input type="hidden" name="sid" value="${sid}"/>
+ <input type="hidden" name="rid" value="${rid}"/>
+ <input type="hidden" name="questionIds" value="${questionPage.questionIds}"/>
+     
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <td><!--每组start-->
+        <#list questionPage.groups as questionGroup>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td height="25" colspan="2"><#if questionPage.groups?size gt 1>${questionGroup.groupId}.&nbsp;</#if>${questionGroup.groupTitle}</td>
+          </tr>
+          <tr>
+            <td height="1" background="../templates/skins/images/di_11.gif"></td>
+          </tr>
+          <#if questionGroup.groupType==1>
+          <tr>
+            <td height="50"><table width="90%" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#CCCCCC">
+                <tr>
+                  <td  align="center" bgcolor="#FFFFFF">&nbsp;</td>
+                  <#list questionGroup.items as item>
+                  <td  align="center" bgcolor="#FFFFFF">${item.questionItemText}</td>
+                  </#list> </tr>
+                <#list questionGroup.questions as q>
+                <tr>
+                  <td align="center" bgcolor="#FFFFFF">${q.questionTitle}</td>
+                  <#if q.questionType==1||q.questionType==5>
+                  <#list q.questionItems as qi>
+                  <td align="center" bgcolor="#FFFFFF"><input name="${q.questionId?c}" type="radio" class="input2" value="${qi.questionItemId?c}" /></td>
+                  </#list>
+                  <#elseif q.questionType==2||q.questionType==6>
+                  <#list q.questionItems as qi>
+                  <td align="center" bgcolor="#FFFFFF"><input name="${q.questionId?c}" type="checkbox" class="input2" value="${qi.questionItemId?c}" /></td>
+                  </#list>	
+                  </#if> </tr>
+                </#list>
+              </table></td>
+          </tr>
+          <tr>
+            <td height="50"><#list questionGroup.questions as q>
+              <#if q.questionType==5||q.questionType==6> <br/>
+              上述${q.questionTitle}指的是：
+              <input type="text" name="${q.questionId}_q_input" size="30"/>
+              </#if>
+              </#list> </td>
+          </tr>
+          <#else>
+          <#list questionGroup.questions as question>
+          <#if question.questionType==1>
+          <#list question.questionItems as qi>
+          <tr>
+            <td height="25" width="1%"><input name="${question.questionId?c}" type="radio" class="input2" value="${qi.questionItemId?c}" />
+            </td>
+            <td height="25" align="left">${qi.questionItemText?default("")}
+              <#if qi.questionItemType==1>
+              <input type="text" name="${qi.questionItemId?c}_i_input" size="25"/>
+              </#if> </td>
+          </tr>
+          </#list>
+          <#elseif question.questionType==2>
+          <#list question.questionItems as qi>
+          <tr>
+            <td height="25" width="1%" ><input name="${question.questionId?c}" type="checkbox" class="input2" value="${qi.questionItemId?c}" />
+            </td>
+            <td height="25" align="left">${qi.questionItemText?default("")}
+              <#if qi.questionItemType==1>
+              <input type="text" name="${qi.questionItemId?c}_i_input" size="25"/>
+              </#if> </td>
+          </tr>
+          </#list>
+          <#elseif question.questionType==3>
+          <tr>
+            <td  colspan="2"><textarea name="${question.questionId?c}_q_input" cols="70" rows="12"></textarea></td>
+          </tr>
+          <#elseif question.questionType==4>
+          <tr>
+            <td  colspan="2"><select name="${question.questionTitle}_q_input">
+                <option value="请选择">请选择</option>
+              </select></td>
+          </tr>
+          <#elseif  question.questionType==5> 	
+          <#list question.questionItems as qi>
+          <tr>
+            <td  width="1%" height="25"><input name="${question.questionId?c}" type="radio" class="input2" value="${qi.questionItemId?c}" />
+            </td>
+            <td height="25" align="left">${qi.questionItemText?default("")}
+              <#if qi.questionItemType==1>
+              <input type="text" name="${qi.questionItemId?c}_i_input" size="25"/>
+              </#if> </td>
+          </tr>
+          </#list>
+          <tr>
+            <td height="25" colspan="2">上述${question.questionTitle}指的是：
+              <input type="text" name="${question.questionId}_q_input" size="30"/></td>
+          </tr>
+          <#elseif  question.questionType==6>
+          <#list question.questionItems as qi>
+          <tr>
+            <td  width="1%" height="25"><input name="${question.questionId?c}" type="checkbox" class="input2" value="${qi.questionItemId?c}" /></td>
+            <td  height="25" align="left">${qi.questionItemText?default("")}
+              <#if qi.questionItemType==1>
+              <input type="text" name="${qi.questionItemId?c}_input" size="25"/>
+              </#if> </td>
+          </tr>
+          </#list>
+          <tr>
+            <td height="25" colspan="2">上述${question.questionTitle}指的是：
+              <input type="text" name="${question.questionId}_q_input" size="30"/></td>
+          </tr>
+          </#if>
+          </#list>
+          </#if>
+        </table>
+        <!--/每组-->
+        </#list> </td>
+    </tr>
+
+</table>
+<br/>
+<center>
+	<#assign pid=pageId?default(1)>
+	<#if pid==1>
+		<#if pid==totalPages>
+			<input type="submit" name="_finish" value=" 提 交 "/>
+		<#else>		    
+			<input type="submit" name="_target${pid}" value=" 下一步 "/>
+		</#if>
+	<#else>
+		<#if pid==totalPages>
+			<input type="submit" name="_target${pid-2}" value=" 上一步 "/>
+			&nbsp;
+			<input type="submit" name="_finish" value=" 提 交 "/>
+		<#else>
+			<input type="submit" name="_target${pid-2}" value=" 上一步 "/>
+			&nbsp;
+			<input type="submit" name="_target${pid}" value=" 下一步 "/>
+		</#if>
+	</#if>
+	<input type="button" name="viewResult" onclick="javaScript:viewSurveyResult();" value=" 结 果 "/>
+</center>
+</form>

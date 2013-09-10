@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="true">
+	
+	<bean id="comment-HandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/comment/view.htm">
+					<ref local="commentViewAction" />
+				</entry>
+				<entry key="/comment/edit.htm">
+					<ref local="commentEditAction" />
+				</entry>				
+			</map>
+		</property>
+	</bean>
+	<bean id="commentViewAction"
+		class="org.openuap.cms.comment.action.CommentViewAction">
+		<description>查看评论内容</description>
+		<property name="commentManager" ref="commentManager"></property>
+	</bean>
+	<bean id="commentEditAction"
+		class="org.openuap.cms.comment.action.CommentEditAction">
+		<description>评论添加内容</description>
+		<property name="commentManager" ref="commentManager"></property>
+	</bean>
+</beans>

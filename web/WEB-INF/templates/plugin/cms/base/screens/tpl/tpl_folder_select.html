@@ -1,0 +1,65 @@
+<#global baseUrl=helper.getBaseURL()>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>resource</title>
+<base  href="${baseUrl}"/>
+<script type="text/javascript" src="html/common/tree/xtree.js"></script>
+<script type="text/javascript" src="html/common/tree/xmlextras.js"></script>
+<script type="text/javascript" src="html/common/tree/xloadtree.js"></script>
+<link type="text/css" rel="stylesheet" href="html/common/tree/xtree.css" />
+
+<style type="text/css">
+
+body {
+	background:	white;
+	color:		black;
+}
+
+</style>
+
+<SCRIPT language=JavaScript>
+var elo;
+var loadmenuok=false;
+var type = 'main';
+
+</SCRIPT>
+
+</head>
+<body leftmargin="3" topmargin="0">
+<script type="text/javascript">
+
+/// XP Look
+webFXTreeConfig.rootIcon		= "html/common/tree/images/xp/folder.png";
+webFXTreeConfig.openRootIcon	= "html/common/tree/images/xp/openfolder.png";
+webFXTreeConfig.folderIcon		= "html/common/tree/images/xp/folder.png";
+webFXTreeConfig.openFolderIcon	= "html/common/tree/images/xp/openfolder.png";
+webFXTreeConfig.fileIcon		= "html/common/tree/images/xp/folder.png";
+webFXTreeConfig.lMinusIcon		= "html/common/tree/images/xp/Lminus.png";
+webFXTreeConfig.lPlusIcon		= "html/common/tree/images/xp/Lplus.png";
+webFXTreeConfig.tMinusIcon		= "html/common/tree/images/xp/Tminus.png";
+webFXTreeConfig.tPlusIcon		= "html/common/tree/images/xp/Tplus.png";
+webFXTreeConfig.iIcon			= "html/common/tree/images/xp/I.png";
+webFXTreeConfig.lIcon			= "html/common/tree/images/xp/L.png";
+webFXTreeConfig.tIcon			= "html/common/tree/images/xp/T.png";
+webFXTreeConfig.blankIcon		= "html/common/tree/images/blank.png";
+
+var rti;
+var tree = new WebFXTree("模版根目录","javascript:parent.setTargetNodeID('/')");
+	<#list folders as folder>
+	<#if !folder.isExistChildren()>
+	tree.add(new WebFXTreeItem("${folder.name}","javascript:parent.setTargetNodeID('${folder.path}')", "", ""));
+	<#else>
+	tree.add(new WebFXLoadTreeItem("${folder.name}", "${baseUrl}admin/template.jhtml?action=SelTplDirXml&path=${folder.encodedPath}", "javascript:parent.setTargetNodeID('${folder.path}')", "", ""));
+	</#if>
+	</#list>
+
+document.write(tree);
+
+</script>
+<div id="menudata"></div>
+
+</body>
+</html>

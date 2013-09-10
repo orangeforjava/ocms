@@ -1,0 +1,464 @@
+[#assign actionTitle="站点管理" /]
+[#assign _TITLE_="站点管理" /] 
+[#assign actions=[
+{"action":"Tree","title":"站点管理（树型模式）","url":"${baseUrl}admin/node.jhtml?action=Tree","class":"view"},
+{"action":"TreeTable","title":"站点管理（展开模式）","url":"${baseUrl}admin/node.jhtml?action=TreeTable","class":"view"},
+{"action":"","title":"新建根站点","url":"${baseUrl}admin/nodeEdit.jhtml?parentId=0","class":"add"}
+
+]]
+
+[#include "/plugin/cms/common/includes/header.htm"/]
+
+<script src="html/common/dialog/artDialog.js" type="text/javascript"></script>
+<script type="text/javaScript">
+//var win;
+//CSS.preloadImages();
+function openWindow(url, caption, w, h) {
+
+	art.dialog.open(url, {title: caption,lock:true,width:w,height:h});
+}
+</script>
+
+<script type="text/javascript" src="html/common/tree/xtree.js">
+</script>
+<script type="text/javascript" src="html/common/tree/xmlextras.js">
+</script>
+<script type="text/javascript" src="html/common/tree/xloadtree.js">
+</script>
+
+
+<script type="text/javaScript">
+
+var globalAction;
+var globalNodeID;
+function callBack(rs) {
+	//
+	//alert(globalAction);
+	switch (globalAction) {
+	case 'create_node_based': {
+		createNodeBased(rs);
+		break;
+	}
+	case 'sort_node': {
+		sort_node(rs);
+		break;
+	}
+	case 'move_node': {
+		move_node(rs);
+		break;
+	}
+	case 'restore': {
+		restore(rs);
+		break;
+	}
+	default: {
+		break;
+	}
+	}
+	return false;
+}
+function createNodeBased(targetNodeID) {
+	if (targetNodeID != null && targetNodeID != '') {
+		window.location = '${baseUrl}admin/nodeEdit.jhtml?mode=new&parentId='
+				+ globalNodeID + '&basedNodeId=' + targetNodeID;
+		
+	}
+}
+function sort_node(weight) {
+	if (weight != null && weight != "") {
+		var url = '${baseUrl}admin/node.jhtml?action=SortSubmit&weight='
+				+ weight + '&nodeId=' + globalNodeID;
+		$.get(url, function(transport) {
+				var returnValue = transport;
+				if (returnValue != null && returnValue != "-1") {
+					alert('结点排序权重设置成功！');
+					document.location.reload();
+					return true;
+				} else {
+					alert('结点排序权重设置失败！');
+					document.location.reload();
+					return false;
+				}
+			
+		});
+
+	}
+}
+function move_node(targetNodeID) {
+	if (targetNodeID != null && targetNodeID != '') {
+		var url='${baseUrl}admin/node.jhtml?action=Move&nodeId='
+				+ globalNodeID + '&targetNodeId=' + targetNodeID;
+		$.get(url,function(data){
+			var rs=eval('(' + data + ')');
+			if(rs['result']=='success'){
+				alert('移动结点成功！');
+				window.location=window.location;
+			}else{
+				alert('移动结点失败，具体原因为:'+rs['msg']);
+			}
+		});
+	}
+}
+/**
+ * 恢复结点
+ * @param {Object} targetNodeID
+ */
+function restore(targetNodeID) {
+	if (targetNodeID != null && targetNodeID != '') {
+		//
+		var url= '${baseUrl}admin/node.jhtml?action=Restore&nodeId='
+				+ globalNodeID + '&targetNodeId=' + targetNodeID;
+		$.get(url,function(data){
+			//
+			var rs=eval('(' + data + ')');
+			if(rs['result']=='success'){
+				alert("恢复结点成功！");
+				window.location=window.location;
+			}else{
+				alert("恢复结点失败,原因为:"+rs['msg']);
+			}
+		});
+
+	}
+}
+function going(action, cId) {
+	switch (action) {
+	case 'node_permission': {
+		window.location = '${baseUrl}admin/node/permission.jhtml?id=' + cId;
+
+		break;
+	}
+	case 'publish': {
+		window.location = '${baseUrl}admin/publish.jhtml?action=ListContent&nodeId=' + cId;
+
+		break;
+	}
+	case 'create_node': {
+		window.location = '${baseUrl}admin/nodeEdit.jhtml?parentId=' + cId;
+		break;
+	}
+	case 'create_system_node': {
+		window.location = '${baseUrl}admin/nodeEdit.jhtml?extra=system&parentId=' + cId;
+		break;
+	}
+	case 'create_node_based': {
+		globalNodeID = cId;
+		globalAction = "create_node_based";
+		var caption = "选择基于的结点";
+		var url = "${baseUrl}admin/node.jhtml?action=TargetNodeWindow";
+		openWindow(url, caption, 640, 480);
+		break;
+	}
+	case 'del_node': {
+		if (confirm("确认删除该结点吗?")) {
+			//Ajax方式处理
+			var url='${baseUrl}admin/node.jhtml?action=Del&nodeId=' + cId;
+			$.get(url,function(data){
+				var rs=eval('(' + data + ')');
+				if(rs['operation']=='del_confirm'){
+					//包含子结点
+					var ok=confirm("您需要删除的结点包含子结点，删除此结点将同时删除所有子结点，您是否确认删除此结点？");
+					if(ok){
+						url+="&confirmDel=1";
+						$.get(url,function(data){
+							var rs=eval('(' + data + ')');
+							if(rs['result']=='success'){
+								alert('删除节点成功！');
+								window.location=window.location;
+							}else{
+								alert('删除结点失败！，具体原因为：'+rs['msg']);
+							}
+						});
+					}
+				}else{
+					//不包含子结点
+					if(rs['result']=='success'){
+							alert('删除节点成功！');
+							window.location=window.location;	
+						}else{
+							alert('删除结点失败！，具体原因为：'+rs['msg']);
+					}
+				}
+			});
+		}
+		break;
+	}
+	case 'move_node': {
+		if (!confirm('您确认移动此结点吗？')) {
+			return;
+		}
+		globalNodeID = cId;
+		globalAction = "move_node";
+		var caption = "选择移动到的目标结点";
+		var url = "${baseUrl}admin/node.jhtml?action=TargetNodeWindow";
+		openWindow(url, caption, 640, 480);
+		break;
+
+	}
+	case 'sort_node': {
+		globalNodeID = cId;
+		globalAction = "sort_node";
+		var caption = "设置结点排序权重";
+		var url = "${baseUrl}admin/node.jhtml?action=Sort&nodeId=" + cId;
+		openWindow(url, caption, 400, 180);
+		break;
+	}
+	case 'empty_recycle_bin': {
+		if (confirm("确认清空回收站吗?")) {
+			var url= '${baseUrl}admin/node.jhtml?action=EmptyRecycleBin&nodeId=' + cId;
+			$.get(url,function(data){
+				var rs=eval('(' + data + ')');
+				if(rs['result']=='success'){
+					alert("清空回收站成功！");
+					window.location=window.location;	
+				}else{
+					alert('清空回收站失败！，具体原因为：'+rs['msg']);
+				}
+			});
+		}
+		break;
+	}
+	case 'destroy': {
+		if (confirm("确认永久删除该结点吗？")) {
+			var url= '${baseUrl}admin/node.jhtml?action=Destroy&nodeId=' + cId;
+			$.get(url,function(data){
+				var rs=eval('(' + data + ')');
+				if(rs['result']=='success'){
+					alert("永久删除结点成功！");
+					window.location=window.location;	
+				}else{
+					alert('永久删除结点失败！，具体原因为：'+rs['msg']);
+				}
+			});
+		}
+		break;
+	}
+	case 'restore': {
+		if (!confirm('您确认恢复此结点吗？')) {
+			return;
+		}
+		globalNodeID = cId;
+		globalAction = "restore";
+		var caption = "选择需要恢复到的结点";
+		var url = "${baseUrl}admin/node.jhtml?action=TargetNodeWindow";
+		openWindow(url, caption, 640, 480);
+		break;
+	}
+	default: {
+		break;
+	}
+	}
+}
+</script>
+<style type="text/css">
+
+.nodeSort{
+	color:#FF0000;
+}
+.aS{
+	color:#0000FF;
+}
+</style>
+<table border="0" align="center" cellpadding="0" cellspacing="0"
+	width="100%" style="border-bottom: solid #c9c9c9 1px">
+	<tr height=40>
+		<td width="99%">
+			<a href="${baseUrl}admin/repo.jhtml?action=VerifyNodeStat">结点统计信息更新</a>
+		</td>
+		<td nowrap valign="middle" width="1%"></td>
+		<td valign="middle" nowrap>
+		</td>
+	</tr>
+</table>
+
+<table width="100%" border="0" align="center" cellpadding="0"
+	cellspacing="0" class="maintable">
+	<tbody>
+		<tr class="table_td2" height=25>
+			<td>
+				<B>站点管理</B>
+			</td>
+		</tr>
+		<!--start-->
+		<tr class="table_td2">
+			<td nowrap>
+				<script type="text/javascript">
+
+webFXTreeConfig.rootIcon = "html/common/tree/images/xp/folder.png";
+webFXTreeConfig.openRootIcon = "html/common/tree/images/xp/openfolder.png";
+webFXTreeConfig.folderIcon = "html/common/tree/images/xp/folder.png";
+webFXTreeConfig.openFolderIcon = "html/common/tree/images/xp/openfolder.png";
+webFXTreeConfig.fileIcon = "html/common/tree/images/xp/file.png";
+webFXTreeConfig.lMinusIcon = "html/common/tree/images/xp/Lminus.png";
+webFXTreeConfig.lPlusIcon = "html/common/tree/images/xp/Lplus.png";
+webFXTreeConfig.tMinusIcon = "html/common/tree/images/xp/Tminus.png";
+webFXTreeConfig.tPlusIcon = "html/common/tree/images/xp/Tplus.png";
+webFXTreeConfig.iIcon = "html/common/tree/images/xp/I.png";
+webFXTreeConfig.lIcon = "html/common/tree/images/xp/L.png";
+webFXTreeConfig.tIcon = "html/common/tree/images/xp/T.png";
+webFXTreeConfig.blankIcon = "html/common/tree/images/blank.png";
+//
+WebFXTree.prototype.toString = function() {
+	var str = "<div id=\""
+			+ this.id
+			+ "\" ondblclick=\"webFXTreeHandler.toggle(this);\" class=\"webfx-tree-item\" onkeydown=\"return webFXTreeHandler.keydown(this, event)\">"
+			+ "<img id=\""
+			+ this.id
+			+ "-icon\" class=\"webfx-tree-icon\" src=\""
+			+ ((webFXTreeHandler.behavior == 'classic' && this.open) ? this.openIcon
+					: this.icon)
+			+ "\" onclick=\"webFXTreeHandler.select(this);\">";
+	if (this.action = 'root') {
+		str += this.text;
+	} else {
+		str += "<a href=\""
+				+ this.action
+				+ "\" id=\""
+				+ this.id
+				+ "-anchor\" onfocus=\"webFXTreeHandler.focus(this);\" onblur=\"webFXTreeHandler.blur(this);\""
+				+ (this.target ? " target=\"" + this.target + "\"" : "") + " >"
+				+ this.text + "</a>";
+	}
+	if (this.action = 'root') {
+		str += "-[<a href=\"javaScript:going('create_node',0)\">创建根结点</a>]";
+	}
+	str += "</div>" + "<div id=\"" + this.id
+			+ "-cont\" class=\"webfx-tree-container\" style=\"display: "
+			+ ((this.open) ? 'block' : 'none') + ";\">";
+	var sb = [];
+	for ( var i = 0; i < this.childNodes.length; i++) {
+		sb[i] = this.childNodes[i].toString(i, this.childNodes.length);
+	}
+	this.rendered = true;
+	return str + sb.join("") + "</div>";
+};
+//
+WebFXTreeItem.prototype.toString = function(nItem, nItemCount) {
+	var foo = this.parentNode;
+	var indent = '';
+	if (nItem + 1 == nItemCount) {
+		this.parentNode._last = true;
+	}
+	var i = 0;
+	while (foo.parentNode) {
+		foo = foo.parentNode;
+		indent = "<img id=\""
+				+ this.id
+				+ "-indent-"
+				+ i
+				+ "\" src=\""
+				+ ((foo._last) ? webFXTreeConfig.blankIcon
+						: webFXTreeConfig.iIcon) + "\">" + indent;
+		i++;
+	}
+	this._level = i;
+	if (this.childNodes.length) {
+		this.folder = 1;
+	} else {
+		this.open = false;
+	}
+	if ((this.folder) || (webFXTreeHandler.behavior != 'classic')) {
+		if (!this.icon) {
+			this.icon = webFXTreeConfig.folderIcon;
+		}
+		if (!this.openIcon) {
+			this.openIcon = webFXTreeConfig.openFolderIcon;
+		}
+	} else if (!this.icon) {
+		this.icon = webFXTreeConfig.fileIcon;
+	}
+	//var label = this.text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	label = this.text;
+	var str = "<div id=\""
+			+ this.id
+			+ "\" ondblclick=\"webFXTreeHandler.toggle(this);\" class=\"webfx-tree-item\" onkeydown=\"return webFXTreeHandler.keydown(this, event)\""
+			+ " onmouseover='this.style.backgroundColor=\"#C0C0C0\"' "
+			+ " onmouseout='this.style.backgroundColor=\"#FFFFFF\"' "
+			+ ">"
+			+ indent
+			+ "<img id=\""
+			+ this.id
+			+ "-plus\" src=\""
+			+ ((this.folder) ? ((this.open) ? ((this.parentNode._last) ? webFXTreeConfig.lMinusIcon
+					: webFXTreeConfig.tMinusIcon)
+					: ((this.parentNode._last) ? webFXTreeConfig.lPlusIcon
+							: webFXTreeConfig.tPlusIcon))
+					: ((this.parentNode._last) ? webFXTreeConfig.lIcon
+							: webFXTreeConfig.tIcon))
+			+ "\" onclick=\"webFXTreeHandler.toggle(this);\">"
+			+ "<img id=\""
+			+ this.id
+			+ "-icon\" class=\"webfx-tree-icon\" src=\""
+			+ ((webFXTreeHandler.behavior == 'classic' && this.open) ? this.openIcon
+					: this.icon)
+			+ "\" onclick=\"webFXTreeHandler.select(this);\">"
+			+ "<a href=\""
+			+ this.action
+			+ "\" id=\""
+			+ this.id
+			+ "-anchor\" onfocus=\"webFXTreeHandler.focus(this);\" onblur=\"webFXTreeHandler.blur(this);\""
+			+ (this.target ? " target=\"" + this.target + "\"" : "") + " >"
+			+ label + "</a>" + "&nbsp;-";
+	if (this.cId == 'recycle_bin') {
+		str += "[<a href=\"javascript:going('empty_recycle_bin','-1')\">清空回收站</a>]&nbsp;";
+	} else if (this.cId == 'system') {
+		str += "[<a href=\"javascript:going('create_system_node','-1')\">新建系统结点</a>]&nbsp;";
+	} else {
+		if (this.extra && this.extra == 'system') {
+			"[<a href=\"javascript:going('del_node','" + this.cId
+					+ "')\">删除</a>]&nbsp;";
+		} else if (this.extra && this.extra == 'recycle_bin') {
+			str += "[<a href=\"javascript:going('restore','" + this.cId
+					+ "')\">恢复到..</a>]&nbsp;";
+			str += "[<a href=\"javascript:going('destroy','" + this.cId
+					+ "')\">永久删除</a>]&nbsp;";
+		} else {
+			str += "[<a href=\"javascript:going('node_permission','" + this.cId
+					+ "')\">权限设置</a>]&nbsp;"
+					+ "[<a href=\"javascript:going('create_node','" + this.cId
+					+ "')\">创建子结点</a>]&nbsp;"
+					+ "[<a href=\"javascript:going('create_node_based','"
+					+ this.cId + "')\">创建子结点基于...</a>]&nbsp;"
+					+ "[<a href=\"javascript:going('sort_node','" + this.cId
+					+ "')\">排序权重</a>]&nbsp;"
+					+ "[<a href=\"javascript:going('move_node','" + this.cId
+					+ "')\">移动</a>]&nbsp;"
+					+ "[<a href=\"javascript:going('del_node','" + this.cId
+					+ "')\">删除</a>]&nbsp;";
+		}
+	}
+	str += "</div>" + "<div id=\"" + this.id
+			+ "-cont\" class=\"webfx-tree-container\" style=\"display: "
+			+ ((this.open) ? 'block' : 'none') + ";\">";
+	var sb = [];
+	for ( var i = 0; i < this.childNodes.length; i++) {
+		sb[i] = this.childNodes[i].toString(i, this.childNodes.length);
+	}
+	this.plusIcon = ((this.parentNode._last) ? webFXTreeConfig.lPlusIcon
+			: webFXTreeConfig.tPlusIcon);
+	this.minusIcon = ((this.parentNode._last) ? webFXTreeConfig.lMinusIcon
+			: webFXTreeConfig.tMinusIcon);
+	return str + sb.join("") + "</div>";
+}
+
+var tree = new WebFXTree("站点根", "root");
+	[#list rootNodes as node]
+	[#if nodeManager.getChildNodesCount(node.nodeId)==0]
+	
+	tree.add(new WebFXTreeItem("${node.name}[${node.nodeId?c}](<span class=\"nodeSort\">${node.nodeSort?c}</span>)","admin/nodeEdit.jhtml?mode=edit&nodeId=${node.nodeId?c}", "main", "${node.nodeId?c}"));
+	[#else]
+	tree.add(new WebFXLoadTreeItem("${node.name}[${node.nodeId?c}](<span class=\"nodeSort\">${node.nodeSort?c}</span>)", "admin/node.jhtml?action=SiteXml&nodeId=${node.nodeId?c}", "admin/nodeEdit.jhtml?mode=edit&nodeId=${node.nodeId?c}", "main", "${node.nodeId?c}"));
+	[/#if]
+	[/#list]
+	tree.add(new WebFXLoadTreeItem("**回收站**", "admin/node.jhtml?action=SiteRecycleBinXml", "javascript:void(0)", "main", "recycle_bin",'','${baseUrl}html/common/tree/images/xp/recycle.gif','${baseUrl}html/common/tree/images/xp/recycle.gif'));
+	tree.add(new WebFXLoadTreeItem("**系统保留结点**", "admin/node.jhtml?action=SiteSystemXml&nodeId=-1", "javascript:void(0)", "main", "system",'','${baseUrl}html/common/tree/images/xp/gears.png','${baseUrl}html/common/tree/images/xp/gears.png'));
+//
+document.write(tree);
+</script>
+			</td>
+		</tr>
+		<!--end-->
+	</tbody>
+</table>
+<iframe name="opWin" src="" border="0" height="0" width="0" style="visibility:hidden"></iframe>
+[#include "/plugin/cms/common/includes/footer.htm"/]

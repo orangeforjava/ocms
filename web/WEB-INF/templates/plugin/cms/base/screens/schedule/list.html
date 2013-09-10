@@ -1,0 +1,239 @@
+[#assign actionTitle="计划任务管理" /]
+[#assign _TITLE_="计划任务管理" /]
+
+[#include "/plugin/cms/common/includes/header.htm"/]
+<style type="text/css">
+BODY {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: Tahoma
+}
+P {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: Tahoma
+}
+TD {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: Tahoma
+}
+TEXTAREA {
+	FONT-SIZE: 12px; FONT-FAMILY: Tahoma
+}
+
+.head {
+	BACKGROUND-COLOR: #5d7cba
+}
+.neck {
+	BACKGROUND-COLOR: #d1d9e2
+}
+.odd {
+	BACKGROUND-COLOR: #efefef
+}
+.even {
+	BACKGROUND-COLOR: #f7f7f7
+}
+.nav {
+	COLOR: #000000; TEXT-DECORATION: underline
+}
+.nav:link {
+	COLOR: #000000; TEXT-DECORATION: underline
+}
+.nav:visited {
+	COLOR: #000000; TEXT-DECORATION: underline
+}
+.nav:active {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.nav:hover {
+	COLOR: #ff0000; TEXT-DECORATION: none
+}
+.topic {
+	TEXT-DECORATION: none
+}
+.topic:link {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+.topic:visited {
+	COLOR: #000080; TEXT-DECORATION: none
+}
+.topic:active {
+	COLOR: #ff0000; TEXT-DECORATION: none
+}
+.topic:hover {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.ilink {
+	COLOR: #0000ff; TEXT-DECORATION: underline
+}
+.ilink:link {
+	COLOR: #0000ff; TEXT-DECORATION: underline
+}
+.ilink:visited {
+	COLOR: #004080; TEXT-DECORATION: underline
+}
+.ilink:active {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.ilink:hover {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.mod {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+.mod:link {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+.mod:visited {
+	COLOR: #000080; TEXT-DECORATION: none
+}
+.mod:active {
+	COLOR: #ff0000; TEXT-DECORATION: none
+}
+.mod:hover {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.thd {
+	COLOR: #808080; TEXT-DECORATION: none
+}
+.thd:link {
+	COLOR: #808080; TEXT-DECORATION: underline
+}
+.thd:visited {
+	COLOR: #808080; TEXT-DECORATION: underline
+}
+.thd:active {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.thd:hover {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.curpage {
+	FONT-SIZE: 9px; COLOR: #ffffff; FONT-FAMILY: Tahoma; TEXT-DECORATION: none
+}
+.page {
+	FONT-SIZE: 9px; COLOR: #003063; FONT-FAMILY: Tahoma; TEXT-DECORATION: none
+}
+.page:link {
+	FONT-SIZE: 9px; COLOR: #003063; FONT-FAMILY: Tahoma; TEXT-DECORATION: none
+}
+.page:visited {
+	FONT-SIZE: 9px; COLOR: #003063; FONT-FAMILY: Tahoma; TEXT-DECORATION: none
+}
+.page:active {
+	FONT-SIZE: 9px; COLOR: #ff0000; FONT-FAMILY: Tahoma; TEXT-DECORATION: none
+}
+.page:hover {
+	FONT-SIZE: 9px; COLOR: #ff0000; FONT-FAMILY: Tahoma; TEXT-DECORATION: none
+}
+.subject {
+	FONT-SIZE: 12px; FONT-FAMILY: Tahoma
+}
+.text {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: Tahoma
+}
+.codeStyle {
+	PADDING-RIGHT: 0.5em; MARGIN-TOP: 1em; PADDING-LEFT: 0.5em; FONT-SIZE: 9pt; MARGIN-BOTTOM: 1em; PADDING-BOTTOM: 0.5em; MARGIN-LEFT: 0pt; COLOR: #ffffff; PADDING-TOP: 0.5em; FONT-FAMILY: Courier New; BACKGROUND-COLOR: #000000
+}
+.smalltext {
+	FONT-SIZE: 11px; COLOR: #000000; FONT-FAMILY: Tahoma
+}
+.verysmalltext {
+	FONT-SIZE: 4px; COLOR: #000000; FONT-FAMILY: Tahoma
+}
+.member {
+	FONT-SIZE: 9px; COLOR: #003063; FONT-FAMILY: Tahoma
+}
+
+.selStyle {
+	BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; FONT-SIZE: 12px; BORDER-LEFT: black 1px solid; CURSOR: hand; COLOR: #000000; BORDER-BOTTOM: black 1px solid; FONT-FAMILY: Tahoma; BACKGROUND-COLOR: #ffffff
+}
+.inpStyle {
+	BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; FONT-SIZE: 12px; BORDER-LEFT: black 1px solid; COLOR: #000000; BORDER-BOTTOM: black 1px solid; FONT-FAMILY: Tahoma; BACKGROUND-COLOR: #ffffff
+}
+TABLE.data {
+	FONT-SIZE: 11px; BACKGROUND: #000000; FONT-FAMILY: tahoma,tahoma,arial
+}
+TABLE.data TR {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-SIZE: 12px; BACKGROUND: #ffffff; PADDING-BOTTOM: 6px; VERTICAL-ALIGN: middle; PADDING-TOP: 6px
+}
+TABLE.data TH {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-SIZE: 12px; BACKGROUND: #ffffff; PADDING-BOTTOM: 6px; VERTICAL-ALIGN: middle; PADDING-TOP: 6px
+}
+TABLE.data TD {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; PADDING-BOTTOM: 6px; VERTICAL-ALIGN: middle; PADDING-TOP: 6px
+}
+TABLE.data TH {
+	BACKGROUND: #dbeaf5; WHITE-SPACE: nowrap; FAFAD2: 
+}
+</style>
+
+<script language='javascript'>
+function popUp(url) {
+  var newwindow = window.open(url, "help", "width=400,height=200,resizable=no,scrollBars=yes,menuBar=no, directories=no,toolBar=no,location=No,status=No");
+}
+</script>
+
+<table width='100%'  cellspacing=0 cellpadding=2 border=0>
+<tr>
+<td align='left' colspan=2>
+&nbsp;&nbsp;当前主机：<b>${host!""}</b>
+</td></tr>
+<tr>
+<td colspan=2 valign=top align="left" nowrap>&nbsp;
+[<A HREF="${baseUrl}admin/schedule.jhtml">显示本机任务</A>]&nbsp;
+[<A HREF="${baseUrl}admin/schedule.jhtml?action=ShowAllTasks">显示所有任务</A>]
+</TD>
+</tr>
+<tr><td align='right' colspan=2>
+<b>
+[<a HREF="${baseUrl}admin/schedule.jhtml?action=AddTask">${scheduleLang.get('menu.schedule.add')}</A>] [<A HREF="${baseUrl}admin/schedule.jhtml?action=ShowJobQueue">${scheduleLang.get('menu.schedule.queue')}</A>] [<A HREF="${baseUrl}admin/schedule.jhtml?action=Restart">${scheduleLang.get('menu.schedule.restart')}</A>]
+</b>
+</td></tr>
+</table>
+<table width='100%'  cellspacing=1 cellpadding=4 border=0 class="table_border">
+<tr bgcolor='#D9E4F0'>
+    <td align=center width=10%><font color="#0000FF"><b>${scheduleLang.get('schedule.id')}</b></font></td>
+    <td align=center width=10%><font color="#0000FF"><b>主机</b></font></td>
+    <td align=center width=40%><font color="#0000FF"><b>${scheduleLang.get('schedule.task')}</b></font></td>
+    <td align=center width=3% nowrap><font color="#0000FF"><b>${scheduleLang.get('schedule.enabled')}</b></font></td>
+    <td align=center width=10%><font color="#0000FF"><b>${scheduleLang.get('schedule.month')}</b></font></td>
+    <td align=center width=10%><font color="#0000FF"><b>${scheduleLang.get('schedule.week')}</b></font></td>
+    <td align=center width=10%><font color="#0000FF"><b>${scheduleLang.get('schedule.hour')}</b></font></td>
+    <td align=center width=10%><font color="#0000FF"><b>${scheduleLang.get('schedule.min')}</b></font></td>
+    <td align=center width=10%><font color="#0000FF"><b>${scheduleLang.get('schedule.sec')}</b></font></td>
+    <td>&nbsp; </td>
+</tr>    
+[#assign tcolor=""/]
+[#list tasks as task]
+[@ui.rotateColor tcolor /]
+<tr class='${color}' >
+    <form action="${baseUrl}admin/schedule.jhtml?id=${task.id}" method="post">    
+    <td nowrap>
+    [<a href="javascript:popUp('${baseUrl}admin/schedule.jhtml?id=${task.id?c}&action=ShowHelp')">${scheduleLang.get('schedule.help')}</a>]
+    [<a href="${baseUrl}admin/schedule.jhtml?id=${task.id?c}&action=ShowTaskProperties">${scheduleLang.get('schedule.parameter')}</a>] [<a href="${baseUrl}admin/schedule.jhtml?id=${task.id?c}&action=ExecuteTask">${scheduleLang.get('schedule.execute')}</a>] ${task.id?c}</td>
+    <td><input type="input" name="host" value="${task.host?default("")}" size=20 class=subject></td>    
+    <td><input type="input" name="Task" value="${task.task?default("")}" size=55 class=subject></td>
+    <td align=center>
+    <input type="checkbox" name="status" value="1" [#if task.status==1] checked [/#if])>
+    </td>
+    <td><input type="input" name="DayOfMonth" value="${task.dayOfMonth}" size=3 class=subject></td>    
+    <td><input type="input" name="WeekDay" value="${task.weekDay}" size=3 class=subject></td>    
+    <td><input type="input" name="Hour" value="${task.hour}" size=3 class=subject></td>
+    <td><input type="input" name="Minute" value="${task.minute}" size=3 class=subject></td>
+    <td><input type="input" name="Second" value="${task.second}" size=3 class=subject></td>
+    <td nowrap align=center width=20%><input type="submit" name="action_save_task"   value='${scheduleLang.get('schedule.modify')}' class="btnStyle"> &nbsp; <input onclick="javaScript:return confirm('Are you sure delete the task?');" type="submit" name="action_remove_task" value='${scheduleLang.get('schedule.delete')}' class="btnStyle"></td>    
+    </form>
+</tr>    
+[/#list]
+</table>    
+
+<br><br>
+<br>
+
+<table width='100%'  cellspacing=0 cellpadding=4 border=0>
+<tr>
+  <td>
+ 
+  ${scheduleLang.get('schedule.note')}<p>${scheduleLang.get('schedule.note.1')}</p>
+	<p>${scheduleLang.get('schedule.note.2')}</p>
+	<p>${scheduleLang.get('schedule.note.3')}</p>
+	<p>${scheduleLang.get('schedule.note.4')}</td>
+  </tr>
+</table>
+[#include "/plugin/cms/base/includes/footer.html"]

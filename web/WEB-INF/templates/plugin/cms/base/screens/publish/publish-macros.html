@@ -1,0 +1,56 @@
+<#macro showTreeTable quickQuery rootId=0 level=0 placeholder="" selId=0 showAll=false>
+  <#assign nodes=quickQuery.getNodeChildren(rootId)>
+  <#assign size=nodes?size>
+  <#list nodes as node>
+     <#local child=quickQuery.getNodeChildrenCount(node.nodeId)/>
+     <#assign allCount=dynamicContentManager.getNodeAllContentCount(node.nodeId) />
+	 <#assign pCount=dynamicContentManager.getNodeAllPublishContentCount(node.nodeId) />
+	
+  <tr class="table_td1" id="${node['nodeId']?c}" onmouseover='this.style.backgroundColor="#FFFFFF"'
+                    onmouseout='this.style.backgroundColor=""' >
+      <td noWrap >
+      	<input type="checkbox" name="pData" value="${node['nodeId']?c}" id="p_${node['nodeId']?c}" ></td>
+      <td align="center" noWrap>
+      	<div class="subtitleholder">${node['nodeId']?c}</div></td>	  
+	 <td noWrap style="cursor:hand" id="">
+		
+		<#compress>
+			  
+			    <#if level gt 0>
+				  	<#list 1..level as i>
+				  		<img src="html/common/tree/images/xp/I.png" border=0/>
+				  	</#list>
+			  	</#if>
+			  	<#if child gt 0>
+			  		<img src="html/common/tree/images/xp/Tminus.png" border=0/><img src="html/common/tree/images/xp/folder_p_closed.gif" border=0/>
+			  	<#else>
+			  		<#if (size gt 1)&&((node_index+1) lt size)>
+			  			<img src="html/common/tree/images/xp/T.png" border=0/>
+			  		<#else>
+			  			<img src="html/common/tree/images/xp/L.png" border=0/>	
+			  		</#if>			  				  		
+			  		<img src="html/common/tree/images/xp/folder_p_closed.gif" border=0/>
+			  	</#if>
+			  	<a href="admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}">${node['name']}(<span class=pS>${pCount?c}</span>/<span class=aS>${allCount?c}</span>)</a>		  		    
+			  
+		</#compress>
+		
+	  </td>
+      <td align="center" noWrap ><a href="javascript:going('refresh_index','${node.nodeId?c}')">查看</a>&nbsp;<a href="javascript:going('view_index','${node.nodeId?c}')">刷新</a></td>
+      <td align="center" noWrap ><a href="javascript:going('newdoc','${node.nodeId?c}')">新建</a>&nbsp;<a href="admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}" target="_self">列表</a></td>
+ 	  <td align="center" noWrap ><a href="javascript:going('edit_index_template','${node.nodeId?c}')">首页</a>&nbsp;<a href="javascript:going('edit_content_template','${node.nodeId?c}')">内容页</a></td>
+      <td colspan="5" align="center" noWrap>
+      	<a href="javascript:site_doing('refresh','${node.nodeId?c}')">更新</a>&nbsp;
+      	<a href="javascript:site_doing('site_publish','${node.nodeId?c}')">发布</a>&nbsp;
+      	<a href="javascript:site_doing('site_unpublish','${node.nodeId?c}')">取消发布</a>&nbsp;
+      	<a href="javascript:site_doing('site_republish','${node.nodeId?c}')">重新发布</a>&nbsp;
+      	<a href="javascript:site_doing('site','${node.nodeId?c}')">参数设置</a>
+	  </td>	 
+  </tr>
+  		<#if showAll>
+	  		<#if child gt 0>
+				<@showTreeTable quickQuery=quickQuery rootId=node.nodeId level=level+1 placeholder=placeholder+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" selId=selId/>
+			</#if>
+		</#if>
+  </#list>
+ </#macro>

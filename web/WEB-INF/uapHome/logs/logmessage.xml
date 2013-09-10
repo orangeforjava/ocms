@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="GBK" ?>
+
+<!-- schema targetNamespace="http://www.supcon.com" 
+        xmlns="http://www.w3.org/1999/XMLSchema"-->
+<schema>
+<web-app id="sys">
+    <!-- 
+    <config name="constant">
+        <properties><![CDATA[
+            true  = 成功
+            false = 失败]]>
+        </properties>
+    </config>
+    
+	<config name="user">
+	 <properties><![CDATA[
+	 	signin  = {0}成功登录系统，IP：{1}，上次登录时间：{2}，这是第{3}次成功登录系统
+	 	signout = {0}从系统中注销，IP：{1}
+	 	error.signin =来自{0}的用户第{2}次试图登录系统失败，输入的用户名为：{1}]]>
+	 </properties>
+	</config>-->
+</web-app>
+</schema> 

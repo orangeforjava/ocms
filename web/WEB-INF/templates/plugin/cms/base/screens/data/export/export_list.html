@@ -1,0 +1,234 @@
+[#assign actionTitle="数据备份管理" /]
+[#assign _TITLE_="数据备份管理" /]
+[#assign actions=[
+{"action":"","title":"备份管理","url":"${baseUrl}admin/content.jhtml","class":"view"},
+{"action":"Add","title":"备份所有","url":"${baseUrl}admin/contentEdit.jhtml","class":"add"}
+
+]]
+
+[#include "/plugin/cms/common/includes/header.htm"/]
+<style>
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 11pt;
+	width: 100;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.subtitleholder {
+	font-family: ms sans serif, arial;
+	font-size: 11pt;
+
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.timeholder {
+	font-family: ms sans serif, arial;
+	font-size: 11pt;
+	width: 60;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.table_plan_td1 {
+	background-color: #FDEEB9
+}
+</style>
+
+<SCRIPT>
+
+/**
+* single process!
+**/
+function doing(action, id,indexId,form) {
+	
+	switch(action) {
+		
+		case 'display_record':
+		{
+			searchForm.pageNum.value=document.documentlist.offset.value;
+			//
+			searchForm.submit();
+			break;
+		}
+		
+	}	
+}
+
+
+
+function rightMenu(pId, State, Type, Top,Pink, ContributionID) {
+	return false;
+	var toolMenu = new Menu();
+
+
+	
+	var left,top;
+	left = window.event.screenX;
+	top = window.event.screenY;
+	toolMenu.invalidate();
+	toolMenu.show( left, top );
+
+	//initrightmenu();
+
+}
+</SCRIPT>
+
+<SCRIPT language=JavaScript>
+<!--
+function CheckAll(form)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall' && e.name !='copy')       e.checked = form.chkall.checked;
+   }
+  }
+
+//-->
+
+
+</script>
+<script>
+var mousemovecolor="#D4D4D4";
+var selectcolor ="#DDDDDD";
+var oldcolor;
+
+function GetRow(oElem)
+{
+	while (oElem)
+	{	//alert(oElem.tagName.toLowerCase())
+		if (oElem.tagName.toLowerCase() == "tr" || oElem.parentElement.tagName.toLowerCase() == "tbody")
+		    return oElem;
+		if (oElem.tagName.toLowerCase() == "table" || oElem.tagName.toLowerCase() == "th") return false;
+		oElem = oElem.parentElement;
+	}
+}
+/**
+* batch process!
+**/
+function going(form, o)
+{
+		with(form) {
+		var count = 0;
+      	var checkboxObj = pData;
+
+      	if(checkboxObj == null)
+      	{
+        	return ;
+      	}
+      	else
+      	{
+        	for (var i = 0; i < checkboxObj.length; i++)
+        	{
+          		if(checkboxObj[i].checked)
+          		count++;
+        	}
+      	}
+		if(count > 0 || (checkboxObj.length == null && checkboxObj.checked))
+		{
+			switch(o) {
+				case 'migration':
+				{
+					var ok=confirm('您确认批量迁移选定的内容吗？');					
+					if(ok){	
+						document.documentlist.action = '${baseUrl}admin/excpdata/infobase.jhtml?action=Migration&multi=1';
+						document.documentlist.submit();
+					}
+					break;
+				}
+			}//end switch
+		}
+		else{
+			alert("请选择一个或多个信息。");
+		}
+	}//with
+}
+
+function sorter(sort_desc,mode,name){
+	if(order_desc==sort_desc){
+		if(order_mode=='asc'){
+			searchForm.order_mode.value='desc';
+		}else{
+			searchForm.order_mode.value='asc';
+		}
+	}else{
+		//new sort field
+		searchForm.order_mode.value=mode;
+	}
+	//
+	searchForm.order.value=sort_desc;
+	searchForm.order_name.value=name;
+	//
+	searchForm.submit();
+}
+function page_nav(page){
+	searchForm.page.value=page;
+	searchForm.submit();
+}
+</script>
+<br/>
+
+<form method="post" action="" name="documentlist" >
+<table width="100%" border="0" align="center" cellpadding="2" cellspacing="1"  class="maintable" >
+  <tbody>
+  
+
+    <tr>
+	  <td align='center' height=25></td>
+      <td align='center'><B>标识</B></td>
+	  <td align='center'><B>名称</B></td>	  
+	  <td align='center'><B>标题</B></td>
+	  <td align='center'><B>上次备份日期</B></td>
+	  <td align='center'><B>状态</B></td>
+      <td align='center'><B>执行操作</B></td>
+  </tr>
+  <!--start-->
+[#list exporters as exporter]
+
+  <tr  id="${exporter["name"]}" onmouseover='this.style.backgroundColor="#FFFFFF"' onmouseout='this.style.backgroundColor=""' >
+      <td noWrap style="width:80"> <input type='checkbox' name='pData' value='${exporter['name']}' id="p_${exporter['name']}" onClick='this.form.p2_${exporter['name']}.checked = this.checked;'><input type='checkbox' style='visibility:hidden' name='pData2' value='${exporter['name']}' id="p2_${exporter['name']}"></td>
+      <td align="center" noWrap   ><div class="subtitleholder">${exporter['name']}</div></td>
+	  <td   noWrap  style="cursor:hand" id="">
+[#compress]
+	 <A HREF="${baseUrl}admin/data/export.jhtml?name=${exporter['name']}" onClick="javascript:void(0);" style="cursor:hand"   oncontextmenu="javascript:void(0);" title="${exporter['name']}">${exporter['name']}</A>
+[/#compress]
+	  </td>
+	  <td align="center"  ><div class="subtitleholder" title="${exporter['title']}">${exporter['title']}</div></td>
+	  <td align="center" ><div style="width:80" title="">&nbsp;</div></td>
+	  <td align="center" ><div style="width:80" title="">&nbsp;</div></td>
+	  <td align="center" noWrap>	
+	 	<A HREF="${baseUrl}admin/data/impFile.jhtml?name=${exporter['name']}">查看</A>&nbsp;
+	 	<A HREF="${baseUrl}admin/data/export.jhtml?action=Export&name=${exporter['name']}" onClick="javascript:return confirm('您是否确认备份此对象？');">备份</A>&nbsp;
+	  </td>
+ </tr>
+ [/#list]
+ <!--end-->
+    <tr class="Tablelistbg">
+      <td colspan="7" align="left" bgcolor="#F5F5F5"> 
+      <table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align=left>
+            <input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  >
+              <label for="chkall" >全选</label>&nbsp;&nbsp;
+
+			 <select name="actionMap" id="actionMap" >
+            	 <option value="migration">备份</option> 			
+			 </select>
+
+			  <input type="button" value="执行" class=button onClick="going(this.form,actionMap.options[actionMap.selectedIndex].value)">
+
+            </td>
+          </tr>
+        </table>
+        </td>
+    </tr>
+   
+  </tbody>
+</table>
+</form>
+[#include "/plugin/cms/common/includes/footer.htm"/]

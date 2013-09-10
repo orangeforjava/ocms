@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: CMSAdminLanguage.xml 6 2007-03-26 07:30:04Z orangeforjava $-->
+<constant type="Properties">
+	<lockscreen>锁屏</lockscreen>
+    <!--全局警告信息-->
+	<global.waring.notready>此功能正在开发中</global.waring.notready>
+	<!-- 页面标题 -->	
+	<homepage>管理控制中心</homepage>
+	<!--登录页面-->
+	<login.title>控制中心</login.title>
+	<login.username>用户名:</login.username>
+	<login.password>密码:</login.password>
+	<login.code>验证码:</login.code>
+	<login.button.adminlogin>管理登录</login.button.adminlogin>
+	<login.button.reset>重置</login.button.reset>	
+	<!--内容管理-->
+	<cms.homepage>内容管理</cms.homepage>	
+	<!--内容管理,顶部菜单-->
+	<cms.top.showtoc>显示</cms.top.showtoc>
+	<cms.top.menu.homepage>系统首页</cms.top.menu.homepage>
+	<cms.top.menu.logout.confirm>确认退出系统吗？</cms.top.menu.logout.confirm>
+	<cms.top.menu.site>站点管理</cms.top.menu.site>
+	<cms.top.menu.site.node>结点维护</cms.top.menu.site.node>
+	<cms.top.menu.publish>发布管理</cms.top.menu.publish>
+	<cms.top.menu.publish.content>内容发布管理</cms.top.menu.publish.content>
+	<cms.top.menu.resource>资源管理</cms.top.menu.resource>
+	<cms.top.menu.template>模版管理</cms.top.menu.template>
+	<cms.top.menu.template.public>公共模版管理</cms.top.menu.template.public>
+	<cms.top.menu.template.cata>分类模版管理</cms.top.menu.template.cata>
+	<cms.top.menu.template.cata.manage>模版分类管理</cms.top.menu.template.cata.manage>
+	<cms.top.menu.contribution>投稿管理</cms.top.menu.contribution>
+	<cms.top.menu.collection>采集管理</cms.top.menu.collection>
+	<cms.top.menu.plugin>插件管理</cms.top.menu.plugin>
+	<cms.top.menu.plugin.sys>系统插件</cms.top.menu.plugin.sys>
+	<cms.top.menu.sys>系统管理</cms.top.menu.sys>
+	
+	<!---->
+	
+	<!--论坛管理-->
+	<forum.homepage>论坛</forum.homepage>
+	
+	<!---->
+	<menu.schedule>计划任务</menu.schedule>
+	<menu.schedule.title>管理论坛安装的计划任务</menu.schedule.title>
+	<menu.schedule.add>安装新的计划任务</menu.schedule.add>
+	<menu.schedule.queue>查看计划任务运行队列</menu.schedule.queue>
+	<menu.schedule.restart>重新启动计划任务服务</menu.schedule.restart>
+	<btn.schedule.add>增加新的属性</btn.schedule.add>
+	<btn.schedule.save>保存所有属性</btn.schedule.save>
+	<btn.edit>编辑</btn.edit>
+	<btn.delete>删除</btn.delete>
+	<schedule.id>ID</schedule.id>
+	<schedule.task>任务</schedule.task>
+	<schedule.enabled>启用</schedule.enabled>
+	<schedule.month>月</schedule.month>
+	<schedule.week>星期</schedule.week>
+	<schedule.hour>时</schedule.hour>
+	<schedule.min>分</schedule.min>
+	<schedule.sec>秒</schedule.sec>
+	<schedule.modify>修改</schedule.modify>
+	<schedule.delete>删除</schedule.delete>
+	<schedule.help>帮助</schedule.help>
+	<schedule.parameter>参数</schedule.parameter>
+	<schedule.execute>执行</schedule.execute>
+	<schedule.note>说明:</schedule.note>
+	<schedule.note.1>* 如希望每月15号上午8点执行某任务,则可设定为15,0,8,0,0（按月，周，小时，分，秒）</schedule.note.1>
+	<schedule.note.2>* 如希望每天上午8点执行某任务,则可设定为-1,-1,8,0,0</schedule.note.2>
+	<schedule.note.3>* 如希望每两个小时执行某任务一次,则可设定为-1,-1,-1,120,0</schedule.note.3>
+	<schedule.note.4>* 如希望每30秒执行某任务一次,则可设定为-1,-1,-1,-1,30</schedule.note.4>
+	<schedule.task_help>任务帮助:</schedule.task_help>
+	<schedule.no_help>Sorry,This task has no help!</schedule.no_help>
+	<schedule.close>Close</schedule.close>
+	<schedule.status>Status</schedule.status>
+	<schedule.next_running_time>Next Rinning Time</schedule.next_running_time>
+	<schedule.running>Running...</schedule.running>
+	<schedule.completed>Completed</schedule.completed>
+	<schedule.property>属性</schedule.property>
+	<schedule.value>设定值</schedule.value>
+	
+	<pager.firstpage>首页</pager.firstpage>
+	<pager.prevpage>前一页</pager.prevpage>
+	<pager.nextpage>下一页</pager.nextpage>
+	<pager.lastpage>尾页</pager.lastpage>
+	<pager.pager>页次</pager.pager>
+	<pager.pp>每页</pager.pp>
+	<pager.nowp>当前显示</pager.nowp>
+	<pager.item>条</pager.item>
+	<pager.total>共</pager.total>
+	<pager.itemcount>条记录</pager.itemcount>
+	<pager.page>页</pager.page>
+	<pager.pagecount>总页数</pager.pagecount>
+	<pager.result>结果页码</pager.result>
+	
+</constant>

@@ -1,0 +1,164 @@
+<#assign noLayout="true"/>
+
+
+<#assign actionTitle="${node.name}<font id=description>[<B>${node.nodeId?c}</B>]</font>" />
+<#assign _TITLE_="附件发布管理" />
+<#assign actions=[
+{"action":"ContentList2","title":"发布管理","url":"${baseUrl}admin/publish.jhtml?action=ContentList&nodeId=${node.nodeId?c}","class":"view"},
+{"action":"","title":"添加附加发布","url":"javascript:doing('extrapublish_add','${node.nodeId?c}')","class":"add"}
+{"action":"List","title":"附加发布","url":"${baseUrl}admin/extrapublish.jhtml?action=List&nodeId=${node.nodeId?c}","class":"view"}
+{"action":"Resource","title":"资源管理","url":"${baseUrl}admin/resource.jhtml?action=ListResource&nodeId=${node.nodeId?c}","class":"view"}
+{"action":"Node","title":"站点设置","url":"${baseUrl}admin/nodeEdit.jhtml?mode=edit&nodeId=${node.nodeId?c}","class":"view"}
+{"action":"Recycle","title":"回收站","url":"${baseUrl}admin/publish.jhtml?action=RecycleContentList&nodeId=${node.nodeId?c}","class":"view"}
+
+]>
+<#include "/plugin/cms/common/includes/header.htm"/>
+<SCRIPT language=JavaScript>
+ var NodeID='${node.nodeId?c}';
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	if (document.getElementById)
+		t = document.getElementById(tbl);
+	else
+		t = document.all(tbl);
+	if (t == null) return;
+	if (t.getElementsByTagName)
+		d = t.getElementsByTagName("TD");
+	else
+		d = t.all.tags("TD");
+	if (d == null) return;
+	if (d.length <= idx) return;
+	d[idx].className = cls;
+}
+
+function doing(action,nodeId,pid)
+{
+	switch(action) {
+		case 'extrapublish_add':
+			{
+			//var url = urlencode(document.location);
+			document.location = "${baseUrl}admin/extrapublish.jhtml?mode=add&nodeId=${nodeId}";
+			break;
+			}
+		case 'refresh_all':
+			{
+			document.location = "${baseUrl}admin/extrapublish.jhtml?action=RefreshAll&nid=${nodeId}";
+			break;
+			}
+		case 'edit_template':
+		{
+			var leftPos = (screen.availWidth-800) / 2
+			var topPos = (screen.availHeight-600) / 2
+			window.open('${baseUrl}admin/templateEdit.jhtml?action=NodeTplEdit&extra=extra&mode=edit&nodeId=' + nodeId + '&pid='+pid, '','width=800,height=600,scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+			break;
+		}
+		case 'move':
+		{
+			var targetNodeID = showModalDialog("${baseUrl}admin/node.jhtml?action=TargetNodeWindow","color","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+			if(targetNodeID==NodeID){
+				alert('您不能在同一结点内移动！');
+				return;
+			}
+			if(targetNodeID != null && targetNodeID != '') {
+				
+				document.location = "${baseUrl}admin/extrapublish.jhtml?action=Cut&nodeId="+NodeID+"&targetNodeId="+targetNodeID+"&id="+pid;
+			
+			}
+			break;
+		}
+	}
+}
+
+function refresh(pid,nid)
+{
+	document.location = "${baseUrl}admin/extrapublish.jhtml?action=Refresh&nid="+nid+"&pid="+pid;
+}
+
+
+function page_nav(page){
+	document.searchForm.page.value=page;
+	document.searchForm.submit();
+}
+</script>
+<style>
+
+</style>
+<table border="0" align="center" cellpadding="0" cellspacing="0"  width="100%" style="border-bottom:solid #c9c9c9 1px">
+<form>
+<tr height=40><td nowrap valign="middle" width="1%">
+&nbsp;&nbsp;结点操作&nbsp;</td><td valign="middle">
+	<select name="nodeActionMap" id="nodeActionMap" >
+          <option value="refresh_all">更新所有附加发布</option>
+	</select>
+	<input type="button" value=" 执 行 " class="button" onClick="doing(this.form.nodeActionMap.options[nodeActionMap.selectedIndex].value)"/>
+	</td></tr>
+</form>
+</table>
+<form action="${baseUrl}admin/extrapublish.jhtml" method="post" name="searchForm"> 
+     <input name="action" type="hidden" value="List"/>
+    
+	 <input name="page" type="hidden" value="${page}"/>	 
+	 <input name="pageNum" type="hidden" value="${pageNum}"/>
+	 <input name="nodeId" type="hidden" value="${nodeId}"/>
+<table cellspacing="0" cellpadding="0" width="100%"  class="toptable">
+<tr><td>
+结点：<input type="text" name="nids" id="nids"   value="${nids!}">
+发布名:<input type="text" name="name" id="name"   value="${name!}">
+页面名:<input type="text" name="pageName" id="pageName"   value="${pageName!}">
+模板名:  <input type="text" name="tplName" id="tplName"   value="${tplName!}">
+IDS:  <input type="text" name="ids" id="ids"   value="${ids!}">
+<input name="submit1" TYPE="submit"  value="搜索"><INPUT name="reset1" TYPE="reset"  value="重置">
+
+</td></tr>
+</table>
+</form>
+<TABLE border="0" cellpadding="1" cellspacing="0" width="100%" class="maintable" >
+  <tr>
+ <td   height=15>&nbsp;&nbsp;ID</td>
+ <td colspan="3"  height=15>&nbsp;&nbsp;名称</td>
+ <td >关联模式</td>
+ <td >&nbsp;&nbsp;修改时间</td>
+ <td >&nbsp;&nbsp;修改人</td>
+ <td >&nbsp;&nbsp;执行操作</td>
+</tr>
+<#list publishes as pb>
+<TR onmouseover='this.style.backgroundColor="#F1F1F1"' 
+                    onmouseout='this.style.backgroundColor=""'>
+	  <td>&nbsp;&nbsp;${pb.publishId?c}</td>
+      <td width=10 ><input type='checkbox' name='pData' value='' id="p_${pb.publishId}" ></td>
+	  <td width=16 height=16><A HREF="${baseUrl}admin/extrapublish.jhtml?action=View&pid=${pb.publishId?c}" target="_blank"><img src="html/common/images/icon/html.gif" width="16" height="16" border="0" ></a></TD>
+	  <td><A HREF="${baseUrl}admin/extrapublish.jhtml?action=View&pid=${pb.publishId?c}" target="_blank">${pb.publishName}</a></td>
+      <td>
+      <#assign refreshMode=pb.autoRefreshMode?default(0)/>
+      <#if refreshMode==0>
+       否
+      <#elseif refreshMode==1>
+      本级
+      <#elseif refreshMode==2>
+      父级
+      <#elseif refreshMode==3>
+      全局
+      </#if>
+      </td>
+      <td>&nbsp;&nbsp;${(action.getDate(pb.modifiedDate))?string("yyyy-MM-dd HH:mm")}</td>
+      <td>&nbsp;&nbsp;${pb.lastModifiedUserName}</td>
+      <td>
+      <A HREF="javascript:refresh('${pb.publishId?c}','${nodeId}');">更新</A>&nbsp;&nbsp;
+      <A HREF="${baseUrl}/admin/extrapublish.jhtml?mode=Edit&publishId=${pb.publishId?c}&nodeId=${nodeId}">编辑</A>&nbsp;&nbsp;
+      <A HREF="${baseUrl}admin/extrapublish.jhtml?action=Del&publishId=${pb.publishId?c}&nodeId=${nodeId}" onClick="return confirm('确认删除吗?');">删除</A>&nbsp;&nbsp;      
+      <A HREF="javascript:doing('move','${nodeId}','${pb.publishId?c}');">移动</A>&nbsp;&nbsp;      
+      <A HREF="javaScript:doing('edit_template','${nodeId}','${pb.publishId?c}')">编辑模板</A></td>
+</TR>
+</#list>
+<#if pb.pages() gt 1>
+<tr>
+	<td colspan="8">
+	<#assign pageUrl=baseUrl+"admin/extrapublish.jhtml?action=List&nodeId="+nodeId?string+"&pageNum="+pageNum+"&page="/>
+	<@mypager.pageBuilder2 pb=pb baseUrl=pageUrl closeUrl=""/>
+	</td>
+</tr>
+</#if>
+</table>
+<br/>
+<#include "/plugin/cms/common/includes/footer.htm"/>

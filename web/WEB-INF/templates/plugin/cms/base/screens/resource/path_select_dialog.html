@@ -1,0 +1,96 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>路径选择</title>
+<base  href="${baseUrl}"/>
+<link rel='stylesheet' type='text/css' href='html/plugin/cms/base/css/style.css' />
+<script language="javascript" type="text/javascript">
+function path_backward()
+{
+	window.history.go(-1);
+}
+
+function path_updir()
+{
+
+	var PATH =  document.workFrame.PATH;
+	PATH=PATH+"/../"
+	//
+	var rootDir = document.form1.root.options[document.form1.root.selectedIndex].value
+	//alert(PSNID)
+	workFrame.location = '${baseUrl}admin/path.jhtml?action=PathListFile&extra=updir&PATH=' + encodeURIComponent(PATH)+"&rootDir="+encodeURIComponent(rootDir);
+}
+
+function path_mkdir()
+{
+	var PATH =  document.workFrame.PATH;
+	var rootDir = document.form1.root.options[document.form1.root.selectedIndex].value
+	
+ 	var dirname= showModalDialog("${baseUrl}admin/select.jhtml?action=InputDialog&title="+encodeURIComponent('文件夹名'),"color","dialogWidth:300px;dialogHeight:150px;help:0;status:0;scroll:no");
+ 	if(dirname != null && dirname != '') {
+ 		workFrame.location = '${baseUrl}admin/path.jhtml?action=PathListFile&extra=mkdir&dirname='+ encodeURIComponent(dirname) +'&PATH=' + encodeURIComponent(PATH)+"&rootDir="+encodeURIComponent(rootDir);
+ 	}
+
+
+}
+function path_change(root){
+	if(root.options[root.selectedIndex].value != ''){
+		workFrame.location=('${baseUrl}admin/path.jhtml?action=PathListFile&rootDir='+root.options[root.selectedIndex].value);
+	} 
+}
+</script>
+</head>
+<body bgcolor="threedface" style="margin:0pt;padding:0pt;border: 1px buttonhighlight;" onLoad="workFrameReload()">
+<table width="100%" border="0" cellspacing="5">
+  <form name="form1" method="post" action="">
+    <tr>
+      <td colspan="3" align="right"><table width="100%" border="0" cellspacing="0">
+          <tr>
+            <td width="10%">根路径:</td>
+            <td  width="200">
+			<select name="root" id="root" onChange="return path_change(this);">
+
+                <#list roots as root>
+                    <#if root.path==rootDir.path>
+                    	<option value="${root.path}" selected="selected">[ ${root.path} ]</option>
+                    <#else>
+                    	<option value="${root.path}">[ ${root.path} ]</option>                    
+                    </#if>			 		
+			 	</#list>
+             </select></td>
+            <td align=left ><script src="resource.jhtml?path=html/plugin/cms/base/js/path_icon.js" type="text/javaScript"></script></td>
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" align="center">
+<Iframe name=workFrame  frameborder=1 class=button src="" style="width:100%;height:134;" >
+                </Iframe> </td>
+    </tr>
+    <tr>
+      <td width="18%">目录名称:</td>
+      <td width="59%"><input name="fileName" type="text" size="36"></td>
+      <td width="20%"><input type="button" name="Submit" value="  确定  " onClick="window.returnValue = document.form1.path.options[document.form1.path.selectedIndex].value + '/' + fileName.value ;window.close();"></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><input type="button" name="Submit2" value="  取消  " onclick='window.close();'></td>
+    </tr>
+  </form>
+</table>
+<script language="javascript">
+function workFrameReload() {
+	//
+	var rootDir='${rootDir.path}';
+	workFrame.location = '${baseUrl}admin/path.jhtml?action=PathListFile&rootDir='+encodeURIComponent(rootDir);
+ 	
+}
+workFrameReload();
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <terms>
+    <term key="请选择">请选择信息有效期</term>
+    <term key="一周">一周</term>
+	<term key="半个月">半个月</term>
+	<term key="一个月">一个月</term>
+	<term key="三个月">三个月</term>
+	<term key="六个月">六个月</term>
+	<term key="一年">一年</term>
+	<term key="长期">长期</term>
+  </terms>
+</directory>

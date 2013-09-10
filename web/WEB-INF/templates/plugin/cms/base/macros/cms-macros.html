@@ -1,0 +1,433 @@
+<#--------------------------------------------------------------------------->
+<#------------------------cms list macro------------------------------------->
+<#--------------------------------------------------------------------------->
+<#--
+name:the cms list macro
+author:Weiping Ju
+date:2005/11/30 19:41
+description:
+	1)the cmsMacroEngine object must be assign to the template.
+	2)if multiple nodeID,these nodes must have the same tableID
+history:
+	1)$Date: 2006/08/31 02:25:49 $ WeipingJu
+		add  parameter pape,url,extra
+	2)$Date:2005/12/08 11:03 WeipingJu
+		it need the nodeInfo
+		add the "nodeUrl,nodeName" field.
+-->
+<#macro list return="list" NodeID="" Num="" NodeGUID="" OrderBy="" where="" TableID="" ignore="" page="" url="" extra="">
+	<#--check the NodeID and TableID parameter.-->
+	<#if NodeID==""&&TableID==""&&NodeGUID=="">
+		<#stop "NodeID,NodeGUID and TableID must not both empty!">
+	</#if>
+	<#--check the NodeID and NodeGUID,it should not both exist.-->
+	<#if NodeID!=""&&NodeGUID!="">
+		<#stop "NodeID,NodeGUID should not both exist!">
+	</#if>
+	<#if NodeID=="self">
+	<#assign cmslist=cmsMacroEngine.getCmsList(currentNodeId?string,Num,nodeGUID,OrderBy,where,TableID,ignore,page,url)/>
+	<#else>
+	<#assign cmslist=cmsMacroEngine.getCmsList(NodeID,Num,NodeGUID,OrderBy,where,TableID,ignore,page,url)/>
+	</#if>
+
+	<#list cmslist as cms>
+		<#if cms_index==0>
+			<#assign tmp="<#global ${return}_pageInfo=cms>"/>
+  			<#assign tmp2=tmp?interpret/>
+  			<@tmp2></@tmp2>
+		<#elseif cms_index==1>
+			<#assign tmp="<#global ${return}=cms>"/>
+  			<#assign tmp2=tmp?interpret/>
+  			<@tmp2></@tmp2>
+		</#if>
+	</#list>
+	<#if !cmslist?has_content>
+		<#assign tmp="<#global ${return}=[]>"/>
+  		<#assign tmp2=tmp?interpret/>
+  		<@tmp2></@tmp2>
+	</#if>
+</#macro>
+<#--------------------------------------------------------------------------->
+<#------------------------cms search macro------------------------------------->
+<#--------------------------------------------------------------------------->
+<#--
+name:the cms search macro
+author:Weiping Ju
+date:2005/11/30 19:41
+description:
+	1)the cmsMacroEngine object must be assign to the template.
+	2)if multiple nodeID,these nodes must have the same tableID
+history:
+	1)$Date: 2006/08/31 02:25:49 $ WeipingJu
+		add  parameter pape,url,extra
+	2)$Date:2005/12/08 11:03 WeipingJu
+		it need the nodeInfo,has finished
+		add the "nodeUrl,nodeName" field.
+-->
+<#macro search return="list" NodeID="" Num="" NodeGUID="" Keywords="" Fields="" OrderBy="" where="" TableID="" ignore="" page="" url="" extra="" ignoreIndex="">
+	<#--check the NodeID and TableID parameter.-->
+	<#if NodeID==""&&TableID==""&&NodeGUID=="">
+		<#stop "NodeID,NodeGUID and TableID must not both empty!">
+	</#if>
+	<#--check the NodeID and NodeGUID,it should not both exist.-->
+	<#if NodeID!=""&&NodeGUID!="">
+		<#stop "NodeID,NodeGUID should not both exist!">
+	</#if>
+	<#if NodeID=="self">
+	<#assign cmslist=cmsMacroEngine.getCmsSearchList(currentNodeId?string,Num,nodeGUID,OrderBy,where,TableID,ignore,page,url,ignoreIndex,Keywords,Fields)/>
+	<#else>
+	<#assign cmslist=cmsMacroEngine.getCmsSearchList(NodeID,Num,NodeGUID,OrderBy,where,TableID,ignore,page,url,ignoreIndex,Keywords,Fields)/>
+	</#if>
+
+	<#list cmslist as cms>
+		<#if cms_index==0>
+			<#assign tmp="<#global ${return}_pageInfo=cms>"/>
+  			<#assign tmp2=tmp?interpret/>
+  			<@tmp2></@tmp2>
+		<#elseif cms_index==1>
+			<#assign tmp="<#global ${return}=cms>"/>
+  			<#assign tmp2=tmp?interpret/>
+  			<@tmp2></@tmp2>
+		</#if>
+	</#list>
+	<#if !cmslist?has_content>
+		<#assign tmp="<#global ${return}=[]>"/>
+  		<#assign tmp2=tmp?interpret/>
+  		<@tmp2></@tmp2>
+	</#if>
+</#macro>
+<#--------------------------------------------------------------------------->
+<#------------------------cms content macro---------------------------------->
+<#--------------------------------------------------------------------------->
+<#--
+name:the cms content macro
+author:Weiping Ju
+date:2005/12/02 23:08
+description:
+history:
+	1)on $Date: 2006/08/31 02:25:49 $ by Weiping Ju
+		add the "nodeName,nodeUrl" field to return content
+-->
+<#macro content IndexID return="content" OrderBy="" >
+    <#local destIndexID=IndexID?string/>
+	<#if destIndexID=="">
+		<#stop "IndexID must not be empty!">
+	<#elseif destIndexID=="auto">
+		<#local destIndexID=currentIndexId?c/>
+	</#if>
+	<#if __preview__?exists>
+	<#local cmsContent=cmsMacroEngine.getCmsContent(destIndexID,OrderBy,true)/>
+	<#else>
+	<#local cmsContent=cmsMacroEngine.getCmsContent(destIndexID,OrderBy)/>
+	</#if>
+	<#if destIndexID?index_of(",")!=-1>
+		<#assign tmp="<#global ${return}=cmsContent>"/>
+  		<#assign tmp2=tmp?interpret/>
+  		<@tmp2></@tmp2>
+	<#else>
+		<#list cmsContent as ct>
+		<#local content1=ct/>
+		</#list>
+		<#assign tmp="<#global ${return}=content1>"/>
+  		<#assign tmp2=tmp?interpret/>
+  		<@tmp2></@tmp2>
+	</#if>
+</#macro>
+<#--------------------------------------------------------------------------->
+<#------------------------cms nodelist macro---------------------------------->
+<#--------------------------------------------------------------------------->
+<#--
+name:the cms nodelist macro
+author:Weiping Ju
+date:2005/12/08 15:42
+description:
+history:
+	1)create the original version $Date: 2006/08/31 02:25:49 $
+	2)add navigation info $Date: 2006/08/31 02:25:49 $
+-->
+<#macro nodelist return Type NodeID Ignore="">
+    <#local destNodeID=NodeID?string/>
+	<#if Type=="">
+		<#stop "Type must not be empty!">
+	</#if>
+	<#if Type=="sub"||Type=="son"||Type=="parent"||Type=="brother">
+		<#if destNodeID?index_of(",")!=-1>
+		 	<#stop "invalid NodeID parameter, must not contain ','!">
+		</#if>
+	</#if>
+	<#if destNodeID=="">
+	<#local destNodeID=currentNodeId?string/>
+	</#if>
+	<#local nl=cmsMacroEngine.getCmsNodeList(Type,destNodeID,Ignore)/>
+	<#assign tmp="<#global ${return}=nl>"/>
+  	<#assign tmp2=tmp?interpret/>
+  	<@tmp2></@tmp2>
+</#macro>
+<#--------------------------------------------------------------------------->
+<#------------------------cms node macro---------------------------------->
+<#--------------------------------------------------------------------------->
+<#--
+name:the cms node macro
+author:Weiping Ju
+date:2005/12/08 21:44
+description:
+history:
+	1)create the original version
+-->
+<#macro node return NodeID >
+	<#local destNodeID=NodeID?string/>
+	<#local type=""/>
+	<#if destNodeID==""||destNodeID=="self"||destNodeID=="parent">
+		<#local destNodeID=currentNodeId?string/>
+	</#if>
+	<#if destNodeID=="">
+		<#local type="parent"/>
+	</#if>
+	<#local nodeInfo=cmsMacroEngine.getCmsNode(type,destNodeID)/>
+	<#assign tmp="<#global ${return}=nodeInfo>"/>
+  	<#assign tmp2=tmp?interpret/>
+  	<@tmp2></@tmp2>
+</#macro>
+<#--------------------------------------------------------------------------->
+<#------------------------cms sql macro---------------------------------->
+<#--------------------------------------------------------------------------->
+
+<#macro sql db sql return="list"  >
+	
+	<#local rs=cmsMacroEngine.getSqlSearchResult(db,sql)/>
+	<#assign tmp="<#global ${return}=rs>"/>
+  	<#assign tmp2=tmp?interpret/>
+  	<@tmp2></@tmp2>
+</#macro>
+<#--------------------------------------------------------------------------->
+<#------------------------cms static pager macro----------------------------->
+<#--------------------------------------------------------------------------->
+<#--
+name:the cms pager macro
+author:Weiping Ju
+date:2006/05/01 21:44
+description:
+history:
+	1)create the original version
+-->
+<#macro pager pb baseUrl closeUrl style="0" >
+
+<#local pages = pb.slider(11)/>
+<#local pge  = pb.page(currentPage)/>
+<#if pb.pages() gt 1>
+
+<table width='95%'  cellspacing=0 cellpadding=2 border=0>
+<tr>
+<td align='right'>
+	<table border=0 cellspacing=0 cellpadding=0>
+	<tr>
+	<td>
+
+		<table border=0 cellspacing=1 cellpadding=0>
+		<tr align=center>
+		<#if pge!=pb.firstPage()>
+			<td>
+				<a style="color:blue;font-size:12px" href="<@cms.pagerUrl url=baseUrl page=pb.firstPage()/>${closeUrl}"><#compress>
+				${lang.get("pager.firstpage")}
+				</#compress></a>
+			</td>
+			<td>
+				<a style="color:blue;font-size:12px" href="<@cms.pagerUrl url=baseUrl page=pb.previousPage()/>${closeUrl}"><#compress>
+				${lang.get("pager.prevpage")}</#compress></a>
+			</td>
+		<#else>
+			<td style="font-size:12px">
+			<#compress>
+				${lang.get("pager.firstpage")}
+			</#compress>
+			</td>
+			<td style="font-size:12px">&nbsp;</td>
+			<td style="font-size:12px">
+			<#compress>
+				${lang.get("pager.prevpage")}
+			</#compress>
+			</td>
+		</#if>
+		<#list pages as p>
+			<#if pb.isDisabledPage(p)>
+			<td>&nbsp;<font style="color:red;size:12px">${p}</font>&nbsp;</td>
+			<#else>
+			<td>&nbsp;<a href="<@cms.pagerUrl url=baseUrl page=p/>${closeUrl}" style="color:blue;size:12px">${p}</a>&nbsp;</td>
+			</#if>
+		</#list>
+
+		<#if pge!=pb.lastPage()>
+			<td>
+			<a style="color:blue;font-size:12px" href="<@pagerUrl url=baseUrl page=pb.nextPage()/>${closeUrl}"><#compress>
+			${lang.get("pager.nextpage")}
+			</#compress></a>
+			</td>
+			<td style="font-size:12px">&nbsp;</td>
+			<td>
+			<a style="color:blue;font-size:12px" href="<@pagerUrl url=baseUrl page=pb.lastPage()/>${closeUrl}">
+			<#compress>
+			${lang.get("pager.lastpage")}
+			</#compress></a></td>
+		<#else>
+			<td style="font-size:12px">
+			<#compress>
+			${lang.get("pager.nextpage")}
+			</#compress>
+			</td>
+			<td style="font-size:12px">&nbsp;</td>
+			<td style="font-size:12px">
+			<#compress>
+			${lang.get("pager.lastpage")}
+			</#compress>
+			</td>
+		</#if>
+		</tr>
+		</table>
+	</td>
+	</tr>
+	</table>
+</td>
+</tr>
+</table>
+</#if>
+</#macro>
+<#macro pagerUrl url page>
+  <#local spage=page?string/>
+  <#if spage==""||spage=="0"||spage=="1">
+  ${url}
+  <#else>
+  	<#local pos=url?last_index_of(".")/>
+	<#local size=url?length/>
+	<#if pos!=-1>
+		<#local part1=url[0..pos-1]/>
+		<#local part2=url[pos+1..size-1]/>
+		<#if part2!="html"&&part2!="htm"&&part2!="shtml">
+			<#local pos2=url?last_index_of("?")/>
+			<#if pos2!=-1>
+				${url}&page=${page}
+			<#else>
+				${url}?page=${page}
+			</#if>
+		<#else>
+			${part1}_${page}.${part2}
+		</#if>		
+	<#else>
+		${url}_${page}
+	</#if>
+  </#if>
+</#macro>
+<#macro pagerContent content return="contentPager" size="2000" type="0">
+		<cmsPager size="${size}" type="${type}">
+		${content?default("")}
+		</cmsPager>
+</#macro>
+
+<#--------------------------------------------------------------------------->
+<#------------------------cms conent static pager macro---------------------->
+<#--------------------------------------------------------------------------->
+<#--
+name:the cms pager macro
+author:Weiping Ju
+date:2006/11/05 17:41
+description:
+history:
+	1)create the original version $Date: 2006/11/05 17:42 $
+-->
+<#macro contentPager closeUrl="" style="0" >
+<#local pb=pageInfo/>
+<#local pages = pb.slider(11)/>
+<#local pge  = pb.page(currentPage)/>
+<#local baseUrl=currentUrl/>
+<#if pb.pages() gt 1>
+
+<table width='95%'  cellspacing=0 cellpadding=2 border=0>
+<tr>
+<td align='right'>
+	<table border=0 cellspacing=0 cellpadding=0>
+	<tr>
+	<td>
+
+		<table border=0 cellspacing=1 cellpadding=0>
+		<tr align=center>
+		<#if pge!=pb.firstPage()>
+			<td>
+				<a style="color:blue;font-size:12px;padding-right:10px;" href="<@cms.pagerUrl url=baseUrl page=pb.firstPage()/>${closeUrl}"><#compress>
+				${lang.get("pager.firstpage")}
+				</#compress></a>
+			</td>
+			<td>
+				<a style="color:blue;font-size:12px;padding-right:10px;" href="<@cms.pagerUrl url=baseUrl page=pb.previousPage()/>${closeUrl}"><#compress>
+				${lang.get("pager.prevpage")}</#compress></a>
+			</td>
+		<#else>
+			<td style="font-size:12px;padding-right:10px;">
+			<#compress>
+				<a>${lang.get("pager.firstpage")}</a>
+			</#compress>
+			</td>
+			<td style="font-size:12px;padding-right:10px;">
+			<#compress>
+				<a>${lang.get("pager.prevpage")}</a>
+			</#compress>
+			</td>
+		</#if>
+		<#list pages as p>
+			<#if pb.isDisabledPage(p)>
+			<td>&nbsp;<font style="color:red;size:12px;padding-right:4px;">${p}</font>&nbsp;</td>
+			<#else>
+			<td>&nbsp;<a href="<@cms.pagerUrl url=baseUrl page=p/>${closeUrl}" style="color:blue;size:12px;padding-right:4px;">${p}</a>&nbsp;</td>
+			</#if>
+		</#list>
+
+		<#if pge!=pb.lastPage()>
+			<td>
+			<a style="color:blue;font-size:12px;padding-right:10px;" href="<@pagerUrl url=baseUrl page=pb.nextPage()/>${closeUrl}"><#compress>
+			${lang.get("pager.nextpage")}
+			</#compress></a>
+			</td>
+			<td>
+			<a style="color:blue;font-size:12px;padding-right:10px;" href="<@pagerUrl url=baseUrl page=pb.lastPage()/>${closeUrl}">
+			<#compress>
+			${lang.get("pager.lastpage")}
+			</#compress></a></td>
+		<#else>
+			<td style="font-size:12px;padding-right:10px;">
+			<#compress>
+			<a>${lang.get("pager.nextpage")}</a>
+			</#compress>
+			</td>
+			<td style="font-size:12px;padding-right:10px;">
+			<#compress>
+			<a>${lang.get("pager.lastpage")}</a>
+			</#compress>
+			</td>
+		</#if>
+		</tr>
+		</table>
+	</td>
+	</tr>
+	</table>
+</td>
+</tr>
+</table>
+</#if>
+</#macro>
+
+<#macro publishUrl id>
+<#local url=cmsMacroEngine.getExtraPublishUrl(id)/>
+<#compress>${url!''}</#compress>
+</#macro>
+
+<#--
+多资源解析宏
+-->
+<#macro multiRes return="list" content="">
+	<#if content=="">
+		<#local reses=[]/>
+	<#else>
+		<#local reses=cmsMacroEngine.getMultiRes(content)/>
+	</#if>
+	<#assign tmp="<#global ${return}=reses>"/>
+  	<#assign tmp2=tmp?interpret/>
+  	<@tmp2></@tmp2>
+</#macro>

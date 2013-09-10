@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id
+-->
+<hibernate-mapping>
+
+	<class name="org.openuap.cms.survey.model.Voter"
+		table="cms_survey_voter">
+		<id name="voterId" type="long" column="voterId">
+			<generator class="sequence">
+				<param name="sequence">cms_survey_voter_seq</param>
+			</generator>
+		</id>
+		<property name="surveyRecordId" type="long"
+			column="surveyRecordId" not-null="true" length="10" />
+		<property name="voterSurveyId" type="long"
+			column="voterSurveyId" not-null="true" length="10" />
+		<property name="voterName" type="string" column="voterName" />
+		<property name="voterCompany" type="string"
+			column="voterCompany" />
+		<property name="voterDepartment" type="string"
+			column="voterDepartment" />
+		<property name="voterContact" type="string"
+			column="voterContact" length="50" />
+		<property name="voterEmail" type="string" column="voterEmail"
+			length="50" />
+		<property name="voterIpaddress" type="string"
+			column="voterIpaddress" not-null="true" length="50" />
+		<property name="voterPollDate" type="long"
+			column="voterPollDate" not-null="true" />
+		<property name="voterUserId" type="long" column="voterUserId" />
+		<!---->
+		<property name="voterTel" type="string" column="voterTel"
+			length="50" />
+		<property name="voterMobile" type="string" column="voterMobile"
+			length="50" />
+		<property name="voterFax" type="string" column="voterFax"
+			length="50" />
+		<!-- associations -->
+		<property name="voterSex" type="string" column="voterSex"
+			length="10" />
+		<property name="voterProp1" type="string" column="voterProp1"
+			length="200" />
+		<property name="voterProp2" type="string" column="voterProp2"
+			length="200" />
+		<property name="voterProp3" type="string" column="voterProp3"
+			length="200" />
+		<property name="voterProp4" type="string" column="voterProp4"
+			length="200" />
+		<property name="voterProp5" type="string" column="voterProp5"
+			length="200" />
+		<property name="voterProp6" type="string" column="voterProp6"
+			length="200" />
+		<property name="voterProp7" type="string" column="voterProp7"
+			length="200" />
+		<property name="voterProp8" type="string" column="voterProp8"
+			length="200" />
+		<property name="voterProp9" type="string" column="voterProp9"
+			length="200" />
+		<property name="voterProp10" type="string" column="voterProp10"
+			length="200" />
+	</class>
+</hibernate-mapping>

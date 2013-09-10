@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: BaseRole.hbm.xml 89 2007-04-06 10:07:57Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.user.model">
+	<class name="BaseUserPermField" table="base_user_perm_field">
+		<id name="fieldId" type="long" unsaved-value="0">
+			<column name="fieldId" />
+			<generator class="sequence">
+				<param name="sequence">base_user_perm_field_seq</param>
+			</generator>
+		</id>
+
+		<property name="userId" type="long" insert="false"
+			update="false">
+			<column name="userId" not-null="true" />
+		</property>
+		<property name="objectType" type="string" insert="false"
+			update="false">
+			<column name="objectType" not-null="true" length="100" />
+		</property>
+		<property name="objectId" type="string" insert="false"
+			update="false">
+			<column name="objectId" not-null="true" length="100" />
+		</property>
+		<property name="fieldName" type="string">
+			<column name="fieldName" not-null="true" length="200" />
+		</property>
+		<property name="fieldValue" type="text">
+			<column name="fieldValue" />
+		</property>
+		<property name="fieldTitle" type="string">
+			<column name="fieldTitle" length="200" />
+		</property>
+		<property name="fieldOrder" type="integer">
+			<column name="fieldOrder" />
+		</property>
+		<property name="fieldOwner" type="string">
+			<column name="fieldOwner" />
+		</property>
+		<many-to-one name="baseUserPermission"
+			class="BaseUserPermission">
+			<column name="userId"></column>
+			<column name="objectType" length="100"></column>
+			<column name="objectId" length="100"></column>
+		</many-to-one>
+	</class>
+</hibernate-mapping>

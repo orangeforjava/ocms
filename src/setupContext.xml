@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- Middle tier application context definition for the CMS setup application.
+	- $Id: setupContext.xml 1355 2007-10-30 07:12:02Z orangeforjava $
+-->
+<beans>
+	<!-- Bootstrap manager -->
+	<bean id="base-bootstrapManager"
+		class="org.openuap.runtime.setup.BootstrapManagerFactoryBean" />
+	<!-- Configurer that sets up a shared FreeMarkerEngine for FreeMarker views -->
+	<bean id="freemarkerConfigurer"
+		class="org.openuap.base.web.mvc.view.BaseFreeMarkerConfigurer">
+		<property name="templateLoaderPath"
+			value="WEB-INF/templates/systems/" />
+		<property name="configLocation">
+			<value>classpath:/freemarker.properties</value>
+		</property>
+	</bean>
+</beans>

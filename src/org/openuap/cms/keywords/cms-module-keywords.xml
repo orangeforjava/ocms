@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-keywords.xml 4017 2011-03-13 13:55:50Z orangeforjava $
+-->
+<beans>
+	
+	<import resource="cms-module-keywords-core.xml"/>
+</beans>

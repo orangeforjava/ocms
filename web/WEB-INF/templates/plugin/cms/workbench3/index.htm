@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>${workbenchProperty.title}-管理后台-${version}</title>
+<base href="${baseUrl}" />
+<link href="html/plugin/cms/workbench3/img/frame.css" rel="stylesheet" type="text/css" />
+<script src="html/common/js/jquery-1.4.3.min.js" language="javascript" type="text/javascript"></script>
+<script src="html/plugin/cms/workbench3/img/frame.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript" src="html/common/contextmenu/jquery.contextmenu.js"></script>
+<link rel="stylesheet" type="text/css" href="html/common/contextmenu/css/jquery.contextmenu.css" media="all">
+
+<script language="javascript">
+
+function _M(menuid,targetUrl) {
+	//
+	$("#menu_frame").attr('src', "${baseUrl}admin/workbench.jhtml?action=NavMenu&pageID="+menuid);
+	$("#main").attr('src', targetUrl);
+	$('.top_menu').removeClass("on");
+	$('#_M'+menuid).addClass("on");	
+}
+function showPublishTree(){
+	art.dialog.open("${baseUrl}admin/publish.jhtml?action=NodeTreeTable", {title: "内容发布树",lock:true,width:1024,height:650});
+}
+function showPublishNavTree(){
+	
+}
+</script>
+ 
+</head>
+<body class="showmenu">
+  
+<div class="pagemask"></div>
+<iframe class="iframemask"></iframe>
+<div class="allmenu">
+	<div class="allmenu-box">
+	<br style='clear:both' />
+	</div>
+</div>
+
+<div class="head">
+	<div class="top">
+		<div class="top_logo">
+			<img src="html/plugin/cms/workbench3/img/admin_top_logo.png" width="170" height="37" alt="OCMS Logo" title="Welcome use OCms" />
+		</div>
+		<div class="top_menu">
+			<ul class="nav white" id="top_menu">
+	        [@ui.tabs css="top_menu" currentcss="on top_menu" ;css,id,url,name,description]
+	       	<li id="_M${id}" class="${css}"><a href="javascript:_M('${id}','${url}')" hidefocus="true" style="outline:none;">${name}</a></li>
+	        [/@ui.tabs]
+	        </ul>
+		</div>
+		<div class="top_link">
+			<ul>
+				<li class="welcome">您好：${securityUtil.getUserSession().getName()}</li>     			
+      			<li><a href="${workbenchProperty.logoutUrl}" target="_top">注销</a></li>
+			</ul>
+			<div class="quick">
+				<a href="#" class="ac_qucikmenu" id="ac_qucikmenu">快捷方式</a>
+				<a href="#" class="ac_qucikadd" id="ac_qucikadd"></a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="topnav">
+		<div class="menuact">
+			<a href="javaScript:void(0)" id="togglemenu">隐藏菜单</a>
+			<a href="javaScript:void(0)" id="allmenu">功能地图</a>
+		</div>
+		<div class="nav" id="nav">
+			
+		</div>
+		
+        
+  <div class="sysmsg">
+			<h3>滚动消息:</h3>
+           
+	      <div class="scroll">
+		    	<a href="javaScript:showPublishTree();">内容发布树</a>    
+		    
+		    </div>
+		 	
+		  </div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+<div class="left">
+	<div class="menu" id="menu"> 
+		 <iframe src="${baseUrl}admin/workbench.jhtml?action=NavMenu&pageID=tab-home" id="menu_frame" name="menu" frameborder="0"></iframe>
+	</div>
+</div>
+<div class="right">
+	<div class="main" id="mainDiv">
+		<iframe id="main" name="main" frameborder="0" src="${workbenchProperty.adminUrl}"></iframe>
+	</div>
+</div>
+
+</div>
+
+<div class="qucikmenu" id="qucikmenu">
+	<ul>
+		<li><a href="" target="main">内容发布</a></li>
+	</ul>
+</div>
+<script type="text/javaScript">
+window.onresize = function(){
+	var heights = document.documentElement.clientHeight-66;
+	//
+	$('#menu_frame').height(heights);
+	$("#main").height(heights);	
+}
+window.onresize();
+</script>
+</body>
+</html>

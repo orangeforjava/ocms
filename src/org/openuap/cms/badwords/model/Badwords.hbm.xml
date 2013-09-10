@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: Badwords.hbm.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.badwords.model">
+	<class name="Badwords" table="common_badwords">
+		<id name="id" type="integer">
+			<column name="id" />
+			<generator class="native" />
+		</id>
+		<property name="title" type="string">
+			<column name="title" length="200" />
+		</property>
+		<property name="scope" type="integer">
+			<column name="scope" />
+		</property>
+		<property name="find" type="text">
+			<column name="find"/>
+		</property>
+		<property name="replacement" type="text">
+			<column name="replacement"/>
+		</property>
+		<property name="type" type="integer">
+			<column name="type" not-null="true" />
+		</property>
+		<property name="status" type="integer">
+			<column name="status" not-null="true"/>
+		</property>
+		<property name="pos" type="integer">
+			<column name="pos" not-null="true" />
+		</property>
+	</class>
+</hibernate-mapping>

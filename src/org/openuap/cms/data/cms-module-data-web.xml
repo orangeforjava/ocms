@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	$Id: cms-module-data-web.xml 3947 2010-11-01 14:23:26Z orangeforjava $
+-->
+<beans default-lazy-init="false">
+	
+	
+	<bean id="dataHandlerMappingAdmin"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/data/export.jhtml">
+					<ref local="exportAction" />
+				</entry>
+				<entry key="/admin/data/import.jhtml">
+					<ref local="importAction" />
+				</entry>
+				<entry key="/admin/data/impFile.jhtml">
+					<ref local="impFileAction" />
+				</entry>				
+			</map>
+		</property>
+	</bean>
+	<bean id="exportAction"
+		class="org.openuap.cms.data.action.DataExportAction">
+		<property name="dataExportManager">
+			<ref bean="dataExportManager" />
+		</property>
+	</bean>
+	<bean id="importAction"
+		class="org.openuap.cms.data.action.DataImportAction">
+		<property name="dataImportManager">
+			<ref bean="dataImportManager" />
+		</property>
+	</bean>
+	<bean id="impFileAction"
+		class="org.openuap.cms.data.action.DataImpFileAction">
+		<property name="dataImportManager">
+			<ref bean="dataImportManager" />
+		</property>
+	</bean>
+</beans>

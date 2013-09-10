@@ -1,0 +1,78 @@
+<HTML>
+	<HEAD>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<title>内容排序权重设置</title>
+		<base href="${baseUrl}" />
+		<link rel="stylesheet" type="text/css"
+			href="html/plugin/cms/workbench3/img/base.css" />
+		<script type="text/javascript" language="javascript">
+function returnWeight() {
+	var weight = document.form.Weight.value;
+	var regexp = /\d+/ig
+	if (!regexp.test(weight)) {
+		alert("置顶权重值必须是数字！");
+		return;
+	}
+	returnValue = new Array();
+	returnValue['weight'] = weight;
+	var parent = art.dialog.parent;
+	parent.callBack(returnValue);
+	art.dialog.close();
+	return false;
+}
+function cancel() {
+	art.dialog.close();
+	return false
+}
+</script>
+	</HEAD>
+
+	<BODY>
+
+		<div>
+		<form action="" method="post" name="form" target="operation">
+		<table width="100%" border="0" cellspacing="8" cellpadding="0">
+			
+				<tr>
+					<td>
+						<fieldset class="search">
+							<legend>
+								内容排序权重设置
+							</legend>
+							<table width="100%" border="0" cellspacing="8" cellpadding="0">
+								<tr>
+									<td>
+										<table border="0" cellspacing="6" cellpadding="0">
+											<tr>
+												<td>
+													排序权重:
+												</td>
+												
+												<td>
+													<input name="Weight" type="text" id="Weight"
+														value="${sort}" size="10">
+												</td>
+											</tr>
+											<tr align="right">
+												<td colspan="2">
+													<input type="button" name="Submit" value="确定"
+														onclick="returnWeight();">
+													<input type="button" name="Submit2" value="取消"
+														onclick="window.close();">
+												</td>
+											</tr>
+										</TABLE>
+									</td>
+								</tr>
+								
+							</table>
+						</fieldset>
+					</td>
+				</tr>			
+		</table>
+		</form>
+		</div>
+	</BODY>
+</HTML>

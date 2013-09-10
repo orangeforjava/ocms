@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-psn.xml 3938 2010-10-27 03:25:16Z orangeforjava $
+-->
+<beans>
+	<!-- ORM -->
+	<import resource="cms-module-psn-dao.xml"/>
+	<!-- BIZ -->
+	<bean id="psnManager"
+		class="org.openuap.cms.psn.manager.impl.PsnManagerDBImpl">
+		<property name="psnDao">
+			<ref bean="psnDao" />
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: CMSAdminLanguage_en.xml 6 2007-03-26 07:30:04Z orangeforjava $-->
+<!-- edited with DW8.0 by Weiping Ju -->
+<constant type="Properties">
+    <!--全局警告信息-->
+	<global.waring.notready>此功能正在开发中</global.waring.notready>
+	<!-- 页面标题 -->	
+	<homepage>管理控制中心</homepage>
+	<!--登录页面-->
+	<login.title>控制中心</login.title>
+	<login.username>用户名:</login.username>
+	<login.password>密码:</login.password>
+	<login.code>验证码:</login.code>
+	<login.button.adminlogin>管理登录</login.button.adminlogin>
+	<login.button.reset>重置</login.button.reset>	
+	<!--内容管理-->
+	<cms.homepage>内容管理</cms.homepage>	
+	<!--内容管理,顶部菜单-->
+	<cms.top.showtoc>显示</cms.top.showtoc>
+	<cms.top.menu.homepage>系统首页</cms.top.menu.homepage>
+	<cms.top.menu.logout.confirm>确认退出系统吗？</cms.top.menu.logout.confirm>
+	<cms.top.menu.site>站点管理</cms.top.menu.site>
+	<cms.top.menu.site.node>结点维护</cms.top.menu.site.node>
+	<cms.top.menu.publish>发布管理</cms.top.menu.publish>
+	<cms.top.menu.publish.content>内容发布管理</cms.top.menu.publish.content>
+	<cms.top.menu.resource>资源管理</cms.top.menu.resource>
+	<cms.top.menu.template>模版管理</cms.top.menu.template>
+	<cms.top.menu.template.public>公共模版管理</cms.top.menu.template.public>
+	<cms.top.menu.template.cata>分类模版管理</cms.top.menu.template.cata>
+	<cms.top.menu.template.cata.manage>模版分类管理</cms.top.menu.template.cata.manage>
+	<cms.top.menu.contribution>投稿管理</cms.top.menu.contribution>
+	<cms.top.menu.collection>采集管理</cms.top.menu.collection>
+	<cms.top.menu.plugin>插件管理</cms.top.menu.plugin>
+	<cms.top.menu.plugin.sys>系统插件</cms.top.menu.plugin.sys>
+	<cms.top.menu.sys>系统管理</cms.top.menu.sys>
+	
+	<!---->
+	
+	<!--论坛管理-->
+	<forum.homepage>论坛</forum.homepage>	
+	
+</constant>

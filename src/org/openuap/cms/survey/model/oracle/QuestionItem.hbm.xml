@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: QuestionItem.hbm.xml 4017 2011-03-13 13:55:50Z orangeforjava $
+-->
+<hibernate-mapping>
+	<class name="org.openuap.cms.survey.model.QuestionItem"
+		table="cms_survey_questionItem">
+		<id name="questionItemId" type="long" column="questionItemId">
+			<generator class="sequence">
+				<param name="sequence">cms_survey_questionItem_seq</param>
+			</generator>
+		</id>
+		<property name="questionItemText" type="string"
+			column="questionItemText" not-null="true" length="50" />
+		<property name="questionItemPolledTimes" type="int"
+			column="questionItemPolledTimes" length="10" />
+		<property name="questionItemSort" type="integer"
+			column="questionItemSort" />
+		<property name="questionItemType" type="integer"
+			column="questionItemType" />
+		<property name="rightAnswer" type="boolean"
+			column="rightAnswer" />
+			<property name="url" type="string"
+			column="url" length="300"/>
+		<property name="image" type="string"
+			column="image" length="300"/>
+		<property name="oid" type="string"
+			column="oid" length="300"/>
+		<!-- associations -->
+		<!-- bi-directional many-to-one association to VoteVote -->
+		<many-to-one name="question"
+			class="org.openuap.cms.survey.model.Question"
+			not-null="true">
+			<column name="questionId" />
+		</many-to-one>
+	</class>
+</hibernate-mapping>

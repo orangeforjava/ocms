@@ -1,0 +1,767 @@
+<#macro showNodes rootId=0 level=0 placeholder="">
+    <#if rootId!=0>
+	<#local ct_node=nodeManager.getNodeById(rootId)/>
+	<option value="${ct_node.nodeId?c}">${placeholder}|-${ct_node.name}</option>
+	</#if>
+	<#local nodes=nodeManager.getNodes(rootId,0,0,1)/>
+	<#list nodes as node>
+	<option value="${node.nodeId?c}">${placeholder+"&nbsp;&nbsp;&nbsp;&nbsp;"}|-${node.name}</option>
+		<#if nodeManager.getNodeCount(node.nodeId,0,0,1) gt 0>
+		<#local childNodes=nodeManager.getNodes(node.nodeId,0,0,1)/>
+		<#list childNodes as childNode>
+		<@showNodes rootId=childNode.nodeId level=level+1 placeholder=placeholder+"&nbsp;&nbsp;&nbsp;&nbsp;"/>
+		</#list>
+		</#if>
+	</#list>
+</#macro>
+<#assign layout="/plugin/cms/base/layouts/admin.html"/> 
+<#if node.nodeId??>
+<#assign actionTitle="${node.name}<font id=description>[<B>${node.nodeId?c}</B>]</font>" />
+<#else>
+<#assign actionTitle="新建站点" />
+</#if>
+<#assign _TITLE_="结点设置" />
+<#if node.nodeId??>
+<#assign actions=[
+{"action":"Tree","title":"站点管理（树型模式）","url":"${baseUrl}admin/node.jhtml?action=Tree","class":"view"},
+{"action":"TreeTable","title":"站点管理（展开模式）","url":"${baseUrl}admin/node.jhtml?action=TreeTable","class":"view"},
+{"action":"AddRoot","title":"新建根站点","url":"${baseUrl}admin/nodeEdit.jhtml?parentId=0","class":"add"},
+{"action":"","title":"编辑站点","url":"${baseUrl}admin/nodeEdit.jhtml?mode=edit&nodeId=${node.nodeId?c}","class":"view"},
+{"action":"NodePermission","title":"站点权限","url":"${baseUrl}admin/node/permission.jhtml?id=${node.nodeId?c}","class":"view"},
+{"action":"ContentList2","title":"发布管理","url":"${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}","class":"view"}
+]>
+<#else>
+<#assign actions=[
+{"action":"Tree","title":"站点管理（树型模式）","url":"${baseUrl}admin/node.jhtml?action=Tree","class":"view"},
+{"action":"TreeTable","title":"站点管理（展开模式）","url":"${baseUrl}admin/node.jhtml?action=TreeTable","class":"view"},
+{"action":"","title":"新建根站点","url":"${baseUrl}admin/nodeEdit.jhtml?parentId=0","class":"add"}
+]>
+</#if>
+
+<script src="html/common/dialog/artDialog.js" type="text/javascript"></script>
+
+<script language="JavaScript">
+var ua = '' + navigator.userAgent;
+//
+var addheight=0;
+if(ua.indexOf('Windows XP')!=-1||ua.indexOf('Windows NT')!=-1){
+	if(ua.indexOf('MSIE 6')!=-1||ua.indexOf('MSIE 7')!=-1){
+		addheight=20;
+		//alert(addheight);
+	}
+}
+//
+var psn=null;
+var psn_ele;
+var url_ele;
+var form_global;
+var ele;
+function psnSelect(psn,form, psn_element,url_element) {
+	//showModalDialog
+
+	var caption="发布点目录选择";
+	var url="${baseUrl}admin/psn.jhtml?action=SelPsnDialog&psn=" + psn;
+	art.dialog.open(url, {title: caption,lock:true,width:640,height:380});
+	//var arr = showModalDialog("${baseUrl}admin/psn.jhtml?action=SelPsnDialog&psn=" + psn,"color","dialogWidth:428px;dialogHeight:"+(266+addheight)+"px;help:0;status:0;scroll:no");
+	psn_ele=psn_element;
+	url_ele=url_element;
+	form_global=form;
+
+}//end function psnSelect
+
+function callback(action,rs){
+	switch(action){
+		case 'psnSelect':{	
+			    if(rs != null) {
+					var PSN = '{PSN:'+ rs;
+					var URL = '{PSN-URL:'+ rs;
+					//
+					$('#'+psn_ele).val(PSN);
+					$('#'+url_ele).val(URL);
+					
+				}
+				break;
+		}
+		case 'PublishFileFormat':
+		{
+			
+			if(rs!=null&&rs!=''){
+				$('#'+ele).val(rs);
+			}
+			break;	
+		}
+		case 'tplSelect':
+		{
+			if(rs!=null&&rs!=''){
+				$('#'+ele).val(rs);
+			}
+			break;	
+		}
+	}
+}
+
+function pathSelect(form) {
+	var arr = showModalDialog("${baseUrl}admin/path.jhtml?action=SelPathDialog","path","dialogWidth:428px;dialogHeight:"+(266+addheight)+"px;help:0;status:0;scroll:no");
+	
+}
+
+
+function PublishFileFormat(form,element)
+{
+ 	//
+ 	var value1=$('#'+element).val();
+ 	ele=element;
+ 	var url='${baseUrl}admin/publish.jhtml?action=PublishFileFormat&value1=' + value1;
+ 	//
+ 	var caption='发布文件格式设置';
+	//var arr = showModalDialog('${baseUrl}admin/publish.jhtml?action=PublishFileFormat&value1=' + value1 ,"color","dialogWidth:428px;dialogHeight:"+(266+addheight)+"px;help:0;status:0;scroll:no");
+	art.dialog.open(url, {title: caption,lock:true,width:428,height:266});
+
+}
+
+function tplSelect(tpl,form, element)
+{
+	//showModalDialog
+	ele=element;
+	var url="${baseUrl}admin/template.jhtml?action=SelTplDialog&tpl=" + tpl;
+	var caption='模板选择';
+	art.dialog.open(url, {title: caption,lock:true,width:428,height:266});
+	//var arr = showModalDialog("${baseUrl}admin/template.jhtml?action=SelTplDialog&tpl=" + tpl,"color","dialogWidth:428px;dialogHeight:"+(286+addheight)+"px;help:0;status:0;scroll:no");
+	
+}//end functin tplSelect
+
+function setPublishMode(mode)
+{
+	switch(mode) {
+		case 0 :
+			document.clientform.contentPsn.disabled = true;
+			document.clientform.contentUrl.disabled = true;
+			document.clientform.resourceUrl.disabled = true;
+			document.clientform.resourcePsn.disabled = true;
+			$('#UI_content_psn').hide();
+			$('#UI_content_url').hide();
+			$('#UI_resource_psn').hide();
+			$('#UI_resource_url').hide();
+			
+			$('#UI_auto_publish').hide();
+			$('#UI_index_tpl').hide();
+			$('#UI_content_tpl').hide();
+			$('#UI_img_tpl.style').hide();
+			$('#UI_index_name').hide();
+			$('#UI_sub_dir').hide();
+			$('#UI_publish_file_format').hide();
+
+			$('#UI_content_portal_url').hide();
+			$('#UI_index_portal_url').hide();
+			$('#UI_extra_portal_url').hide();
+			break;
+		case 1 :
+			document.clientform.contentPsn.disabled = false;
+			document.clientform.contentUrl.disabled = false;
+			document.clientform.resourceUrl.disabled = false;
+			document.clientform.resourcePsn.disabled = false;
+			$('#UI_content_psn').show();
+			$('#UI_content_url').show();
+			$('#UI_resource_psn').show();
+			$('#UI_resource_url').show();
+			$('#UI_auto_publish').show();
+			$('#UI_index_tpl').show();
+			$('#UI_content_tpl').show();
+			$('#UI_img_tpl').show();
+			$('#UI_index_name').show();
+			$('#UI_sub_dir').show();
+			$('#UI_publish_file_format').show();
+
+			$('#UI_content_portal_url').hide();
+			$('#UI_index_portal_url').hide();
+			$('#UI_extra_portal_url').hide();
+			break;
+		case 2 :
+			document.clientform.contentPsn.disabled = true;
+			document.clientform.contentUrl.disabled = true;
+			document.clientform.resourceUrl.disabled = false;
+			document.clientform.resourcePsn.disabled = false;
+			$('#UI_resource_psn').show();
+			$('#UI_resource_url').show();
+			$('#UI_auto_publish').show();
+			$('#UI_index_tpl').show();
+			$('#UI_content_tpl').show();
+			$('#UI_img_tpl').show();
+			$('#UI_content_psn').hide();
+			$('#UI_content_url').hide();
+			$('#UI_index_name').hide();
+			$('#UI_sub_dir').hide();
+			$('#UI_publish_file_format').hide();
+
+			$('#UI_content_portal_url').show();
+			$('#UI_index_portal_url').show();
+			$('#UI_extra_portal_url').show();
+			//
+			break;
+
+	}
+}
+var tID=0;
+function ShowTabs(ID)
+{
+	var tTabTitle=document.getElementById("TabTitle"+tID);
+	var tTabs=document.getElementById("Tabs"+tID);
+	var TabTitle=document.getElementById("TabTitle"+ID);
+	var Tabs=document.getElementById("Tabs"+ID);
+	if(ID!=tID)
+	{
+		tTabTitle.className='title1';
+		TabTitle.className='title2';
+		tTabs.style.display='none';
+		Tabs.style.display='';
+		tID=ID;
+	}
+}
+</script>
+<br/>
+<#import "/spring.ftl" as spring />
+<form action='admin/nodeEdit.jhtml' method='post' name='clientform' id="clientform ">
+ <input type="hidden" name="mode" value="${mode!'new'}"/>
+ <input type="hidden" name="extra" value="${extra?default("")}"/>
+ <input type="hidden" name="style" id="style_id1" value="${node.style!''}">
+ <input type="hidden" name="nodeId" value="${nodeId!''}"/>
+<table width='100%' border='0' cellpadding='0' cellspacing='0'>
+<tr align='center' height='24'>
+<td id='TabTitle0' class='title2' onclick='ShowTabs(0)'>基本设置</td>
+<td id='TabTitle1' class='title1' onclick='ShowTabs(1)'>发布设置</td>
+<td id='TabTitle2' class='title1' onclick='ShowTabs(2)'>模板设置</td>
+<td id='TabTitle3' class='title1' onclick='ShowTabs(3)'>菜单设置</td>
+<td id='TabTitle4' class='title1' onclick='ShowTabs(4)'>其它设置</td>
+<td>&nbsp;</td>
+</tr>
+</table>
+
+<table cellSpacing=0 cellPadding=0 width="100%" border=0 >
+ <tr>
+     <td vAlign=top class="bigborder" >
+  <table border="0" cellspacing="0" cellpadding="1" width="100%"  align=center class="maintable2">
+    <tbody id="Tabs0" style="display:">
+  	<th colspan=2>基本设置</th>
+      
+    <#if mode?default("new")=="new">
+	<tr >
+      <th width="20%">父结点 :</th>
+      <td class="table_td2">
+	  <#if extra?default("")=="system">
+	  	<font color="red">系统保留结点</font>
+	  <#else>
+		  <#if nodePath=="">
+		  站点根
+		  <#else>
+		  ${nodePath?default("站点根")}
+		  </#if>
+	  </#if>
+	  </td>
+    </tr>
+	<tr>
+      <th> 结点类型:</th>
+      <td class="table_td2">
+	  <@spring.bind "node.nodeType"/>
+	  <#if extra?default("")=="system">
+	  	 <select name="${spring.status.expression}" id="${spring.status.expression}"  class='flat' disabled onChange="javascript:document.location = '${baseUrl}/admin/nodeEdit.jhtml?parentId=${node.parentId?c}&nodeType=' + this.value;">
+			<#list nodeTypes as nodeType>
+			   <#if node.nodeType?default(1)==nodeType.type>
+			   <option value="${nodeType.type}" selected>${nodeType.title}</option>
+			   <#else>
+			   <option value="${nodeType.type}">${nodeType.title}</option>
+			   </#if>
+			 </#list>
+		   </select>
+	  <#else>
+		  <select name="${spring.status.expression}" id="${spring.status.expression}"  class='flat' onChange="javascript:document.location = '${baseUrl}/admin/nodeEdit.jhtml?parentId=${node.parentId?c}&nodeType=' + this.value;">
+			<#list nodeTypes as nodeType>
+			   <#if node.nodeType?default(1)==nodeType.type>
+			   <option value="${nodeType.type}" selected>${nodeType.title}</option>
+			   <#else>
+			   <option value="${nodeType.type}">${nodeType.title}</option>
+			   </#if>
+			 </#list>
+		   </select>
+	  </#if>
+	  
+一旦选择将不可再更改</td>
+    </tr>
+	<#else>
+	<tr >
+      <th width="20%">结点位置 :</th>
+      <td class="table_td2"> 
+	  <#if extra?default("")=="system">
+	  	<font color="red">系统保留结点</font>
+	  <#else>
+	  </#if>
+	  ${nodePath}
+	  </td>
+    </tr>
+    <tr>
+      <th> 结点类型:</th>
+      <td class="table_td2">
+      <#list nodeTypes as nodeType>
+		<#if node.nodeType?default(1)==nodeType.type>
+		${nodeType.title}
+	     </#if>
+	  </#list>
+      </td>
+    </tr>
+	</#if>
+	
+    <tr >
+      <th>结点唯一标识符 :</th>
+      <td>
+	  <@spring.bind "node.nodeGuid"/>
+	  <input name="${spring.status.expression}" id="${spring.status.expression}" size="30"  class='input' value="${spring.status.value?default("")}" > 该标识符唯一标识该结点，你可以使用该标识代替NodeID进行CMS内容调用</td>
+    </tr>
+
+    <tr >
+      <th>结点名称 :</th>
+      <td class="table_td2">
+	  <@spring.bind "node.name"/>
+	  <input name="${spring.status.expression}" id="${spring.status.expression}" size="30"  class='flat' value="${spring.status.value?default('')}">
+	  <select name="style_color1" id="style_color1" style="background:${node.color}" onchange="this.style.background=this.options[this.selectedIndex].style.backgroundColor;this.form.style_id1.value=this.form.style_color1.value;if(this.form.style_strong1.checked)this.form.style_id1.value +=this.form.style_strong1.value;">
+		<option value="">--颜色--</option>
+		<#list colorTypes as color>
+			<#if node.titleColor==color.color>
+				<option value="${color.color}"  style="background-color:${color.colorValue};align:center" selected="selected"></option>
+			<#else>
+				<option value="${color.color}"  style="background-color:${color.colorValue};align:center"></option>	
+			</#if>
+		</#list>
+	</select>
+	<#if node.titleBold>
+ 	<input type="checkbox" name="style_strong1" id="style_strong1" checked="checked" value="font-weight:bold;"  onclick="this.form.style_id1.value=this.form.style_color1.value;if(this.form.style_strong1.checked)this.form.style_id1.value += this.form.style_strong1.value;"> 加粗</td>
+    <#else>
+    <input type="checkbox" name="style_strong1" id="style_strong1" value="font-weight:bold;"  onclick="this.form.style_id1.value=this.form.style_color1.value;if(this.form.style_strong1.checked)this.form.style_id1.value += this.form.style_strong1.value;"> 加粗</td>
+    </#if>
+    </tr>
+    <tr >
+      <th>结点介绍 :</th>
+      <td class="table_td2">
+	  <@spring.bind "node.description"/>
+	  <@editor.editor instanceName="${spring.status.expression}" value="${spring.status.value?default('')}" height="200" toolbarSet="Basic"/>
+	  </td>
+    </tr>
+    <tr>
+      <th>结点种类</th>
+      <td class="table_td2">
+	  <@spring.bind "node.nodeKind"/>
+	  <select name="${spring.status.expression}" id="${spring.status.expression}"  class='flat' >
+	  	<#list nodeKinds as kind>
+			<#if node.nodeKind?default(0)==kind.kind>
+				<option value="${kind.kind}" selected>${kind.title}</option>
+			<#else>
+				<option value="${kind.kind}" >${kind.title}</option>
+			</#if>
+		</#list>
+	  </select>
+         </td>
+    </tr>
+    <tr>
+      <th>是否允许添加内容</th>
+      <td class="table_td2">
+	  <@spring.bind "node.addContentStatus"/>
+	  	
+			<#if (node.addContentStatus)?default(0)==0>
+				<input name="${spring.status.expression}" type="radio" value="0" id="addContentStatus_1" checked >
+			    <label for="addContentStatus_1"  >是</label> <input name="${spring.status.expression}" type="radio" value="-1" id="addContentStatus_2" >
+			    <label for="addContentStatus_2"  >否</label>
+			<#else>
+				<input name="${spring.status.expression}" type="radio" value="0" id="addContentStatus_1"  >
+			    <label for="addContentStatus_1"  >是</label> <input name="${spring.status.expression}" type="radio" value="-1" id="addContentStatus_2" checked>
+			    <label for="addContentStatus_2"  >否</label>
+			</#if>
+		
+	 
+         </td>
+    </tr>
+    <tr>
+	<th>自动关联刷新模式:</th>
+     <td class="table_td2">
+	 <@spring.bind "node.autoRefreshMode"/>
+	 <select name="${spring.status.expression}" id="${spring.status.expression}"  class='flat' >
+	  	<#list autoRefreshModes as refreshMode>
+			<#if node.autoRefreshMode?default(0)==refreshMode.mode>
+				<option value="${refreshMode.mode}" selected>${refreshMode.title}</option>
+			<#else>
+				<option value="${refreshMode.mode}" >${refreshMode.title}</option>
+			</#if>
+		</#list>
+	  </select>
+	</td>
+   </tr> 	
+	<#if mode=="new"&&nodeType==2>
+	<tr id="makedir1">
+      <th> 实结点继承:</th>
+      <td class="table_td2">
+	  <select name="data_InheritNodeID" id="data_InheritNodeID"  class='flat'>
+	  <@showNodes />
+      </select>
+      一旦选择将不可再更改</td>
+    </tr>
+	<#else>
+	
+    <tr id="makedir1">
+      <th> 内容模型套用:</th>
+      <td class="table_td2">
+	  <@spring.bind "node.tableId"/>
+	  <#if mode=="edit">
+	  <#assign enable=""/>
+	  <#else>
+	  <#assign enable=""/>
+	  </#if>
+	  <select name="${spring.status.expression}" id="${spring.status.expression}"  class='flat' ${enable}>
+	  	<#list cts as ct>
+			<#if node.tableId?default(0)==ct.tableId>
+			<option value="${ct.tableId}" selected>${ct.name}</option>
+			<#else>
+			<option value="${ct.tableId}" >${ct.name}</option>
+			</#if>
+		</#list>
+	   </select>
+      </td>
+    </tr>
+	</#if>
+  
+  
+  <tr id="makedir1">
+      <th> 内容编辑器:</th>
+      <td class="table_td2">
+	  <@spring.bind "node.editor"/>
+	  <select name="${spring.status.expression}" id="${spring.status.expression}"  class='flat' >
+	  	<#list editorTypes as editor>
+			<#if node.editor?default("default.html")==editor.url>
+				<option value="${editor.url}" selected>${editor.title}</option>
+			<#else>
+				<option value="${editor.url}" >${editor.title}</option>
+			</#if>
+		</#list>
+	  </select>
+         </td>
+    </tr>
+
+  <tr id="makedir1">
+      <th> 内容分页生成器:</th>
+      <td class="table_td2">
+	  <@spring.bind "node.pager"/>
+	  <select name="${spring.status.expression}" id="${spring.status.expression}"  class='flat' >
+	  	<#list pagerTypes as pager>
+			<#if node.pager?default("default")==pager.name>
+      			<option value="${pager.name}" selected>${pager.title}</option>
+			<#else>
+				<option value="${pager.name}" >${pager.title}</option>
+			</#if>
+		</#list>
+	  </select>
+      </td>
+    </tr>
+ <tr id="makedir1">
+      <th> 稿件工作流套用:</th>
+      <td class="table_td2">
+	  <@spring.bind "node.workflow"/>
+	  <#if extra?default("")=="system">
+	  	<select disabled name="${spring.status.expression}" id="${spring.status.expression}"  class="flat" >
+			<option value="0"  selected>---工作流禁止（不允许投稿）---</option>
+			<option value="2">一级审核</option>
+			<option value="3">二级审核</option>
+			<option value="4" >投稿即发布</option>
+		 </select>
+	  <#else>
+		  <select name="${spring.status.expression}" id="${spring.status.expression}"  class="flat" >
+			<option value="0"  >---工作流禁止（不允许投稿）---</option>
+			<option value="2">一级审核</option>
+			<option value="3">二级审核</option>
+			<option value="4" selected>投稿即发布</option>
+		 </select>
+	  </#if>	  
+         </td>
+    </tr>
+    </tbody>
+    </table>
+   
+   
+   
+   
+    <table border="0" cellspacing="0" cellpadding="1" width="100%"  align=center class="maintable2">
+	   <tbody id="Tabs1" style="display:none">
+  		<th colspan=2>发布设置</th>
+  		<tr id="makedir1">
+	      <th>发布模式:</th>
+	      <td class="table_td2">
+		  <#if extra?default("")=="system">
+		  	  <@spring.bind "node.publishMode"/>
+				 <#list publishModes as pubMode>
+				 <#if node.publishMode?default(1)==pubMode.mode>
+				 <input disabled name="${spring.status.expression}" type="radio" value="${pubMode.mode}" id="${spring.status.expression}_${pubMode.mode}" checked onClick="setPublishMode(${pubMode.mode});">
+				 <#else>
+				 <input disabled name="${spring.status.expression}" type="radio" value="${pubMode.mode}" id="${spring.status.expression}_${pubMode.mode}"  onClick="setPublishMode(${pubMode.mode});">
+				 </#if>
+				<label for="${spring.status.expression}_${pubMode.mode}"  >${pubMode.title}</label>
+				 </#list>
+		  <#else>
+			  <@spring.bind "node.publishMode"/>
+				 <#list publishModes as pubMode>
+				 <#if node.publishMode?default(1)==pubMode.mode>
+				 <input name="${spring.status.expression}" type="radio" value="${pubMode.mode}" id="${spring.status.expression}_${pubMode.mode}" checked onClick="setPublishMode(${pubMode.mode});">
+				 <#else>
+				 <input name="${spring.status.expression}" type="radio" value="${pubMode.mode}" id="${spring.status.expression}_${pubMode.mode}"  onClick="setPublishMode(${pubMode.mode});">
+				 </#if>
+				<label for="${spring.status.expression}_${pubMode.mode}"  >${pubMode.title}</label>
+				 </#list>
+		  </#if>
+		  
+			</td>
+	 </tr>
+	 <tr id="UI_auto_publish">
+      <th>自动发布:</th>
+	  
+      <td class="table_td2">
+	  <@spring.bind "node.autoPublish"/>
+	  <#if extra?default("")=="system">
+	  	 <input disabled name="${spring.status.expression}" type="radio" value="1" id="AutoPublish_2" >
+			<label for="AutoPublish_2"  >是</label> <input name="${spring.status.expression}" disabled type="radio" value="2" id="AutoPublish_3" checked>
+			<label for="AutoPublish_3"  >否</label>
+	  <#else>
+		  
+		  <#if node.autoPublish?default(1)==1>
+		  <input name="${spring.status.expression}" type="radio" value="1" id="AutoPublish_2" checked >
+			<label for="AutoPublish_2"  >是</label> <input name="${spring.status.expression}" type="radio" value="2" id="AutoPublish_3" >
+			<label for="AutoPublish_3"  >否</label>
+		  <#else>
+		  <input name="${spring.status.expression}" type="radio" value="1" id="AutoPublish_2" >
+			<label for="AutoPublish_2"  >是</label> <input name="${spring.status.expression}" type="radio" value="2" id="AutoPublish_3" checked>
+			<label for="AutoPublish_3"  >否</label>
+		  </#if>
+	  </#if>
+		</td>
+      </tr>
+    <tr>
+      <th>模板文件字符编码<p>若不填写则使用全局设置</p></th>
+      <td class="table_td2">
+	  <@spring.bind "node.tplEncoding"/>
+	  <input name="${spring.status.expression}"  class='flat' id="${spring.status.expression}"   size="10"  value="${spring.status.value?default('')}">
+    </td>
+    </tr>
+    <tr>
+      <th>内容输出字符编码<p>若不填写则使用全局设置</p></th>
+      <td class="table_td2">
+	  <@spring.bind "node.outEncoding"/>
+	  <input name="${spring.status.expression}"  class='flat' id="${spring.status.expression}"   size="10"  value="${spring.status.value?default('')}">
+    </td>
+    </tr>
+	 <tr id="UI_resource_psn">
+      <th>资源发布点(PSN) :</th>
+      <td class="table_td2">
+	  <@spring.bind "node.resourcePsn"/>
+	  <input name="${spring.status.expression}"  class='flat' id="${spring.status.expression}"   size=50  value="${spring.status.value?default('')}">
+      <input name="button5" type='button' tabindex='13' value='...' onClick="psnSelect('${spring.status.value?default("")}',this.form,'${spring.status.expression}','resourceUrl')"></td>
+    </tr>
+    <tr id="UI_resource_url">
+      <th> 资源发布URL :</th>
+      <td class="table_td2">
+	  <@spring.bind "node.resourceUrl"/>
+	  <input name="${spring.status.expression}" id="${spring.status.expression}" size=50  class='flat'   value="${spring.status.value?default("")}">
+         </td>
+     </tr>
+     
+	   <tr id="UI_content_psn">
+	      <th>静态内容发布点(PSN) :</th>
+	      <td class="table_td2">
+		  <@spring.bind "node.contentPsn"/>
+		  <input name="${spring.status.expression}"  class='flat' id="${spring.status.expression}"   size=50  value="${spring.status.value?default("")}">
+	      <input name="button6" type='button' tabindex='13' value='...' onClick="psnSelect('${spring.status.value?default("")}',this.form,'${spring.status.expression}','contentUrl')"></td>
+	    </tr>
+	    <tr id="UI_content_url">
+	      <th> 静态内容发布URL :</th>
+	      <td class="table_td2">
+		  <@spring.bind "node.contentUrl"/>
+		  <input name="${spring.status.expression}" id="${spring.status.expression}" size=50  class='flat' value="${spring.status.value?default("")}">
+	      </td>
+	    </tr>
+	    <tr id="UI_index_name">
+	      <th>结点首页文件名 :</th>
+	      <td class="table_td2">
+		  <@spring.bind "node.indexName"/>
+		  <input name="${spring.status.expression}" id="${spring.status.expression}" size=30  class='flat'  value="${spring.status.value?default("index_{NodeID}.html")}">
+	        </td>
+	    </tr>
+		<tr id="UI_sub_dir">
+	      <th>静态发布分卷目录结构 :</th>
+	      <td  class="table_td2">
+		  <@spring.bind "node.subDir"/>
+		  <input name="${spring.status.expression}" class='flat'  id="${spring.status.expression}"   size=15 value="${spring.status.value?default("")}">
+	        &nbsp; <select name="select" class='flat' onChange="
+	this.form.${spring.status.expression}.value= this.options[this.selectedIndex].value;
+	 ">		  <#list subDirTypes as subDir>
+	 		  	<#if node.subDir?default("")=subDir.type>
+				<option value="${subDir.type}" selected>${subDir.title}</option>
+				<#else>
+				<option value="${subDir.type}">${subDir.title}</option>
+				</#if>
+			  </#list>
+	        </select> </td>
+	    </tr>
+	    <tr  id="UI_publish_file_format">
+	      <th>静态发布文件格式 :</th>
+	      <td  class="table_td2">
+		  <@spring.bind "node.publishFileFormat"/>
+		  <input name="${spring.status.expression}"  class='flat' size=50  id="${spring.status.expression}" value="${spring.status.value?default('content.{TimeStamp}d{ContentID}.html')}" >
+	      <input name="button7" type='button' tabindex='13' value='...' onClick="PublishFileFormat(this.form,'${spring.status.expression}')"> </td>
+	    </tr>
+	    <tr  id="UI_index_portal_url" style="display:none">
+	      <th>结点首页入口URL :</th>
+	      <td  class="table_td2">
+		   <@spring.bind "node.indexPortalUrl"/>
+		  <input name="${spring.status.expression}"  class='flat' size="100%"  id="${spring.status.expression}" value="${spring.status.value?default("")}" >
+	        </td>
+	    </tr>
+	    <tr  id="UI_content_portal_url" style="display:none">
+	      <th>内容页入口URL :</th>
+	      <td  class="table_td2">
+		  <@spring.bind "node.contentPortalUrl"/>
+		  <input name="${spring.status.expression}"  class='flat' size="100%"  id="${spring.status.expression}" value="${spring.status.value?default("")}" >
+	        </td>
+	    </tr>
+	    <tr  id="UI_extra_portal_url" style="display:none">
+	      <th>附加发布页入口URL :</th>
+	      <td  class="table_td2">
+		  <@spring.bind "node.extraPortalUrl"/>
+		  <input name="${spring.status.expression}"  class='flat' size="100%"  id="${spring.status.expression}" value="${spring.status.value?default("")}" >
+	        </td>
+	    </tr>
+	    </tbody>
+   	</table>
+    <table border="0" cellspacing="0" cellpadding="1" width="100%"  align=center class="maintable2">
+    <tbody id="Tabs2" style="display:none">
+  	<th colspan=2>模板设置</th>
+    <tr id="UI_index_tpl">
+      <th>首页模板 :</th>
+      <td class="table_td2">
+	  <@spring.bind "node.indexTpl"/>
+	  <input name="${spring.status.expression}" id="${spring.status.expression}" size=50  class='flat'  value="${spring.status.value?default("")}">
+      <input type='button' tabindex='13' value='...' onClick="tplSelect('${spring.status.value?default("")}',this.form,'${spring.status.expression}')"> </td>
+    </tr>
+    <tr id="UI_content_tpl">
+      <th>内容页模板 :</th>
+      <td class="table_td2">
+	  <@spring.bind "node.contentTpl"/>
+	  <input name="${spring.status.expression}" id="${spring.status.expression}" size=50  class='flat' value="${spring.status.value?default("")}">
+      <input name="button" type='button' tabindex='13' value='...' onClick="tplSelect('${spring.status.value?default("")}',this.form,'${spring.status.expression}')"> </td>
+    </tr>
+    <tr id="UI_img_tpl">
+      <th>图片页模板</th>
+      <td class="table_td2">
+	  <@spring.bind "node.imageTpl"/>
+	  <input name="${spring.status.expression}" id="${spring.status.expression}" size=50  class='flat'  value="${spring.status.value?default("")}">
+      <input name="button2" type='button' tabindex='13' value='...' onClick="tplSelect('${spring.status.value?default("")}',this.form,'${spring.status.expression}')"> </td>
+    </tr>
+    <tr>
+      <th>RSS模板<p>留空则使用全局设置</p></th>
+      <td class="table_td2">
+	  <@spring.bind "node.rssTpl"/>
+	  <input name="${spring.status.expression}" id="${spring.status.expression}" size=50  class='flat'  value="${spring.status.value?default('')}">
+      <input name="button2" type='button' tabindex='13' value='...' onClick="tplSelect('${spring.status.value?default("")}',this.form,'${spring.status.expression}')"> </td>
+    </tr>
+    </tbody>
+    </table>
+    <table border="0" cellspacing="0" cellpadding="1" width="100%"  align=center class="maintable2">
+    <tbody id="Tabs3" style="display:none">
+  	<th colspan=2>菜单设置</th>
+  	<tr>
+      <th>是否加入导航菜单</th>
+      <td class="table_td2">
+	  <@spring.bind "node.menuStatus"/>
+	  <#if spring.status.value?default(0)==1>
+	  <input name="${spring.status.expression}" type="radio" value="1" id="protectStatus1" checked><label for="protectStatus1">是</label> 
+	  <input name="${spring.status.expression}"  type="radio" value="0" id="protectStatus2" ><label for="protectStatus2">否</label>
+	  <#else>
+	  <input name="${spring.status.expression}" type="radio" value="1" id="protectStatus1" ><label for="protectStatus1">是</label> 
+	  <input name="${spring.status.expression}"  type="radio" value="0" id="protectStatus2" checked><label for="protectStatus2">否</label>
+	  </#if>
+	  </td>
+    </tr>
+    <tr>
+      <th>菜单名称<p>针对导航菜单</p></th>
+      <td class="table_td2">
+	  <@spring.bind "node.menuName"/>
+	  <input name="${spring.status.expression}" id="${spring.status.expression}" size=60  class='flat'  value="${spring.status.value?default('')}"></td>
+    </tr>
+    <tr>
+      <th>菜单排序<p>针对导航菜单排序</p></th>
+      <td class="table_td2">
+	  <@spring.bind "node.menuPos"/>
+	   <input name="${spring.status.expression}" id="${spring.status.expression}" size=60  class='flat'  value="${spring.status.value?default(0)}"></td>
+    </tr>    
+    </tbody>
+    </table>
+    <table border="0" cellspacing="0" cellpadding="1" width="100%"  align=center class="maintable2">
+    <tbody id="Tabs4" style="display:none">
+  	<th colspan=2>其它设置</th>
+    <tr>
+      <th>SEO Title（标题）<p>针对搜索引擎设置的标题</p></th>
+      <td class="table_td2">
+	  <@spring.bind "node.seoTitle"/>
+	  <input name="${spring.status.expression}" id="${spring.status.expression}" size=60  class='flat'  value="${spring.status.value?default('')}"></td>
+    </tr>
+    <tr>
+      <th>SEO Keywords（关键词）<p>针对搜索引擎设置的关键词</p></th>
+      <td class="table_td2">
+	  <@spring.bind "node.seoKeywords"/>
+	  <textarea name="${spring.status.expression}" id="${spring.status.expression}" cols="60" rows=”3"  class='flat'>${spring.status.value?default('')}</textarea></td>
+    </tr>
+    <tr>
+      <th>SEO Description（栏目描述）<p>针对搜索引擎设置的网页描述</p></th>
+      <td class="table_td2">
+	  <@spring.bind "node.seoDescription"/>
+	  <textarea name="${spring.status.expression}" id="${spring.status.expression}" cols="60" rows=”3"  class='flat'>${spring.status.value?default('')}</textarea></td>
+    </tr>
+    <tr>
+      <th>是否启用防止复制、防盗链功能</th>
+      <td class="table_td2">
+	  <@spring.bind "node.protectStatus"/>
+	  <#if spring.status.value?default(0)==1>
+	  <input name="${spring.status.expression}" type="radio" value="1" id="protectStatus1" checked><label for="protectStatus1">是</label> 
+	  <input name="${spring.status.expression}"  type="radio" value="0" id="protectStatus2" ><label for="protectStatus2">否</label>
+	  <#else>
+	  <input name="${spring.status.expression}" type="radio" value="1" id="protectStatus1" ><label for="protectStatus1">是</label> 
+	  <input name="${spring.status.expression}"  type="radio" value="0" id="protectStatus2" checked><label for="protectStatus2">否</label>
+	  </#if>
+	  </td>
+    </tr>
+    <tr>
+      <th>RSS显示内容条目数</th>
+      <td class="table_td2">
+	  <@spring.bind "node.rssNums"/>
+	  <select name="${spring.status.expression}" id="${spring.status.expression}" style="width:60px">
+	  	  <#list 1..50 as i>
+	  	  	<#if spring.status.value?default(30)==i>
+	  	  		<option value='${i}' selected="selected">${i}</option>
+	  	  	<#else>
+	  	  		<option value='${i}'>${i}</option>
+	  	  	</#if>
+	  	  </#list>
+	  	  </select>	  
+	  </td>
+    </tr>
+    </tbody>
+    </table>
+  </td>
+  </tr>
+<tr><td>
+<center><input type='submit' name='submit' value=' 提 交 ' tabindex='13'>
+<input TYPE="hidden" name="referer" value="">
+        &nbsp;&nbsp;&nbsp;&nbsp; <input type="reset" name="Submit" value=" 重 置 ">
+</center>
+	   </TD>
+
+	   </TR>
+ 	   
+</table>
+</form>
+<script type="text/javaScript" language="javaScript">
+	setPublishMode(${node.publishMode?default(1)});
+</script>
+
+<br/>

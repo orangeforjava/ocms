@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tree>
+  <#list nodes as node>
+  <#if nodeManager.getNodeCount(node.nodeId,0,0)==0>
+  	<tree text="${node.name}" action="admin/resource.jhtml?action=ListResource&amp;nodeId=${node.nodeId?c}" target="main" cId="${node.nodeId?c}"/>
+  <#else>
+  	<tree text="${node.name}" action="admin/resource.jhtml?action=ListResource&amp;nodeId=${node.nodeId?c}" src="admin/resource.jhtml?action=ResourceXml&amp;nodeId=${node.nodeId?c}" target="main" cId="${node.nodeId?c}"/>
+  </#if>
+  </#list>
+</tree>

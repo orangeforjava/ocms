@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+   $Id: TemplateCategory.hbm.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.tpl.model">
+    <class name="TemplateCategory" table="cms_tpl_cate">
+        <id name="id" type="long">
+            <column name="id" precision="22" scale="0" />
+            <generator class="sequence">
+				<param name="sequence">cms_tpl_cate_seq</param>
+			</generator>
+        </id>
+        <property name="parentId" type="long">
+            <column name="parentId" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="cateName" type="string">
+            <column name="cateName" length="200" not-null="true" />
+        </property>
+        <property name="cateTitle" type="string">
+            <column name="cateTitle" length="200" />
+        </property>
+        <property name="cateDesc" type="text">
+            <column name="cateDesc"/>
+        </property>
+        <property name="cateStatus" type="long">
+            <column name="cateStatus" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="creationUid" type="long">
+            <column name="creationUid" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="creationDate" type="long">
+            <column name="creationDate" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="modifiedDate" type="long">
+            <column name="modifiedDate" precision="22" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

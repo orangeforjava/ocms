@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <scores>
+    <score key="请选择">请选择综合评价</score>
+    <score key="优秀">优秀</score>
+	<score key="良好">良好</score>
+	<score key="中等">中等</score>
+  </scores>
+</directory>

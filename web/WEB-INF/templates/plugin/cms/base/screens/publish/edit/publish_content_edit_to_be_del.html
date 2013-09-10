@@ -1,0 +1,811 @@
+<#assign noLayout="true"/>
+<#--
+ 内容编辑页
+-->
+<#import "/plugin/cms/base/macros/cms-macros.html" as cms />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>publish content edit</title>
+<base  href="${baseUrl}"/>
+<link type="text/css" rel="StyleSheet" href="html/plugin/cms/base/css/style.css" />
+<link rel="stylesheet" href="html/calendar.css" type="text/css">
+<style type="text/css">
+<!--
+.A	{HEIGHT:20px;BORDER:1px solid #000000;TEXT-DECORATION:none;}
+.line_height {line-height: 25px;}
+//-->
+</style>
+<script language=JavaScript>
+var NodeID = '${node.nodeId?c}';
+var IndexID = '';
+var o = 'Add';
+var PUBLISH_URL="${baseUrl}/admin/publish/";
+</script>
+<script language=javascript>
+function onlyNum()
+{
+  if(!((event.keyCode>=48&&event.keyCode<=57)||(event.keyCode>=96&&event.keyCode<=105)|| event.keyCode==8 || event.keyCode==37 || event.keyCode==39 || event.keyCode==46 || event.keyCode==190 || event.keyCode==189))
+//考虑小键盘上的数字键
+    event.returnValue=false;
+}
+
+function mysubmit(form)
+{
+with(form){
+	selectValue.value=''
+	var icon=head.value;
+	var sep=seperator.value
+	for(i=1;i<mdoc.length;i++) {
+		var addtime=''
+		stringToSplit=mdoc.options[i].value
+		arrayOfStrings=stringToSplit.split('%@%')
+
+		dateToSplit=arrayOfStrings[1]
+		arrayOfDate=dateToSplit.split('-')
+		if(year.options[year.selectedIndex].value=='1') {
+			addtime=arrayOfDate[0]
+		}
+
+		if(month.options[month.selectedIndex].value=='1' && year.options[year.selectedIndex].value=='1') {
+			addtime=addtime+sep+arrayOfDate[1]
+		}else {
+			addtime=arrayOfDate[1]
+
+		}
+
+		if(date.options[date.selectedIndex].value=='1' && month.options[month.selectedIndex].value=='1') {
+			addtime=addtime+sep+arrayOfDate[2]
+		}else {
+			addtime=addtime+arrayOfDate[2]
+
+		}
+
+		if(time.options[time.selectedIndex].value=='1') {
+			addtime=addtime+' '+arrayOfDate[3]+':'+arrayOfDate[4]
+		}
+
+		selectValue.value+=icon + ' <A href=\"'+arrayOfStrings[0]+'\" target=\"_blank\">'+mdoc.options[i].text+'</A>    <FONT id=\"ADDTIME\">'+addtime+'</FONT><BR>\n'
+	}
+		window.returnValue = selectValue.value;
+		window.close();
+	}
+
+}
+function moveUp(obj)
+{
+	with (obj){
+		if(selectedIndex==0){
+			options[length]=new Option(options[0].text,options[0].value)
+			options[0]=null
+			selectedIndex=length-1
+			}
+		else if(selectedIndex>0) moveG(obj,-1)
+	}
+}
+
+function editContentLink(fieldName)
+{
+
+ 		var leftPos = screen.availWidth / 2
+		var topPos = screen.availHeight / 2
+		var MyWIN = window.open("${baseUrl}admin/contentSelect.jhtml?indexId=" + IndexID + "&fieldName=" + fieldName + "&nodeId=" + NodeID,'','width=500,height=380,scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+}
+
+
+function GoSelect(obj)
+{
+	with (obj){
+ 		var IndexID = options[selectedIndex].value;
+		window.open("${baseUrl}admin/publish.jhtml?action=ViewPublish&indexId=" + IndexID + "&nodeId=" + NodeID,'')
+
+ 	}
+
+}
+
+function moveDown(obj)
+{
+	with (obj){
+		if(selectedIndex==length-1){
+			var otext=options[selectedIndex].text
+			var ovalue=options[selectedIndex].value
+			for(i=selectedIndex; i>0; i--){
+				options[i].text=options[i-1].text
+				options[i].value=options[i-1].value
+			}
+			options[i].text=otext
+			options[i].value=ovalue
+			selectedIndex=0
+			}
+		else if(selectedIndex<length-1) moveG(obj,+1)
+	}
+}
+function moveG(obj,offset)
+{
+	with (obj){
+		desIndex=selectedIndex+offset
+		var otext=options[desIndex].text
+		var ovalue=options[desIndex].value
+		options[desIndex].text=options[selectedIndex].text
+		options[desIndex].value=options[selectedIndex].value
+		options[selectedIndex].text=otext
+		options[selectedIndex].value=ovalue
+		selectedIndex=desIndex
+	}
+}
+/**
+*
+**/
+function setContentLinkValue(fieldName)
+{
+	eval("obj = document.FM.data_" + fieldName);
+ 	var returnValue;
+
+	with(obj) {
+ 		for(i=0; i <  obj.length ; i++){
+		    //
+			if(i==0) {
+				returnValue = options[i].value;
+			} else {
+				returnValue = returnValue + ',' + options[i].value;
+			}
+ 		}
+
+	}
+	//
+	//
+	if(returnValue == 'undefined') {
+		returnValue = '';
+	}
+ 	return returnValue;
+
+}
+function add(fieldName, param_index_id,param_title) {
+	eval("obj = document.FM.data_" + fieldName);
+	with(obj) {
+		length=obj.length
+		/*if(data.length > 24) {
+			var data1 = "..." + data.substr(data.length-24 ,24)
+		} else {
+			var data1 = data
+		}*/
+
+		options[length]=new Option(param_title,param_index_id)
+
+	}
+
+}
+function picker_content_add(fieldName, param_title) {
+ 	eval("obj = document.FM." + fieldName);
+
+	if(obj.value != '') {
+		obj.value=obj.value + ',' + param_title;
+
+	} else {
+		obj.value=  param_title;
+
+	}
+
+
+}
+function del(obj1) {
+
+
+	with(obj1) {
+		options[selectedIndex]=null
+		selectedIndex=length-1
+	}
+
+}
+var FieldDefaultValue = "";
+var FieldInputTpl = "";
+function InputPicker(action, form, element)
+{
+
+	switch(action) {
+		case 'color':
+			var arr = showModalDialog("html/color.htm","color","dialogWidth:200pt;dialogHeight:175pt;help:0;status:0");	break;
+		case 'date':
+			showCalendar(element, 'y-mm-dd');
+			break;
+		case 'upload':
+			var arr = showModalDialog('${baseUrl}/admin/upload.html'+'?action=Display&mode=one&type=img_picker&nodeId=' + NodeID,"color","dialogWidth:390px;dialogHeight:120px;help:0;status:0;scroll:no");
+			break;
+		case 'upload_attach':
+			var returnValue = showModalDialog('${baseUrl}/admin/upload.html' +'?action=Display&mode=one&type=attach&nodeId=' + NodeID,"color","dialogWidth:390px;dialogHeight:120px;help:0;status:0;scroll:no");
+			var arr = returnValue['url'];
+			break;
+		case 'tpl':
+			with(form){
+
+				eval("var varlue1=" + element + ".value;")
+
+			}
+
+			var arr = showModalDialog("${baseUrl}/admin/template.jhtml?action=SelTplDialog&tpl=" + varlue1,"color","dialogWidth:428px;dialogHeight:286px;help:0;status:0;scroll:no");
+			break;
+		case 'psn':
+			with(form){
+
+				eval("var varlue1=" + element + ".value;")
+
+			}
+
+			var info = showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=PsnPicker&psn=" + varlue1 ,"color","dialogWidth:600px;dialogHeight:266px;help:0;status:0;scroll:no");
+			if(info['filename'] != null) {
+				var arr= '{PSN-URL:'+ info['PSNID'] + "}" +info['filename'];
+			}
+			break;
+		case 'content':
+			var leftPos = screen.availWidth / 2
+			var topPos = screen.availHeight / 2
+			var MyWIN = window.open("admin/publish.html" + "?action=PickerContent&extra=ui_init&indexId=" + IndexID + "&fieldName=" + element + "&nodeId=" + NodeID,'','width=500,height=380,scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+			break;
+		case 'url_content':
+			var leftPos = screen.availWidth / 2 ;
+			var topPos = screen.availHeight / 2 ;
+
+			if(FieldInputTpl != "") {
+				var sizeArray = FieldInputTpl.split("*");
+			} else {
+				var sizeArray = new Array();
+				sizeArray[0] = 500;
+				sizeArray[1] = 380;
+			}
+
+
+			var MyWIN = window.open("ui.jhtml?&o=picker_url_content&extra=ui_init&IndexID=" + IndexID + "&fieldName=" + element + "&NodeID=" + NodeID + "&url=" + urlencode(FieldDefaultValue),'','width=' + sizeArray[0] +',height='  + sizeArray[1]+',scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+			break;
+	}
+
+	if(arr != null && action != 'content' ) {
+		with(form){
+
+			eval(element + ".value= '" +  arr + "'")
+
+		}
+
+
+	}
+
+}
+</script>
+<STYLE type=text/css>
+TD {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: "MS Shell Dlg"
+}
+.tab {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; FONT-SIZE: 12px; PADDING-BOTTOM: 1px; CURSOR: hand; PADDING-TOP: 5px; LETTER-SPACING: 1px
+}
+</STYLE>
+<SCRIPT language=JavaScript>
+
+function tabClick(idx)
+{
+
+
+	for (i = 1; i < 4; i++) {
+
+
+		if (i == idx) {
+
+			var tabImgLeft = eval("document.all.tabImgLeft__" + idx);
+
+			var tabImgRight = eval("document.all.tabImgRight__" + idx);
+
+			var tabLabel = eval("document.all.tabLabel__" + idx);
+
+			var tabContent = eval("document.all.tabContent__" + idx);
+
+
+			tabImgLeft.src = "html/images/mpc/tab_active_left.gif";
+
+			tabImgRight.src = "html/images/mpc/tab_active_right.gif";
+
+			tabLabel.background = "html/images/mpc/tab_active_bg.gif";
+
+			tabContent.style.visibility = "visible";
+
+			tabContent.style.display = "block";
+
+		}
+  else {
+			var tabImgLeft = eval("document.all.tabImgLeft__" + i);
+
+			var tabImgRight = eval("document.all.tabImgRight__" + i);
+
+			var tabLabel = eval("document.all.tabLabel__" + i);
+
+			var tabContent = eval("document.all.tabContent__" + i);
+
+
+			tabImgLeft.src = "html/images/mpc/tab_unactive_left.gif";
+
+			tabImgRight.src = "html/images/mpc/tab_unactive_right.gif";
+
+			tabLabel.background = "html/images/mpc/tab_unactive_bg.gif";
+
+			tabContent.style.visibility = "hidden";
+
+			tabContent.style.display = "none";
+
+
+		}
+
+	}
+
+
+}
+function psnSelect(psn,form, psn_element,url_element) {
+//showModalDialog
+var arr = showModalDialog("${baseUrl}admin/adminSelect.jhtml?action=SelPsnDialog&psn=" + psn,"color","dialogWidth:428px;dialogHeight:266px;help:0;status:0;scroll:no");
+if(arr != null) {
+	var PSN = '{PSN:'+ arr;
+	var URL = '{PSN-URL:'+ arr;
+	with(form){
+
+	eval(psn_element + ".value= '" + PSN + "'")
+	eval(url_element + ".value= '" + URL + "'")
+
+	}
+}
+}//end function psnSelect
+
+/**
+*从资源库中选择资源
+*/
+function SelectResource(form, element,category){
+	var arr = showModalDialog("${baseUrl}admin/resourceSelect.jhtml?action=ResourceFrameset&nodeId=${node.nodeId?c}&category=" + category,category,"dialogWidth:558px;dialogHeight:446px;help:0;status:0;scroll:no");
+	if(arr != null&&arr!="") {
+		var resultAry=arr.split('|');
+	    arr="../resource/"+resultAry[0];
+		with(form){
+
+			eval(element + ".value= '" +  arr + "'")
+
+		}
+	}
+}//end function SelectResource
+function SelectSResource(form, element,category,extra){
+	var arr = showModalDialog("${baseUrl}admin/resourceSelect.jhtml?action=ResourceFrameset&nodeId=${node.nodeId?c}&category=" + category+"&"+extra,category,"dialogWidth:558px;dialogHeight:446px;help:0;status:0;scroll:no");
+	if(arr != null&&arr!="") {
+	    var resultAry=arr.split('|');
+	    arr="../resource/"+resultAry[0];
+		with(form){
+
+			eval(element + ".value= '" +  arr + "'")
+
+		}
+	}
+}//end function SelectResource
+</SCRIPT>
+<style type="text/css">
+<!--
+.bigborder {
+	border-top: 0px #FFFFFF;
+	border-right: 0px solid #999999;
+	border-bottom: 0px solid #999999;
+	border-left: 0px solid #FFFFFF;
+}
+-->
+</style>
+<script language=javascript>
+/**
+* 准备提交
+**/
+function prepareSubmit()
+{
+}
+
+</script>
+</head>
+<body bgcolor="threedface" STYLE="margin:0pt;padding:0pt;border: 1px buttonhighlight;">
+<form action="admin/publishEdit.jhtml?type=main&action=Submit&nodeId=${node.nodeId?c}" method="post" name="FM" >
+<!--------------------------------------------------------------------------------------------------------->
+<TABLE cellSpacing="0" cellPadding="0" width="100%" align="center" border="0" bgcolor="threedface">
+
+<TBODY>
+  <TR>
+    <TD  >
+      <TABLE cellSpacing=0 cellPadding=0 border=0 width="100%">
+        <TBODY>
+        <TR>
+          <TD>
+            <TABLE height=22 cellSpacing=0 cellPadding=0 border=0>
+              <TBODY>
+              <TR>
+          <TD>
+            <TABLE height=22 cellSpacing=0 cellPadding=0 border=0>
+              <TBODY>
+              <TR>
+                <TD width=3><IMG id="tabImgLeft__1" height=22
+                  src="html/images/mpc/tab_unactive_left.gif"
+                  width=3></TD>
+                <TD class=tab id="tabLabel__1" onClick="tabClick(1)"
+                background="html/images/mpc/tab_active_bg.gif"
+                UNSELECTABLE="on"><label>基本内容</label></TD>
+                <TD width=3><IMG id="tabImgRight__1" height=22
+                  src="html/images/mpc/tab_active_right.gif"
+                  width=3></TD></TR></TBODY></TABLE></TD>
+          <TD>
+            <TABLE height=22 cellSpacing=0 cellPadding=0 border=0>
+              <TBODY>
+              <TR>
+                <TD width=3><IMG id="tabImgLeft__2" height="22"
+                  src="html/images/mpc/tab_unactive_left.gif"
+                  width=3></TD>
+                <TD class=tab id="tabLabel__2" onClick="tabClick(2)"
+                background="html/images/mpc/tab_unactive_bg.gif"
+                UNSELECTABLE="on" TITLE="发布设置"><label>发布设置</label></TD>
+                <TD width=3><IMG id="tabImgRight__2" height=22
+                  src="html/images/mpc/tab_unactive_right.gif"
+                  width=3></TD></TR></TBODY></TABLE></TD>
+
+
+
+				      <td>
+		    <TABLE height=22 cellSpacing=0 cellPadding=0 border=0>
+              <TBODY>
+              <TR>
+                <TD width=3><IMG id="tabImgLeft__3" height=22
+                  src="html/images/mpc/tab_unactive_left.gif"
+                  width=3></TD>
+                <TD class=tab id="tabLabel__3" onClick="tabClick(3)"
+                background="html/images/mpc/tab_unactive_bg.gif"
+                UNSELECTABLE="on"><label>附加资源</label></TD>
+                <TD width=3><IMG id="tabImgRight__3" height="22"
+                  src="html/images/mpc/tab_unactive_right.gif"
+                  width=3></TD></TR></TBODY></TABLE></TD>
+
+
+				  </TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD bgcolor="menu"  >
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD
+          style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; "
+          vAlign=top class="bigborder" >
+<!--2基本内容-->
+<DIV id="tabContent__1" style=" VISIBILITY: visible">
+<table   border=0 width=100%   cellPadding=5 cellSpacing=0 >
+	<#list cfs as cf>
+		<#assign fieldInputPicker=cf.fieldInputPicker?default("")/>
+		<#assign fieldInputPickerExtra=cf.fieldInputPickerExtra?default("")/>
+		<#assign enableStatics=cf.enableStatics?default(0)/>
+		<#assign fieldTitle=cf.fieldTitle/>
+		<#assign fieldName=cf.fieldName/>
+	<#if enableStatics==1>
+	<#else>
+	
+	<#if cf.fieldInput=="text">
+
+		<#if fieldInputPicker=="">
+ 		<!--一般的单行文本输入-->
+ 		<tr class="tablelist">
+    		<td align="right"  width="80"><b>${fieldTitle}:</b></td>
+    		<td valign='middle'>
+			<#if mode=="edit">
+			<input name="data_${fieldName}" type="text" value="${content[fieldName]?default("")}" size="100%">
+			<#else>
+			<input name="data_${fieldName}" type="text" value="" size="100%">
+			</#if>
+			</td>
+		</tr>
+		<#elseif fieldInputPicker=="upload">
+		<!--图片输入-->
+ 		<tr class="tablelist">
+    		<td align=right  width=80><b>${fieldTitle}:</b></td>
+        	<td valign='middle'>
+			<#if mode=="edit">
+			<input name="data_${fieldName}" type="text" value="${content[fieldName]?default("")}" size="100%">
+			<#else>
+			<input name="data_${fieldName}" type="text" value="" size="100%">
+			</#if>
+			&nbsp;<input name="sel_${fieldName}" type='button'  value='...' onClick="SelectResource(this.form,'data_${fieldName}','img')">
+			</td>
+		</tr>
+		<#elseif fieldInputPicker=="upload_attach">
+		<!---附件输入--->
+		<tr class='tablelist'>
+    		<td align=right  width=80><b>${fieldTitle}:</b></td>
+        	<td valign='middle'>
+			<#if mode=="edit">
+			<input name="data_${fieldName}" type="text" value="${content[fieldName]?default("")}" size=100%  >
+			<#else>
+			<input name="data_${fieldName}" type="text" value="" size=100%  >
+			</#if>
+			&nbsp;<input name="sel_${fieldName}" type='button'  value='...' onClick="SelectResource(this.form,'data_${fieldName}','attach')"></td>
+		</tr>
+		<#elseif fieldInputPicker=="upload_sattach">
+		<!---受控附件输入--->
+		<tr class='tablelist'>
+    		<td align=right  width=80><b>${fieldTitle}:</b></td>
+        	<td valign='middle'>
+			<#if mode=="edit">
+			<input name="data_${fieldName}" type="text" value="${content[fieldName]?default("")}" size=100%  >
+			<#else>
+			<input name="data_${fieldName}" type="text" value="" size=100%  >
+			</#if>
+			&nbsp;<input name="sel_${fieldName}" type='button'  value='...' onClick="SelectSResource(this.form,'data_${fieldName}','sattach','${fieldInputPickerExtra}')"></td>
+		</tr>
+		<#elseif fieldInputPicker=="flash">
+		<!--Flash输入-->
+		<tr class='tablelist'>
+    		<td align=right  width=80><b>${fieldTitle}:</b></td>
+        	<td valign='middle'>
+			<#if mode=="edit">
+			<input name="data_${fieldName}" type="text" value="${content[fieldName]?default("")}" size=100%  >
+			<#else>
+			<input name="data_${fieldName}" type="text" value="" size=100%  >
+			</#if>
+			&nbsp;<input name="sel_${fieldName}" type='button'  value='...' onClick="SelectResource(this.form,'data_${fieldName}','flash')"></td>
+		</tr>		
+		<#elseif fieldInputPicker=="color">
+		<!---颜色输入--->
+		<tr class='tablelist'>
+   			<td align=right  width=80><b>${fieldTitle}:</b></td>
+    		<td valign='middle'>
+			<#if mode=="edit">
+			<input name='data_${fieldName}' type='text' value='${content[fieldName]?default("")}' size=100%  >
+			<#else>
+			<input name='data_${fieldName}' type='text' value='' size=100%  >
+			</#if>
+			&nbsp;<input name="button5" type="button" tabindex="13" value="..." onClick="FieldInputTpl='';FieldDefaultValue='';InputPicker('color',this.form,'data_${fieldName}')">
+		</td>
+		<#elseif cf.fieldInputPicker=="content">
+		<!---相关内容输入--->
+ 		<tr class='tablelist'>
+    	<td align=right  width=80><b>${fieldTitle}:</b></td>
+        <td valign="middle"><table   border="0"  cellPadding="2" cellSpacing="0" ><tr><td >
+		<select name="data_${fieldName}" name="select" size="10">
+	 <#if mode=="edit"&&content[fieldName]?default("")!=""&&content[fieldName]?default("")!="undefined">
+	    
+	 	<@cms.content return="contentList" IndexID=content[fieldName]/>
+	 	<#if contentList?is_sequence>
+	 		<#list contentList as cl>
+				<option value="${cl["indexId"]}">${cl["Title"]}</option>
+			</#list>
+	 	<#else>
+	 		<option value="${contentList["indexId"]}">${contentList["Title"]}</option>
+	 	</#if>
+	 </#if>
+	 </select>
+	<INPUT TYPE='hidden' name='data_${fieldName}_value' value=""></td><td class='line_height'>
+	&nbsp;<input name='button5' type='button' tabindex='13' value='×' onclick=del(this.form.data_${fieldName})><br><br>&nbsp;<input name='button5' type='button' tabindex='13' value='∧' onclick=moveUp(this.form.data_${fieldName})><br>&nbsp;<input name='button5' type='button' tabindex='13' value='∨' onclick=moveDown(this.form.data_${fieldName})><br><br>&nbsp;<input name="button5" type='button' tabindex='13' value='...' onclick=editContentLink('${fieldName}')></td><td>&nbsp;<input name='button5' type='button' tabindex='13' value='&nbsp;Go&nbsp;' onclick=GoSelect(this.form.data_${fieldName})></td></tr></table> </td>
+		</tr>
+		</#if>
+	</tr>
+	<#elseif cf.fieldInput=="RichEditor">
+	<!---复杂内容输入--->
+	<tr class='tablelist'>
+    	<td align=right  width=80><b>${fieldTitle}:</b></td>
+        <td valign='middle'>
+		<#if mode=="edit">
+		<textarea style="display:none" id="data_${fieldName}" name="data_${fieldName}" >${content[fieldName]?default("")}</textarea>
+		<#else>
+		<textarea style="display:none" id="data_${fieldName}" name="data_${fieldName}" ></textarea>
+		</#if>
+		
+		<IFRAME ID="eWebEditor1" src="editor/htmleditor.html?id=data_${fieldName}&style=coolblue" frameborder="0" scrolling="no"  style="width:100%" height="350"></IFRAME>		
+		</td>
+	</tr>
+	
+
+	<!---其它输入...--->
+	</#if>
+	</#if>
+	</#list>
+</table>
+</DIV>
+<!--3-->
+<DIV id="tabContent__2" style="DISPLAY: none; VISIBILITY: hidden">
+<table  border=0   cellPadding=0 cellSpacing=5 >
+<tr class='tablelist'>
+              <td align=right >发布日期:</td>
+              <td >
+<input name="date" type="text" class="button" id="dTime" onFocus="return showCalendar('dTime', 'y-mm-dd');"      value="${now?string("yyyy-MM-dd")}">
+                <select name="hour">
+				<#assign hour=now?string("HH")/>
+				<#list 0..24 as hh>
+				    <#assign padhh=(hh?string)?left_pad(2,"0")/>
+					<#if hour==padhh>
+						<option value="${padhh}" selected>${padhh}</option>
+					<#else>
+						<option value="${padhh}">${padhh}</option>
+					</#if>
+				</#list>
+                </select>
+                时                <select name="minute">
+				<#assign minute=now?string("mm")/>
+				<#list 0..60 as mm>
+					<#assign paddmm=(mm?string)?left_pad(2,"0")/>
+					<#if minute==paddmm>
+						<option value="${paddmm}" selected>${paddmm}</option>
+					<#else>
+						<option value="${paddmm}">${paddmm}</option>
+					</#if>
+				</#list>
+				</select>
+                分 <select name="second">
+                <#assign second=now?string("ss")/>
+				<#list 0..60 as ss>
+					<#assign paddss=(ss?string)?left_pad(2,"0")/>
+					<#if second==paddss>
+						<option value="${paddss}" selected>${paddss}</option>
+					<#else>
+						<option value="${paddss}">${paddss}</option>
+					</#if>
+				</#list>
+                </select>
+                秒
+			  </td>
+</tr>
+
+<tr class='tablelist'>
+              <td align=right >置顶权重:</td>
+              <td >
+			  <#if mode=="edit">
+				<input name="top" type="text" class="button" id="top" value="${contentIndex["top"]?default("0")}">
+              <#else>
+			  	<input name="top" type="text" class="button" id="top" value="0">
+			  </#if>
+			  </td>
+</tr>
+<tr class='tablelist'>
+              <td align=right >精华权重:</td>
+              <td >
+			  <#if mode=="edit">
+				<input name="pink" type="text" class="button" id="pink" value="${contentIndex["pink"]?default("0")}">
+              <#else>
+			  	<input name="pink" type="text" class="button" id="pink" value="0">
+			  </#if>
+			  </td>
+</tr>
+
+<tr>
+<td align=right  >自定义套用模板:</td>
+              <td >
+			  <#if mode=="edit">
+			  	<input name='selfTemplate' id="selfTemplate" type='text' value='${contentIndex["selfTemplate"]?default("")}' size="80%"  >
+			  <#else>
+			  	<input name='selfTemplate' id="selfTemplate" type='text' value='' size="80%"  >
+			  </#if>
+			  &nbsp;<input name="button5" type='button' tabindex='13' value='...' onClick="InputPicker('tpl',this.form,'selfTemplate')"> </td></tr>
+
+<tr>
+<td align=right  >自定义发布文件名:</td>
+              <td >
+			  <#if mode=="edit">
+			  	<input name='selfPublishFileName' id="selfPublishFileName" type='text' value='${contentIndex["selfPublishFileName"]?default("")}' size="80%"  >
+			  <#else>
+			  	<input name='selfPublishFileName' id="selfPublishFileName" type='text' value='' size="80%"  >
+			  </#if>
+			  </td></tr>
+
+<tr>
+<td align=right  >自定义发布点(PSN):</td>
+              <td >
+			  <#if mode=="edit">
+			  	<input name='selfPsn' id="selfPsn" type='text' value='${contentIndex["selfPsn"]?default("")}' size="80%">
+			  <#else>
+			  	<input name='selfPsn' id="selfPsn" type='text' value='' size="80%">
+			  </#if>
+			  &nbsp; <input name="button6" type='button' tabindex='13' value='...' onClick="psnSelect('',this.form,'selfPsn','selfPsnUrl')"> </td></tr>
+<tr><td align=right  >自定义发布URL :</td>
+              <td >
+			  <#if mode=="edit">
+			  	<input name="selfPsnUrl" id="selfPsnUrl" type="text" value="${contentIndex["selfPsnUrl"]?default("")}" size="80%">
+			  <#else>
+			  	<input name="selfPsnUrl" id="selfPsnUrl" type="text" value="" size="80%">
+			  </#if>
+			  &nbsp; </td></tr>
+
+<tr><td align=right  > </td>
+              <td >&nbsp;  </td></tr>
+
+<tr><td align=right  >自定义外部URL   :</td>
+              <td >
+			  <#if mode=="edit">
+			  <input name='selfUrl' id="selfUrl" type='text' value='${contentIndex["selfUrl"]?default("")}' size=80%  >
+			  <#else>
+			  <input name='selfUrl' id="selfUrl" type='text' value='' size=80%  >
+			  </#if>
+			  &nbsp; </td></tr>
+			 <tr><td align=right  >自定义发布模式:</td>
+			 <td >
+			 <#list publishModes as pubMode>
+			 <#if contentIndex["publishMode"]?default(-1)==pubMode.mode>
+			 <input name="publishMode" type="radio" value="${pubMode.mode}" checked="checked" id="publishMode_${pubMode.mode}">
+			 <#else>
+			 <input name="publishMode" type="radio" value="${pubMode.mode}" id="publishMode_${pubMode.mode}">
+			 </#if>
+			 <label for="publishMode_${pubMode.mode}"  >${pubMode.title}</label>		
+			 </#list>
+			 </td></tr>
+			 <tr><td align=right  >查看权限:</td>	
+			 <td >
+			  <input name='permission' id="permission" type='text' value='${contentIndex["permission"]?default("")}' size=80%  ></td></tr>
+			  <tr><td align=right  >内容页入口URL:</td>
+			   <td >
+			  <input name="contentPortalUrl"  class='flat' size="100%"  id="contentPortalUrl" value="${contentIndex["contentPortalUrl"]?default("")}" ></td></tr>
+			</table>
+</DIV>
+
+
+<!--3-->
+<!--3相关的引用资源，图片，Falsh，附件三大类-->
+<DIV id="tabContent__3" style="DISPLAY: none; VISIBILITY: hidden">
+
+<table border="0" cellpadding="10" cellspacing="0" align="center"  >
+<tr><td>
+<#if imgRefList?has_content >
+<!--图片直接显示缩略图-->
+<fieldset class="search">
+ 	<legend><b>图片</b></legend>
+<table border="0" cellpadding="0" cellspacing="0"   >
+<tr><td>
+<#list imgRefList as imgRef>
+<div class="imagespacer" >
+			<div class="imageholder" >
+			<A HREF="${baseUrl}/resource/${imgRef.path}" target="_blank"><img src="${baseUrl}/util/automini.jhtml?src=${imgRef.path}&pixel=160*120" width="160" height="120" border="0" /></A>
+			</div>
+</div>
+</#list>
+</td></tr>
+</table>
+</fieldset>
+<BR>
+</#if>
+<#if attachRefList?has_content>
+<fieldset class="search">
+ 	<legend><b>附件</b></legend>
+<table border="0" cellpadding="3" cellspacing="0">
+<#list attachRefList as attachRef>
+ <tr><td>
+ <#assign type=attachRef.name[attachRef.name?last_index_of(".")+1..attachRef.name?length-1]/>
+ <IMG src="${baseUrl}html/images/icon/${type}.gif" border=0></td><td>
+<A href="${baseUrl}/resource/${attachRef.path}" target=_blank>
+${attachRef.title}
+</A>
+</td>
+<td></td></tr>
+</#list>
+ </table>
+</fieldset>
+</#if>
+<!--Flash显示地址-->
+<#if flashRefList?has_content>
+<fieldset class="search">
+ 	<legend><b>Flash</b></legend>
+<table border="0" cellpadding="3" cellspacing="0"   >
+<#list flashRefList as flashRef>
+ <tr><td>
+ <#assign type=flashRef.name[flashRef.name?last_index_of(".")+1..flashRef.name?length-1]/>
+ <IMG src="${baseUrl}html/images/icon/${type}.gif" border=0></td><td>
+<A href="${baseUrl}/resource/${flashRef.path}" target=_blank>
+${flashRef.title}
+</A>
+</td><td></td></tr>
+</#list>
+   </table>
+</fieldset>
+</#if>
+</td></tr>
+</table>
+
+
+</DIV>
+ </TD>
+ </TR></TBODY></TABLE></TD></TR>
+ </TBODY></TABLE>
+<input type="hidden" name="mode" value="${mode}"/>
+<#if mode=="edit">
+<input type="hidden" name="indexId" value="${indexId}"/>
+</#if>
+</form>
+</body>
+</html>

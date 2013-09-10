@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.openuap.org/survey"
+	xmlns="http://www.openuap.org/survey">
+	<xsd:element name="survey">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="name" />
+				<xsd:element name="description" minOccurs="0"
+					type="xsd:string" />
+				<xsd:element ref="creationDate" minOccurs="0" />
+				<xsd:element name="type" minOccurs="0">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:integer">
+							<xsd:enumeration value="0" />
+							<xsd:enumeration value="1" />
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:element>
+				<xsd:element name="status" minOccurs="0">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:integer">
+							<xsd:enumeration value="0" />
+							<xsd:enumeration value="1" />
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:element>
+				<xsd:element name="guid" minOccurs="0" type="xsd:token" />
+				<xsd:element name="userId" minOccurs="0"
+					type="xsd:integer" />
+				<xsd:element name="userName" minOccurs="0"
+					type="xsd:token" />
+
+				<xsd:element ref="questions" maxOccurs="1" />
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="name" type="xsd:string" >
+	</xsd:element>
+	<xsd:element name="questions">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:choice minOccurs="1" maxOccurs="unbounded">
+					<xsd:element ref="question" />
+				</xsd:choice>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="question">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="title" minOccurs="1"
+					type="xsd:token" />
+				<xsd:element name="guid" minOccurs="0" type="xsd:token" />
+				<xsd:element name="status" minOccurs="0">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:integer">
+							<xsd:enumeration value="0" />
+							<xsd:enumeration value="1" />
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:element>
+				<xsd:element name="type" minOccurs="1">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:integer">
+							<xsd:enumeration value="1" />
+							<xsd:enumeration value="2" />
+							<xsd:enumeration value="3" />
+							<xsd:enumeration value="4" />
+							<xsd:enumeration value="5" />
+							<xsd:enumeration value="6" />
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:element>
+				<xsd:element name="filter" minOccurs="0">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:integer">
+							<xsd:enumeration value="0" />
+							<xsd:enumeration value="1" />
+							<xsd:enumeration value="2" />
+							<xsd:enumeration value="3" />
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:element>
+				<xsd:element ref="creationDate" minOccurs="0" />
+				<xsd:element name="userId" minOccurs="0"
+					type="xsd:integer" />
+				<xsd:element name="userName" minOccurs="0"
+					type="xsd:token" />
+				<xsd:element name="pos" minOccurs="1"
+					type="xsd:positiveInteger" />
+				<xsd:element name="groupId" minOccurs="1"
+					type="xsd:positiveInteger" />
+				<xsd:element name="groupTitle" minOccurs="0"
+					type="xsd:token" />
+				<xsd:element name="pageId" minOccurs="1"
+					type="xsd:positiveInteger" />
+				<xsd:element ref="items" minOccurs="1" maxOccurs="1" />
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:positiveInteger" />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="items">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:choice minOccurs="0" maxOccurs="unbounded">
+					<xsd:element ref="item" />
+				</xsd:choice>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="item">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="type" minOccurs="1">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:integer">
+							<xsd:enumeration value="0" />
+							<xsd:enumeration value="1" />
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:element>
+				<xsd:element name="text" minOccurs="0" type="xsd:token" />
+				<xsd:element name="pos" minOccurs="1"
+					type="xsd:positiveInteger" />
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:positiveInteger" />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="creationDate">
+		<xsd:simpleType>
+			<xsd:restriction base="xsd:dateTime">
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:element>
+</xsd:schema>

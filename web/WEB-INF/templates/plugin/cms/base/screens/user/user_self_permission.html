@@ -1,0 +1,364 @@
+
+<#assign actionTitle="用户自身权限<font id=description>[<b>${user.name}(${user.title?default('')})</b>]</font>" />
+<#assign _TITLE_="用户自身权限" />
+<#assign actions=[
+{"action":"UserSelfPermission2","title":"自身权限","url":"${baseUrl}admin/user.jhtml?action=UserSelfPermission2&userId=${user.id?c}","class":"view"},
+{"action":"ViewUserPermission","title":"最终权限","url":"${baseUrl}admin/user.jhtml?action=ViewUserPermission2&userId=${user.id?c}","class":"view"},
+{"action":"ViewUserRoles","title":"所属权限组","url":"${baseUrl}admin/user.jhtml?action=ViewUserRoles&userId=${user.id?c}","class":"view"}
+]>
+<#include "/plugin/cms/common/includes/header.htm"/>
+
+<style type="text/css">
+<!--
+body,tr,td {
+	color: #000000;
+	font-size: 11px; font-family: Tahoma, Arial;
+}
+div.imagespacer {
+	width:150;
+	height:18;
+	text-align:left;
+	float: left;
+	font: 10pt verdana;
+	margin: 0px;
+	overflow: hidden;
+}
+div.imageholder {
+	margin: 0px;
+	padding: 0px;
+	cursor: default;
+}
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 60;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+-->
+</style>
+<script src="html/common/dialog/artDialog.js" type="text/javascript"></script>
+
+<SCRIPT language="JavaScript" type="text/javaScript">
+
+function CheckAll(form,elementName)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];       
+    if (e.name ==elementName)
+		e.checked = form.chkall.checked;
+   }
+}
+function CheckAll2(id,elementName){
+	var pel=document.getElementById(id);
+	alert(pel);
+	var chkall=document.getElementById(id+"_chkall");
+	if(pel){
+		for (var i=0;i<pel.elements.length;i++){
+    		var e = pel.elements[i];       
+    		if (e.name ==elementName)
+				e.checked = chkall.checked;
+   		}//end for
+	}
+}
+
+</script>
+<script language="javascript">
+
+
+function doing(action,param)
+{
+	switch(action) {
+		case 'viewUserSelfPerm':
+		{
+			parent.mainFrame.location="${baseUrl}admin/user.jhtml?action=UserSelfPermission&userId=${user.id?c}";
+			break;
+		}
+		case 'viewUserFinalPerm':
+		{
+			parent.mainFrame.location="${baseUrl}admin/user.jhtml?action=ViewUserPermission&userId=${user.id?c}";
+			break;
+		}
+		case 'viewUserRole':
+		{
+			parent.mainFrame.location="${baseUrl}admin/user.jhtml?action=ViewUserRoles&userId=${user.id?c}";
+			break;
+		}
+		case 'addNode':
+		{
+			var targetNodeID = showModalDialog("${baseUrl}admin/adminSelect.jhtml?action=TargetNodeWindow","color","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+
+			if(targetNodeID != null && targetNodeID != '') {
+				var returnValue = cms_send("${baseUrl}admin/user.jhtml","action=AddUserObjectPerm&userId=${user.id}&objectType="+param+"&objectId="+targetNodeID);
+
+				//alert(returnValue);
+				if(returnValue=="1"){
+					alert('添加具体对象权限成功！');
+					document.location = document.location;
+				}else{
+					alert('添加具体对象权限失败！');
+					document.location = document.location;
+				}
+			}
+			break;
+		}
+	}	
+}
+function displayObjPerm(id){
+	var el = eval('p_'+id);
+	if(el.style.display=="none"){
+		el.style.display="";
+	}else{
+		el.style.display="none";
+	}
+}
+var g_objectType;
+var g_action;
+function showConcreteObjectDialog(caption,url,objectType,action){
+	//显示对象选择窗体
+	//GB_showFullScreen(cation,url);
+	//设置全局资源类型变量
+	g_objectType=objectType;
+	g_action=action;
+	//openWindow(url,cation);
+	art.dialog.open(url, {title: caption,lock:true,width:640,height:480});
+}
+function callBack(rs){
+	//
+	addConcretePermission(rs);
+}
+
+function addConcretePermission(ids){
+	//
+	var URL = '${baseUrl}admin/user.jhtml?action=AddUserObjectPerm&userId=${user.id?c}&objectType='+g_objectType+'&objectId='+ids;
+	alert(URL);
+	//
+	$.post(URL,function(transport) {
+    	if (transport=="1"){
+    	   alert('添加具体对象权限成功！');
+		   document.location = document.location;
+    	}else{
+    	   alert('添加具体对象权限失败！');
+		   document.location = document.location;
+    	}
+   	});	
+}
+
+</script>
+
+<br/>
+<#if authUser.isAdmin()>
+		<font color="red">[此用户是系统管理员用户，此用户拥有所有权限！]</font>
+</#if>
+<#--非管理员-->
+<#if !authUser.isAdmin()>
+<#--
+<div class="colorarea01">
+
+	<table cellspacing="2" cellpadding="2" class="helptable">
+		<tr>
+			<td>
+				<ul>
+					<li>
+						所有xxx权限表示对于所有的此类对象的操作权限；具体xxx权限表示对于具体的某个此类对象的操作权限。
+					</li>
+					<li>
+						如果用户拥有所有xxx权限，则无论具体对象权限是否设置，用户都会拥有相应权限。
+					</li>
+					<li>
+						此处显示的是用户的自身权限，即用户自己拥有的权限，不包括从权限组继承而来的权限。
+					</li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+</div>
+-->
+<script type="text/javascript" src="html/common/tabpane/js/tabpane.js"></script>
+<link type="text/css" rel="StyleSheet" href="html/common/tabpane/css/luna/tab.css"/>
+
+<br/>
+<div  class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ) );
+</script>
+<#--处理每个权限类型-->
+<#list ptdList as  ptd>
+
+
+<div class="tab-page" id="tabPage_${ptd.name}">
+<h3 class="tab" >${ptd.title}</h3>
+<form action="${baseUrl}admin/user.jhtml?action=SetUserPermission" method="post" name="${ptd.name}Form">
+	<input type="hidden" name="objectType" value="${ptd.key}"/>
+	<input type="hidden" name="objectId" value="-1"/>
+	<input type="hidden" name="name" value="${ptd.name}"/>
+	<input type="hidden" name="userId" value="${user.id?c}"/>
+	<input type="hidden" name="ref" value="${baseUrl}/admin/user.jhtml?action=UserSelfPermission&userId=${user.id?c}"/>
+<div class="colorarea02">
+		<h2>
+			所有${ptd.title}
+		</h2>
+ <table width="100%" border="0" cellpadding="0" cellspacing="0" class="maintable">
+ 	
+	
+   <tr>
+ <#list pMap[ptd.name] as up>
+ 	<#if up_index==0>
+ 	   <th width=5% class="altbg1">
+ 	    <#if up.isHold()>
+		<input class="checkbox" name="${ptd.name}_p"  type="checkbox" id="${ptd.name}_${up.permission?c}"  value="${up.permission?c}" checked="checked"/>
+	    <#else>
+	     <input class="checkbox" name="${ptd.name}_p"  type="checkbox" id="${ptd.name}_${up.permission?c}"  value="${up.permission?c}"/>
+	    </#if>
+	     </th>
+	  <td width=45%>
+	    <b>${up.name}</b>
+	   </td>
+	 <#elseif up_index%2==0>
+	 	</tr><tr>
+	 	<th width=5% class="altbg1">
+ 	    <#if up.isHold()>
+		<input class="checkbox" name="${ptd.name}_p"  type="checkbox" id="${ptd.name}_${up.permission?c}"  value="${up.permission?c}" checked="checked"/>
+	    <#else>
+	     <input class="checkbox" name="${ptd.name}_p"  type="checkbox" id="${ptd.name}_${up.permission?c}"  value="${up.permission?c}"/>
+	    </#if>
+	     </th>
+	  <td width=45%>
+	    <b>${up.name}</b>
+	   </td>
+	 <#else>
+	 	<th width=5% class="altbg1">
+ 	    <#if up.isHold()>
+		<input class="checkbox" name="${ptd.name}_p"  type="checkbox" id="${ptd.name}_${up.permission?c}"  value="${up.permission?c}" checked="checked"/>
+	    <#else>
+	     <input class="checkbox" name="${ptd.name}_p"  type="checkbox" id="${ptd.name}_${up.permission?c}"  value="${up.permission?c}"/>
+	    </#if>
+	     </th>
+	  <td width=45%>
+	    <b>${up.name}</b>
+	   </td>
+	 </#if>
+ </#list>
+    </tr>
+</table>
+	</div>
+	<hr/>
+	<div class="buttons">
+	&nbsp;<input type="checkbox" class="checkbox" name="chkall" value="on" onClick="CheckAll(document.${ptd.name}Form,'${ptd.name}_p')" id="${ptd.name}_chkall"><label for="${ptd.name}_chkall" >全选</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<input class="submit" type="submit" name="submit_user" value=" 变 更 "/>
+	<input class="button" type="reset" name="reset_user" value=" 重 置 "/>
+	</div>
+</form>
+<#if ptd.type=="1">
+<div class="colorarea02">
+		<h2>
+			具体${ptd.title}
+		</h2>
+ <table id="j_table" width="100%" border="0" cellpadding="0" cellspacing="0" class="maintable">
+    
+ 	<tr>
+	<td  colspan="4"><input type="button" onclick="showConcreteObjectDialog('${ptd.resourceReflection.caption}','${baseUrl}${ptd.resourceReflection.resourceSelectionUrl}','${ptd.key}');" value="添 加"></td>
+	</tr>
+	<tr class="table_td2">
+	<td align="center" height=20 width="20"></td>
+	<td align="center" width="40"><B>ID</B></td>
+ 	<td align="center"><B>名称</B></td>
+	<td align="center" width="100"><B>操作</B></td>
+	</tr>	
+	
+ 	<#assign my_obj=pObjMap[ptd.name]/>
+    <#if my_obj?exists&&(my_obj?has_content)>
+	<#list my_obj.keySet() as oid>	
+	
+	
+ 	<tr class="table_td1" onmouseover='this.style.backgroundColor="#FFFFFF"' onmouseout='this.style.backgroundColor=""'>
+	<td noWrap align="center" height="20" width="20"><#--<input type='checkbox' name='pData_j' value='' id="pData_j_${oid}" >--></td>
+	<td align="center">${oid}</td>
+	<#assign oid_title=ptd.resourceReflection.getResourceDescription(oid)/>
+ 	<td align="center" width="100">${oid_title!""}</td>
+	<td align="center"><a href="javascript:displayObjPerm('${ptd.key?replace('.','_')}_${oid}');">查看权限</a> 删除</td>
+	</tr>
+	<tr  class="table_td1" id="p_${ptd.key?replace('.','_')}_${oid}" style="display:none">
+	<td colspan="4">
+    <table width="100%" bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0" class="maintable">
+    <form action="${baseUrl}admin/user.jhtml?action=SetUserPermission" method="post" name="${ptd.name}_${oid}Form">
+	<input type="hidden" name="objectType" value="${ptd.key}"/>
+	<input type="hidden" name="objectId" value="${oid}"/>
+	<input type="hidden" name="name" value="${ptd.name}"/>
+	<input type="hidden" name="userId" value="${user.id?c}"/>
+	<input type="hidden" name="ref" value="${baseUrl}/admin/user.jhtml?action=UserSelfPermission2&userId=${user.id?c}"/> 	
+	<tr>
+ 
+ <#list my_obj.get(oid) as up>
+ 	<#if up_index==0>
+ 	<th width=5%>
+ 	    <#if up.isHold()>
+		<input class="checkbox" name="${ptd.name}_p"  type="checkbox" id="${ptd.name}_${up.permission?c}"  value="${up.permission?c}" checked="checked"/>
+	    <#else>
+	     <input class="checkbox" name="${ptd.name}_p"  type="checkbox" id="${ptd.name}_${up.permission?c}"  value="${up.permission?c}"/>
+	    </#if>
+	     </th>
+	  <td width=45%>
+	    <b>${up.name}</b>
+	   </td>
+	 <#elseif up_index%2==0>
+	 	</tr><tr>
+	 	<th width=5%>
+ 	    <#if up.isHold()>
+		<input class="checkbox" name="${ptd.name}_p"  type="checkbox" id="${ptd.name}_${up.permission?c}"  value="${up.permission?c}" checked="checked"/>
+	    <#else>
+	     <input class="checkbox" name="${ptd.name}_p"  type="checkbox" id="${ptd.name}_${up.permission?c}"  value="${up.permission?c}"/>
+	    </#if>
+	     </th>
+	  <td width=45%>
+	    <b>${up.name}</b>
+	   </td>
+	 <#else>
+	 	<th width=5% >
+ 	    <#if up.isHold()>
+		<input class="checkbox" name="${ptd.name}_p"  type="checkbox" id="${ptd.name}_${up.permission?c}"  value="${up.permission?c}" checked="checked"/>
+	    <#else>
+	     <input class="checkbox" name="${ptd.name}_p"  type="checkbox" id="${ptd.name}_${up.permission?c}"  value="${up.permission?c}"/>
+	    </#if>
+	     </th>
+	  <td width=45%>
+	    <b>${up.name}</b>
+	   </td>
+	 </#if>
+ </#list>
+	</tr>
+	<tr>
+	<td colspan="4">
+	<hr/>
+	&nbsp;<input type="checkbox" name="chkall" value="on" onClick="CheckAll(document.${ptd.name}_${oid}Form,'${ptd.name}_p')" id="${ptd.name}_chkall"><label for="${ptd.name}_chkall" >全选</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="submit" name="submit_user" value="变 更"/>
+	<input type="reset" name="reset_user" value="重 置"/>
+	</td>
+	</tr>
+	</form>
+	</table>
+	</td>
+	</tr>
+	</#list>	
+	</#if>
+	</table>
+	</div>
+</#if>
+<br/>
+</div>
+</#list>
+</div>
+</#if>
+</td>
+</tr>
+</table>
+<#if !authUser.isAdmin()>
+<script type="text/javascript">
+setupAllTabs();
+</script>
+</#if>
+<br/>
+<br/>
+<#include "/plugin/cms/base/includes/footer.html">

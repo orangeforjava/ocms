@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- Middle tier application context definition for the CMS application.
+-->
+<beans>
+	<bean id="repoHandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/repo.jhtml">
+					<ref local="repoAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="repoAction"
+		class="org.openuap.cms.repo.action.RepoAction">
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="contentFieldManager">
+			<ref bean="contentFieldManager" />
+		</property>
+		<property name="dynamicContentManager">
+			<ref bean="dynamicContentManager" />
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,113 @@
+
+<#assign actionTitle="数据源测试" />
+<#assign _TITLE_="数据源测试" />
+<#assign actions=[
+{"action":"","title":"数据源测试","url":"${baseUrl}admin/ds/ds.jhtml","class":"view"}]>
+
+<#include "/plugin/cms/common/includes/header.htm"/>
+
+<#import "/plugin/cms/base/macros/pager-macros.html" as mypager />
+<#import "/plugin/cms/base/macros/tabler-macros.html" as tabler />
+
+
+<script type="text/javascript" src="html/plugin/cms/base/js/common.js"></script>
+
+		<script type="text/javascript" language="javaScript">
+
+function doAction(action,p){
+	switch(action){
+		
+		default:{
+			break;
+		}
+	}
+}
+function batch_doing(vAction,vForm){
+	with(vForm) {
+		var count = 0;
+      	var checkboxObj = pData;
+		//alert(vAction);
+      	if(checkboxObj == null)
+      	{
+      		alert('有误');
+        	return ;
+      	}
+      	else
+      	{
+        	for (var i = 0; i < checkboxObj.length; i++)
+        	{
+          		if(checkboxObj[i].checked)
+          		count++;
+        	}
+      	}
+		if(count > 0 || (checkboxObj.length == null && checkboxObj.checked))
+		{
+			switch(vAction) {
+				
+				default:
+				{
+					break;
+				}
+			}//end switch
+		}else{
+			alert("请选择一个或多个内容！");
+		}
+	}
+}
+</script>
+
+		
+	    <#if messageCode??>
+		<center>
+			<div class='errormessage' style='width: 400px;'>
+				<img class='errormessage' src='html/images/info.gif'
+					align='absmiddle'>
+					&nbsp; 
+				<span class='tab-r'>${messageCode}</span>
+			</div>
+		</center>
+		<br/>
+		</center>
+		</#if>
+		<form name="formList" method="post">
+		<table border="0" cellspacing="1" cellpadding="4" width="100%"
+			align=center class="maintable">
+			<tr>
+			   
+				<td width="10%" align="center">
+					<B>属性</B>
+				</td>
+				<td align="center">
+					<B>值</B>
+				</td>				 
+			</tr>
+			<tr class="Tablelistbg">
+      			<td width="10%" align="center">
+					<B>Dialect类型</B>
+				</td>
+				<td  align="center">
+					<B>${dialect.getClass()}</B>
+				</td>		
+    		</tr>
+    		
+		</table>
+	    </form>
+		<br/>
+		<script language='JavaScript'>
+function edit(form,id)
+{
+	eval("var isdisabled = " + form + "." + id + ".disabled");
+
+	if(isdisabled) {
+		eval(form + "." + id + ".disabled = false");
+	} else {
+		eval(form + "." + id + ".disabled = true");
+
+	}
+
+}
+
+</script>
+
+<br/>
+<#include "/plugin/cms/base/includes/footer.html">

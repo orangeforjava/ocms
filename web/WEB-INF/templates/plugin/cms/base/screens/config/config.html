@@ -1,0 +1,154 @@
+
+[#assign actionTitle="基本设置" /]
+[#assign _TITLE_="基本设置" /]
+
+[#include "/plugin/cms/common/includes/header.htm"/]
+
+<form name="form1" method="post"
+	action="admin/config.jhtml?action=Change">
+	<div class="colorarea02">
+		<h3>
+			站点设置
+		</h3>
+		<table cellspacing="0" cellpadding="0" width="100%" border="0"
+			class="maintable">
+			<tbody>
+
+				<tr>
+					<th id="id2" width="200">
+						CMS应用名称:
+					</th>
+					<td id="id2">
+						<input name="cms.title" type="text" class="button" id="cms.title"
+							value="${config.getTitle()}" size="40">
+					</td>
+				</tr>
+				<tr>
+					<th id="id2" width="200">
+						CMS应用地址(baseUrl):
+					</th>
+					<td id="id2">
+						<input name="cms.url" type="text" class="button" id="cms.title"
+							value="${config.getStringProperty('cms.url','${baseUrl}')}"
+							size="40">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="colorarea02">
+		<h3>
+			电子邮件设置
+		</h3>
+		<table cellspacing="0" cellpadding="0" width="100%" border="0"
+			class="maintable">
+			<tbody>
+				<tr>
+					<th id="id2" width="200">
+						发送邮件地址:
+					</th>
+					<td id="id2">
+						<input name="cms.mail.smtp.from_email" type="text" class="button"
+							id="cms.mail.smtp.from_email" value="${config.getStringProperty("
+							cms.mail.smtp.from_email")?default("")}" size="40">
+					</td>
+				</tr>
+				<tr>
+					<th id="id2" width="200">
+						发送邮件人名称:
+					</th>
+					<td id="id2">
+						<input name="cms.mail.smtp.from_name" type="text" class="button"
+							id="cms.mail.smtp.from_name" value="${config.getStringProperty("
+							cms.mail.smtp.from_name")?default("")}" size="40">
+					</td>
+				</tr>
+				<tr>
+					<th id="id2" width="200">
+						SMTP服务器地址:
+					</th>
+					<td id="id2">
+						<input name="cms.mail.smtp.host" type="text" class="button"
+							id="cms.mail.smtp.host" value="${config.getStringProperty("
+							cms.mail.smtp.host")?default("")}" size="40">
+					</td>
+				</tr>
+				<tr>
+					<th id="id2" width="200">
+						SMTP服务器端口:
+					</th>
+					<td id="id2">
+						<input name="cms.mail.smtp.port" type="text" class="button"
+							id="cms.mail.smtp.port" value="${config.getIntegerProperty("
+							cms.mail.smtp.port",25)?default(25)}" size="40">
+					</td>
+				</tr>
+				<tr>
+					<th id="id2" width="200">
+						SMTP 用户名:
+					</th>
+					<td id="id2">
+						<input name="cms.mail.smtp.user" type="text" class="button"
+							id="cms.mail.smtp.user" value="${config.getStringProperty("
+							cms.mail.smtp.user")?default("")}" size="40">
+					</td>
+				</tr>
+				<tr>
+					<th id="id2" width="200">
+						SMTP 用户密码:
+					</th>
+					<td id="id2">
+						<input name="cms.mail.smtp.password" type="password"
+							class="button" id="cms.mail.smtp.password"
+							value="${config.getStringProperty("
+							cms.mail.smtp.password")?default("")}" size="40">
+					</td>
+				</tr>
+				<tr>
+					<th id="id2" width="200">
+					SMTP服务器是否需要验证						
+					</th>
+					<td id="id2" align="left">
+						[#if config.getBooleanProperty("cms.mail.smtp.auth",false)]
+						<input name="cms.mail.smtp.auth" type="radio" class="radio"
+							id="cms.mail.smtp.auth" checked value="true">是&nbsp;
+						<input name="cms.mail.smtp.auth" type="radio" class="radio"
+							id="cms.mail.smtp.auth" value="false">否
+						[#else]
+						<input name="cms.mail.smtp.auth" type="radio" class="radio"
+							id="cms.mail.smtp.auth"  value="true">是&nbsp;
+						<input name="cms.mail.smtp.auth" type="radio" class="radio"
+							id="cms.mail.smtp.auth" checked value="false">否
+						[/#if]
+					</td>
+				</tr>
+				<tr>
+					<th id="id2" width="200">
+						此服务器要求安全连接(SSL)
+					</th>
+					<td id="id2" align="left">						
+						[#if config.getBooleanProperty("cms.mail.smtp.ssl",false)]
+						<input name="cms.mail.smtp.ssl" type="radio" class="radio"
+							id="cms.mail.smtp.ssl" checked value="true">是&nbsp;
+						<input name="cms.mail.smtp.ssl" type="checkbox" class="button"
+							id="cms.mail.smtp.ssl" value="false">否
+						[#else]
+						<input name="cms.mail.smtp.ssl" type="radio" class="radio"
+							id="cms.mail.smtp.ssl"  value="true">是&nbsp;
+						<input name="cms.mail.smtp.ssl" type="radio" class="radio"
+							id="cms.mail.smtp.ssl" checked value="false">否
+						[/#if]
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<br />
+	<div class="buttons">
+		<input type="submit" name="submit" value="提交保存" class="submit">
+		<input type="reset" name="reset" value="重置">
+	</div>
+</form>
+<br />
+[#include "/plugin/cms/base/includes/footer.html"]

@@ -1,0 +1,88 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>extrapublish operation result</title>
+<base  href="${baseUrl}"/>
+<link type="text/css" rel="StyleSheet" href="html/plugin/cms/base/css/style.css" />
+<#if result=="success">
+	<#if operation=="add"||operation=="edit">
+	<meta http-equiv="refresh" content="1;url='${baseUrl}admin/extrapublish.jhtml?mode=${mode}&nodeId=${nodeId}&publishId=${pid?c}'">
+	<#else>
+	<meta http-equiv="refresh" content="1;url='${baseUrl}admin/extrapublish.jhtml?action=List&nodeId=${nodeId}'">
+	</#if>
+</#if>
+</HEAD>
+<BODY>
+<br><br>
+<div align=center>
+  <table width="100%" height="100%" border="0" cellpadding="20" cellspacing="0">
+    <td align="center" valign="top">
+        <table width="50%" height="100" border="0" cellpadding="4" cellspacing="1" class="table_border">
+          <tr class="table_td2">
+            <td>
+			<#if operation=="add">
+				<#if result=="success">
+				新增附加发布成功。
+				<#else>
+				新增附加发布失败,原因为：${msg}。
+				</#if>
+			
+			<#elseif operation=="save">
+				<#if result=="success">
+				修改附加发布成功。
+				<#else>
+				修改附加发布失败,原因为：${msg}。
+				</#if>
+			<#elseif operation=="del">
+				<#if result=="success">
+				删除附加发布成功。
+				<#else>
+				删除附加发布失败,原因为：${msg}。
+				</#if>
+			<#elseif operation=="refreshExtra">
+				<#if result=="success">
+				生成附加发布内容成功。
+				<#else>
+				生成附加发布内容失败,原因为：${msgs}。
+				</#if>
+			<#elseif operation=="batch_refreshExtra">
+				<#if result=="success">
+				批量生成附加发布内容成功。
+				<#else>
+				批量生成附加发布内容失败,原因为：${msgs}。
+				</#if>
+			<#elseif operation=="refreshExtraAll">
+				<#if result=="success">
+				全部生成此结点的附加发布内容成功。
+				<#else>
+				全部生成此结点的附加发布内容失败,原因为：${msgs}。
+				</#if>
+			<#elseif operation=="cut">
+				<#if result=="success">
+				移动附加发布内容成功。
+				<#else>
+				移动附加发布内容失败,原因为：${msgs}。
+				</#if>
+			</#if>
+			<br><br>
+			<#if result=="success">
+				<#if operation=="add"||operation=="edit">	
+			<a href="${baseUrl}admin/extrapublish.jhtml?mode=${mode}&nodeId=${nodeId}">如果您的浏览器没有自动跳转，请点击这里</a>
+			    <#else>
+				<a href="${baseUrl}admin/extrapublish.jhtml?action=List&nodeId=${nodeId}">如果您的浏览器没有自动跳转，请点击这里</a>
+			    </#if>
+			<#else>
+			<a href="javascript:history.back();">返回</a>
+			</#if>
+			<br>
+               </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+</BODY>
+</HTML>

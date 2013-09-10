@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- created by Weiping Ju $Date: 2006/08/31 02:26:01 $-->
+<directory>
+	<object type="0" name="config" key="org.openuap.cms.config" title="系统设置管理">
+		<permission key="1" name="viewConfig">查看系统设置</permission>
+		<permission key="2" name="editConfig">编辑系统设置</permission>
+	</object>
+</directory>

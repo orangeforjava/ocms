@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <tree>
+ 	<#list nodes as node>
+	<tree text="${node.name?replace('&','&amp;')}[${node.nodeId?c}]" action="${helper.getBaseURL()}admin/nodeEdit.jhtml?mode=edit&amp;nodeId=${node.nodeId?c}" target="panelWork" cId="${node.nodeId?c}" extra="recycle_bin"/>
+	</#list>
+</tree>

@@ -1,0 +1,171 @@
+<#--
+-- 返回以毫秒数表示的日期显示
+-->
+<#macro date pattern="" timestamp=0>
+<#compress>
+	<#local mydate=cmsMacroEngine.getDate2(timestamp)/>
+	<#if pattern=="">
+		${mydate?string("yyyy-MM-dd")}
+	<#else>
+		${mydate?string(pattern)}
+	</#if>
+</#compress>
+</#macro>
+<#--
+-- 返回以秒数表示的日期显示
+-->
+<#macro dateSeconds pattern="" timestamp=0>
+<#compress>
+	<#local mydate=cmsMacroEngine.getDate(timestamp)/>
+	<#if pattern=="">
+		${mydate?string("yyyy-MM-dd")}
+	<#else>
+		${mydate?string(pattern)}
+	</#if>
+</#compress>
+</#macro>
+<#--
+-- 函数：返回以秒数表示的日期显示
+-->
+<#function now>
+	<#local nowseconds=cmsMacroEngine.getNow()/>
+	<#return nowseconds>
+</#function>
+
+<#macro pagerUrl url page>
+  <#local spage=page?string/>
+  <#if spage==""||spage=="0"||spage=="1">
+  ${url}
+  <#else>
+  	<#local pos=url?last_index_of(".")/>
+	<#local size=url?length/>
+	<#if pos!=-1>
+		<#local part1=url[0..pos-1]/>
+		<#local part2=url[pos+1..size-1]/>
+		${part1}_${page}.${part2}
+	<#else>
+		${url}_${page}
+	</#if>
+  </#if>
+</#macro>
+<#macro substr target="" start=0 limit=0 style=0 replace="" with="" trimTag="">
+<#compress>
+	<#local starget=target?default("")?string/>
+	<#if trimTag!="">
+		<#local starget=cmsMacroEngine.trimTags(starget,trimTag)/>
+	</#if>
+	<#local slength=starget?length/>
+	<#local end=start+limit/>
+	<#if end lt (slength-1)>
+	<#else>
+		<#local end=(slength-1)/>
+	</#if>
+	<#if start lt slength>
+	<#else>
+		<#local start=(slength-1)/>
+	</#if>
+	<#if start lt 0>
+	    <#local start=0/>
+	</#if>
+	<#if end lt 0>
+		<#local end=0/>
+	<#else>
+		<#if limit gt 0>		
+			<#local oktarget=starget[start..end]/>
+			<#if replace!="">
+				<#local oktarget=oktarget?replace(replace,with)/>
+			</#if>
+			<#if style==1>
+				<#if slength gt limit>
+					<#local oktarget=oktarget+"..."/>
+				</#if>
+			</#if>
+			${oktarget?trim}
+		<#else>
+			<#local oktarget=starget[start..]/>
+			${oktarget?trim}
+		</#if>
+	</#if>	
+</#compress>
+</#macro>
+
+<#macro presence jid req_jid="" type="images" images="">
+    <#compress>
+	${memberPresenceUrl}?jid=${jid}@${imServerName}
+    <#if images=="default">	
+	<#else>
+	&images=${memberPresenceImagesUrl}
+	</#if>
+	</#compress>	
+</#macro>
+<#--------------------------------------------------------------------------->
+<#------------------------util ssi macro------------------------------------->
+<#--------------------------------------------------------------------------->
+<#--
+name:the SSI page include macro
+author:Weiping Ju
+date:2006/06/28 14:48
+description:
+	1)the cmsMacroEngine object must be assign to the template.
+	2)if page or pageId must have one to be assigned
+history:
+-->
+<#macro ssi page="" pageId="" type="0">
+	<#--check the page and pageId parameter.-->
+	<#if page==""&&pageId=="">
+		<#stop "page,pageId must not both empty!">
+	</#if>
+	<#if page?trim!="">
+		<!--#include virtual="${page}" -->
+	<#else>
+	    <#if type=="1"||__preview__?exists>
+	    	<#local content=cmsMacroEngine.getExtraPublishContent(pageId)/>
+			${content!''}
+	    <#else>
+			<#assign ssi2=cmsMacroEngine.getExtraPublishPath(pageId)/>
+			<!--#include virtual="${ssi2}" -->
+		</#if>
+	</#if>
+</#macro>
+<#--
+--get the html substr,trimTags
+--2006/09/19 16:55
+-->
+<#macro htmlSubstr target start=0 limit=0 keyword="" more="...">
+<#compress>
+<#local starget=target?default("")?string/>
+<#local skeyword=keyword?default("")?string/>
+<#local rs=cmsMacroEngine.getExtractHtmlContent(starget,skeyword,limit)/>
+${rs?default("")}${more}
+</#compress>
+</#macro>
+<#--------------------------------------------------------------------------->
+<#------------------------highlighted macro---------------------------------->
+<#--------------------------------------------------------------------------->
+<#macro highlightWords input keywords="">
+<#local rs=cmsMacroEngine.highlightWords(input,keywords)/>
+${rs}
+</#macro>
+<#macro highlighted object property keyword="" start=0 limit=100 more="...">
+<#compress>
+<#local skeyword=keyword?default("")?string/>
+<#local rs=object.get("highlighted-"+property)! />
+<#if rs!="">
+${rs}${more}
+<#else>
+<@htmlSubstr target=object.get(property)?default('') start=start limit=limit keyword=keyword/>
+</#if>
+</#compress>
+</#macro>
+
+<#macro highlightedold object property keyword="" start=0 limit=100 more="...">
+<#compress>
+<#local skeyword=keyword?default("")?string/>
+<#local rs=object.getHighlightedText().getHighlightedText(property)! />
+<#if rs!="">
+${rs}${more}
+<#else>
+<@htmlSubstr target=object.resource.get(property)?default('') start=start limit=limit keyword=keyword/>
+</#if>
+</#compress>
+</#macro>

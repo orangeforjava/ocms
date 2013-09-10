@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- created by Weiping Ju $Date: 2006/08/31 02:26:01 $-->
+<directory>
+	<object type="1" name="resource" key="org.openuap.cms.res" title="资源管理">
+		<permission key="1" name="viewResource">查看资源</permission>
+		<permission key="2" name="uploadResource">上传资源</permission>
+		<permission key="3" name="editResource">编辑资源</permission>
+		<permission key="4" name="deleteResource">删除资源</permission>
+		<permission key="5" name="selResource">选择资源</permission>
+	</object>
+</directory>

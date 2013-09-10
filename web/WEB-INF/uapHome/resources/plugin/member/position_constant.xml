@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<directory>
+  <positions>
+    <position key="请选择">请在以下列表中选择</position>
+    <position key="内科护理">临床护理--内科护理</position>
+	<position key="外科护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--外科护理]]></position>
+  <position key="肿瘤科护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--肿瘤科护理]]></position>
+    <position key="妇科护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--妇科护理]]></position>
+  <position key="神经科护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--神经科护理]]></position>
+  <position key="五官科护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--五官科护理]]></position>
+  <position key="皮肤科护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--皮肤科护理]]></position>
+  <position key="精神科护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--精神科护理]]></position>
+  <position key="康复科护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--康复科护理]]></position>
+<position key="危重病人监护"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--危重病人监护]]></position>
+     <position key="ICU护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--ICU护理]]></position>
+  <position key="手术室护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--手术室护理]]></position>
+    <position key="老年护理">家庭护理--老年护理</position>
+    <position key="婴幼护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--婴幼护理]]></position>
+	<position key="男人护理">生活护理--男人护理</position>
+	<position key="女人护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--女人护理]]></position>
+	<position key="营养护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--营养护理]]></position>
+	<position key="个人护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--个人护理]]></position>
+	<position key="护理顾问">商务护理--护理顾问</position>
+	<position key="护理文秘"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--护理文秘]]></position>
+	<position key="员工护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--员工护理]]></position>
+	<position key="出国护理">国际护理--出国护理</position>
+	<position key="心理护理">心理护理</position>
+	<position key="其它">其它</position>
+  </positions>
+</directory>

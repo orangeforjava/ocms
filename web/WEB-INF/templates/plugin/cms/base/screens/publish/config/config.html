@@ -1,0 +1,123 @@
+
+<#assign actionTitle="发布设置" /> 
+<#assign _TITLE_="发布设置" /> 
+<#include "/plugin/cms/common/includes/header.htm"/>
+<#--<div class="colorarea01">
+
+	<table cellspacing="2" cellpadding="2" class="helptable">
+		<tr>
+			<td>
+				<ul>
+					<li>
+						您通过本页面可以对发布参数进行设定。
+					</li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+</div>-->
+<form name="form1" method="post"
+	action="admin/publish/config.jhtml?action=Change">
+	<div class="colorarea02">
+		<h2>
+			发布设置
+		</h2>
+		<table cellspacing="0" cellpadding="0" width="100%" border="0"
+			class="maintable">
+			<tbody>
+
+				<tr>
+					<th id="id2" width="200">
+						模板文件编码:
+					</th>
+					<td id="id2">
+						<input name="cms.tpl.encoding" type="text" class="button" id="cms_tpl_encoding"
+							value="${config.getStringProperty('cms.tpl.encoding','UTF-8')}" size="40">
+					</td>
+				</tr>
+				<tr>
+					<th id="id2" width="200">
+						输出内容编码:
+					</th>
+					<td id="id2">
+						<input name="cms.tpl.out_encoding" type="text" class="button" id="cms_tpl_out_encoding"
+							value="${config.getStringProperty('cms.tpl.out_encoding','UTF-8')}"
+							size="40">
+					</td>
+				</tr>
+				<tr>
+					<th id="id2" width="200">
+						内容获取方式:
+					</th>
+					<td id="id2">
+						<#if config.getStringProperty("cms.repo.type","index")=="index">
+						<input name="cms.repo.type" type="radio" class="radio" id="cms_repo_type"
+							value="index" checked="checked">索引方式
+						<input name="cms.repo.type" type="radio" class="radio" id="cms_repo_type"
+							value="db">数据库方式
+						<#else>
+						<input name="cms.repo.type" type="radio" class="radio" id="cms_repo_type"
+							value="index" >索引方式
+						<input name="cms.repo.type" type="radio" class="radio" id="cms_repo_type"
+							value="db" checked="checked">数据库方式
+						</#if>
+						
+					</td>
+				</tr>
+				<tr>
+					<th id="id2" width="200">
+						是否启用关键词内链分析:
+					</th>
+					<td id="id2">
+						<#if config.getBooleanProperty("cms.enable-keywords-parse",true)>
+						<input name="cms.enable-keywords-parse" type="radio" class="radio" id="cms_enable-keywords-parse"
+							value="true" checked="checked">是
+						<input name="cms.enable-keywords-parse" type="radio" class="radio" id="cms_enable-keywords-parse"
+							value="false" >否
+						<#else>
+						<input name="cms.enable-keywords-parse" type="radio" class="radio" id="cms_enable-keywords-parse"
+							value="true" >是
+						<input name="cms.enable-keywords-parse" type="radio" class="radio" id="cms_enable-keywords-parse"
+							value="false" checked="checked" >否					
+						</#if>
+						
+					</td>
+				</tr>
+				<tr>
+					<th id="id2" width="200">
+						是否开启发布引擎性能诊断:
+						<p>
+							只用来开发调试
+						</p>
+					</th>
+					<td id="id2">
+						<#if config.getBooleanProperty("cms.publish.profile",false)>
+						<input name="cms.publish.profile" type="radio" class="radio"
+							id="cms.publish.profile" value="true" checked>
+						是&nbsp;
+						<input name="cms.publish.profile" type="radio" class="radio"
+							id="cms.publish.profile" value="false">
+						否&nbsp; 
+						<#else>
+						<input name="cms.publish.profile" type="radio" class="radio"
+							id="cms.publish.profile" value="true">
+						是&nbsp;
+						<input name="cms.publish.profile" type="radio" class="radio"
+							id="cms.publish.profile" value="false" checked>
+						否&nbsp; 
+						</#if>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	
+	<br />
+	<div class="buttons2">
+		<input type="submit" name="submit" value="提交保存" class="submit">
+		<input type="reset" name="reset" value="重置">
+	</div>
+</form>
+<br />
+<#include "/plugin/cms/base/includes/footer.html">

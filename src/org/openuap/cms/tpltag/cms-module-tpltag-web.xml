@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- Middle tier application context definition for the CMS application.
+-->
+<beans>
+	<bean id="tpltag-HandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/tpltag.jhtml">
+					<ref local="tplTagAction" />
+				</entry>
+				<entry key="/admin/tpltagEdit.jhtml">
+					<ref local="tplTagEditAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="tplTagAction"
+		class="org.openuap.cms.tpltag.action.admin.TemplateTagAction">
+		<property name="templateTagManager" ref="templateTagManager" />
+	</bean>
+	<bean id="tplTagEditAction"
+		class="org.openuap.cms.tpltag.action.admin.TemplateTagEditAction">
+		<property name="templateTagManager" ref="templateTagManager" />
+		<property name="nodeManager" ref="nodeManager"></property>
+	</bean>
+</beans>

@@ -1,0 +1,15 @@
+<#macro table_header orderBy="" sort="asc" header_content="">
+    <#local header_content=header_content?replace("@","\"")/>
+	<#if orderBy?default("")!="">
+	    <#if sort=="asc">
+			<#local with="↑"+orderBy/>
+		<#else>
+			<#local with="↓"+orderBy/>
+		</#if>
+		
+		<#local oktarget=header_content?replace(orderBy,with)/>
+		${oktarget}
+	<#else>		
+		${header_content}
+	</#if>
+</#macro>

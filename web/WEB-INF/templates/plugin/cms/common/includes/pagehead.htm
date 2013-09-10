@@ -1,0 +1,47 @@
+[#--<table summary="" id="pagehead" cellpadding="0" cellspacing="0" border="0" width="100%">
+	<tr>
+		<td nowrap width="1%"><h1>${actionTitle!""}&nbsp;&nbsp;</h1></td>
+		[#if actions??]
+		<td class="actions">		    
+			<table summary="" cellpadding="0" cellspacing="0" border="0" align="right">
+				<tr>
+					[#list actions as ac]
+						[#if actionName?matches(ac['action'])]
+							<td class="active"><a href="${ac['url']}" class="${ac['class']!'view'}">${ac["title"]}</a></td>
+						[#else]
+							<td><a href="${ac['url']}" class="${ac['class']!'view'}">${ac["title"]}</a></td>
+						[/#if]
+					[/#list]
+				</tr>
+			</table>
+		</td>
+		[/#if]
+	</tr>
+</table>
+--]
+<!--  快速转换位置按钮  -->
+<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#ccd9b9" align="center">
+<tr>
+ <td height="26" nowrap>
+ <h3>&nbsp;&nbsp;${actionTitle!""}&nbsp;&nbsp;</h3>
+ </td>
+ <td width="100%" height="26" background="html/plugin/cms/workbench3/img/newlinebg3.gif">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+  <td align="left">
+  [#if actions??]
+  				[#list actions as ac]
+						[#if actionName?matches(ac['action'])]
+							<a class="coolbg np" href="${ac['url']}" style="color:red">${ac["title"]}</a>
+						[#else]
+							<a class="coolbg np" href="${ac['url']}" >${ac["title"]}</a>
+						[/#if]
+					[/#list]
+  [/#if]
+   </td>
+ </tr>
+</table>
+</td>
+</tr>
+</table>
+

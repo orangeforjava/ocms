@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-badwords-core.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<beans>
+	<import resource="cms-module-badwords-core-orm.xml"/>
+	<import resource="cms-module-badwords-core-orm-oracle.xml"/>
+	<!-- DAO -->
+	<bean id="badwordsDaoImpl"
+		class="org.openuap.cms.badwords.dao.hibernate.BadwordsDaoImpl">
+		<description>Badwords Dao.</description>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- Manager -->
+	<bean id="badwordsManagerImpl"
+		class="org.openuap.cms.badwords.manager.impl.BadwordsManagerImpl">
+		<description>Badwords Manager.</description>
+		<property name="badwordsDao" ref="badwordsDaoImpl" />
+	</bean>
+	<bean id="badwordsManager"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target" ref="badwordsManagerImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>	
+</beans>

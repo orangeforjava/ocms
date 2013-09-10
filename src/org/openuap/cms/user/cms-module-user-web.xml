@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- $Id: cms-admin-web.xml 4 2007-03-26 06:56:55Z orangeforjava $
+-->
+<beans default-lazy-init="false">
+	
+	<bean id="securityInterceptor"
+		class="org.openuap.cms.user.security.SecurityInterceptor">
+	</bean>
+	<bean id="userHandlerMappingAdmin"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/user.jhtml">
+					<ref local="userAction" />
+				</entry>
+				<entry key="/admin/userEdit.jhtml">
+					<ref local="userEditAction" />
+				</entry>
+				<entry key="/admin/roleEdit.jhtml">
+					<ref local="roleEditAction" />
+				</entry>
+				<entry key="/admin/user/config.jhtml">
+					<ref local="userConfigAction" />
+				</entry>
+				<entry key="/admin/login.jhtml">
+					<ref local="adminLoginAction" />
+				</entry>
+				<entry key="/admin/logout.jhtml">
+					<ref local="adminLogoutAction" />
+				</entry>
+				<entry key="/sc.jhtml">
+					<ref local="securityCodeAction" />
+				</entry>
+				<entry key="/user/login.jhtml">
+					<ref local="loginAction" />
+				</entry>
+				<entry key="/user/logout.jhtml">
+					<ref local="logoutAction" />
+				</entry>
+				<entry key="/user/changepwd.jhtml">
+					<ref local="changePwdAction" />
+				</entry>
+				<entry key="/user/edit.jhtml">
+					<ref local="selfEditAction" />
+				</entry>
+				<entry key="/user/us.jhtml">
+					<ref local="userStatusAction" />
+				</entry>
+				
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="securityCodeAction"
+		class="org.openuap.cms.user.action.login.SecurityCodeAction">
+		<description>安全图片校验码控制器</description>
+	</bean>
+	<bean id="loginAction"
+		class="org.openuap.cms.user.action.login.LoginAction">
+		<description>登录控制器</description>
+	</bean>
+	<bean id="logoutAction"
+		class="org.openuap.cms.user.action.login.LogoutAction">
+		<description>注销控制器</description>
+	</bean>
+	<bean id="userAction"
+		class="org.openuap.cms.user.action.admin.UserAction">
+		<description>用户管理控制器</description>
+		<property name="baseUserManager">
+			<ref bean="baseUserManager" />
+		</property>
+		<property name="baseRoleManager">
+			<ref bean="baseRoleManager" />
+		</property>
+		<property name="permissionManager">
+			<ref bean="permissionManager" />
+		</property>
+		<property name="permissionPluginManager">
+			<ref bean="permissionPluginManager" />
+		</property>
+	</bean>
+	<bean id="adminLoginAction"
+		class="org.openuap.cms.user.action.admin.LoginAction" />
+	<bean id="adminLogoutAction"
+		class="org.openuap.cms.user.action.admin.LogoutAction" />
+	<bean id="userEditAction"
+		class="org.openuap.cms.user.action.admin.UserEditAction">
+		<description>用户编辑控制器</description>
+		<property name="baseUserManager">
+			<ref bean="baseUserManager" />
+		</property>
+	</bean>
+	<bean id="roleEditAction"
+		class="org.openuap.cms.user.action.admin.RoleEditAction">
+		<description>角色编辑控制器</description>
+		<property name="baseRoleManager">
+			<ref bean="baseRoleManager" />
+		</property>
+	</bean>
+	<bean id="changePwdAction"
+		class="org.openuap.cms.user.action.edit.UserChangePwdAction">
+		<description>用户密码修改控制器</description>
+
+	</bean>
+	<bean id="userStatusAction"
+		class="org.openuap.cms.user.action.login.UserStatusAction">
+		<description>用户状态获取控制器</description>
+
+	</bean>
+
+	<bean id="selfEditAction"
+		class="org.openuap.cms.user.action.edit.UserEditAction">
+		<description>用户自编辑控制器</description>
+		<property name="baseUserManager">
+			<ref bean="baseUserManager" />
+		</property>
+	</bean>
+
+	<bean id="userConfigAction"
+		class="org.openuap.cms.user.action.config.ConfigAction">
+		<description>用户通行证配置控制器</description>
+	</bean>
+</beans>

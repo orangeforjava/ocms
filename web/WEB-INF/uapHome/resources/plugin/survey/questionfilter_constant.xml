@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <constants>
+    <constant key="0">无</constant>
+    <constant key="1">必填</constant>
+	<constant key="2">数字</constant>
+	<constant key="3">日期</constant>
+  </constants>
+</directory>

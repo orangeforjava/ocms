@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench>
+	<tab id="tab-node-plugin">
+		<sidebar id="n-site-modules">
+			<item id="n-site-publish" name="内容发布"
+				url="admin/publish.jhtml?action=ContentList2&amp;nodeId=NODE_ID"
+				description="内容发布" plugin="org.openuap.cms.publish" permission="2" />
+			<item id="n-site-extrapublish" name="附加发布"
+				url="admin/extrapublish.jhtml?action=List&amp;nodeId=NODE_ID"
+				description="附加发布" plugin="org.openuap.cms.publish"
+				permission="33554432" />
+			<item id="n-site-resource" name="资源管理"
+				url="admin/resource.jhtml?action=ListResource&amp;nodeId=NODE_ID"
+				description="资源管理" plugin="org.openuap.cms.res"
+				permission="0" />
+			<item id="n-site-search" name="综合查询"
+				url="admin/publishSearch.jhtml?nodeId=NODE_ID"
+				description="综合查询" plugin="org.openuap.cms.publish"
+				permission="33554432" />
+		</sidebar>
+	</tab>
+</workbench>

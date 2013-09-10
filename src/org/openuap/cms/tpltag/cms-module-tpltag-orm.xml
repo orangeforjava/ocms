@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-tpltag-orm.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<beans>	
+	<bean id="tag-Mapping"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<property name="mappings">
+			<list>
+				<value>
+					org/openuap/cms/tpltag/model/TemplateTag.hbm.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="tag-OracleMapping"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<property name="dialect">
+			<value>org.hibernate.dialect.Oracle9Dialect</value>
+		</property>
+		<property name="mappings">
+			<list>
+				<value>
+					org/openuap/cms/tpltag/model/oracle/TemplateTag.hbm.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+</beans>

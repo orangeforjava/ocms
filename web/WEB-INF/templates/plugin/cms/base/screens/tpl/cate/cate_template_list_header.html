@@ -1,0 +1,199 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>模板分类头</title>
+<base  href="${baseUrl}"/>
+<link rel='stylesheet' type='text/css' href='html/plugin/cms/base/css/style.css' />
+<body   style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px">
+
+<script language='JavaScript'>
+function refreshWorkArea()
+{
+ document.location =  document.location
+}
+var doImage = doImage;
+var TType = TType;
+var popupWin=null;
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	if (document.getElementById)
+		t = document.getElementById(idx);
+	else
+		t = document.all(idx);
+	if (t == null) return;
+	t.className=cls;
+}
+
+</script>
+<script>
+var elo;
+var loadmenuok=false;
+var type = 'main';
+var tcid = '${tc.id}';
+function initrightmenu(){
+	loadmenuok = true;
+}
+
+
+
+function going(action, pId) {
+	switch(action) {
+		case 'viewpublish':
+			eval('var mPath = mPath_' + pId + '.href');
+			window.open(mPath,"","")
+
+			break;
+		default:
+			//
+
+	}
+	//
+}
+
+
+</script>
+
+<script language=JavaScript>
+<!--
+function gogo(url)
+{
+	top.panelWork.location = url;
+}
+
+function CheckAll(form)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall' && e.name !='copy')       e.checked = form.chkall.checked;
+   }
+  }
+
+//-->
+//
+function doing(action,param)
+{
+    switch(action){
+		case 'list':
+		{
+			parent.mainFrame.location ='${baseUrl}admin/template.jhtml?action=ListByCate&tcid='+tcid;
+			break;
+		}	
+		case 'add':
+		{
+			parent.mainFrame.location ='${baseUrl}admin/cateTplEdit.jhtml?op=add&cateId='+tcid;
+			break;
+		}	
+	}
+}
+
+
+
+function refreshWorkArea()
+{
+ parent.mainFrame.location =  parent.mainFrame.location
+}
+</script>
+<script>
+var mousemovecolor="#D4D4D4";
+var selectcolor ="#DDDDDD";
+var oldcolor;
+
+function GetRow(oElem)
+{
+	while (oElem)
+	{	//alert(oElem.tagName.toLowerCase())
+		if (oElem.tagName.toLowerCase() == "tr" || oElem.parentElement.tagName.toLowerCase() == "tbody")
+		    return oElem;
+		if (oElem.tagName.toLowerCase() == "table" || oElem.tagName.toLowerCase() == "th") return false;
+		oElem = oElem.parentElement;
+	}
+}
+
+
+function selected()
+{	//alert(pid)
+
+	var trstyle = GetRow( window.event.srcElement );
+	var a;
+	if( !trstyle )
+		return false;
+
+	if( trstyle.style.backgroundColor.toLowerCase() == selectcolor.toLowerCase())
+	{
+		trstyle.style.backgroundColor = "";
+		a=eval("p_"+ trstyle.id);
+		//alert(trstyle.id)
+		if (a!=null || a.checked)
+			a.checked=false
+		oldcolor = "";
+	}
+	else
+	{
+		trstyle.style.backgroundColor = selectcolor;
+		a=eval("p_"+ trstyle.id);
+		//alert(trstyle.id)
+		if (a!=null)
+			a.checked=true
+		oldcolor = selectcolor;
+
+
+	}
+}
+</script>
+<script language="javascript">
+lastDiv = null;
+function highLight(theDiv) {
+	if (lastDiv) {
+		lastDiv.style.border = 'solid 1px #F1F1F1';
+		lastDiv.style.background = '#F1F1F1';
+	}
+	//alert(theDiv);
+	lastDiv = theDiv;
+	theDiv.style.border = ' solid 1px #999';
+	theDiv.style.background = '#CCC';
+
+
+}
+
+</script>
+<div id="menudata"></div>
+<div id="msviLocalToolbar">
+  <table cellpadding="0" cellspacing="2" width="100%" height="19" border="0">
+    <tr>
+      <td class="lt0" style="cursor: default" id="tb_0" height="18" nowrap="nowrap"   >
+	  <font id=large>
+	  	<#if tc?exists>
+			${tc.cateTitle}[${tc.id}]
+		<#else>
+			模版分类根[0]
+		</#if>
+	  </font>
+	  <font id=description></font></td>
+      <td></td>
+	  <td class="lt0" id="tb_3" nowrap="nowrap" onmouseover="mhHover('msviLocalToolbar', 'tb_3', 'lt1')" onmouseout="mhHover('msviLocalToolbar', 'tb_3', 'lt0')" onclick="doing('add');highLight(this);">添加模版</td>
+	  <td><span class="ltsep">|</span></td>
+	  <td class="lt0" id="tb_1" nowrap="nowrap"  onmouseover="mhHover('msviLocalToolbar', 'tb_1', 'lt1')" onmouseout="mhHover('msviLocalToolbar', 'tb_1', 'lt0')" onclick="doing('list');highLight(this);">模版列表</td>
+      <td><span class="ltsep">|</span></td>
+	  <td class="lt0" id="tb_2" nowrap="nowrap" onmouseover="mhHover('msviLocalToolbar', 'tb_2', 'lt1')" onmouseout="mhHover('msviLocalToolbar', 'tb_2', 'lt0')" onclick="doing('viewIndex');highLight(this);">分类设置</td>
+	  <td><span class="ltsep">|</span></td>
+	  <!--<td class="lt0" id="tb_3" nowrap="nowrap" onMouseOver="mhHover('msviLocalToolbar', 'tb_3', 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 'tb_3', 'lt0')" onClick="doing('viewIndex');highLight(this);">查看结点首页</td>
+	  <td><span class="ltsep">|</span></td>
+	  <td class="lt0" id="tb_4" nowrap="nowrap" onMouseOver="mhHover('msviLocalToolbar', 'tb_4', 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 'tb_4', 'lt0')" onClick="doing('refreshIndex');highLight(this);">更新结点首页</td>
+      <td><span class="ltsep">|</span></td>-->
+      
+      <td width="99%"></td>
+    </tr>
+  </table>
+</div>
+
+</body>
+</html>
+<script language="javascript">
+if (document.getElementById)
+		t = document.getElementById("tb_2");
+	else
+		t = document.all("tb_2");
+lastDiv = t;
+</script>

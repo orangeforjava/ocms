@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <hospitalowners>
+    <hospitalowner key="请选择">请选择医院所有制</hospitalowner>
+    <hospitalowner key="公立医院">公立医院</hospitalowner>
+	<hospitalowner key="私立医院">私立医院</hospitalowner>
+	<hospitalowner key="合资医院">合资医院</hospitalowner>
+	<hospitalowner key="股份制">股份制</hospitalowner>
+  </hospitalowners>
+</directory>

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: CommentThread.hbm.xml 3950 2010-11-02 09:10:01Z orangeforjava $
+	评论主帖定义！
+-->
+<hibernate-mapping package="org.openuap.cms.comment.model">
+	<class name="CommentThread" table="comment_thread">
+		<id name="id" type="long" unsaved-value="0">
+			<column name="id" />
+			<generator class="native" />
+		</id>
+		<property name="objectId" type="string">
+			<column name="objectId" not-null="false" />
+		</property>
+		<property name="objectType" type="string">
+			<column name="objectType" not-null="false" />
+		</property>
+		<property name="catalogId" type="long">
+			<column name="catalogId" not-null="false" />
+		</property>
+		<property name="creationDate" type="long">
+			<column name="creationDate" not-null="true" />
+		</property>
+		<property name="lastPostDate" type="long">
+			<column name="lastPostDate" />
+		</property>
+		<property name="userName" type="string">
+			<column name="userName" length="100" />
+		</property>
+
+		<property name="lastPostName" type="string">
+			<column name="lastPostName" length="100" />
+		</property>
+		<property name="title" type="string">
+			<column name="title" length="200" />
+		</property>
+			<property name="content" type="text">
+			<column name="content"/>
+		</property>
+		<property name="url" type="string">
+			<column name="url" length="200" />
+		</property>
+		<property name="source" type="string">
+			<column name="source" length="200" />
+		</property>
+		<property name="reply" type="integer">
+			<column name="reply" />
+		</property>
+		<property name="status" type="integer">
+			<column name="status" length="11" />
+		</property>
+	</class>
+</hibernate-mapping>

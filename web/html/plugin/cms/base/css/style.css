@@ -1,0 +1,211 @@
+A:link
+{
+	font-family:verdana, arial, helvetica;
+	font-size: 12px;
+	color:#000000;
+	text-decoration:none;
+}
+A:visited {color:#660099; 	text-decoration:none;}
+A:hover { color:#FF3300;	text-decoration:none; }
+
+A.o:link{ color:#000000; 	text-decoration:none;}
+A.o:visited { color:#000000; 	text-decoration:none;}
+A.o:hover { color:#000000;	text-decoration: underline; }
+
+A.white:link
+{
+	font-family:verdana, arial, helvetica;
+	font-size: 12px;
+	color:#FFFFFF;
+	text-decoration:none;
+}
+A.white:visited { color:#FFFFFF; 		font-size: 12px; 
+	font-family:verdana, arial, helvetica;
+text-decoration:none;}
+A.white:hover { color:#FFFFFF;		font-size: 12px; 
+	font-family:verdana, arial, helvetica;
+text-decoration: underline; }
+
+div#helpLayer {
+	background-color: #D7EDFB;
+	border-top: 1px dashed  #c0c0B3;
+	border-right: 1px dashed  #c0c0B3;
+	padding: 8px 8px 8px 28px;
+}
+
+img#helpIcon {
+	margin-left: -20px;
+}
+
+.linktext
+{
+	font-family:verdana, arial, helvetica;
+	font-size: 80%;
+	color:#000000;
+	text-decoration:none
+}
+
+body			{   font-size: 12px;  }
+td			{ font-family: Verdana; color: #000000; font-size: 12px }
+textarea	{ font-family: "Courier New", "Courier"; font-size: 12px;  color: #000000; font-weight: normal; background-color: #F7F7EF }
+
+input,object	{ font-family: Tahoma, Verdana; font-size: 12px;  color: #000000; font-weight: normal; background-color: #F7F7EF }
+select			{ font-family: Arial; font-size: 12px;  color: #000000; font-weight: normal; background-color: #F7F7EF }
+.process		{ color: #000000; font-size: 11px; font-family: Tahoma, Arial;}
+.bold			{ font-weight: bold }
+
+#mgred   {background-color: #DEDFD6 }
+#mggray  {}
+#description { color:#000000; font-size:10px }
+#large { font-family: verdana, arial; font-size:18px; color:#4C77B6; font-weight:bold; letter-spacing:-1px }
+#subtitle { font-family: Arial,Verdana; font-size:16px; color:#FF9900; font-weight:bold }
+#smalltitle { font-family: Arial,Verdana; font-size:11px; color:#FF9900; font-weight:bold }
+
+/*   table color setting start */
+.table_border {
+	background-color: #c0c0B3
+}
+.table_border_xp {
+	background-color: #336699
+}
+.table_header{ font-family: Tahoma, Verdana; font-size: 11px; color: #000000; font-weight: bold; background-color: #DEDFD6 }
+.table_td1 {
+	font-family: Tahoma, Verdana,ms sans serif, arial;
+	font-size: 10pt;
+	background-color: #F7F7EF
+}
+.table_td11 {
+	font-family: Tahoma, Verdana,ms sans serif, arial;
+	font-size: 10pt;
+	background-color: #D9E4F0
+}
+.table_td2 {
+	font-family:Tahoma, Verdana,ms sans serif, arial;
+	font-size: 10pt;
+	background-color: #FFFFFF
+}
+.input   {
+BORDER-RIGHT: #ffffff 1px solid; BORDER-TOP: #ffffff 1px solid; FONT-SIZE: 12px; BACKGROUND-ATTACHMENT: fixed; BACKGROUND-IMAGE: url(images/bt5/input.gif); BORDER-LEFT: #ffffff 1px solid; BORDER-BOTTOM: #eeeeee 1px solid
+}
+.pbutton   {
+BORDER-RIGHT: #CCCCCC 1px solid; BORDER-TOP: #CCCCCC 1px solid; FONT-SIZE: 12px; BACKGROUND-ATTACHMENT: fixed; background-color: #FFFFFF; BORDER-LEFT: #CCCCCC 1px solid; BORDER-BOTTOM: #CCCCCC 1px solid
+}
+.smallcheckbox{font-size: 11px;}
+
+/*   table color setting end */
+div.errormessage {
+	background-color: #FFFFE1;
+	border: 1px dashed #CFCFCF;
+
+	padding: 6px 6px 6px 32px;
+	line-height: 18px;
+}
+
+/* XP Style Definition */
+#msviLocalToolbar
+{
+	border-top: solid 1px #999;
+	border-bottom: solid 1px #999;
+	background: #F1F1F1;
+	
+	padding: 2px 0px 1px 0px;
+	
+	font-size: 100%;
+}
+/*#msviLocalToolbar td
+{
+	font-size: 100%;
+}
+
+#msviLocalToolbar a
+{
+	font: 70% Verdana;
+	color: black;
+	text-decoration: none;
+}
+*/
+.lt0
+{
+	border: solid 1px #F1F1F1;
+	background: #F1F1F1;
+	padding: 0px 3px 0px 3px;
+	font-size: 12px; font-family: Tahoma, Arial;
+	cursor: pointer;
+}
+
+.lt1
+{
+	border: solid 1px #999;
+	background: #CCC;
+	padding: 0px 3px 0px 3px;
+	cursor: pointer;
+}
+
+.ltsep
+{
+	font-size: 11px; font-family: Tahoma, Arial;
+	color: #A9A9A9;
+	padding: 0px 1px;
+}
+.indexLink
+{
+	font-size: 11px; font-family: Tahoma, Arial;
+	color:  #3333FF;
+	padding: 0px 1px;
+
+}
+
+.photoLink
+{
+	font-size: 11px; font-family: Tahoma, Arial;
+	color:  #006600 ;
+	padding: 0px 1px;
+
+}
+.localToolbar form
+{
+	margin: 0px;
+}
+
+.localToolbar input
+{
+	font: 70% Tahoma, Helvetica;
+	margin-right: 8px;
+	padding: 0px;
+}
+#msviHomePageLink
+{
+	width: 1px;
+	padding-left: 2px;
+}
+
+#msviHomePageLink td
+{
+	font-size: 100%;
+}
+
+#msviHomePageLink a
+{
+	display: block;
+	padding: 2px 6px 2px 6px;
+	margin: 0px;
+	background: #F1F1F1;
+	white-space: nowrap;
+	
+	border: solid 1px #F1F1F1;
+	
+}
+
+#msviHomePageLink a:hover
+{
+	display: block;
+	border: solid 1px #999;
+	padding: 2px 6px 2px 6px;
+	margin: 0px;
+	background: #CCC;
+}
+/* XP Style Definition */
+
+.Utoolbutton{border:1 double;border-color:threedface threedface threedface threedface; background:threedface} 
+.Dtoolbutton{border:1 double;border-color:#FFFFFF #999999 #999999 #FFFFFF; background:threedface} 
+.Ctoolbutton{border:1 double;border-color:#999999 #FFFFFF #FFFFFF #999999; background:threedface} 

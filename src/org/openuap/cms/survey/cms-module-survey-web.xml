@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- DispatcherServlet application context for the Survey application.
+-->
+<beans>
+	<description>Survey CMS插件 WEB Bean</description>
+	
+	<bean id="handlerMapping-Survey"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/plugin/survey/survey.jhtml">
+					<ref local="surveyAction" />
+				</entry>
+				<entry key="/plugin/survey/surveyEdit.jhtml">
+					<ref local="surveyEditAction" />
+				</entry>
+				<entry key="/plugin/survey/surveyRecord.jhtml">
+					<ref local="surveyRecordAction" />
+				</entry>
+				<entry key="/plugin/survey/surveyRecordEdit.jhtml">
+					<ref local="surveyRecordEditAction" />
+				</entry>
+				<entry key="/plugin/survey/question.jhtml">
+					<ref local="questionAction" />
+				</entry>
+				<entry key="/plugin/survey/questionEdit.jhtml">
+					<ref local="questionEditAction" />
+				</entry>
+				<entry key="/plugin/survey/statics.jhtml">
+					<ref local="surveyStaticsAction" />
+				</entry>
+				<entry key="/plugin/survey/poll.jhtml">
+					<ref local="pollAction" />
+				</entry>
+				<entry key="/plugin/survey/simplePoll.jhtml">
+					<ref local="simplePollAction" />
+				</entry>
+				<entry key="/plugin/survey/area.jhtml">
+					<ref local="surveyAreaAction" />
+				</entry>
+				<entry key="/plugin/survey/areaEdit.jhtml">
+					<ref local="areaEditAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="surveyAction"
+		class="org.openuap.cms.survey.action.admin.survey.SurveyAction">
+		<property name="surveyManager">
+			<ref bean="surveyManager" />
+		</property>
+		<property name="questionManager">
+			<ref bean="questionManager" />
+		</property>
+		<property name="surveyXMLService">
+			<ref bean="surveyXMLService" />
+		</property>
+	</bean>
+	<bean id="surveyEditAction"
+		class="org.openuap.cms.survey.action.admin.survey.SurveyEditAction">
+		<property name="surveyManager">
+			<ref bean="surveyManager" />
+		</property>
+	</bean>
+	<bean id="surveyRecordAction"
+		class="org.openuap.cms.survey.action.admin.survey.SurveyRecordAction">
+		<property name="surveyManager">
+			<ref bean="surveyManager" />
+		</property>
+
+	</bean>
+	<bean id="surveyRecordEditAction"
+		class="org.openuap.cms.survey.action.admin.survey.SurveyRecordEditAction">
+		<property name="surveyManager">
+			<ref bean="surveyManager" />
+		</property>
+	</bean>
+	<bean id="questionAction"
+		class="org.openuap.cms.survey.action.admin.question.QuestionAction">
+		<property name="surveyManager">
+			<ref bean="surveyManager" />
+		</property>
+		<property name="questionManager">
+			<ref bean="questionManager" />
+		</property>
+	</bean>
+	<bean id="questionEditAction"
+		class="org.openuap.cms.survey.action.admin.question.QuestionEditAction">
+		<property name="questionManager">
+			<ref bean="questionManager" />
+		</property>
+	</bean>
+	<bean id="surveyStaticsAction"
+		class="org.openuap.cms.survey.action.statics.SurveyStaticsAction">
+		<property name="surveyManager">
+			<ref bean="surveyManager" />
+		</property>
+		<property name="questionManager">
+			<ref bean="questionManager" />
+		</property>
+		<property name="surveyXMLService">
+			<ref bean="surveyXMLService" />
+		</property>
+	</bean>
+	<bean id="pollAction"
+		class="org.openuap.cms.survey.action.poll.SimplePollWizardAction">
+		<property name="surveyManager">
+			<ref bean="surveyManager" />
+		</property>
+		<property name="questionManager">
+			<ref bean="questionManager" />
+		</property>
+	</bean>
+	<bean id="simplePollAction"
+		class="org.openuap.cms.survey.action.poll.SimpleOnePagePollAction">
+		<property name="surveyManager">
+			<ref bean="surveyManager" />
+		</property>
+		<property name="questionManager">
+			<ref bean="questionManager" />
+		</property>
+	</bean>
+	
+	<bean id="surveyAreaAction"
+		class="org.openuap.cms.survey.action.admin.area.SurveyAreaAction">
+		<property name="surveyAreaManager">
+			<ref bean="surveyAreaManager" />
+		</property>
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+	</bean>
+	
+	<bean id="areaEditAction"
+		class="org.openuap.cms.survey.action.admin.area.SurveyAreaEditAction">
+		<property name="surveyAreaManager">
+			<ref bean="surveyAreaManager" />
+		</property>
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+	</bean>
+</beans>

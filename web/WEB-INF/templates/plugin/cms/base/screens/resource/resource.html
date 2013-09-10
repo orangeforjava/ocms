@@ -1,0 +1,64 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>resource</title>
+<base  href="${baseUrl}"/>
+<script type="text/javascript" src="html/common/tree/xtree.js"></script>
+<script type="text/javascript" src="html/common/tree/xmlextras.js"></script>
+<script type="text/javascript" src="html/common/tree/xloadtree.js"></script>
+<link type="text/css" rel="stylesheet" href="html/common/tree/xtree.css" />
+
+<style type="text/css">
+
+body {
+	background:	white;
+	color:		black;
+}
+
+</style>
+</head>
+<script type="text/javascript">
+function rootGo()
+{
+	parent.contentPanel.location="admin/resource.jhtml?action=ListResource&nodeId=0";
+
+}
+
+function rightMenu(cId, extra) {
+
+
+}
+</script>
+<body>
+<script type="text/javascript">
+/// XP Look
+webFXTreeConfig.rootIcon		= "html/common/tree/images/xp/folder.png";
+webFXTreeConfig.openRootIcon	= "html/common/tree/images/xp/openfolder.png";
+webFXTreeConfig.folderIcon		= "html/common/tree/images/xp/folder.png";
+webFXTreeConfig.openFolderIcon	= "html/common/tree/images/xp/openfolder.png";
+webFXTreeConfig.fileIcon		= "html/common/tree/images/xp/folder.png";
+webFXTreeConfig.lMinusIcon		= "html/common/tree/images/xp/Lminus.png";
+webFXTreeConfig.lPlusIcon		= "html/common/tree/images/xp/Lplus.png";
+webFXTreeConfig.tMinusIcon		= "html/common/tree/images/xp/Tminus.png";
+webFXTreeConfig.tPlusIcon		= "html/common/tree/images/xp/Tplus.png";
+webFXTreeConfig.iIcon			= "html/common/tree/images/xp/I.png";
+webFXTreeConfig.lIcon			= "html/common/tree/images/xp/L.png";
+webFXTreeConfig.tIcon			= "html/common/tree/images/xp/T.png";
+webFXTreeConfig.blankIcon		= "html/common/tree/images/blank.png";
+var rti;
+var tree = new WebFXTree("站点根","javascript:rootGo();");
+	<#list rootNodes as node>
+	<#if nodeManager.getNodeCount(node.nodeId,0,0)==0>
+	tree.add(new WebFXTreeItem("${node.name}","admin/resource.jhtml?action=ListResource&nodeId=${node.nodeId?c}", "main", "${node.nodeId?c}"));
+	<#else>
+	tree.add(new WebFXLoadTreeItem("${node.name}", "admin/resource.jhtml?action=ResourceXml&nodeId=${node.nodeId?c}", "admin/resource.jhtml?action=ListResource&nodeId=${node.nodeId?c}", "main", "${node.nodeId?c}"));
+	</#if>
+	</#list>
+//
+document.write(tree);
+</script>
+<div id="menudata"></div>
+</body>
+</html>

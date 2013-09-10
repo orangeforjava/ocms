@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-tpl.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<beans>
+	<!-- DAO -->
+	<import resource="cms-module-tpl-dao.xml" />
+	<!-- BIZ-->
+	<bean id="templateVarManager"
+		class="org.openuap.cms.tpl.manager.impl.TemplateVarManagerDBImpl">
+		<property name="templateVarDao">
+			<ref bean="templateVarDao" />
+		</property>
+	</bean>
+	<bean id="templateManager"
+		class="org.openuap.cms.tpl.manager.impl.TemplateManagerDBImpl">
+		<property name="templateDao">
+			<ref bean="templateDao" />
+		</property>
+		<property name="templateRefDao">
+			<ref bean="templateRefDao" />
+		</property>
+	</bean>
+	<bean id="templateCateManager"
+		class="org.openuap.cms.tpl.manager.impl.TemplateCateManagerDBImpl">
+		<property name="templateCategoryDao">
+			<ref bean="templateCategoryDao" />
+		</property>
+	</bean>
+</beans>

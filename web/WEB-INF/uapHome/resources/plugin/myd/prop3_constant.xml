@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 年龄 -->
+<directory>
+  <props>
+    <prop key="0">--请选择--</prop>
+	<prop key="14">≤20岁</prop>
+	<prop key="21">21-30岁</prop>
+	<prop key="31">31-40岁</prop>
+	<prop key="41">41-50岁</prop>
+	<prop key="51">≥51岁</prop>
+  </props>
+</directory>

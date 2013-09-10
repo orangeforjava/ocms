@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>结点模版选择</title>
+<base  href="${baseUrl}"/>
+<link rel='stylesheet' type='text/css' href='html/plugin/cms/base/css/style.css' />
+<script type="text/javaScript" src="html/common/js/jquery-lastest.pack.js"></script>
+<script language="javascript" type="text/javascript">
+function psn_backward()
+{
+	window.history.go(-1);
+}
+
+function psn_updir()
+{
+	switch(selectMode) {
+		case 'global':
+			var PATH =  document.workFrame.PATH;
+			var PSNID = document.form1.psn.options[document.form1.psn.selectedIndex].value
+			//alert(PSNID)
+			workFrame.location = '${baseUrl}admin/template.jhtml?action=TplListFile&extra=updir&PATH=' + encodeURIComponent(PATH)
+			break;
+		case 'cate':
+			workFrame.location = '${baseUrl}admin/template.jhtml?action=CateTplListFile&TCID=' + document.workFrame.ParentTCID;
+
+			break;
+	}
+
+}
+
+function psn_mkdir()
+{
+	var PATH =  document.workFrame.PATH;
+	var PSNID = document.form1.psn.options[document.form1.psn.selectedIndex].value
+
+ 	var dirname= showModalDialog("${baseUrl}admin/select.jhtml?action=InputDialog&Title="+encodeURIComponent('文件夹名'),"color","dialogWidth:300px;dialogHeight:150px;help:0;status:0;scroll:no");
+ 	if(dirname != null && dirname != '') {
+ 		workFrame.location = '${baseUrl}admin/template.jhtml?action=TplMkDir&dirname='+ encodeURIComponent(dirname) +'&PATH=' + encodeURIComponent(PATH);
+
+ 	}
+}
+var selectMode = 'global';
+function doSelect(action) {
+	switch(action) {
+		case 'global':
+			selectMode = 'global';
+			workFrame.location = '${baseUrl}admin/template.jhtml?action=TplListFile';
+			break;
+		case 'cate':
+			selectMode = 'cate';
+			workFrame.location = '${baseUrl}admin/template.jhtml?action=CateTplListFile';
+			break;
+	}
+}
+function workFrameReload() {
+	var PATH = '';
+	var TCID = '';
+
+	if(TCID != '') {
+			selectMode = 'cate';
+			workFrame.location = '${baseUrl}admin/select.jhtml?action=CateTplListFile&TCID=' + TCID;
+			document.form1.fileName.value = "{TID:}";
+
+	} else if(PATH != '') {
+		//alert(PSNID);
+		if(PATH == '/') {
+			document.form1.fileName.value = PATH + '';
+
+		} else {
+			document.form1.fileName.value = PATH + '/';
+
+		}
+		workFrame.location = '${baseUrl}admin/template.jhtml?action=TplListFile&default_name=&PATH=' + PATH
+		//
+
+	} else {
+		workFrame.location = '${baseUrl}admin/template.jhtml?action=TplListFile';
+	}
+}
+
+function ok(){
+	var parent = art.dialog.parent;	
+	
+	parent.callback('tplSelect',$('#fileName').val());	
+	art.dialog.close();
+	return false;
+}
+function cancel(){
+	art.dialog.close();
+	return false;
+}
+</script>
+</head>
+<body style="margin:0pt;padding:0pt;border: 1px buttonhighlight;" onload="workFrameReload()">
+<form name="form1" method="post" action="">
+<table width="100%" border="0" cellspacing="5">
+  
+    <tr>
+      <td colspan="3" align="right"><table width="100%" border="0" cellspacing="0">
+          <tr>
+            <td width="10%"></td>
+            <td  width="200">
+			<select name="psn" id="select" onchange="if(this.options[this.selectedIndex].value != ''){
+doSelect(this.options[this.selectedIndex].value)
+} ">
+
+                <option value="global">公用模板根目录&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+ 				 <option value="cate" >分类模板根目录 </option>
+             </select></td>
+            <td align=left ><script src="${baseUrl}resource.jhtml?path=html/plugin/cms/base/js/psn_icon.js" type="text/javaScript"></script></td>
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" align="center">
+<iframe name=workFrame  frameborder=1 class=button src="" style="width:100%;height:134;" >
+                </iframe> </td>
+    </tr>
+    <tr>
+      <td width="18%">文件名称:</td>
+      <td width="59%"><input name="fileName" id="fileName" type="text" size="36" value="${tpl?default("")}">
+        <input name="selectPSN" type="hidden" id="selectPSN"></td>
+      <td width="20%"><input type="button" name="Submit" value="  确定  " onclick="return ok();"></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><input type="button" name="Submit2" value="  取消  " onclick='return cancel();'></td>
+    </tr>
+  
+</table>
+</form>
+<script language="javascript">
+
+</script>
+</body>
+</html>

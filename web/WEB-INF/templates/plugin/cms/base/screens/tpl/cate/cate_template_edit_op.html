@@ -1,0 +1,120 @@
+<#global baseUrl=helper.getBaseURL()>
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><#include "/includes/admin/meta.html"/>
+<title>publish operation result</title>
+
+<base  href="${baseUrl}"/>
+<link type="text/css" rel="StyleSheet" href="html/css/style.css" />
+<#if result=="success">
+<meta http-equiv="refresh" content="1;url='${baseUrl}admin/template.jhtml?action=ListByCate&tcid=${tcid}'">
+</#if>
+</HEAD>
+<BODY>
+<br><br>
+<div align=center>
+  <table width="100%" height="100%" border="0" cellpadding="20" cellspacing="0">
+    <td align="center" valign="top">
+        <table width="50%" height="100" border="0" cellpadding="4" cellspacing="1" class="table_border">
+          <tr class="table_td2">
+            <td>
+			<#if operation=="del">
+				<#if result=="success">
+				删除内容成功
+				<#else>
+				删除内容失败
+				</#if>
+			<#elseif operation=="batch_del">
+				<#if result=="success">
+				批量删除内容成功
+				<#else>
+				批量删除内容失败
+				</#if>
+			<#elseif operation=="unpublish">
+				<#if result=="success">
+				取消内容发布成功
+				<#else>
+				取消内容发布失败
+				</#if>
+			<#elseif operation=="batch_unpublish">
+				<#if result=="success">
+				批量取消内容发布成功!
+				<#else>
+				批量取消内容发布失败!
+				</#if>
+			<#elseif operation=="publish">
+				<#if result=="success">
+				内容发布成功:${publishUrl}
+				<#else>
+				内容发布失败
+				</#if>
+			<#elseif operation=="batch_publish">
+				<#if result=="success">
+				批量内容发布成功！
+				<#else>
+				批量内容发布失败！
+				</#if>
+			<#elseif operation=="refresh">
+				<#if result=="success">
+				更新内容发布成功:${publishUrl}
+				<#else>
+				更新内容发布失败
+				</#if>
+			<#elseif operation=="batch_refresh">
+				<#if result=="success">
+				批量更新内容发布成功!
+				<#else>
+				批量更新内容发布失败
+				</#if>
+			<#elseif operation=="cut">
+				<#if result=="success">
+				剪切内容发布成功！
+				<#else>
+				剪切内容发布失败，原因为:${msgs?default("")}
+				</#if>
+			<#elseif operation=="batch_cut">
+				<#if result=="success">
+				批量剪切内容发布成功！
+				<#else>
+				批量剪切内容发布失败，原因为:${msgs?default("")}
+				</#if>
+			<#elseif operation=="copy">
+				<#if result=="success">
+				复制内容发布成功！
+				<#else>
+				复制内容发布失败，原因为:${msgs?default("")}
+				</#if>
+			<#elseif operation=="batch_copy">
+				<#if result=="success">
+				批量复制内容发布成功！
+				<#else>
+				批量复制内容发布失败，原因为:${msgs?default("")}
+				</#if>
+			<#elseif operation=="createLink">
+				<#if result=="success">
+				创建虚链接成功！
+				<#else>
+				创建虚链接失败，原因为:${msgs?default("")}
+				</#if>
+			<#elseif operation=="createIndexLink">
+				<#if result=="success">
+				创建索引链接成功！
+				<#else>
+				创建索引链接失败，原因为:${msgs?default("")}
+				</#if>
+			</#if>
+			
+			
+			<br><br>
+			<#if result=="success">
+			<a href="${baseUrl}/admin/publish.jhtml?action=ContentList&nodeId=${nodeId}&indexId=${indexId?default("0")}">如果您的浏览器没有自动跳转，请点击这里</a> <br>
+			</#if>
+               </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+</BODY>
+</HTML>

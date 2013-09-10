@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: BaseRole.hbm.xml 89 2007-04-06 10:07:57Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.user.model">
+	<class name="BaseRole" table="base_role">
+		<id name="roleId" type="long" unsaved-value="0">
+			<column name="roleId" />
+			<generator class="native" />
+		</id>
+		<property name="name" type="string">
+			<column name="name" length="50" not-null="true" />
+		</property>
+		<property name="guid" type="string">
+			<column name="guid" length="200" />
+		</property>
+		<property name="title" type="string">
+			<column name="title" length="100" />
+		</property>
+		<property name="pos" type="integer">
+			<column name="pos" not-null="true" />
+		</property>
+		<property name="status" type="integer">
+			<column name="status" not-null="true" />
+		</property>
+		<property name="description" type="string">
+			<column name="description" length="250" />
+		</property>
+		<property name="creationDate" type="long">
+			<column name="creationDate" not-null="true" />
+		</property>
+		<property name="modificationDate" type="long">
+			<column name="modificationDate" not-null="true" />
+		</property>
+		<set name="users" table="base_user_role" lazy="false">
+			<key column="roleId" />
+			<many-to-many column="userId" class="BaseUser" />
+		</set>
+	</class>
+</hibernate-mapping>

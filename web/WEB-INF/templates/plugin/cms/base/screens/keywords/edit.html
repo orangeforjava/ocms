@@ -1,0 +1,129 @@
+[#assign actionTitle="编辑关键词" /]
+[#assign _TITLE_="编辑关键词" /]
+[#assign actions=[{"action":"","title":"关键词列表","url":"${baseUrl}admin/keywords.jhtml"},
+{"action":"","title":"添加词条","url":"javaScript:add()"}
+]]
+[#include "/plugin/cms/common/includes/header.htm"/]
+
+		<script type="text/javaScript" charset="UTF-8" language="javaScript">
+			
+			
+			function add(){
+				document.location='${baseUrl}admin/keywords.jhtml?action=Add';
+			}
+			function setStyle(vForm){
+				vForm.style_id1.value=vForm.style_color1.value;
+				if(vForm.style_strong1.checked){
+					vForm.style_id1.value +=vForm.style_strong1.value;
+				}else{
+					vForm.style_id1.value +=";";
+				}
+				if(vForm.style_underline.checked)
+					vForm.style_id1.value += vForm.style_underline.value;
+			}
+		</script>
+	
+		<form ACTION='${baseUrl}admin/keywords.jhtml' METHOD='post' border=0
+			onsubmit="return checkForm();">
+			<input type="hidden" name="action" value="Save" />
+			<input type="hidden" name="style" id="style_id1" value="${keywords.style!''}">
+			<table border=0 cellspacing=1 cellpadding=4 WIDTH='100%'
+				class="maintable" align="center">
+				<tr>
+					<td colspan=2 class="table_td1">
+						<font color=#0000FF><B>编辑</B> - ${keywords.keyword!''} </font>
+					</td>
+				</tr>
+				<tr class="table_td2">
+					<td width=20%>
+						<b>关键词</b>
+					</td>
+					<td>
+						<input type='text' name='keyword' size=83 maxlength=40
+							value="${keywords.keyword!''}" class="flat">
+					</td>
+				</tr>
+				<tr class="table_td2">
+					<td width=20%>
+						<b>范围</b>
+					</td>
+					<td>
+						<input type="hidden" name="scope" value="-1"/>
+						全局
+					</td>
+				</tr>
+				<tr class="table_td2">
+					<td width=20%>
+						<b>排序</b>
+					</td>
+					<td>
+						&nbsp;
+						<input type='text' name='pos' size=6 ,maxlength=4
+							value="${keywords.pos!'0'}" class="flat">
+					</td>
+				</tr>
+				
+				<tr class="table_td2">
+					<td width=20%>
+						<b>启用</b>
+					</td>
+					<td>
+						<input type='checkbox' name='status' value="0" [#if keywords.status==0]CHECKED [/#if]/> </td>
+				</tr>
+				<tr class="table_td2">
+					<td width=20% valign=top>
+						<b>样式</b>
+					</td>
+					<td>
+						<select name="style_color1" id="style_color1" style="background:${keywords.color}" onchange="this.style.background=this.options[this.selectedIndex].style.backgroundColor;setStyle(this.form)">
+							<option value=";">--颜色--</option>
+							[#list colorTypes as color]
+								[#if keywords.titleColor==color.color]
+									<option value="${color.color}"  style="background-color:${color.colorValue};" selected="selected"></option>
+								[#else]
+									<option value="${color.color}"  style="background-color:${color.colorValue};"></option>	
+								[/#if]
+							[/#list]
+						</select>
+						[#if keywords.titleBold]
+					 	<input type="checkbox" name="style_strong1" id="style_strong1" checked="checked" value="font-weight:bold;"  onclick="setStyle(this.form)"> 加粗
+					    [#else]
+					    <input type="checkbox" name="style_strong1" id="style_strong1" value="font-weight:bold;"  onclick="setStyle(this.form)"> 加粗
+					    [/#if]
+					    [#if keywords.titleUnderline]
+					 	<input type="checkbox" name="style_underline" id="style_underline" checked="checked" value="text-decoration:underline;"  onclick="setStyle(this.form)"> 下划线
+					    [#else]
+					    <input type="checkbox" name="style_underline" id="style_underline" value="text-decoration:underline;"  onclick="setStyle(this.form)"> 下划线
+					    [/#if]
+					    
+					</td>
+				</tr>
+
+				<tr class="table_td2">
+					<td width=20% valign=top>
+						<b>URL</b>
+					</td>
+					<td>
+						<textarea NAME='url' cols=83 rows=3 WRAP='VIRTUAL'>${keywords.url!''}</textarea>
+					</td>
+				</tr>
+				
+			</TABLE>
+			<div align="center">
+			<INPUT TYPE='hidden' NAME="id" VALUE='${keywords.id!''}'/>
+			<INPUT TYPE='submit' NAME="action_save" VALUE=' 保 存 ' class=btnStyle/>
+			</div>
+		</FORM>
+		<script language=JavaScript type="text/javaScript">
+		<!--
+		
+		function checkForm()
+		{	
+		    //
+		   
+			return true;
+		}
+		
+		//-->
+		</script>
+[#include "/plugin/cms/common/includes/footer.htm"/]

@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="Pragma"  content="no-cache"/>
+<meta content="Cache-Control" content="no-cache"/>
+<title>template edit header</title>
+<base  href="${baseUrl}"/>
+<link rel='stylesheet' type='text/css' href='html/plugin/cms/base/css/style.css' />
+
+
+
+<script language='JavaScript'>
+var doImage = doImage;
+var TType = TType;
+var popupWin=null;
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	if (document.getElementById)
+		t = document.getElementById(tbl);
+	else
+		t = document.all(tbl);
+	if (t == null) return;
+	if (t.getElementsByTagName)
+		d = t.getElementsByTagName("TD");
+	else
+		d = t.all.tags("TD");
+	if (d == null) return;
+	if (d.length <= idx) return;
+	d[idx].className = cls;
+}
+
+</script>
+
+
+<SCRIPT language=JavaScript>
+var TCID = '';
+function doing(action)
+{
+	switch(action) {
+		case 'new':
+			parent.location = '${baseUrl}admin/template.jhtml?action=EditorFrameset&mode=add&path=${path}';
+			break;
+		case 'save':
+			if(parent.mainFrame.o == 'add' && TCID == '') {
+
+				var arr = showModalDialog("${baseUrl}admin/adminSelect.jhtml?action=SelTplDialog&tpl=${tpl?default("")}","tpl","dialogWidth:428px;dialogHeight:266px;help:0;status:0;scroll:no");
+				if(arr == null || arr =='') {
+					return false;
+				}
+
+				myRe=/([^\s]*)(\/)([^\/.]*)(.)(\w*)/g;
+				myArray = myRe.exec(arr);
+
+				if(myArray == null || myArray[5] == null || myArray[5] == '') {
+					alert("无法保存，文件名输入有误：缺少文件后缀."+"\n\n" + arr);
+					return doing('save');
+
+				}
+				//alert(myArray[0]);
+				//alert(myArray[1] + myArray[2]);
+ 				//alert(myArray[3] + myArray[4]+myArray[5]);
+				filename = arr;
+				//return true;
+				if(filename != null || filename=='') {
+					var oBao = new ActiveXObject("Microsoft.XMLHTTP");
+					var returnValue;
+
+					var ac="action=IsFileExists&targetFile="+encodeURIComponent(filename)+"&path="+ encodeURIComponent(parent.mainFrame.PATH);
+					oBao.open("POST","${baseUrl}/admin/templateEdit.html",false);
+					oBao.setRequestHeader("Content-Length",ac.length);
+					oBao.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+					oBao.send(ac);
+					returnValue = unescape(oBao.responseText);
+					if(returnValue == '2') {
+						alert("模板名已经存在,请修改名称");
+						return doing('save');
+					} else if(returnValue == '1'){
+						//
+						alert("没有指定模版文件名称，请指定名称");
+						return doing('save');
+					}
+					else {
+						parent.mainFrame.document.FM.targetFile.value = filename;
+						parent.mainFrame.document.FM.submit();
+					}
+
+				}
+
+			} else{
+				if(!confirm("确认保存吗?")) return false;
+				parent.mainFrame.document.FM.action="${baseUrl}admin/templateEdit.jhtml?action=EditSubmit";
+				parent.mainFrame.document.FM.target="_self";
+				parent.mainFrame.document.FM.submit();
+
+			}
+
+			break;
+		case 'saveas':
+			parent.mainFrame.document.FM.submit();
+			break;
+		/**case 'show_colorcode':
+			window.open('show_colorcode.php?TplUrl=systemplatespathisuptemplates/copyright.html&charset=gb2312','','scrollbars=yes,width=780,height=580')
+			break;**/
+		case 'close':
+			parent.window.close();
+			break;
+
+
+	}
+}
+</script>
+<script>
+var mousemovecolor="#D4D4D4";
+var selectcolor ="#DDDDDD";
+var oldcolor;
+
+function GetRow(oElem)
+{
+	while (oElem)
+	{	//alert(oElem.tagName.toLowerCase())
+		if (oElem.tagName.toLowerCase() == "tr" || oElem.parentElement.tagName.toLowerCase() == "tbody")
+		    return oElem;
+		if (oElem.tagName.toLowerCase() == "table" || oElem.tagName.toLowerCase() == "th") return false;
+		oElem = oElem.parentElement;
+	}
+}
+
+
+function selected()
+{	//alert(pid)
+
+	var trstyle = GetRow( window.event.srcElement );
+	var a;
+	if( !trstyle )
+		return false;
+
+	if( trstyle.style.backgroundColor.toLowerCase() == selectcolor.toLowerCase())
+	{
+		trstyle.style.backgroundColor = "";
+		a=eval("p_"+ trstyle.id);
+		//alert(trstyle.id)
+		if (a!=null || a.checked)
+			a.checked=false
+		oldcolor = "";
+	}
+	else
+	{
+		trstyle.style.backgroundColor = selectcolor;
+		a=eval("p_"+ trstyle.id);
+		//alert(trstyle.id)
+		if (a!=null)
+			a.checked=true
+		oldcolor = selectcolor;
+
+
+	}
+}
+</script>
+</HEAD>
+<BODY     STYLE="margin:0pt;padding:0pt;border: 1px buttonhighlight;"  >
+<div id="menudata"></div>
+<div id="msviLocalToolbar">
+  <table cellpadding="0" cellspacing="2" width="100%" height="19" border="0">
+    <tr>
+      <td class="lt0" height="30" nowrap="nowrap"  onmouseover="mhHover('msviLocalToolbar', 0, 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 0, 'lt0')" onClick="doing('new')">新建</td>
+      <td><span class="ltsep">|</span></td>
+      <td class="lt0" nowrap="nowrap" onMouseOver="mhHover('msviLocalToolbar', 2, 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 2, 'lt0')" onClick="doing('save')">保存</td>
+       <td><span class="ltsep">|</span></td>
+         <!-- <td class="lt0" nowrap="nowrap" onmouseover="mhHover('msviLocalToolbar', 4, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 4, 'lt0')" onclick="doing('show_colorcode')">显示彩色源码</td>
+       <td><span class="ltsep">|</span></td>-->
+      <td class="lt0" nowrap="nowrap" onMouseOver="mhHover('msviLocalToolbar', 4, 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 4, 'lt0')" onClick="doing('close')">关闭</td>
+
+      <td width="100%" align=right>
+
+<td><td> </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

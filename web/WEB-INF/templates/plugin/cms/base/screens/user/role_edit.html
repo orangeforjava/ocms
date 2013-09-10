@@ -1,0 +1,86 @@
+<#assign layout="/plugin/cms/user/layouts/admin.html"/>
+
+<#assign actionTitle="角色管理" />
+<#assign _TITLE_="角色管理" />
+<#if mode=="add">
+<#assign actions=[
+{"action":"RoleList","title":"角色管理","url":"${baseUrl}admin/user.jhtml?action=RoleList","class":"view"},
+{"action":"","title":"添加角色","url":"${baseUrl}admin/roleEdit.jhtml","class":"add"}
+
+]>
+<#else>
+<#assign actions=[
+{"action":"RoleList","title":"角色管理","url":"${baseUrl}admin/user.jhtml?action=RoleList","class":"view"},
+{"action":"Add","title":"添加角色","url":"${baseUrl}admin/roleEdit.jhtml","class":"add"},
+{"action":"","title":"角色编辑","url":"${baseUrl}admin/roleEdit.jhtml?mode=edit&roleId=${role.roleId}","class":"view"}
+
+]>
+</#if>
+
+<script language="JavaScript">
+
+function check_form(){
+	with(form1){
+		if(name.value==""){
+			alert('权限组名称不能为空!');
+			name.focus();
+			return false;
+		}				
+	}
+	return true;
+}
+</script>
+<#import "/spring.ftl" as spring />
+<@spring.bind "role.*"/>
+<#if spring.status.error>
+<div class="global_error"> 
+  <#list spring.status.errorMessages as error>
+  ${error} <br/>
+  </#list>
+</div>
+</#if>
+<form action="admin/roleEdit.jhtml" method="post"  name="form1" id="form1" onsubmit="return check_form();">
+    <input type="hidden" name="mode" value="${mode}"/>
+	<input type="hidden" name="ref" value="${baseUrl}admin/user.jhtml?action=RoleList"/>
+	
+<div class="colorarea02">
+		<h2>
+			<#compress>
+				<#if mode=="add">
+				  新增
+				<#else>
+				  编辑
+				</#if>
+				  权限组
+			</#compress>
+		</h2>
+
+<table border="0" cellspacing=0" cellpadding="2" width="100%"  class="maintable">
+    <tr>
+      <th>权限组名称:</th>
+      <td >
+	  <@spring.bind "role.name"/>
+	  <#if mode=="add">
+	  <input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" value="${spring.status.value?default("")}" >        
+	  <#else>
+	  <input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" disabled  value="${spring.status.value?default("")}" >
+	  </#if>
+		&nbsp;<span class="STYLE1">*</span></td>
+    </tr>
+	
+	<tr>
+      <th width="20%" valign="top">权限组描述:</th>
+      <td>
+	  <@spring.bind "role.description"/>	  
+	 <textarea name="${spring.status.expression}" cols="50" rows="5" class="flat" id="${spring.status.expression}" >${spring.status.value?default("")}</textarea>  
+        &nbsp;</td>
+    </tr>
+</table>
+
+</div>
+    <div class="buttons2">
+	<input class="submit" type="submit" name="submit_user" value=" 保 存 "/>
+	<input class="button" type="reset" name="reset_user" value=" 重 置 "/>
+	</div>
+</form>
+<br/>

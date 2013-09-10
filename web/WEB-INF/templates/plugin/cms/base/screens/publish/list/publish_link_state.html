@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>view link state</title>
+<base  href="${baseUrl}"/>		
+<link rel='stylesheet' type='text/css' href='html/plugin/cms/base/css/style.css' />
+<SCRIPT src="${baseUrl}resource.jhtml?path=html/common/js/functions.js" type="text/javascript"></SCRIPT>
+<script language='JavaScript'>
+
+function doing(action, IndexID, NodeID)
+{
+	var query, returnValue;
+
+	switch(action) {
+		case 'del':
+		{
+			if(!confirm('确认删除该链接吗？')) {
+				break;
+			}
+			returnValue = cms_send('${baseUrl}admin/publish.jhtml','action=Del&indexId=' + IndexID + '&nodeId=' + NodeID);
+			//		 
+			document.location.reload();
+			return false;
+			break;
+		}
+		case 'edit':
+		{
+			var leftPos = (screen.availWidth-800) / 2
+			var topPos = (screen.availHeight-600) / 2
+			window.open('${baseUrl}admin/publish.jhtml?action=ContentEditorFrameset&mode=edit&nodeId='+NodeID  + '&indexId=' + IndexID,'','width=800,height=600,scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+			
+			 break;
+		}
+	}
+
+}
+
+
+</script>
+</HEAD>
+<BODY>
+  <table border="0" cellspacing="1" cellpadding="4" width="95%"  align=center class="table_border">
+    <tr> 
+      <td colspan="2" class="table_header">内容链接状态查看</td>
+    </tr>
+	 <#list curretnLink as clink>
+		<#if clink_index==0>
+			<#assign clink_ci=clink>
+		<#elseif clink_index==1>
+			<#assign clink_ct=clink>
+		<#elseif clink_index==2>
+			<#assign clink_ci2=clink>				
+		<#elseif clink_index==3>
+			<#assign clink_node=clink>
+		</#if>
+	</#list>
+	<#assign type=clink_ci.type/>
+<tr>
+<td class="table_td1" colspan=2 align="center">
+	<#if type==0>
+		<A HREF="${clink_ci2["url"]}" target="_blank"><span class="ltsep">${clink_ct[titleFieldName]}</span></A>
+	<#elseif type==1>
+		<A HREF="${clink_ci2["url"]}" target="_blank">${clink_ct[titleFieldName]}</A>
+	<#elseif type==2>
+		<A HREF="${clink_ci2["url"]}" target="_blank"><font color="blue">${clink_ct[titleFieldName]}</font></A>
+	</#if>
+</td>
+</tr>
+<tr>
+              <td class="table_td1">链接类型</td>
+			  <td class="table_td2" >
+			 
+			 <#if type==0>
+			 	虚链接<A HREF="${clink_ci2["url"]}" target="_blank">[查看]</A>
+			 <#elseif type==1>
+			 	实链接<A HREF="${clink_ci2["url"]}" target="_blank">[查看]</A>
+			 <#elseif type==2>
+			 	索引链接<A HREF="${clink_ci2["url"]}" target="_blank">[查看]</A>
+			 </#if>
+
+</td>
+</tr>
+
+<tr>
+ <td class="table_td1">实链接</td>
+ <td class="table_td2" >
+ 
+ <#list actualLinks as actualLink>
+ 	<#list actualLink as alink>
+		<#if alink_index==0>
+			<#assign alink_ci=alink/>
+		<#elseif alink_index==1>
+			<#assign alink_ct=alink/>				
+		<#elseif alink_index==2>
+			<#assign alink_node=alink/>
+		</#if>		
+	</#list>
+	<B>${alink_node["name"]}</B> [<A HREF="javascript:doing('edit','${alink_ci["indexId"]}','${alink_ci["nodeId"]}');">编辑</A>]<br>
+ </#list>
+ </td>
+</tr>
+
+<tr>
+ <td class="table_td1">虚链接</td>
+ <td class="table_td2" >
+  <#list virtualLinks as virtualLink>
+ 	<#list virtualLink as vlink>
+		<#if vlink_index==0>
+			<#assign vlink_ci=vlink>
+		<#elseif vlink_index==1>
+			<#assign vlink_ct=vlink>				
+		<#elseif vlink_index==2>
+			<#assign vlink_node=vlink>
+		</#if>		
+	</#list>
+	<B>${vlink_node["name"]}</B> [<A HREF="javascript:doing('del','${vlink_ci["indexId"]}','${vlink_ci["nodeId"]}');">删除</A>]<br>
+ </#list>
+ </td>
+</tr>
+
+<tr>
+ <td class="table_td1">索引链接</td>
+ <td class="table_td2" >
+	<#list indexLinks as indexLink>
+		<#list indexLink as ilink>
+			<#if ilink_index==0>
+				<#assign ilink_ci=ilink>
+			<#elseif ilink_index==1>
+				<#assign ilink_ct=ilink>				
+			<#elseif ilink_index==2>
+				<#assign ilink_node=ilink>
+			</#if>			
+		</#list>
+		<B>${ilink_node["name"]}</B> [<A HREF="javascript:doing('del','${ilink_ci["indexId"]}','${ilink_ci["nodeId"]}');">删除</A>]<br>
+    </#list>  
+ </td>
+</tr>
+<tr>
+<td class="table_td1" colspan=2 align="center">
+	<input type="button" onclick="window.close();" value="关闭窗口">
+</td>
+</tr>	
+</table>
+</BODY>
+</HTML>

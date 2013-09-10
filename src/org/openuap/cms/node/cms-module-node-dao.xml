@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-node-dao.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<beans>
+	<!-- ORM -->
+	<import resource="cms-module-node-orm.xml"/>
+	<!-- DAO -->
+	<bean id="nodeDaoImpl"
+		class="org.openuap.cms.node.dao.hibernate.NodeDaoImpl">
+		<description>内容结点Dao.</description>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="nodeDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<property name="transactionManager" ref="cmsTransactionManager" />
+		<property name="target" ref="nodeDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="recycle*">PROPAGATION_REQUIRED</prop>
+				<prop key="unRecycle*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- $Id: cms-module-config-web.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<beans default-lazy-init="true">
+	<bean id="configHandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/config.jhtml">
+					<ref local="configAction" />
+				</entry>
+			</map>
+		</property>
+		<property name="order" value="10" />
+	</bean>
+	<bean id="configAction"
+		class="org.openuap.cms.config.action.SysConfigAction" />
+</beans>

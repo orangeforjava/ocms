@@ -1,0 +1,190 @@
+<#assign layout="/plugin/cms/base/layouts/admin.html"/> 
+<#import "/plugin/cms/base/macros/node-macros.html" as mynode />
+<#assign actionTitle="模板标签编辑" />
+<#assign _TITLE_="模板标签编辑" />
+<#if tplTag.id??>
+<#assign actions=[
+{"action":"List","title":"标签管理","url":"${baseUrl}admin/tpltag.jhtml","class":"view"},
+{"action":"","title":"标签编辑","url":"${baseUrl}admin/tpltagEdit.jhtml?id=${tplTag.id}","class":"add"},
+{"action":"Load","title":"装载预定标签","url":"${baseUrl}admin/tpltag.jhtml?action=LoadSystemTag","class":"view"}
+]>
+<#else>
+<#assign actions=[
+{"action":"List","title":"标签管理","url":"${baseUrl}admin/tpltag.jhtml","class":"view"},
+{"action":"","title":"新建标签","url":"${baseUrl}admin/tpltagEdit.jhtml","class":"add"},
+{"action":"Load","title":"装载预定标签","url":"${baseUrl}admin/tpltag.jhtml?action=LoadSystemTag","class":"view"}
+]>
+</#if>
+
+
+<#if messageCode?exists>
+ <center><div class='errormessage' style='width: 400px;' ><img class='errormessage' src='html/common/images/info.gif' align='absmiddle'/>&nbsp;<span class='tab-r'>${messageCode}</span></div></center><br></center>
+</#if>
+<script language="JavaScript">
+var ua = '' + navigator.userAgent;
+//
+var addheight=0;
+if(ua.indexOf('Windows XP')!=-1||ua.indexOf('Windows NT')!=-1){
+	if(ua.indexOf('MSIE 6')!=-1||ua.indexOf('MSIE 7')!=-1){
+		addheight=20;
+		//alert(addheight);
+	}
+}
+function tplSelect(tpl,form, element)
+{
+	//showModalDialog
+	var arr = showModalDialog("${baseUrl}admin/template.jhtml?action=SelTplDialog&tpl=" + tpl,"color","dialogWidth:428px;dialogHeight:"+(286+addheight)+"px;help:0;status:0;scroll:no");
+	if(arr != null) {
+		with(form){
+
+			eval(element + ".value= '" +  arr + "'")
+
+		}
+
+
+	}
+}//end functin tplSelect
+function changeTplType(type){
+	var dbtype=document.getElementById("tplType_db");
+	var filetype=document.getElementById("tplType_file");
+	if(type=="db"){	
+		dbtype.style.display="";
+		filetype.style.display="none";
+	}else{
+		dbtype.style.display="none";
+		filetype.style.display="";
+	}
+}
+</script>
+<#import "/spring.ftl" as spring />
+<form action="${baseUrl}admin/tpltagEdit.jhtml" method="post"  name="clientform" id="clientform">
+   <div class="colorarea02">
+			<h2>
+				标签基本信息
+			</h2>
+	<table border="0" cellspacing="0" cellpadding="4" width="98%"  align=center class="maintable">
+
+    <tr>
+      <th>标签名:</th>
+      <td>
+	  <@spring.bind "tplTag.name"/>
+	  <input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" value="${spring.status.value?default("")}" tabindex="8" />
+        &nbsp;必填，可以是中文</td>
+    </tr>
+	<tr>
+      <th>标签描述:</th>
+      <td>
+	  <@spring.bind "tplTag.description"/>
+	  <textarea name="${spring.status.expression}" cols="50" rows="5" class="flat" id="${spring.status.expression}" tabindex="8">${spring.status.value?default("")}</textarea>
+        &nbsp;选填</td>
+    </tr>
+   <!--所属内容模型  -->
+	<tr>
+	  <th>所属内容模型:</th>
+	<td>
+	<@spring.bind "tplTag.modelId"/>
+	<select name="${spring.status.expression}" id="${spring.status.expression}">
+			<#if (tplTag.modelId!0)==0>
+				<option value="0" selected="selected">无</option>
+			<#else>
+				<option value="0">无</option>
+			</#if>
+			<#list models as model>
+			<#if (spring.status.value!0)==model.tableId>
+				<option value="${model.tableId}" selected="selected">${model.name}</option>
+			<#else>
+				<option value="${model.tableId}">${model.name}</option>
+			</#if>
+			</#list>
+    </select>
+	</td>
+	</tr>
+	</table>
+	</div>
+	<div class="colorarea02">
+			<h2>
+				调用信息
+			</h2>
+	<table border="0" cellspacing="0" cellpadding="4" width="100%"  align=center class="maintable">
+    <!-- 结点id.-->
+	<tr>
+	  <th>结点Id:</th>
+	<td>
+	<@spring.bind "tplTag.nodeId"/>
+	<select  name="${spring.status.expression}" id = "${spring.status.expression}">
+		<#if (spring.status.value!(0))==0>
+			<option value="0" selected="selected">动态指定</option>
+		<#else>
+			<option value="0">动态指定</option>
+		</#if>
+		<@mynode.showNodesSel nodeManager=nodeManager selId=tplTag.nodeId!(0)/>
+ 	</select>
+	</td>
+	</tr>
+	<!-- 模板类型.-->	
+	<tr>
+	  <th>模板类型:</th>
+	<td>
+	<@spring.bind "tplTag.tplType"/>
+	<#if (tplTag.tplType!(0))==0>
+		<#assign tplType_db_display="none"/>
+		<#assign tplType_file_display=""/>
+		<input type="radio" name="${spring.status.expression}" value="0" checked="checked" onclick="changeTplType('file');"/>文件&nbsp;
+		<input type="radio" name="${spring.status.expression}" value="1" onclick="changeTplType('db');"/>数据库
+	<#else>
+		<#assign tplType_db_display=""/>
+		<#assign tplType_file_display="none"/>
+		<input type="radio" name="${spring.status.expression}" value="0" onclick="changeTplType('file');"/>文件&nbsp;
+		<input type="radio" name="${spring.status.expression}" value="1" checked="checked" onclick="changeTplType('db');"/>数据库
+	</#if>
+	</td>
+	</tr>
+	<!-- 模板选择 -->
+	
+	<tr id="tplType_file" style="display:${tplType_file_display}">
+	  <th>模板:</th>
+	<td>
+	  <@spring.bind "tplTag.templatePath"/>
+	  <input name="${spring.status.expression}" id="${spring.status.expression}" size=50  class='flat'  value="${spring.status.value!''}">
+      <input type='button' tabindex='13' value='...' onClick="javaScript:tplSelect('${spring.status.value?default("")}',this.form,'${spring.status.expression}')">
+	</td>
+	</tr>
+	<tr id="tplType_db" style="display:${tplType_db_display}">
+	  <th>模板内容:</th>
+	<td>
+	  <@spring.bind "tplTag.templateContent"/>
+	  <@editor.editor instanceName="${spring.status.expression}" value="${spring.status.value!''}" height="400" type="cms_tpl_fckeditor" toolbarSet="CMS"/>
+	</td>
+	</tr>
+    </table>
+    </div>
+    <br />
+	<div class="buttons">
+		<input type="submit" name="submit" value="提交保存" class="submit">
+		<input type="reset" name="reset" value=" 重 置 ">
+	</div>
+</form>
+<script language='JavaScript'>
+function check(form,id)
+{
+	eval("var ischecked = " + form + "." + id + ".checked");
+
+	if(ischecked) {
+		eval( form + "." + id + "_hidden.value = '1'");
+	} else {
+		eval( form + "." + id + "_hidden.value = '0'");
+
+	}
+
+}
+function doing(action)
+{
+	switch(action) {
+		
+		default:
+		break;
+
+	}
+}
+</script>
+<br/>

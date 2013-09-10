@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- $Id$
+-->
+<beans default-lazy-init="true">
+	<bean id="cmsFreemarkerConfigurer"
+		class="org.openuap.cms.CmsFreeMarkerConfigurer">
+		<description>CMS FreeMarker Configurer</description>
+		<property name="templateLoaderPath" value="WEB-INF/templates" />
+		<property name="configLocation">
+			<value>classpath:/freemarker.properties</value>
+		</property>
+	</bean>
+	<bean id="cmsViewResolver"
+		class="org.openuap.base.web.mvc.view.BaseFreeMarkerViewResolver">
+		<property name="viewClass">
+			<value>org.openuap.cms.CmsFreeMarkerView</value>
+		</property>
+		<property name="exposeRequestAttributes">
+			<value>true</value>
+		</property>
+		<property name="allowRequestOverride">
+			<value>true</value>
+		</property>
+	</bean>
+	<bean id="multipartResolver"
+		class="org.openuap.cms.core.multipart.CmsMultipartResovler" />
+	<bean id="exceptionResolver"
+		class="org.openuap.cms.core.hander.CmsMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop
+					key="org.openuap.passport.sso.UnauthorizedException">
+					/plugin/cms/base/screens/no_perm.html
+				</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="securityInterceptor"
+		class="org.openuap.cms.user.security.SecurityInterceptor">
+	</bean>
+	<!-- Imports -->
+	<import resource="workbench/cms-module-workbench-web.xml" />
+	<import resource="user/cms-module-user-web.xml" />
+	<import resource="schedule/cms-module-schedule-web.xml" />
+	<import resource="badwords/cms-module-badwords-web.xml"/>
+	<import resource="config/cms-module-config-web.xml" />
+	<import resource="cache/cms-module-cache-web.xml" />
+	<import resource="cm/cms-module-cm-web.xml" />
+	<import resource="psn/cms-module-psn-web.xml" />
+	<import resource="ds/cms-module-ds-web.xml" />
+	<import resource="engine/cms-module-engine-web.xml" />
+	<import resource="node/cms-module-node-web.xml" />
+	<import resource="node/cms-module-node-permission-web.xml" />
+	
+	<import resource="publish/cms-module-publish-web.xml" />
+	<import resource="repo/cms-module-repo-web.xml" />
+	<import resource="resource/cms-module-resource-web.xml" />
+	<import resource="setup/cms-module-setup-web.xml" />
+	<import resource="util/cms-module-util-web.xml" />
+	<import resource="security/cms-module-security-web.xml" />	
+	<import resource="search/cms-module-search-web.xml" />
+	<import resource="stat/cms-module-stat-web.xml" />
+	<import resource="tpl/cms-module-tpl-web.xml" />
+	<import resource="tpltag/cms-module-tpltag-web.xml" />
+	<import resource="vfs/cms-module-vfs-web.xml" />
+	<import resource="data/cms-module-data-web.xml" />
+	<import resource="comment/cms-module-comment-web.xml" />
+	<import resource="survey/cms-module-survey-web.xml" />
+	<import resource="log/cms-module-log-web.xml" />
+	<import resource="keywords/cms-module-keywords-web.xml" />
+	<import resource="setup/cms-module-setup-web.xml" />
+	<!--  
+		
+	-->
+</beans>

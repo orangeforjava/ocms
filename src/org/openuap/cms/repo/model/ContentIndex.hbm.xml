@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+                            "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<!-- 
+	$Id: ContentIndex.hbm.xml 3992 2011-01-05 06:34:18Z orangeforjava $ 
+-->
+<hibernate-mapping package="org.openuap.cms.repo.model">
+	<class name="ContentIndex" table="cms_content_index">
+		<id name="indexId" column="IndexID" type="long"
+			unsaved-value="0">
+			<generator class="native" />
+		</id>
+		<property name="contentId" type="long" not-null="true">
+			<column name="ContentID" />
+		</property>
+		<property name="nodeId" type="long" not-null="true" index="content_index_nodeId">
+			<column name="NodeID" />
+		</property>
+		<property name="tableId" type="long" not-null="true">
+			<column name="TableID" />
+		</property>
+		<property name="parentIndexId" type="long" not-null="true">
+			<column name="ParentIndexID" />
+		</property>
+		<property name="type" type="integer" not-null="true">
+			<column name="Type" />
+		</property>
+		<property name="publishDate" type="long" not-null="true">
+			<column name="PublishDate" />
+		</property>
+		<property name="selfTemplate" type="string">
+			<column name="SelfTemplate" />
+		</property>
+		<property name="selfPsn" type="string">
+			<column name="SelfPSN" />
+		</property>
+		<property name="selfPublishFileName" type="string">
+			<column name="SelfPublishFileName" />
+		</property>
+		<property name="selfPsnUrl" type="string">
+			<column name="SelfPSNURL" />
+		</property>
+		<property name="selfUrl" type="string">
+			<column name="SelfURL" />
+		</property>
+		<property name="state" type="integer" not-null="true">
+			<column name="State" />
+		</property>
+		<property name="url" type="string">
+			<column name="URL" />
+		</property>
+		<property name="top" type="integer" not-null="true">
+			<column name="Top2" />
+		</property>
+		<property name="pink" type="integer" not-null="true">
+			<column name="Pink" />
+		</property>
+		<property name="sort" type="integer" not-null="true">
+			<column name="Sort" />
+		</property>
+		<property name="permission" type="string">
+			<column name="permission" />
+		</property>
+		<property name="publishMode" type="integer">
+			<column name="publishMode" />
+		</property>
+		<property name="contentPortalUrl" type="string">
+			<column name="contentPortalUrl" />
+		</property>
+		<!--到遗留数据保留-->
+		<property name="oldId" type="long">
+			<column name="oldId" />
+		</property>
+		<property name="oldTable" type="string">
+			<column name="oldTable" />
+		</property>
+		<property name="oldHits" type="long">
+			<column name="oldHits" />
+		</property>		
+		<!-- 关联的内容属性 -->
+		<property name="contentTitle" type="string" >
+			<column name="contentTitle" length="200"/>
+		</property>
+		<property name="contentPhoto" type="string" >
+			<column name="contentPhoto" length="200"/>
+		</property>
+		<property name="creationUserName" type="string" >
+			<column name="creationUserName" length="200"/>
+		</property>		
+		<!-- 统计属性 -->
+		<property name="hitsTotal" type="long">
+            <column name="hitsTotal" not-null="true" default="0"/>
+        </property>
+        <property name="hitsToday" type="long">
+            <column name="hitsToday" not-null="true" default="0"/>
+        </property>
+        <property name="hitsWeek" type="long">
+            <column name="hitsWeek" not-null="true" default="0"/>
+        </property>
+        <property name="hitsMonth" type="long">
+            <column name="hitsMonth" not-null="true" default="0"/>
+        </property>
+        <property name="commentNum" type="long">
+            <column name="commentNum" not-null="true" default="0"/>
+        </property>
+        <property name="hitsDate" type="long">
+            <column name="hitsDate" not-null="true" default="0"/>
+        </property>
+        <property name="dits" type="long">
+            <column name="dits" not-null="true" default="0"/>
+        </property>
+        <property name="downs" type="long">
+            <column name="downs" not-null="true" default="0"/>
+        </property>
+        <!-- 工作流状态 -->
+        <property name="workflowState" type="integer" not-null="true">
+			<column name="workflowState" default="0"/>
+		</property>
+		<property name="lastModifiedDate" type="long">
+            <column name="lastModifiedDate" not-null="true" default="0"/>
+        </property>
+	</class>
+</hibernate-mapping>

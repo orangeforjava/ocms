@@ -1,0 +1,91 @@
+<#assign noLayout="true"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<title>站点重新发布（重新发布所有内容）</title>
+		<base href="${baseUrl}" />
+		<link rel="stylesheet" type="text/css"
+			href="html/plugin/cms/base/css/style.css" />
+		<script language="JavaScript">
+
+		function info() {
+		
+			var returnValue;
+			returnValue = new Array();
+			returnValue['include_sub'] = document.form.include_sub.checked ? 1 : 0;
+			returnValue['content_num'] = document.form.content_num.value;
+			returnValue['refresh_file'] = document.form.refresh_file.value;
+			var parent = art.dialog.parent;
+			parent.callBack(returnValue);
+			art.dialog.close();
+		
+		}
+		function cancel() {
+			art.dialog.close(); 
+			return false
+		}
+		</script>
+	</head>
+	<body>
+		<div>
+			<form action="" method="post" name="form">
+				<table width="100%" border="0" cellspacing="4" cellpadding="0">
+
+					<tr>
+						<td>
+							<fieldset class="search">
+								<legend>
+									发布选项（重新发布所有内容）
+								</legend>
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td>
+											<input type="checkbox" name="refresh_file" value="1"
+												id="refresh_file" checked="checked">
+											<label for="refresh_file">
+												刷新文件
+											</label>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="checkbox" name="include_sub" value="1"
+												id="include_sub">
+											<label for="include_sub">
+												包含子结点
+											</label>
+										</td>
+									</tr>
+
+									<tr>
+										<td>
+											单次循环发布内容页数
+											<input name="content_num" type="text" id="content_num"
+												value="10" size="10">
+										</td>
+									</tr>
+
+								</table>
+							</fieldset>
+
+						</td>
+					</tr>
+					<tr>
+
+						<td height="20" align="right" id=submit_change>
+							<input type="button" name="Submit2" value="开始重新发布"
+								onclick='info();'>
+							&nbsp;
+							
+							<input name="button" type=button onclick="cancel();" value="取消">
+						</td>
+					</tr>
+
+				</table>
+			</form>
+		</div>
+	</body>
+</html>

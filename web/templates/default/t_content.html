@@ -1,0 +1,553 @@
+[@cms.content return="content" IndexID="auto" /]
+<!-- $Id: t_content.html 3992 2011-01-05 06:34:18Z orangeforjava $ -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>${content["Title"]!}-内容页模板演示</title>
+
+
+		<meta http-equiv="keywords" content="${content["KeyWords"]!}">
+		<meta http-equiv="description" content="${content["Title"]!}">
+		<meta name="robots" content="all">
+
+
+		<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+		<style>
+/*全局属性*/
+body {
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	background: #FFF;
+	font-size: 12px;
+	color: #000;
+}
+
+body>div {
+	text-align: center;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+div,form,img,ul,ol,li   ,p {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+ul,li {
+	list-style: none
+}
+
+.mgb5 {
+	margin-bottom: 5px
+}
+
+/* 链接颜色 */
+a {
+	color: #000;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+/*通用属性*/
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+.clear {
+	clear: both;
+	height: 1px;
+	font-size: 1px;
+	width: 1px;
+	visibility: hidden;
+}
+
+/*栏目头部导航*/
+#channelNav {
+	margin: 4px auto;
+	height: 22px;
+	background: #EFEBEF;
+	text-align: left;
+	width: 980px;
+	color: #000
+}
+
+#channelNav ul {
+	width: 500px;
+	clear: none
+}
+
+#channelNav li {
+	list-style: none;
+	float: left;
+	padding: 0 2px 0 0;
+	margin: 5px auto 0 auto;
+	line-height: 14px;
+}
+
+#channelNav .end {
+	padding-right: 0
+}
+
+#channelNav .red a {
+	color: #f00
+}
+
+#channelNav a {
+	color: #000
+}
+
+/*栏目头部导航*/
+#channelNavs {
+	margin: 4px auto;
+	height: 22px;
+	background: #EFEBEF;
+	text-align: left;
+	width: 980px;
+	color: #000
+}
+
+#channelNavs ul {
+	width: 600px;
+	clear: none
+}
+
+#channelNavs li {
+	list-style: none;
+	float: left;
+	padding: 0 2px 0 0;
+	margin: 5px auto 0 auto;
+	line-height: 14px;
+}
+
+#channelNavs .end {
+	padding-right: 0
+}
+
+#channelNavs .red a {
+	color: #f00
+}
+
+#channelNavs a {
+	color: #000
+}
+
+/* 当前位置 */
+.location {
+	width: 980px;
+	padding-top: 17px;
+	height: 28px;
+}
+
+.location .URL {
+	padding-top: 8px;
+	text-align: left
+}
+
+.location IMG {
+	margin-right: 10px
+}
+
+/* 内容框架 */
+.cbody {
+	width: 980px;
+}
+
+.cbody .lc {
+	width: 615px;
+	float: left
+}  /*左列*/
+.cbody .rc {
+	width: 360px;
+	float: right
+}  /*右列*/ /* 正文区 */
+.article_area {
+	width: 613px;
+	background: #EDF5FD;
+	border: 1px solid #8FAFD2;
+	padding-bottom: 5px
+}
+
+.article_area h1 {
+	font-size: 26px;
+	font-weight: bold;
+	line-height: 28px;
+	width: 100%;
+	padding: 25px 0
+}
+
+.article_area .article_info {
+	width: 532px;
+	padding: 0 41px 10px 40px
+}
+
+.article_area .date {
+	width: 100%;
+	margin: 0 auto;
+	height: 16px;
+	border-bottom: 1px solid #C5C5C5;
+	text-align: right
+}
+
+.article_area .date .c {
+	float: left
+}
+
+.article_area .date .red {
+	color: #f00
+}
+
+.article_area .source {
+	padding: 1px 8px 1px 1px;
+	border: 1px solid #C5C5C5;
+	margin-top: 22px;
+	font-size: 14px;
+	font-weight: bold;
+	float: left;
+	background: #fff
+}
+
+.article_area .source .pic {
+	margin-right: 14px
+}
+
+.article_area .source .text {
+	padding-top: 5px
+}
+
+.article_area .article_pic {
+	width: 100%;
+	color: #DD0D0B;
+	font-size: 12px;
+	padding-bottom: 20px;
+	padding-top: 20px
+}
+
+.article_area .article_pic IMG {
+	display: block;
+	margin: 0 auto 10px
+}
+
+.article_area .article {
+	width: 532px;
+	margin: 0 auto;
+	padding: 10px 41px 20px 40px;
+	font-size: 14px;
+	line-height: 28px;
+	text-align: left;
+}
+
+.article_area .article p {
+	margin-bottom: 28px
+}
+
+.article_area .article a {
+	color: #00f;
+	text-decoration: underline
+}
+
+.article_area .pagination,.editUsr {
+	text-align: right;
+	height: 28px
+}
+
+.article_area .pagination {
+	color: #009;
+	font-size: 12px;
+	padding-top: 10px
+}
+
+.article_area .pagination IMG {
+	margin: 0 4px;
+	margin-top: 4px
+}
+
+.article_area .pagination span {
+	color: #000;
+	padding-top: 3px;
+	padding-left: 20px
+}
+
+.article_area .pagination a {
+	color: #000;
+	text-decoration: none
+}
+
+.article_area .pagination a:hover {
+	text-decoration: underline
+}
+
+.article_area .bgline {
+	background: url(/images/logo1227_2/line.gif) repeat-x center;
+	height: 11px;
+	font-size: 1px;
+	width: 596px;
+	margin: 0 auto
+}
+
+/* 评论区 */
+.review {
+	width: 596px;
+	padding: 8px;
+	background: url(/images/logo1227_2/line1.gif) repeat-y 449px 6px
+}
+
+.review .reply {
+	width: 414px;
+	padding: 0 12px;
+	float: left;
+}
+
+.review .reply Textarea {
+	font-size: 12px
+}
+
+.review .argue {
+	width: 141px;
+	padding-left: 16px;
+	padding-top: 5px;
+	float: right
+}
+
+.review .reply H5 {
+	padding-top: 7px;
+	height: 26px
+}
+
+.review .reply .btn {
+	padding: 3px;
+	text-align: right
+}
+
+.review .argue {
+	text-align: left;
+}
+
+.review .argue H3 {
+	font-size: 14px;
+	font-weight: bold;
+	color: #f00;
+	line-height: 28px
+}
+
+.review .argue H3 A {
+	color: #009;
+	text-decoration: underline
+}
+
+.review .argue H3 SPAN {
+	font-size: 12px
+}
+
+.review .argue H3 span A {
+	color: #f00
+}
+
+.review .argue ul {
+	color: #f00;
+	line-height: 24px;
+	font-weight: bold
+}
+
+.review .argue ul A {
+	color: #009;
+	text-decoration: underline
+}
+
+.review .argue ul span A {
+	color: #f00
+}
+
+.review .argue h4   ,.review .argue h4 a {
+	color: #009;
+	line-height: 20px;
+	margin-top: 5px
+}
+
+.review .argue_form {
+	width: 412px;
+	margin: 0 auto;
+}
+
+.review .argue_form SPAN {
+	padding-top: 5px;
+	line-height: 25px;
+}
+</style>
+		<script language="JavaScript">
+		function doZoom(size){
+			document.getElementById("cms_content").style.fontSize=size+'px'
+		}
+		</script>
+	</head>
+
+	<body>
+		<!--当前位置 st-->
+		<div class="location">
+			<div class="URL">
+				[@cms.node return="node" NodeID=content['nodeId'] /] [#assign
+				navNodes=node.getNavNodes(0) /] [#list navNodes as navNode] [#if
+				navNode_index+1=navNodes?size]
+				<a href="${navNode['nodeUrl']!}" />${navNode['name']!}</a> [#else]
+				<a href="${navNode['nodeUrl']!}" />${navNode['name']!}</a> &gt; [/#if]
+				[/#list]
+			</div>
+		</div>
+		<!--当前位置end-->
+		<!--内容区 st-->
+
+		<div class="cbody">
+			<div class="lc">
+				<!--正文区-->
+				<div class="article_area">
+					<h1>
+						${content["Title"]!}
+					</h1>
+
+					<div class="article_info">
+						<div class="date">
+							<span class="c">[@util.date pattern="yyyy年MM月dd日 HH:mm"
+								timestamp=content["publishDate"] /]</span> [
+							<a href="${baseUrl}comment/view.htm?id=${content['indexId']?c}"
+								target="_blank" class="blue1">新闻评论</a><font class="red"><span
+								id="commentCount"></span> </font>] [字号：
+							<a href="javascript:doZoom(16)">大</a>
+							<a href="javascript:doZoom(14)">中</a>
+							<a href="javascript:doZoom(12)">小</a>]
+						</div>
+
+						<div class="source">
+							<div class="left pic">
+								&nbsp;
+							</div>
+							<div class="left text">
+								来源：
+								</b>${content["Source"]!}
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div id="cms_content" class="article">
+						[@cms.pagerContent content=content["Content"]! size="2000"
+						type="0"/]
+						
+						<cmsPager>
+						#p#副标题#e#
+						${content['症状']}
+						#p#副标题#e#
+						${content['病因']}
+						#p#副标题#e#
+						。。。
+						</cmsPager>
+						<p align=right>
+							<@cms.contentPager/>
+						</p>
+						<p align=right>
+							(责任编辑：${content["Author"]!})
+						</p>
+
+					</div>
+					<div class="clear"></div>
+					<div class="bgline"></div>
+					
+					<!--评论区 -->
+
+				<div class="review">
+					<div class="reply">
+						<form name="commentForm"
+							action="${baseUrl}comment/edit.htm"
+							method="post"  focus="comment">
+							<input type="hidden" id="action" name="action" value="Add" />
+							<input type="hidden" id="pid" name="pid" value="" />
+	
+							<input type="hidden" id="id" name="id" value="${content['indexId']?c}" />
+							<input type="hidden" id="rtp" name="rtp" value="" />
+							<input type="hidden" id="debate" name="debate" value="false" />
+							<h5>
+								用户：
+								<input type="text" id="author" maxlength="255"
+									name="author" value="CCUN网友" style="width: 103px" />
+								<input type="checkbox" id="anonymous" name=anonymous
+									onclick="javaScript:void(0)" value="true" checked />
+								匿名
+								<input type="checkbox" name="hip" value="true" />
+								隐藏地址								
+							</h5>
+
+							<div id="reply_form" style="height: 85px">
+								<textarea style="width: 407px; height: 72px; font-size: 13px"
+									id="content" name="comment"
+									onclick="javaScript:void(0)"></textarea>
+							</div>
+							<div class="argue_form" id="argue_form"
+								style="display: none; height: 85px">
+								标题：
+								<input type="text" style="width: 370px" id="comment.title"
+									name="title" />
+
+								
+								<div class="clear"></div>
+							</div>
+							<div class="btn">
+								<input type="button" onclick='return postComment();'
+									value="发表" />
+								<input type="reset" value="重写" />
+							</div>
+
+						</form>
+					</div>
+					<div class="argue">
+						<h3>
+							<a
+								href="http://comment2.news.sohu.com/viewcomments.action?id=260600008"
+								target="_blank" class="blue1">我来说两句</a>
+							<span id="commentAllCount"></span>
+						</h3>
+
+						
+						<br />
+					</div>
+					<div class="clear"></div>
+				</div>
+				</div>
+				
+			</div>
+
+
+
+		</div>
+		<script type="text/javascript"
+			src="${baseUrl}html/common/js/jquery-lastest.pack.js"></script>
+		<script type="text/javascript"
+			src="${baseUrl}html/plugin/cms/base/js/comment.js"></script>
+		<script type="text/javascript">
+		function getStatInfo(){
+		$.getJSON("${baseUrl}stat.jhtml?id=${content['indexId']?c}", function(json){
+	  		//alert("JSON Data: " + json.response+";"+json.commentNum);
+	  		//alert($('#commentCount'));
+	  		$('#commentCount').html("("+json.commentNum+"条)");
+	    }); 
+		}
+		$(document).ready(function(){
+		 	getStatInfo();
+		});
+	</script>
+	</body>
+</html>

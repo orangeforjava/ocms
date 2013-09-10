@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 职称 -->
+<directory>
+  <props>
+    <prop key="0">--请选择--</prop>
+	<prop key="护士">护士</prop>
+	<prop key="护师">护师</prop>
+	<prop key="主管护师">主管护师</prop>
+	<prop key="副主任护师">副主任护师</prop>
+	<prop key="主任护师">主任护师</prop>
+	<prop key="其他">其他</prop>	
+  </props>
+</directory>

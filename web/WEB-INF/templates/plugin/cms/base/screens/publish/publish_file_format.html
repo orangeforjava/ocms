@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>静态文件格式</title>
+<base  href="${baseUrl}"/>
+<style type="text/css">
+body{ scrollbar-face-color: #B8B8B8; scrollbar-highlight-color: #F5F9FF; scrollbar-shadow-color: #828282; scrollbar-3dlight-color: #828282; scrollbar-arrow-color: #797979; scrollbar-track-color: #ECECEC; scrollbar-darkshadow-color: #ffffff}
+body,a,table,div,span,td,th,input,select{font:9pt;font-family: "宋体", Verdana, Arial, Helvetica, sans-serif;}
+.text{border:1 solid #aaaaaa;}
+.button{height:18;border:1 ridge #aaaaaa;background-color:aaaaaa;color:ffffff}
+.table {  border: 1px inset; border-color: menu #FFFFFF #FFFFFF menu}
+</style>
+<script type="text/javaScript" src="html/common/js/jquery-lastest.pack.js"></script>
+<script language="javaScript" type="text/javaScript">
+function format(str) 
+{	
+	//采用Jquery，兼容所有浏览器
+	$('#formatvalue').insertAtCaret(str);
+}
+
+function parseURL()
+{ 
+	
+	var paramStr = window.location.search.substring(1);
+	
+	var eq = -1, pName = "", pVal = ""; 
+	if (paramStr.length > 0) { 
+		var params = paramStr.split("&");
+		for (var i=0; i < params.length; i++) {
+			eq = params[i].indexOf("=");
+			pName = params[i].substring(0,eq);
+			pVal = params[i].substring(eq+1);
+			
+			switch (pName){
+				case "value1" :
+					$('#formatvalue').val(unescape(pVal));
+					//alert(pVal);
+					break;
+			}
+		}
+	}
+}
+function ok(){
+	var parent = art.dialog.parent;	
+	
+	parent.callback('PublishFileFormat',$('#formatvalue').val());	
+	art.dialog.close();
+	return false;
+}
+function cancel(){
+	art.dialog.close();
+	return false;
+}
+jQuery.fn.extend({
+insertAtCaret: function(myValue){
+  return this.each(function(i) {
+    if (document.selection) {
+      this.focus();
+      sel = document.selection.createRange();
+      sel.text = myValue;
+      this.focus();
+    }
+    else if (this.selectionStart || this.selectionStart == '0') {
+      var startPos = this.selectionStart;
+      var endPos = this.selectionEnd;
+      var scrollTop = this.scrollTop;
+      this.value = this.value.substring(0, startPos)+myValue+this.value.substring(endPos,this.value.length);
+      this.focus();
+      this.selectionStart = startPos + myValue.length;
+      this.selectionEnd = startPos + myValue.length;
+      this.scrollTop = scrollTop;
+    } else {
+      this.value += myValue;
+      this.focus();
+    }
+  })
+}
+});
+$(document).ready(function() {
+ 
+  parseURL();
+});
+</script>
+</head>
+<body>
+
+
+<form  action="" method="post" enctype="multipart/form-data" name="form" target="operation" >
+<table width="100%" border="0" cellspacing="2" cellpadding="0">
+  
+    <tr> 
+      <td> 
+      	<fieldset class="search">
+        <legend>静态文件格式编辑:</legend>
+        <table width="100%" border="0" cellspacing="1" cellpadding="0">
+          <tr> 
+            <td> 
+            	<table  border="0" cellspacing="1" cellpadding="0">
+                <tr>                   
+                  <td >
+                  <input type="submit" name="Submit" value="内容索引ID" onclick="format('{IndexID}');"> <input type="submit" name="Submit2" value="内容ID" onclick="format('{ContentID}');"> 
+                  <input type="submit" name="Submit3" value="节点ID" onclick="format('{NodeID}');"> <input type="submit" name="Submit4" value="发布时间TimeStamp" onclick="format('{TimeStamp}');"> 
+                  </td>
+                </tr>
+                <tr>                   
+                  <td><textarea name="formatvalue" cols="40" rows="4" id="formatvalue"></textarea> 
+                  </td>
+                </tr>
+              </table>
+              </td>
+          </tr>
+          
+        </table>
+        </fieldset> </td>
+    </tr>
+	<tr>
+		<td align=center height=50>
+		<input name="确定" type="button" id="确定" value=" 确 定  (K)" onclick="return ok();">&nbsp;&nbsp;
+        <input name="取消" type="button" id="取消" value=" 取 消 " onclick="return cancel();"> 
+       </td>
+    </tr>
+ 
+</table>				
+ </form>
+ <iframe name=operation src="" frameborder=0 class=button style="display:none"> 
+  </iframe>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: ScheduleLanguage_zh_TW.xml 3850 2010-09-09 12:55:49Z orangeforjava $-->
+<!-- edited with DW8.0 by Weiping Ju -->
+<constant type="Properties">
+    <!--全局警告信息-->
+	<global.waring.notready>此功能正在开发中</global.waring.notready>
+	<!-- 页面标题 -->	
+	<homepage>管理控制中心</homepage>	
+	<!---->
+	<menu.schedule>计划任务</menu.schedule>
+	<menu.schedule.title>管理论坛安装的计划任务</menu.schedule.title>
+	<menu.schedule.add>安装新的计划任务</menu.schedule.add>
+	<menu.schedule.queue>查看计划任务运行队列</menu.schedule.queue>
+	<menu.schedule.restart>重新启动计划任务服务</menu.schedule.restart>
+	<btn.schedule.add>增加新的属性</btn.schedule.add>
+	<btn.schedule.save>保存所有属性</btn.schedule.save>
+	<btn.edit>编辑</btn.edit>
+	<btn.delete>删除</btn.delete>
+	<schedule.id>ID</schedule.id>
+	<schedule.task>任务</schedule.task>
+	<schedule.enabled>启用</schedule.enabled>
+	<schedule.month>月</schedule.month>
+	<schedule.week>星期</schedule.week>
+	<schedule.hour>时</schedule.hour>
+	<schedule.min>分</schedule.min>
+	<schedule.sec>秒</schedule.sec>
+	<schedule.modify>修改</schedule.modify>
+	<schedule.delete>删除</schedule.delete>
+	<schedule.help>帮助</schedule.help>
+	<schedule.parameter>参数</schedule.parameter>
+	<schedule.execute>执行</schedule.execute>
+	<schedule.note>说明:</schedule.note>
+	<schedule.note.1>* 如希望每月15号上午8点执行某任务,则可设定为15,0,8,0,0（按月，周，小时，分，秒）</schedule.note.1>
+	<schedule.note.2>* 如希望每天上午8点执行某任务,则可设定为-1,-1,8,0,0</schedule.note.2>
+	<schedule.note.3>* 如希望每两个小时执行某任务一次,则可设定为-1,-1,-1,120,0</schedule.note.3>
+	<schedule.note.4>* 如希望每30秒执行某任务一次,则可设定为-1,-1,-1,-1,30</schedule.note.4>
+	<schedule.task_help>任务帮助:</schedule.task_help>
+	<schedule.no_help>Sorry,This task has no help!</schedule.no_help>
+	<schedule.close>Close</schedule.close>
+	<schedule.status>Status</schedule.status>
+	<schedule.next_running_time>Next Rinning Time</schedule.next_running_time>
+	<schedule.running>Running...</schedule.running>
+	<schedule.completed>Completed</schedule.completed>
+	<schedule.property>属性</schedule.property>
+	<schedule.value>设定值</schedule.value>	
+</constant>

@@ -1,0 +1,147 @@
+
+
+<#assign actionTitle="用户管理" />
+<#assign _TITLE_="用户管理" />
+<#if mode=="add">
+<#assign actions=[
+{"action":"","title":"添加用户","url":"${baseUrl}setup/superman.jhtml","class":"add"}
+
+]>
+<#else>
+<#assign actions=[
+{"action":"Add","title":"添加用户","url":"${baseUrl}setup/superman.jhtml","class":"add"},
+{"action":"","title":"编辑用户","url":"${baseUrl}setup/superman.jhtml?mode=edit&userId=${user.id?c}","class":"view"}
+]>
+</#if>
+
+<#include "/plugin/cms/common/includes/header.htm"/>
+
+
+<script language="JavaScript">
+
+function check_form(){
+	with(form1){
+		if(name.value==""){
+			alert('用户名不能为空!');
+			name.focus();
+			return false;
+		}
+		<#if mode=="add">
+		if(password.value==""){
+			alert('密码不能为空!');
+			password.focus();
+			return false;
+		}
+		if(password.value!=pwd2.value){
+			alert('两次输入的密码不同!');
+			password.focus();
+			return false;
+		}
+		<#else>
+		if(password.value!=""){
+			if(password.value!=pwd2.value){
+			alert('两次输入的密码不同!');
+			password.focus();
+			return false;
+			}
+		}
+		</#if>		
+	}
+	return true;
+}
+</script>
+<#import "/spring.ftl" as spring />
+<@spring.bind "user.*"/>
+<#if spring.status.error>
+<div class="global_error"> 
+  <#list spring.status.errorMessages as error>
+  ${error} <br/>
+  </#list> </div>
+</#if>
+<form action="setup/superman.jhtml" method="post"  name="form1" id="form1" onsubmit="return check_form();">
+    <input type="hidden" name="mode" value="${mode}"/>
+<div class="colorarea02">
+		
+<table border="0" cellspacing="1" cellpadding="2" width="100%"  align=center class="maintable">
+    <tr>
+      <th>用户登录名:</th>
+      <td>
+	  <@spring.bind "user.name"/>
+	  <#if mode=="add">
+	  <input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" value="${spring.status.value!''}" />        
+	  <#else>
+	  <input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" disabled  value="${spring.status.value!''}" />
+	  </#if>
+		&nbsp;<span class="STYLE1">*</span></td>
+    </tr>
+	
+	<tr>
+      <th width="20%">用户名:</th>
+      <td>
+	  <@spring.bind "user.title"/>	  
+	  <input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" value="${spring.status.value!''}" />
+	  
+        &nbsp;</td>
+    </tr>
+	<#if mode=="add">
+    <tr>
+      <th>用户密码：</th>
+      <td>
+	  <input type="password" name="pwd1" />&nbsp;<span class="STYLE1">*</span></td>
+    </tr>
+    <tr>
+      <th>密码确认：</th>
+      <td><input type="password" name="pwd2" />&nbsp;<span class="STYLE1">*</span></td>
+    </tr>
+	</#if>
+    <tr>
+      <th>用户类型:</th>
+      <td>
+	  <@spring.bind "user.type"/>
+	  <select name="${spring.status.expression}" id="${spring.status.expression}">
+	  	  <#list userTypes as ut>
+		  <#if spring.status.value?default(256)==ut.code>
+		  	<option value="${ut.code}" selected="selected" >${ut.name}</option>
+		  <#else>
+		    <option value="${ut.code}">${ut.name}</option>
+		  </#if>
+		  </#list>
+        </select> &nbsp;</td>
+    </tr>
+    <tr>
+      <th>用户状态:</th>
+      <td>
+	  <@spring.bind "user.status"/>
+	  <select name="${spring.status.expression}" id="${spring.status.expression}">
+	  	  <#list userStatues as us>
+		  <#if spring.status.value?default(0)==us.code>
+		  	<option value="${us.code}" selected="selected" >${us.name}</option>
+		  <#else>
+		    <option value="${us.code}">${us.name}</option>
+		  </#if>
+		  </#list>
+        </select> &nbsp;</td>
+    </tr>
+    <#if mode=="edit">
+	<tr>
+      <td class="table_td2" colspan="7"><strong>修改密码(若不想修改密码，请不要填写下面内容)</strong></td>
+    </tr>
+    <tr>
+      <th>新密码：</th>
+      <td >
+	  <input type="password" name="pwd1" />&nbsp;<span class="STYLE1">*</span></td>
+    </tr>
+    <tr>
+      <th>密码确认：</th>
+      <td ><input type="password" name="pwd2" />&nbsp;<span class="STYLE1">*</span></td>
+    </tr>
+	</#if>
+    <tr>
+      <td colspan="2" class="table_td2" align=center><input type='submit' name='submit' value=' 提 交 ' >
+        &nbsp;&nbsp;&nbsp;&nbsp; <input type="reset" name="Reset" value=" 重 置 "></td>
+    </tr>
+</table>
+</div>
+</form>
+<br/>
+<#include "/plugin/cms/base/includes/footer.html">

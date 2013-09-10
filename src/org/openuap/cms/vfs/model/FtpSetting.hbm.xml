@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: FtpSetting.hbm.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+	评论跟帖定义！
+-->
+<hibernate-mapping package="org.openuap.cms.vfs.model">
+	<class name="FtpSetting" table="cms_ftp_setting">
+		<id name="id" type="long" unsaved-value="0">
+			<column name="id" />
+			<generator class="native" />
+		</id>
+		
+		<property name="title" type="string">
+			<column name="title" length="200" />
+		</property>
+		<property name="description" type="text">
+			<column name="description" />
+		</property>
+		<property name="host" type="string">
+			<column name="host" length="200" not-null="true"/>
+		</property>
+		<property name="port" type="integer">
+			<column name="port"/>
+		</property>
+		<property name="type" type="string">
+			<column name="type"/>
+		</property>
+		<property name="cert" type="text">
+			<column name="cert" />
+		</property>
+		<property name="mode" type="string">
+			<column name="mode"/>
+		</property>
+		<property name="remotePath" type="string">
+			<column name="remotePath"/>
+		</property>
+		<property name="username" type="string">
+			<column name="username"/>
+		</property>
+		<property name="password" type="string">
+			<column name="password"/>
+		</property>
+		<property name="encoding" type="string">
+			<column name="encoding"/>
+		</property>
+		<property name="status" type="integer">
+			<column name="status" length="11" />
+		</property>
+		
+	</class>
+</hibernate-mapping>

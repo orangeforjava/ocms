@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>新闻评论-${thread['title']}-中国护理网</title>
+		<base href="${baseUrl}" />
+		<link type="text/css" rel="stylesheet"
+			href="html/plugin/comment/css/global.css" />
+		<link type="text/css" rel="stylesheet"
+			href="html/plugin/comment/css/style.css" />
+		<link type="text/css" rel="stylesheet"
+			href="html/plugin/comment/css/card_comment.css" />
+		<script type="text/javascript" src="html/plugin/comment/js/show.js"></script>
+		<script type="text/javascript" src="html/plugin/comment/js/pi_c_2.js"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var ShowMsgo=new ShowMsg();
+		</script>
+
+		<!-- 导航条 -->
+		<div class="area" id="channelNav">			
+			<a href="http://www.ccun.cn/" rel="external"><img class=left
+					height=21 alt=ccun_logo
+					src="html/plugin/comment/images/logo_index6.jpg" width=145
+					border=0 />
+			</a>
+			<ul class="right">
+				<li>
+					<a href="http://www.ccun.cn/" rel=external>中护首页</a>
+				</li>
+				<li>
+					-
+				</li>
+				<li>
+					<a href="http://www.ccun.cn/zixun/index1.shtml" rel=external>资讯</a>
+				</li>
+				<li>
+					-
+				</li>
+				<li>
+					<a href="http://www.ccun.cn/xsshl/index.shtml" rel=external>时尚</a>
+				</li>
+				<li>
+					-
+				</li>
+				<li>
+					<a href="http://bbs.ccun.cn" rel=external>BBS</a>
+				</li>
+				<!--<li>
+					-
+				</li>
+
+				<li>
+					<a href="http://www.ccun.cn" rel=external>搜护</a>
+				</li>-->
+			</ul>
+			
+		</div>
+	    <!-- /导航条 -->
+		<input type=hidden id="comment_timer" />
+		<input type=hidden id="comment_lastid" />
+		<!-- 说两句导航 -->
+		<div id="navigation">	
+	[@cms.node return="node" NodeID=thread['catalogId']?c/] 
+  [#assign navNodes=node.getNavNodes(0) /] 
+ [#list navNodes as navNode] 
+ [#if navNode_index+1=navNodes?size] 
+    <a href="${navNode['nodeUrl']!}"/>${navNode['name']!}</a> 
+ [#else] 
+    <a href="${navNode['nodeUrl']!}"/>${navNode['name']!}</a> &gt; 
+ [/#if] 
+ [/#list] &gt; <a href="${thread['url']!''}" target="_blank">${thread['title']}</a> &gt;
+			<!--<a href="#"
+				target="_blank"></a>-->新闻评论
+		</div>
+		<!-- /说两句导航 -->
+	    
+		<div class="area">
+			<div class="column640">
+				<div class="title04">
+					<h2>
+						<a href="${thread['url']!''}"
+							target="_blank">${thread['title']}</a>
+					</h2>
+
+				</div>
+
+				<div class="txt02">
+					<p>
+						&nbsp;&nbsp;&nbsp;&nbsp; [@util.htmlSubstr target=thread['content']?default("") keyword="" limit=100/] 
+						<span><a
+							href="${thread['url']!''}"
+							target="_blank">查看全文&gt;&gt;</a>
+						</span>
+					</p>
+					<div class="clear"></div>
+
+				</div>
+
+
+
+				<div class="cake04">
+					<a  onclick="ShowMsgo.show('');"><img
+							src="html/plugin/comment/images/pic17.gif" width="88" height="26" alt="立即发表"
+							title="立即发表" />
+					</a>
+					<div class="clear"></div>
+				</div>
+				<div class="cake05">
+					<div class="txt03">
+						<span>共有评论${pb.items()?c}条&nbsp;${pb.pages()}页 第${pb.page()}页&nbsp;
+						</span>
+					</div>					
+					<div class="cake1_17_01">
+						
+						<div class="clear"></div>
+					</div>
+					<span id="newcoming"></span>
+					<!-- 评论内容 -->
+					[#list posts as post]					
+					<div class="title05">
+						<h2>
+							<span>[#if userSession.isSysUser()||userSession.isAdmin()]<a href="${baseUrl}comment/edit.htm?action=Delete&id=${thread['objectId']}&cid=${post['id']?c}" onClick="javaScript:return confirm('您是否确认删除此条评论');">删除</a>[/#if] ${post.displayCreationDate?string("yyyy-MM-dd HH:mm")}</span>${post.userName} IP:${post.displayIp}
+						</h2>
+					</div>
+					<div class="cake09">
+						<p>
+							${post.content!''}
+						</p>
+						<div class="cake06">
+							<div class="clear"></div>
+						</div><!-- /cake06 -->
+					</div><!-- /cake09 -->
+					[/#list]
+				</div>
+					
+				<div class="cake05">
+					<div class="cake11">
+						[#assign preUrl=baseUrl+"comment/view.htm?id="+thread['objectId']+"&p="/]
+						[@comment.pager pb=pb preUrl=preUrl closeUrl=""/]
+					</div>
+
+				</div>
+				<div class="cake12">
+					
+					<div class="clear"></div>
+				</div>
+				<!-- /广告位 -->
+				<a name="post"></a>
+				<div class="cake05">
+					<div class="title05">
+						<h2>
+							新闻评论
+						</h2>
+
+					</div>
+					
+					<div id="ppbannerC"></div>
+					<div id="ppcardC" class="posa">
+					
+					</div>
+
+					<form name="commentForm" action="${baseUrl}comment/edit.htm" method="post"
+						focus="content" style="margin: 0">
+						<input type="hidden" id="action" name="action" value="Add" />
+						<input type="hidden" id="pid" name="pid" value="" />
+
+						<input type="hidden" id="id" name="id" value="${thread['objectId']}" />
+						<input type="hidden" id="rtp" name="rtp"
+							value="" />
+						<input type="hidden" id="anonymous" name="anonymous" value="false" />
+						<input type="hidden" id="author" name="author"
+							value="匿名网友" />
+						<input type="hidden" id="hip" name="hip"
+							value="false" />
+						<input type="hidden" id="debate" name="debate" value="false" />
+						<div class="cake13">
+							<div id="speak1">
+								<textarea cols="" rows="" onclick="this.className='hidde'"
+									id="comment" name="comment"></textarea>
+							</div>
+							
+							<div id="speak2" style="display: none">
+								标题:
+								<input type="text" id="title" name="title" />
+								<br />
+								
+							</div>
+							<h5>
+								<input type="image" onclick="return postComment();" src="html/plugin/comment/images/pic34.gif" width="88" height="29" alt="发表"
+										title="发表" />
+							</h5>
+						</div>
+
+					</form>
+					<div class="txt05">
+						
+						<p>
+							小提示:您要为您发表的言论后果负责，请各位遵守法纪注意语言文明
+						</p>
+					</div>
+				</div>
+
+			</div>
+			<div class="column300">
+				[#include "../includes/comment_view_right.html"/]
+			</div>		<!-- 页尾 -->
+<style type="text/css"> 
+/*footer*/
+.footer			{ clear:both; margin-top:10px; background-color:#FFFFFF; padding-top:10px; color:#666; border-top:2px solid #C3D2E5;}
+.footer p		{ text-align:center;}
+.footer_box		{ clear:both; height:100%; margin-top:10px; overflow:hidden;}
+.footer_box table	{ text-align:center; overflow:hidden; margin:0 auto;}
+.footer_box table td	{ border-right:1px solid #eee; border-top:1px solid #eee;  border-bottom:1px solid #eee; padding:5px; line-height:20px;}
+.footer_box table td.q		{ border-left:1px solid #eee;}
+.footer_box table td div	{ float:left;}
+</style>
+<div class="footer">
+	<p> 	
+	<a href="http://www.ccun.cn/about/zhabout.shtml" target="_blank">中护简介</a> | 
+	<a href="http://www.ccun.cn/about/AboutCCUN.shtml" target="_blank">About CCUN</a> | 
+	<a href="http://www.ccun.cn/about/Recruitment.shtml" target="_blank">诚聘英才</a> | 
+	<a href="http://www.ccun.cn/about/Cooperation.shtml" target="_blank">合作推广</a> | 
+	<a href="http://www.ccun.cn/about/Advertisement.shtml" target="_blank">广告服务</a> | 
+	<a href="http://www.ccun.cn/about/Customerservice.shtml" target="_blank">客服中心</a> | 
+	<a href="http://www.ccun.cn/about/Websiteattorneye.shtml" target="_blank">网站律师</a> | 
+	<a href="http://www.ccun.cn/about/contactus.shtml" target="_blank">联系我们</a> 
+	</p>
+    	<p>Copyright 2007-2008 CCUN.cn All Rights Reserved  中国护理网  版权所有</p>
+  <div style="display:none"><center>
+	<!-- counter.ccun.cn -->
+	<script language="JavaScript" type="text/javascript">
+	 var _PCSWebSite="10000001";
+	 var _PCSImage="countlogo1.gif";
+	</script>
+	<script language="JavaScript" type="text/javascript" src="http://counter.ccun.cn/count/count.js" ></script>
+	<!-- /counter.ccun.cn -->
+      
+	</center></div>
+	<div class="footer_box">
+		<table cellpadding="0" cellspacing="2" width="60%" border="0">
+<tr>
+	  <td class="q" width="16%"><a href="http://net.china.com.cn/index.htm" target="_blank"><img src="http://www.ccun.cn/Information/res/skins/index/images/aaa.gif" width="100" height="47" alt="" border="0"/></a></td>
+				<td width="17%"><a href="http://www.netbj.org.cn/" target="_blank"><img src="http://www.ccun.cn/Information/res/skins/index/images/bbb.gif" width="93" height="47" alt=""  border="0"/></a></td>
+				<td width="16%"><a href="http://www.bj.cyberpolice.cn/alarm/alarm.htm" target="_blank"><img src="http://www.ccun.cn/Information/res/skins/index/images/ccc.gif" width="93" height="47" alt=""  border="0"/></a></td>
+				<td width="16%"><a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202008062400012" target="_blank"><img src="http://www.ccun.cn/Information/res/skins/index/images/ddd.gif" width="98" height="47" alt=""  border="0"/></a></td>
+		        <td width="16%"><a href="http://www.ccunhr.com/" target="_blank"><img src="http://www.ccun.cn/Information/res/skins/index/images/ccunhr.gif" width="93" height="42" alt=""  border="0"/></a></td>
+		  </tr>
+			<tr>
+				<td colspan="6" align="center" style="border:0px;">
+    <a href="http://www.ccun.cn/about/wsj.html" target="_blank">互联网医疗卫生信息服务京卫网审字【2009】10号</a>
+                <a href="/gjhl/banquan/icp.html" target="_blank">电信与信息服务业务经营许可证编号:京ICP证060802</a>
+				  <a href="/gjhl/banquan/dianxin2006.html" target="_blank">电信业务审批[2006]字第467号函</a>
+				  <a href="/gjhl/banquan/dianxin2008.html" target="_blank">电信业务审批[2008]字第341号函				  </a>　热线：86-10-85879866   <br />
+				  邮箱：service@ccun.cn 
+中护不良信息举报：010-85879878举报邮箱：jiandu@ccun.cn　</td>
+		  </tr>
+	  </table>
+</div><!--footer_box-->
+</div><!--footer-->
+		</div>
+		<div class="area blank5"></div>
+	
+
+	</body>
+</html>
+
+
+

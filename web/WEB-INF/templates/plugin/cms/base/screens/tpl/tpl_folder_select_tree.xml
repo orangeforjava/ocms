@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tree>
+  <#list folders as folder>
+  <#if !folder.isExistChildren()>
+  	<tree text="${folder.name}" action="javascript:parent.setTargetNodeID('${folder.path}')" target="" cId=""/>
+  <#else>
+  	<tree text="${folder.name}" action="javascript:parent.setTargetNodeID('${folder.path}')" src="${helper.getBaseURL()}/admin/template.jhtml?action=SelTplDirXml&amp;path=${folder.encodedPath}" target="" cId=""/>
+  </#if>
+  </#list>
+</tree>

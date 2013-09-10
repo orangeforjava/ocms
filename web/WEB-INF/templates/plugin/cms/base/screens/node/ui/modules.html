@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>结点功能模块</title>
+		<base href="${baseUrl}" target="mainframe"/>
+		<link type="text/css" rel="stylesheet" href="html/plugin/cms/workbench/images/style.css" />
+		<script language="javascript" type="text/javascript" src="html/plugin/cms/workbench/js/admin.js"></script>
+	</head>
+
+	<body id="side">
+	     <div  style="display: block;" onclick="javaScript:void(0);">
+				<h3>${node.name}[${node.nodeId?c}]</h3>
+				<ul>
+				</ul>
+		</div>
+		 <#assign sideBars=workbench.getSubMenu("tab-node-plugin")/>    
+		 <#list sideBars as sidebar>
+				<#assign pid = sidebar.attributeValue("id")/> 
+				<#assign pname = sidebar.attributeValue("name")/>  
+				<#assign purl = sidebar.attributeValue("url")!"#"/>
+				
+				<#assign display ="none"/>
+				<#assign background ="#BCD4F9"/>
+				<#if (sideBarID??&&sideBarID==pid)||(!(sideBarID??)&&sidebar_index==0)>
+					<#assign display =""/>
+					<#assign background ="#F6C35D"/>
+					<#assign lastCk=pid/>
+				</#if>
+				<#assign ptype = sidebar.attributeValue("type")!"url"/>
+				<#if ptype=='url'>
+					<#assign menu_box_css='menu_box'/>
+				<#else>
+					<#assign menu_box_css='menu_box2'/>
+				</#if>
+			<div id="${pid}" style="display: block;">
+				<h3>${pname}</h3>
+				<ul>
+				<#if workbench.getItems(sidebar)??>
+					<#assign items=workbench.getItems(sidebar)/>
+					<#list items as item>
+						<#assign id = item.attributeValue("id")/> 
+						<#assign name = item.attributeValue("name")/>  
+						<#assign url = item.attributeValue("url")!"#"?replace("NODE_ID",nodeId?c)/>
+						<#assign url=url?replace("NODE_ID",nodeId?c)/>
+						<#assign type = item.attributeValue("type")!"url"/>
+						<#assign target = item.attributeValue("target")!"main"/>
+						<#if type=='js'>
+							<li><script type="text/javascript" language="javascript" src="${url}"></script></li>
+						<#else>
+							<li><a href="${url}" target="${target}">${name}</a></li>
+						</#if>
+						
+					</#list>
+				</#if>
+				</ul>
+			</div>
+			</#list>
+		<script type="text/javascript">
+		treeView();
+		</script>
+	</body>
+</html>

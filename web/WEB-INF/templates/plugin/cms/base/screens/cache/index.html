@@ -1,0 +1,132 @@
+
+[#assign actionTitle="缓存管理" /]
+[#assign _TITLE_="缓存管理" /]
+[#include "/plugin/cms/common/includes/header.htm"/]
+[#--<table cellspacing="2" cellpadding="2" class="helptable">
+		<tr>
+			<td>
+				<ul>
+					<li>
+						这里是现在缓存中定义的区域，'对象'与'字节'是指当前内存中缓存情况，您可以清除某个区域的所有缓存对象，也可以清除所有缓存
+					</li>
+				</ul>
+			</td>
+		</tr>
+	</table>--]
+<br/>
+
+
+<div>
+<table cellpadding="0" cellspacing="0" border="0" >
+<tr>
+    <td>
+        
+    </td>
+    <td>
+        <table cellpadding="3" cellspacing="0" border="0">
+        <tr>
+            <td><img src="html/plugin/cms/base/images/refresh-16x16.gif" width="16" height="16" alt="" border="0"></td>
+            <td>
+                <span class="jive-button-label">
+                自动刷新:
+                <select size="1" onchange="location.href='${baseUrl}admin/cache.jhtml?refresh='+this.options[this.selectedIndex].value+'#view';">
+                    <option value="-1" [#if refresh==-1] selected [#else] [/#if]>关闭</option>
+                    <option value="3"  [#if refresh==3] selected [#else] [/#if]>每隔3秒</option>
+                    <option value="5"  [#if refresh==5] selected [#else] [/#if]>每隔5秒</option>
+                    <option value="10" [#if refresh==10] selected [#else] [/#if]>每隔10秒</option>
+                </select>
+                </span>
+            </td>
+        </tr>
+        </table>
+    </td>
+</tr>
+</table>
+</div>
+<table border=0 cellspacing=0 cellpadding=0 width='100%' class="table_border">
+	<tr align=center class="table_td2">
+		<td height=25> 缓存名 </td>
+        <td> 对象 </td>
+        <td> 字节 </td>
+        <td> 状态 </td>
+        <td> 内存命中 </td>
+        <td> Aux 命中 </td>
+        <td> 未发现次数 </td>
+        <td> 过期次数 </td>
+        <td> 操作 </td>
+	</tr>
+	[#list cacheInfoRecords as record]
+    <tr align=center class="table_td1" onmouseover='this.style.backgroundColor="#FFFFFF"'
+                    onmouseout='this.style.backgroundColor=""'>
+            <td height=25> ${record.cache.cacheName} </td>
+            <td> ${record.cache.size} </td>
+            <td> ${record.byteCount} </td>
+            <td> ${record.status} </td>
+            <td> ${record.cache.hitCountRam}</td>
+            <td> ${record.cache.hitCountAux}</td>
+            <td> ${record.cache.missCountNotFound}</td>
+            <td> ${record.cache.missCountExpired}</td>
+            <td>
+                <a href="admin/cache.jhtml?action=Detail&cacheName=${record.cache.cacheName}"> 详情 </a>
+                | <a href="admin/cache.jhtml?action=ClearRegion&cacheName=${record.cache.cacheName}"> 移出全部 </a>
+            </td>
+    </tr>
+    [/#list]
+</table>
+<br/>
+<hr/>
+<div id="features">
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+
+
+<tr>
+    <td class="c1">
+        Java 内存监测
+    </td>
+    <td colspan="2">
+
+       
+
+        <table cellpadding="0" cellspacing="0" border="0" width="600">
+        <tr valign="middle">
+            <td width="99%" valign="middle">
+                <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px #666 solid;">
+                <tr>
+                    [#if percent == 0]
+
+                        <td width="100%"><img src="html/plugin/cms/base/images/percent-bar-left.gif" width="100%" height="8" border="0" alt=""></td>
+                   [#else]
+
+                        [#if percent gte 90]
+
+                            <td width="${percent}" background="html/plugin/cms/base/images/percent-bar-used-high.gif"
+                                ><img src="html/plugin/cms/base/images/blank.gif" width="1" height="8" border="0" alt=""></td>
+
+                        [#else]
+
+                            <td width="${percent}" background="html/plugin/cms/base/images/percent-bar-used-low.gif"
+                                ><img src="html/plugin/cms/base/images/blank.gif" width="1" height="8" border="0" alt=""></td>
+
+                        [/#if]
+                        <td width="$util.op('-',100,$percent)" background="html/plugin/cms/base/images/percent-bar-left.gif"
+                            ><img src="html/plugin/cms/base/images/blank.gif" width="1" height="8" border="0" alt=""></td>
+                    [/#if]
+                </tr>
+                </table>
+            </td>
+            <td width="1%" nowrap>
+                <div style="padding-left:6px;">
+                ${usedMemory} MB of ${maxMemory} MB (${percentUsed}%) 使用中
+                <input class="button" type="button" onclick="javaScript:location.href='${baseUrl}admin/cache.jhtml?action=RunGarbageCollection'" value="垃圾回收">
+                </div>
+            </td>
+            
+        </tr>
+        </table>
+
+    </td>
+</tr>
+</table>
+</div>
+<br/>
+[#include "/plugin/cms/common/includes/footer.htm"/]

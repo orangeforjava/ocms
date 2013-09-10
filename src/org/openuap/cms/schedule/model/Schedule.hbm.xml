@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+                            "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<!--
+	$Id: Schedule.hbm.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.schedule.model">
+  <class name="Schedule" table="common_schedule">
+    <id name="id" column="id" type="integer" unsaved-value="0">
+      <generator class="native"/>
+    </id>
+    <property name="second" type="integer">
+      <column name="scheduleSecond" not-null="true"/>
+    </property>
+    <property name="minute" type="integer">
+      <column name="scheduleMinute" not-null="true"/>
+    </property>
+    <property name="hour" type="integer">
+      <column name="scheduleHour" not-null="true"/>
+    </property>
+    <property name="weekDay" type="integer">
+      <column name="scheduleWeekDay" not-null="true"/>
+    </property>
+    <property name="dayOfMonth" type="integer">
+      <column name="scheduleDayOfMonth" not-null="true"/>
+    </property>
+    <property name="task" type="string">
+      <column name="scheduleTask" not-null="true"/>
+    </property>
+    <property name="email" type="string">
+      <column name="scheduleEmail"/>
+    </property>
+    <property name="property" type="text">
+      <column name="scheduleProperty"/>
+    </property>
+    <property name="host" type="string">
+      <column name="scheduleHost"/>
+    </property>
+    <property name="status" type="integer">
+      <column name="status"/>
+    </property>
+  </class>
+</hibernate-mapping>

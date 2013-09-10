@@ -1,0 +1,45 @@
+<#--
+--最新评论
+-->
+<#macro newpost tid return="list" objectType="org.openuap.cms" offset=0 nums=10 >
+ 
+	<#local rs=commentMacroEngine.getFlatComments(tid,objectType,offset,nums)/>
+	<#assign tmp="<#global ${return}=rs>"/>
+  	<#assign tmp2=tmp?interpret/>
+  	<@tmp2></@tmp2>
+</#macro>
+
+<#macro pager pb preUrl closeUrl>
+<#local pages = pb.slider(11)/>
+<#local pge  = pb.page()/>
+<#if pb.pages() gt 1>
+共${pb.items()}条 &nbsp;${pb.pages()}页&nbsp;
+<#if pge!=pb.firstPage()> 
+<a href="${preUrl}${pb.firstPage()}${closeUrl}">[首页]</a>&nbsp;&nbsp;
+<a href="${preUrl}${pb.previousPage()}${closeUrl}">前一页</a>
+<#else>
+</#if>
+<#list pages as p>
+	<#if pb.isDisabledPage(p)>
+	&nbsp;<font color="red"><b>${p}</b></font>
+	<#else>
+	&nbsp;<a href="${preUrl}${p}${closeUrl}" >[${p}]</a>
+	</#if>
+</#list>
+
+<#if pge!=pb.lastPage()>
+	
+	<a href="${preUrl}${pb.nextPage()}${closeUrl}">下一页</a>&nbsp;&nbsp;
+	<a href="${preUrl}${pb.lastPage()}${closeUrl}">[尾页]</a></td>
+<#else>
+	
+</#if>
+&nbsp;&nbsp;转到<input type='text' id='pn' />
+页
+<a href='javaScript:void(0)'
+	onclick='goToPage("${preUrl}${pb.previousPage()}"+$id("pn").value)'><img
+		src='html/plugin/comment/images/pic32.gif' width='27' height='20' alt=''
+		title='' />
+</a>		
+</#if>
+</#macro>

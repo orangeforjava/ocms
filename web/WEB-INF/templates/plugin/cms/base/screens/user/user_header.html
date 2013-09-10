@@ -1,0 +1,242 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>cms content header</title>
+<base  href="${baseUrl}"/>
+<link rel='stylesheet' type='text/css' href='html/plugin/user/css/style.css' />
+<script type="text/javascript" src="${baseUrl}resource.jhtml?path=html/functions.js"></script>
+<BODY   style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px">
+
+<script language='JavaScript'>
+function refreshWorkArea()
+{
+ document.location =  document.location
+}
+var doImage = doImage;
+var TType = TType;
+var popupWin=null;
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	//if (document.getElementById)
+	//	t = document.getElementById(tbl);
+	//else
+	//	t = document.all(tbl);
+	//if (t == null) return;
+	//if (t.getElementsByTagName)
+	//	d = t.getElementsByTagName("TD");
+	//else
+	//	d = t.all.tags("TD");
+	//if (d == null) return;
+	//if (d.length <= idx) return;
+	//d[idx].className = cls;
+	if (document.getElementById)
+		t = document.getElementById(idx);
+	else
+		t = document.all(idx);
+	if (t == null) return;
+	t.className=cls;
+}
+
+
+function popcalendar(id)
+{
+    var oElem = event.srcElement;
+    fieldname=id;
+
+
+     URL = '${baseUrl}/html/calendar.html';
+     opts ="width=210px,height=185px,top="+(event.clientY+170)+ ",left="+event.clientX ;
+
+     if (popupWin==null)
+       {popupWin=window.open( URL,"calendar", opts);}
+     if (popupWin.closed)
+       {popupWin=window.open( URL,"calendar", opts);}
+   else {
+  	 popupWin.close();
+  	 popupWin=window.open( URL,"calendar", opts);
+   }
+}
+</script>
+<SCRIPT>
+var elo;
+var loadmenuok=false;
+var type = 'main';
+var cId = '';
+function initrightmenu(){
+	loadmenuok = true;
+}
+
+
+
+function going(action, pId) {
+	switch(action) {
+		case 'viewpublish':
+			eval('var mPath = mPath_' + pId + '.href');
+			window.open(mPath,"","")
+
+			break;
+		default:
+			//
+
+	}
+	//
+}
+
+
+</SCRIPT>
+
+<SCRIPT language=JavaScript>
+<!--
+function gogo(url)
+{
+	top.panelWork.location = url;
+}
+
+function CheckAll(form)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall' && e.name !='copy')       e.checked = form.chkall.checked;
+   }
+  }
+
+//-->
+//
+function doing(action,param)
+{
+	switch(action) {
+		case 'createUser':
+		{
+			parent.mainFrame.location="admin/userEdit.jhtml?mode=add";
+			break;
+		}
+		case 'userList':
+		{
+			parent.mainFrame.location="admin/user.jhtml?action=UserList";
+			break;
+		}
+		case 'roleList':
+		{
+			parent.mainFrame.location="admin/user.jhtml?action=RoleList";
+			break;
+		}
+		case 'createRole':
+		{
+			parent.mainFrame.location="admin/roleEdit.jhtml?mode=add";
+			break;
+		}
+	}	
+}
+
+function createUser()
+{
+	var leftPos = (screen.availWidth-800) / 2
+	var topPos = (screen.availHeight-600) / 2
+	var popupWin = window.open('' ,'user','width=800,height=600,scrollbars=no,resizable=yes,statusbar=1,titlebar=0,top=' + topPos + ',left=' + leftPos);
+}
+
+function refreshWorkArea()
+{
+ parent.mainFrame.location =  parent.mainFrame.location
+}
+</script>
+<script>
+var mousemovecolor="#D4D4D4";
+var selectcolor ="#DDDDDD";
+var oldcolor;
+
+function GetRow(oElem)
+{
+	while (oElem)
+	{	//alert(oElem.tagName.toLowerCase())
+		if (oElem.tagName.toLowerCase() == "tr" || oElem.parentElement.tagName.toLowerCase() == "tbody")
+		    return oElem;
+		if (oElem.tagName.toLowerCase() == "table" || oElem.tagName.toLowerCase() == "th") return false;
+		oElem = oElem.parentElement;
+	}
+}
+
+
+function selected()
+{	//alert(pid)
+
+	var trstyle = GetRow( window.event.srcElement );
+	var a;
+	if( !trstyle )
+		return false;
+
+	if( trstyle.style.backgroundColor.toLowerCase() == selectcolor.toLowerCase())
+	{
+		trstyle.style.backgroundColor = "";
+		a=eval("p_"+ trstyle.id);
+		//alert(trstyle.id)
+		if (a!=null || a.checked)
+			a.checked=false
+		oldcolor = "";
+	}
+	else
+	{
+		trstyle.style.backgroundColor = selectcolor;
+		a=eval("p_"+ trstyle.id);
+		//alert(trstyle.id)
+		if (a!=null)
+			a.checked=true
+		oldcolor = selectcolor;
+
+
+	}
+}
+</script>
+<script language="javascript">
+lastDiv = null;
+function highLight(theDiv) {
+	if (lastDiv) {
+		lastDiv.style.border = 'solid 1px #F1F1F1';
+		lastDiv.style.background = '#F1F1F1';
+	}
+	//alert(theDiv);
+	lastDiv = theDiv;
+	theDiv.style.border = ' solid 1px #999';
+	theDiv.style.background = '#CCC';
+
+
+}
+
+</script>
+<div id="menudata"></div>
+<div id="msviLocalToolbar">
+  <table cellpadding="0" cellspacing="2" width="100%" height="19" border="0">
+    <tr>
+      <td class="lt0" style="cursor:default" id="tb_0" height="18" nowrap="nowrap"   >
+	  <font id=large>
+	  	  用户/权限管理	  	  </font>
+	  <font id=description></font></td>
+      <td></td>
+      <td class="lt0" id="tb_1" nowrap="nowrap" onMouseOver="mhHover('msviLocalToolbar', 'tb_1', 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 'tb_1', 'lt0')" onClick="doing('createUser');highLight(this);">添加用户</td>
+      <td><span class="ltsep">|</span></td>
+      <td class="lt0" id="tb_2" nowrap="nowrap" style="border:solid 1px #999;background:#CCC" onMouseOver="mhHover('msviLocalToolbar', 'tb_2', 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 'tb_2', 'lt0')" onClick="doing('userList');highLight(this);">用户列表</td>
+	  <@security.perm objectType=userPC.objectType objectId=-1 hasPermission=userPC.addRole>
+      <td><span class="ltsep">|</span></td>
+
+      <td class="lt0" id="tb_3" nowrap="nowrap" onMouseOver="mhHover('msviLocalToolbar', 'tb_3', 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 'tb_3', 'lt0')" onClick="doing('createRole');highLight(this);">添加权限组</td>
+	  </@security.perm>
+     <td><span class="ltsep">|</span></td>
+      <td class="lt0" id="tb_4" nowrap="nowrap" onMouseOver="mhHover('msviLocalToolbar', 'tb_4', 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 'tb_4', 'lt0')" onClick="doing('roleList');highLight(this);">权限组列表</td>
+
+     
+      <td width="99%"></td>
+    </tr>
+  </table>
+</div>
+
+</body>
+</html>
+<script language="javascript">
+if (document.getElementById)
+		t = document.getElementById("tb_2");
+	else
+		t = document.all("tb_2");
+lastDiv = t;
+</script>

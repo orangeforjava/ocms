@@ -1,0 +1,51 @@
+[#assign actionTitle="系统设置" /]
+[#assign _TITLE_="系统设置" /]
+
+[#include "/plugin/cms/common/includes/header.htm"/]
+<form name="form1" method="post"
+	action="admin/config.jhtml?action=Change">
+	
+	<div class="colorarea02">
+		<h2>
+			系统设置
+		</h2>
+		<table cellspacing="0" cellpadding="0" width="100%" border="0"
+			class="maintable">
+			<tbody>
+
+				<tr>
+					<th id="id2" width="200">
+						是否开启系统性能诊断:
+						<p>
+							只用来开发调试
+						</p>
+					</th>
+					<td id="id2">
+						[#if config.getBooleanProperty("sys.profile",false)]
+						<input name="sys.profile" type="radio" class="radio"
+							id="sys.profile" value="true" checked>
+						是&nbsp;
+						<input name="sys.profile" type="radio" class="radio"
+							id="sys.profile" value="false">
+						否&nbsp; 
+						[#else]
+						<input name="sys.profile" type="radio" class="radio"
+							id="sys.profile" value="true">
+						是&nbsp;
+						<input name="sys.profile" type="radio" class="radio"
+							id="sys.profile" value="false" checked>
+						否&nbsp; 
+						[/#if]
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<br />
+	<div class="buttons">
+		<input type="submit" name="submit" value="提交保存" class="submit">
+		<input type="reset" name="reset" value="重置">
+	</div>
+</form>
+<br />
+[#include "/plugin/cms/base/includes/footer.html"]

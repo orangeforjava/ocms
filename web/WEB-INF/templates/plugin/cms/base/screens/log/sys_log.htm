@@ -1,0 +1,155 @@
+[#assign actionTitle="系统日志" /]
+[#assign _TITLE_="系统日志" /]
+[#assign actions=[
+{"action":"","title":"系统日志","url":"${baseUrl}admin/sys_log.jhtml","class":"view"}
+]]
+
+[#include "/plugin/cms/common/includes/header.htm"/]
+<style type="text/css">
+.log TABLE {
+    border : 1px #ccc solid;
+}
+.log TH {
+    font-family : verdana, arial;
+    font-weight : bold;
+    font-size : 0.7em;
+}
+.log TR TH {
+    background-color : #ddd;
+    border-bottom : 1px #ccc solid;
+    padding-left : 2px;
+    padding-right : 2px;
+    text-align : left;
+}
+.log .head-num {
+    border-right : 1px #ccc solid;
+}
+.log TD {
+    font-family : courier new;
+    font-size : 0.75em;
+    background-color : #ffe;
+}
+.log .num {
+    width : 1%;
+    background-color : #eee !important;
+    border-right : 1px #ccc solid;
+    padding-left : 2px;
+    padding-right : 2px;
+}
+.log .line {
+    padding-left : 10px;
+}
+.container {
+    border-width : 0px 1px 1px 1px;
+    border-color : #ccc;
+    border-style : solid;
+}
+.info TD {
+    font-family : verdana, arial;
+    font-size : 0.7em;
+}
+SELECT {
+    font-family : verdana, arial;
+    font-size : 0.8em;
+}
+.info .label {
+    padding-right : 6px;
+}
+.date {
+    color : #00f;
+    border-width : 0px 0px 1px 0px;
+    border-style : dotted;
+    border-color : #00f;
+}
+.new {
+    font-family : courier new;
+    font-weight : bold;
+    color : #600;
+}
+.hilite {
+    color : #900;
+}
+</style>
+
+[#assign log = helper.getString("log","")/]
+<table width=100% border=0 cellpadding=0 cellspacing=0 class="tableborder">
+
+<tr>
+<td width=10% valign=top align="right" nowrap>存在的日志<br>
+[#list files as file]
+	&#149;
+	[#if file.name == log]
+	<b>${file.name}</b>
+	[#else]
+	<a href="admin/log/sys_log.jhtml?log=${file.name}">${file.name}</a>
+	[/#if]
+	<br>
+[/#list]
+</td>
+<td width=4><img src="html/common/images/shim.gif" width=2></td>
+<td width=1 bgcolor="#CCCCCC"><img src="html/common/images/shim.gif" width=1></td>
+<td width=4><img src="html/common/images/shim.gif" width=2></td>
+<td width=100% valign=top align="left">
+[#if log!=""]
+<form action="admin/log/sys_log.jhtml" method="post">
+<input type="hidden" name="log" value="${log}"/>
+<table width=100%>
+<tr>
+	<td valign="top">
+	<b>
+	文件名： ${logFile.name} <br>
+	最后修改： ${lastModified?datetime} <br>  
+	大小： ${fileLength} 
+	</b>
+	</td>
+<td valign="top">
+	排序   <input class="radio" type="radio" name="mode" value="desc" [#if helper.getString("mode",'asc')=='desc']checked[/#if] onclick="this.form.submit();">最新在上
+             <input class="radio" type="radio" name="mode" value="asc"  [#if helper.getString("mode",'asc')=='asc']checked[/#if] onclick="this.form.submit();"> 
+	最新在下		
+    <br>
+   [#assign ls = ["50","100","250","500"]/]
+   [#assign thisLines = helper.getString("lines","50")/] 
+        行数：<select name="lines" size="1" onchange="this.form.submit();">
+   		[#list ls as l ]
+		    <option value="${l}" [#if l == thisLines] selected [/#if]>${l}</option>
+   		[/#list]
+   		[#if tooBig??] 
+   		    <option value="All" [#if "All" == thisLines] selected [/#if]>All</option>
+   		[/#if]
+   </select>    
+</td>
+</tr>
+</table>
+<input type="hidden" name="log" value="$log">
+
+</form>
+
+<span class="log">
+<table cellpadding="1" cellspacing="0" border="0" width="100%">
+<tr>
+    <th class="head-num">行</th>
+    <th>
+
+<span class="log">
+	消息</span></th>
+</tr>
+<tr>
+    <td width="1%" nowrap class="num">
+    	[#list nums as num]
+    		${num?c} <br>
+    	[/#list]
+    </td>
+    <td width="99%" class="line" >
+    	[#list lines as line]
+    		<nobr>${line}</nobr><br>
+    	[/#list]
+    </td>
+</tr>
+</table>
+</span>
+[/#if]
+</td>
+</tr>
+</table>
+<br/>
+[#include "/plugin/cms/base/includes/footer.html"]

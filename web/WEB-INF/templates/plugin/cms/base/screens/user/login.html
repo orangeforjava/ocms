@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>${title?default("")}-${lang.get("homepage")}</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<base  href="${baseUrl}"/>
+<STYLE type=text/css>
+BODY {
+	MARGIN: 0px
+}
+.btnclass {
+	BORDER-RIGHT: #cccccc 1px outset; BORDER-TOP: #cccccc 1px outset; FONT-SIZE: 12px; BORDER-LEFT: #cccccc 1px outset; COLOR: #ff6600; BORDER-BOTTOM: #cccccc 1px outset; BACKGROUND-COLOR: #ffffff
+}
+.inputclass {
+	BORDER-RIGHT: #ff6600 1px; BORDER-TOP: #ff6600 1px; FONT-SIZE: 12px; BORDER-LEFT: #ff6600 1px; COLOR: #ff0000; BORDER-BOTTOM: #ff6600 1px dotted; BACKGROUND-COLOR: #ffffff
+}
+</STYLE>
+<LINK href="html/plugin/user/css/style.css" type="text/css" rel=StyleSheet>
+<script type="text/javaScript" src="html/common/js/prototype.js"></script>
+<SCRIPT type="text/javaScript">
+function cms_send(url,action)
+{
+	var oBao = new ActiveXObject("Microsoft.XMLHTTP");
+	var returnValue;
+
+	var ac=action;
+	//alert(ac);
+	//特殊字符：+,%,&,=,?等的传输解决办法.字符串先用escape编码的.
+	//Update:2004-6-1 12:22
+	oBao.open("POST", url, false);
+	oBao.setRequestHeader("Content-Length",ac.length);
+	oBao.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	oBao.send(ac);
+	//服务器端处理返回的是经过escape编码的字符串.
+	returnValue = unescape(oBao.responseText);
+
+	return returnValue;
+}
+ function admin_login_submit(){
+	var MId,user_name,user_pass,targeturl;
+	var	user_name = document.login.j_username.value;
+	var user_pass = document.login.j_password.value;
+	var user_code=document.login.code.value;
+	//
+	document.login.j_username.value=encodeURIComponent(user_name);
+	//alert(document.login.j_username.value);
+	//
+	if(user_code==''){
+		alert("请输入安全校验码！");
+		return false;
+	}else{
+		var returnValue = cms_send('${baseUrl}/admin/login.jhtml','action=CheckSecurityCode&code='+user_code);
+		//alert(hello);
+		if(returnValue == '0') {
+			alert("安全校验码不匹配,请重新输入！");
+			return false;
+		}
+	}
+	if((user_name!='') && (user_pass!='')){
+
+		targeturl='${baseUrl}j_acegi_security_check.jsp';
+		document.login.action = targeturl;
+		document.login.submit();
+
+		}else{
+			alert("请输入用户名和密码！");
+		}
+	return false;
+}
+
+function member_login_submit(){
+	var MId,user_name,user_pass,targeturl;
+	var	user_name = document.login.j_username.value;
+	var user_pass = document.login.j_password.value;
+	var user_code=document.login.code.value;
+	//
+	document.login.j_username.value=encodeURIComponent(user_name);
+	//
+	if(user_code==''){
+		alert("请输入安全校验码！");
+		return false;
+	}else{
+		var returnValue = cms_send('${baseUrl}admin/login.jhtml','action=CheckSecurityCode&code='+user_code);
+		//alert(hello);
+		if(returnValue == '0') {
+			alert("安全校验码不匹配,请重新输入！");
+			return false;
+		}
+	}
+	if((user_name!='') && (user_pass!='')){
+
+		targeturl='${baseUrl}j_acegi_security_check.jsp';
+		document.login.action = targeturl;
+		document.login.j_success.value="${baseUrl}member/index.jhtml";
+		document.login.submit();
+
+		}else{
+			alert("请输入用户名和密码！");
+		}
+	return false;
+}
+
+if(top.panelHeader != null) {
+	top.panelHeader.sp_isRefash = 1;
+	top.location= 'index.jhtml';
+}
+</SCRIPT>
+<style type="text/css">
+<!--
+.STYLE1 {FONT-FAMILY: Tahoma, Arial; font-size: 11px;}
+-->
+</style>
+</HEAD>
+<BODY onload=this.document.login.j_username.focus();>
+<TABLE width="100%" height=178 border=0 cellPadding=0 cellSpacing=0 bgcolor="#336699">
+  <TBODY>
+    <TR>
+      <TD><TABLE cellSpacing=0 cellPadding=0 width=760 align=center border=0>
+          <TBODY>
+            <TR>
+              <TD width=595><TABLE cellSpacing=0 cellPadding=0 width=595 border=0>
+                  <TBODY>
+                    <TR>
+                      <TD>&nbsp;</TD>
+                    </TR>
+                  </TBODY>
+                </TABLE></TD>
+              <TD>&nbsp;</TD>
+            </TR>
+          </TBODY>
+        </TABLE></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<BR>
+<BR>
+<TABLE height=180 cellSpacing=1 cellPadding=3 width=325 align=center
+bgColor=#003371 border=0>
+  <form name="login" action="${baseUrl}j_acegi_security_check.jsp" method="post">
+    <input type="hidden" id="j_success" name="j_success" value="${baseUrl}admin/index.jhtml">
+	<TBODY>
+      <#if login_error?exists>
+      <TR>
+        <TD align=middle bgColor=##ffffff height=41><FONT color=#ff0000>登录失败:
+        <br/><textarea  cols="50" rows="3">${auth_exception}</textarea></FONT></TD>
+      </TR>
+      </#if>
+      <TR>
+        <TD align=middle bgColor=#336699 height=41><FONT color=#fafafa><B>${title?default("")}</B></FONT> <FONT color=#ffffff>-
+          ${lang.get("login.title")}</FONT></TD>
+      </TR>
+      <TR>
+        <TD vAlign=center align=middle bgColor=#ffffff height=142><TABLE cellSpacing=1 cellPadding=1 align=center border=0>
+            <TBODY>
+              <TR>
+                <TD width="46" align=right>${lang.get("login.username")}</TD>
+                <TD width="183"><INPUT class=inputclass id=input_login value="${lastUserName?if_exists}" size=25
+        name="j_username"></TD>
+              </TR>
+              <TR>
+                <TD align=right>${lang.get("login.password")}</TD>
+                <TD><INPUT class=inputclass id=input_login type=password size=25
+            name="j_password">
+                </TD>
+              </TR>
+              <TR>
+                <TD align=right>${lang.get("login.code")}</TD>
+                <TD><INPUT class="inputclass" size=25 name="code">
+                  <IMG
+            src="${baseUrl}admin/login/image/${key}.gif" border=0 align="absmiddle"
+            style="POSITION: relative; TOP: 0px"> </TD>
+              </TR>
+              <TR>
+                <TD align=center colSpan=2 height=50>
+                  <INPUT class="btnclass" id=button_login onClick="return admin_login_submit();" type=submit value="${lang.get("login.button.adminlogin")}" name=login2>
+				  <#--<INPUT class="btnclass" id=button_login onClick="return member_login_submit();" type=submit value=会员登录 name=login2>-->
+                  &nbsp;
+                  <INPUT class='btnclass' id='button_login' type="reset" value="${lang.get("login.button.reset")}" name='reset1'>
+                </TD>
+              </TR>
+            </TBODY>
+          </TABLE></TD>
+      </TR>
+  </FORM>
+  </TBODY>
+</TABLE>
+<BR>
+<BR>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+    <TR>
+      <TD background="images/index_27.gif"
+    height=39><DIV align=center><SPAN class=process style3>Powered by </SPAN><SPAN class=STYLE1 style3><B><A
+      href="http://www.openuap.org/" target=_blank><FONT
+      color=#000000>Open UAP CENTER </FONT></A></B></SPAN><SPAN class=process style3> 2005-2008 OpenUAP.ORG&copy; All rights
+          reserved. </SPAN></DIV></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+</BODY>
+</HTML>

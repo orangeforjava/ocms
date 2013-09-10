@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench>
+	<tab id="tab-node-plugin" name="结点功能模块"
+		url="admin/nodeModule.jhtml" description="结点功能模块"
+		pos="000">
+		<sidebar id="n-site-manager" type="url" name="站点管理" pos="0"
+			plugin="org.openuap.cms.node" permission="2">
+			<item id="n-site-setting" name="站点设置"
+				url="admin/nodeEdit.jhtml?mode=edit&amp;nodeId=NODE_ID"
+				description="站点设置" plugin="org.openuap.cms.node" permission="2" />
+		</sidebar>
+		<sidebar id="n-site-modules" type="url" name="功能模块">
+			<!-- <item id="n-site-menu" name="导航菜单管理"
+				url="admin/nodeEdit.jhtml?mode=edit&amp;nodeId=NODE_ID"
+				description="导航菜单管理" plugin="org.openuap.cms.node" permission="2" /> -->
+		</sidebar>
+	</tab>
+</workbench>

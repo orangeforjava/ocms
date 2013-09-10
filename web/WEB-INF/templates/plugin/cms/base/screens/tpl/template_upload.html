@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title> 上传模板</title>
+<base  href="${baseUrl}"/>
+<style type="text/css">
+body{margin:0px;scrollbar-face-color: #B8B8B8; scrollbar-highlight-color: #F5F9FF; scrollbar-shadow-color: #828282; scrollbar-3dlight-color: #828282; scrollbar-arrow-color: #797979; scrollbar-track-color: #ECECEC; scrollbar-darkshadow-color: #ffffff}
+body,a,table,div,span,td,th,input,select{font:9pt;font-family: Verdana, Arial, Helvetica, sans-serif;}
+.text{border:1 solid #aaaaaa;}
+.button{height:18;border:1 ridge #aaaaaa;background-color:aaaaaa;color:ffffff}
+.table {  border: 1px inset; border-color: menu #FFFFFF #FFFFFF menu}
+</style>
+<script language="javascript" type="text/javaScript">
+function returnFileName()
+{
+	if(document.form1.uploadFile.value == '') {
+		alert("请选择需要上传的文件");
+		return false;
+	} else {
+		//return true;
+		form1.submit();
+		var parent = art.dialog.parent;
+		
+		art.dialog.close();
+
+	}
+}
+function cancel() {
+	art.dialog.close(); 
+	return false
+}
+</script>
+</HEAD>
+
+<BODY>
+<form  action="${baseUrl}/admin/template.jhtml?action=UploadSubmit" method="post" enctype="multipart/form-data" name="form1"  target="hiddenActionFrame">
+  <input type="hidden" name="path" value="${path}"/>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  
+    <tr>
+      <td> <fieldset class="search">
+        <legend>上传模板:</legend>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td ><input name="uploadFile" type="file" id="uploadFile" /></td>
+            
+          </tr>
+           <tr>
+           <td>
+           <input type="button" name="Submit" value="上传" onClick="return returnFileName();"> 					
+            	<input type="button" onClick="cancel();" value="取消">
+           </td>
+           </tr>
+        </table>
+        </fieldset> 
+        </td>
+    </tr> 
+</table>
+ </form>
+
+</BODY>
+</HTML>

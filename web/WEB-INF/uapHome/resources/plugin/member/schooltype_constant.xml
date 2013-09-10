@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <schooltypes>
+    <schooltype key="请选择">请选择学校性质</schooltype>
+    <schooltype key="专科学校">专科学校</schooltype>
+	<schooltype key="普通本科">普通本科</schooltype>
+	<schooltype key="重点本科">重点本科</schooltype>
+	<schooltype key="重点大学">重点大学</schooltype>
+  </schooltypes>
+</directory>

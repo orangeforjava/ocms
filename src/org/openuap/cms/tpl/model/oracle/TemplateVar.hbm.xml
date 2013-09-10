@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: TemplateVar.hbm.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.tpl.model">
+	<class name="TemplateVar" table="cms_template_var">
+		<id name="id" type="long" unsaved-value="0">
+			<column name="id" />
+			<generator class="sequence">
+				<param name="sequence">cms_template_var_seq</param>
+			</generator>
+		</id>
+		<property name="title" type="string">
+			<column name="title" not-null="true" />
+		</property>
+		<property name="name" type="string">
+			<column name="name" not-null="true" />
+		</property>
+		<property name="value" type="text">
+			<column name="value" />
+		</property>
+		<property name="global" type="boolean">
+			<column name="global" not-null="true" default="1" />
+		</property>
+		<property name="nodeScope" type="text">
+			<column name="nodeScope" />
+		</property>
+	</class>
+</hibernate-mapping>

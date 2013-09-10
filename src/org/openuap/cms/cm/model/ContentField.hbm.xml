@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+                            "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<!--
+	$Id: ContentField.hbm.xml 4008 2011-01-12 05:47:06Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.cm.model">
+	<class name="ContentField" table="cms_content_fields">
+		<id name="contentFieldId" column="ContentFieldID" type="long"
+			unsaved-value="0">
+			<generator class="native" />
+		</id>
+		<property name="fieldTitle" type="string">
+			<column name="FieldTitle" not-null="true" />
+		</property>
+		<property name="fieldName" type="string">
+			<column name="FieldName" not-null="true" />
+		</property>
+		<property name="fieldType" type="string">
+			<column name="FieldType" />
+		</property>
+		<property name="fieldSize" type="string">
+			<column name="FieldSize" not-null="false" />
+		</property>
+		<property name="fieldInput" type="string">
+			<column name="FieldInput" />
+		</property>
+		<property name="fieldDefaultValue" type="string">
+			<column name="FieldDefaultValue" />
+		</property>
+		<property name="fieldInputFilter" type="string">
+			<column name="FieldInputFilter" />
+		</property>
+		<property name="fieldInputPicker" type="string">
+			<column name="FieldInputPicker" />
+		</property>
+		<property name="fieldInputPickerExtra" type="string">
+			<column name="fieldInputPickerExtra" />
+		</property>
+		<property name="fieldInputTpl" type="string">
+			<column name="FieldInputTpl" />
+		</property>
+		<property name="fieldDescription" type="string">
+			<column name="FieldDescription" />
+		</property>
+		<property name="fieldOrder" type="integer">
+			<column name="FieldOrder" not-null="true" />
+		</property>
+		<property name="fieldListDisplay" type="integer">
+			<column name="FieldListDisplay" not-null="true" />
+		</property>
+		<property name="mainField" type="integer">
+			<column name="IsMainField" not-null="true" />
+		</property>
+		<property name="titleField" type="integer">
+			<column name="IsTitleField" not-null="true" />
+		</property>
+		<property name="keywordsField" type="integer">
+			<column name="IsKeywordsField" />
+		</property>
+
+		<property name="photoField" type="integer">
+			<column name="IsPhotoField" />
+		</property>
+		<property name="fieldSearchable" type="integer">
+			<column name="FieldSearchable" />
+		</property>
+		<property name="enableContribution" type="integer">
+			<column name="EnableContribution" />
+		</property>
+		<property name="enableCollection" type="integer">
+			<column name="EnableCollection" />
+		</property>
+		<property name="enablePublish" type="integer">
+			<column name="EnablePublish" />
+		</property>
+		<property name="enableStatics" type="integer">
+			<column name="enableStatics" />
+		</property>
+		<property name="tableId" type="long" insert="false"
+			update="false">
+			<column name="TableID" />
+		</property>
+		<property name="otherCategory" type="integer">
+			<column name="otherCategory" not-null="true" default="0"/>
+		</property>
+		<!-- search engine meta info -->
+		<property name="indexType" type="string">
+			<column name="indexType" default="'NO'" not-null="true" />
+		</property>
+		<property name="storeType" type="string">
+			<column name="storeType" default="'NO'" not-null="true" />
+		</property>
+		<property name="termVectorType" type="string">
+			<column name="termVectorType" default="'NO'"
+				not-null="true" />
+		</property>
+		<!-- /search engine meta info -->
+		<many-to-one name="contentTable" class="ContentTable">
+			<column name="TableID" not-null="false" />
+		</many-to-one>
+	</class>
+</hibernate-mapping>

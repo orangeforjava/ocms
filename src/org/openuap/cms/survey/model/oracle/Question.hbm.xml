@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: Question.hbm.xml 3951 2010-11-02 10:13:17Z orangeforjava $
+-->
+<hibernate-mapping>
+	<class name="org.openuap.cms.survey.model.Question"
+		table="cms_survey_question">
+		<id name="questionId" type="long" column="questionId">
+			<generator class="sequence">
+				<param name="sequence">cms_survey_question_seq</param>
+			</generator>
+		</id>
+		<property name="questionTitle" type="text"
+			column="questionTitle" not-null="true" />
+		<property name="questionCreationDate" type="long"
+			column="voteCreateDate" />
+		<property name="questionType" type="integer"
+			column="questionType" not-null="true" />
+		<property name="questionStatus" type="integer"
+			column="questionStatus" />
+		<property name="creationUserId" type="long"
+			column="creationUserId" />
+		<property name="creationUserName" type="string"
+			column="creationUserName" />
+		<property name="questionGuid" type="string"
+			column="questionGuid" />
+		<property name="questionPos" type="long" column="questionPos" />
+		<property name="groupId" type="long" column="groupId" />
+		<property name="groupTitle" type="string" column="groupTitle" />
+
+		<property name="pageId" type="long" column="pageId" />
+		<property name="questionInputFilter" type="integer"
+			column="questionInputFilter" />
+		<!-- associations -->
+		<property name="surveyId" type="long" column="surveyId" />
+		<!-- bi-directional one-to-many association to VoteVoteItem -->
+		<set name="questionItems" order-by="questionItemSort asc"
+			lazy="false" inverse="false" cascade="all" batch-size="3">
+			<key>
+				<column name="questionId" />
+			</key>
+			<one-to-many class="org.openuap.cms.survey.model.QuestionItem" />
+		</set>
+	</class>
+</hibernate-mapping>

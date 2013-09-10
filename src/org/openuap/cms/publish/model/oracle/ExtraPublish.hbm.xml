@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+                            "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<!--
+	$Id: ExtraPublish.hbm.xml 3938 2010-10-27 03:25:16Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.publish.model">
+	<class name="ExtraPublish" table="cms_extra_publish">
+		<id name="publishId" column="PublishID" type="long"
+			unsaved-value="0">
+			<generator class="sequence">
+				<param name="sequence">cms_extra_publish_seq</param>
+			</generator>
+		</id>
+		<property name="nodeId" type="long">
+			<column name="NodeID" not-null="true" />
+		</property>
+		<property name="publishName" type="string">
+			<column name="PublishName" />
+		</property>
+		<property name="selfPsn" type="string">
+			<column name="SelfPSN" />
+		</property>
+		<property name="selfPsnUrl" type="string">
+			<column name="SelfPSNURL" />
+		</property>
+		<property name="publishFileName" type="string">
+			<column name="PublishFileName" />
+		</property>
+		<property name="tpl" type="string">
+			<column name="Tpl" />
+		</property>
+		<property name="intro" type="text">
+			<column name="Intro" />
+		</property>
+		<property name="creationUserId" type="long">
+			<column name="CreationUserID" />
+		</property>
+		<property name="creationUserName" type="string">
+			<column name="CreationUserName" />
+		</property>
+		<property name="lastModifiedUserId" type="long">
+			<column name="LastModifiedUserID" />
+		</property>
+		<property name="lastModifiedUserName" type="string">
+			<column name="LastModifiedUserName" />
+		</property>
+		<property name="creationDate" type="long">
+			<column name="CreationDate" />
+		</property>
+		<property name="modifiedDate" type="long">
+			<column name="ModifiedDate" />
+		</property>
+		<property name="publishGuid" type="string">
+			<column name="publishGuid" />
+		</property>
+		<!--2006/09/23 15:25-->
+		<property name="extraPortalUrl" type="string">
+			<column name="extraPortalUrl" />
+		</property>
+		<property name="publishMode" type="integer">
+			<column name="PublishMode" />
+		</property>
+		<property name="autoRefreshMode" type="integer">
+			<column name="autoRefreshMode" not-null="true"
+				default="0">
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,70 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>结点操作URL</title>
+<base  href="${baseUrl}"/>
+<script type="text/javascript">
+var status=0;
+</script>
+</head>
+<body>
+<script languange="javaScript" type="text/javaScript">
+    
+	<#if operation=="del">
+	    <#if result=="success">
+			<#if extra?default("")=="containChild">
+			alert("删除结点（包含子结点）成功！");
+			parent.location.reload();
+			<#else>
+			alert("删除结点成功！");
+			parent.location.reload();
+			</#if>
+		<#else>
+			<#if extra?default("")=="containChild">
+			alert("删除结点（包含子结点）失败！");			
+			<#else>
+			alert("删除结点失败！");
+			</#if>
+		</#if>
+	<#elseif operation=="del_confirm">
+	var ok=confirm("您需要删除的结点包含子结点，删除此结点将同时删除所有子结点，您是否确认删除此结点？");
+	if(ok){
+		this.location ="admin/node.jhtml?action=Del&nodeId={nodeId}&confirmDel=1";
+	}
+	<#elseif operation=="destroy">
+		<#if result=="success">
+			alert("永久删除结点成功！");
+			parent.reload();
+		<#else>
+			alert("永久删除结点失败！");
+		</#if>		
+	<#elseif operation=="restore">
+		<#if result=="success">
+			alert("恢复结点成功！");
+			parent.reload();
+		<#else>
+			alert("恢复结点失败！");
+		</#if>
+	<#elseif operation=="empty">
+		<#if result=="success">
+			alert("清空回收站成功！");
+			parent.location.reload();
+			
+		<#else>
+			alert("清空回收站失败！");
+		</#if>	
+	<#elseif operation=="move">
+		<#if result=="success">
+			//alert("移动结点成功！");
+			
+			parent.opWin.src='';
+			//parent.location.reload();
+		<#else>
+			alert("移动结点失败,${msg?default("")}");
+		</#if>
+	</#if>
+</script>
+</body>
+</html>

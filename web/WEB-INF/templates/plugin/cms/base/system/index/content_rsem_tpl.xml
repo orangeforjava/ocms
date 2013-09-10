@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE compass-core-mapping PUBLIC 
+    "-//Compass/Compass Core Mapping DTD 2.2//EN"
+    "http://www.compass-project.org/dtd/compass-core-mapping-2.2.dtd">
+<compass-core-mapping>
+    <#if ct.tableName?default("")!="">
+    <resource alias="${ct.entityPublishName}">
+    <#else>
+    <resource alias="Publish_${ct.tableId}">
+    </#if>	
+		<resource-id name="indexId"/>
+		<resource-property name="contentId" store="yes" index="un_tokenized"/>
+		<resource-property name="nodeId" store="yes" index="un_tokenized"/>
+		<resource-property name="publishDate" store="yes" index="un_tokenized"  />
+		<resource-property name="creationDate" store="yes" index="un_tokenized"  />
+		<resource-property name="modifiedDate" store="yes" index="un_tokenized"  />
+		<resource-property name="creationUserId" store="yes" index="un_tokenized"  />
+		<resource-property name="creationUserName" store="yes" index="un_tokenized"  />
+		<resource-property name="lastModifiedUserId" store="yes" index="un_tokenized"  />
+		<resource-property name="lastModifiedUserName" store="yes" index="un_tokenized"  />
+		<resource-property name="contributionUserId" store="yes" index="un_tokenized"  />
+		<resource-property name="contributionUserName" store="yes" index="un_tokenized"  />
+		<resource-property name="contributionId" store="yes" index="un_tokenized"  />
+		<resource-property name="url" store="yes" index="un_tokenized"  />
+		<resource-property name="top" store="yes" index="un_tokenized"  />
+		<resource-property name="pink" store="yes" index="un_tokenized"  />
+		<resource-property name="sort" store="yes" index="un_tokenized"  />
+		<resource-property name="nodeUrl" store="yes" index="un_tokenized"  />
+		<resource-property name="nodeName" store="yes" index="un_tokenized"  />
+		<resource-property name="hitsTotal" store="yes" index="un_tokenized"  />
+		<resource-property name="hitsToday" store="yes" index="un_tokenized"  />
+		<resource-property name="hitsWeek" store="yes" index="un_tokenized"  />
+		<resource-property name="hitsMonth" store="yes" index="un_tokenized"  />
+		<resource-property name="commentNum" store="yes" index="un_tokenized"  />
+		<resource-property name="hitsDate" store="yes" index="un_tokenized"  />
+		<#list ct.contentFieldsSet as field>
+			<#if ((field.indexType)!"NO")!="NO"||((field.storeType)!"NO")!="NO">
+				<resource-property name="${field.fieldName}" store="${(field.storeType!'no')?lower_case}" index="${(field.indexType!'no')?lower_case}"  />
+			</#if>
+		</#list>
+	</resource>
+</compass-core-mapping>

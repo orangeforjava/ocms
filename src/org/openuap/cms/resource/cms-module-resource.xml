@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-resource.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<beans>
+	<!-- DAO -->
+	<import resource="cms-module-resource-dao.xml" />
+	<!-- BIZ -->
+	<bean id="cmsResourceManager"
+		class="org.openuap.cms.resource.manager.impl.ResourceManagerDBImpl">
+		<property name="resourceDao">
+			<ref bean="cmsResourceDao" />
+		</property>
+	</bean>
+	<alias alias="resourceManager" name="cmsResourceManager" />
+	<bean id="org.openuap.cms.res.reflection"
+		class="org.openuap.cms.node.security.NodeResourceReflection">
+		<property name="nodeManager" ref="nodeManager" />
+	</bean>
+</beans>

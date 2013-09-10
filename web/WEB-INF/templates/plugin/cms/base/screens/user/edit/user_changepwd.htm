@@ -1,0 +1,87 @@
+<#assign actionTitle="修改密码" />
+<#assign _TITLE_="修改密码" />
+<#assign actions=[]>
+<#include "/plugin/cms/common/includes/header.htm"/>
+<script type="text/javascript">
+  $(document).ready(function() {
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#passwordOld").formValidator({empty:true,onshow:"不修改密码请留空。",onfocus:"密码应该为6-20位之间",oncorrect:"旧密码输入正确"}).inputValidator({min:6,max:20,onerror:"密码应该为6-20位之间"}).ajaxValidator({
+	    type : "get",
+		url : "${baseUrl}user/us.jhtml",
+		data :"action=CheckPassword",
+		datatype : "html",
+		async:'false',
+		success : function(data){	
+            if( data == "1" )
+			{
+                return true;
+			}
+            else
+			{
+                return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "旧密码输入错误",
+		onwait : "请稍候..."
+	});
+	$("#password").formValidator({empty:true,onshow:"不修改密码请留空。",onfocus:"密码应该为6-20位之间"}).inputValidator({min:6,max:20,onerror:"密码应该为6-20位之间"});
+	$("#password2").formValidator({empty:true,onshow:"不修改密码请留空。",onfocus:"请输入两次密码不同。",oncorrect:"密码输入一致"}).compareValidator({desid:"password",operateor:"=",onerror:"请输入两次密码不同。"});
+  })
+</script>
+		
+<div class="pad_10">
+<div class="common-form">
+
+		<form action="${baseUrl}user/changepwd.jhtml" method='post'
+				name='myform' id="myform" onsubmit="return fm_chk(this)">
+				<input type="hidden" name="action" value="Change" />
+		<table border="0" width="100%" class="table_form contentWrap">
+			<tr>
+				<td width="80">
+					用户名
+				</td>
+				<td>${user.name}(${user.realName?default(user.name)})</td>
+			</tr>
+			<tr>
+				<td width="80">
+					E-mail
+				</td>
+				<td>${user.email?default('空')}</td>
+			</tr>
+			<tr>
+				<td >
+					旧密码
+				</td>
+				<td>
+					<input type="password"  id="passwordOld" name="passwordOld" class="input-text"/>
+				</td>
+			</tr>
+
+			<tr>
+				<td >
+					新密码
+				</td>
+				<td class="table_td2">
+					<input name="password" type="password" id="password" class="input-text"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					重复新密码:
+				</td>
+				<td class="table_td2">
+					<input name="password2" type="password" id="password2" class="input-text"/>
+				</td>
+			</tr>
+
+			
+			
+		</table>
+		<div class="bk15"></div>
+    		<input name="dosubmit" type="submit" value="提交" class="button" id="dosubmit">
+		
+		</form>
+</div>
+</div>
+<#include "/plugin/cms/base/includes/footer.html">

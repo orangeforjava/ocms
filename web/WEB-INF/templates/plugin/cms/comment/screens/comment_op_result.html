@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>新闻评论-操作结果</title>
+		<base href="${baseUrl}" />
+		<link type="text/css" rel="stylesheet"
+			href="html/plugin/comment/css/global.css" />
+		<link type="text/css" rel="stylesheet"
+			href="html/plugin/comment/css/style.css" />
+		<link type="text/css" rel="stylesheet"
+			href="html/plugin/comment/css/card_comment.css" />
+		[#if rs=="success"]
+			<meta http-equiv="refresh" content="2;url='${baseUrl}comment/view.htm?id=${id}'"/>			
+		[/#if]
+	</head>
+	<body>
+		
+		[#include "../includes/comment_top_nav.html"/]
+		<!-- 说两句导航 -->
+		<div id="navigation">
+			<a href="http://www.ccun.cn" target="_blank">中护首页</a>&gt;&gt;
+			<a href="http://bbs.ccun.cn" target="_blank">社区</a>&gt;&gt;
+			<a href="#"
+				target="_blank">新闻评论</a>
+		</div>
+		<!-- /说两句导航 -->
+	    
+		<div class="area">
+			<table width="100%" height="100%" border="0" cellpadding="20" cellspacing="0">
+		    <tr>
+		    <td align="center" valign="top">
+		    	[#if op=="add"]
+		    		[#if rs=='success']
+		    			恭喜您已经成功发表了评论，页面将自动返回，<a href="${baseUrl}comment/view.htm?id=${id}">如果您的浏览器没有自动跳转，请点击这里</a>
+		    		[#else]
+		    			对不起，评论发表失败，请点击<a href="javaScript:history.back()">这里</a>返回。
+		    		[/#if]
+		    	[#elseif op=="view"]
+		    		[#if rs='failed']
+		    			您要查看的评论内容已经不存在.页面将自动返回，<a href="${baseUrl}comment/view.htm?id=${id}">如果您的浏览器没有自动跳转，请点击这里</a>
+		    		[/#if]
+		    	[#elseif op=="delete"]
+		    		[#if rs=='success']
+		    			您已经成功的删除了此条评论，
+		    		[#else]
+		    			${msgs!''}
+		    		[/#if]
+		    	[/#if]
+		    </td>
+		    </tr>
+		    </table>
+		</div>
+		[#include "../includes/comment_bottom.html"/]
+	</body>
+</html>
+
+
+

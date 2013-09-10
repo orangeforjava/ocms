@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- $Id: cms-module-cm-web.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<beans default-lazy-init="true">
+	<!-- Mapping -->
+	<bean id="cmHandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<description>内容模型模块URL Mapping</description>
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/content.jhtml">
+					<ref local="contentAction" />
+				</entry>
+				<entry key="/admin/contentEdit.jhtml">
+					<ref local="contentEditAction" />
+				</entry>
+				<entry key="/admin/fieldEdit.jhtml">
+					<ref local="fieldEditAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<!-- Actions -->
+	<bean id="contentAction"
+		class="org.openuap.cms.cm.action.ContentTableAction">
+		<description >内容模型管理控制器</description>
+		<property name="contentTableManager">
+			<ref bean="contentTableManager" />
+		</property>
+		<property name="contentModelHelper">
+			<ref bean="contentModelHelper" />
+		</property>
+	</bean>
+	<bean id="contentEditAction"
+		class="org.openuap.cms.cm.action.ContentTableEditAction">
+		<description>内容模型编辑控制器</description>
+		<property name="contentTableManager">
+			<ref bean="contentTableManager" />
+		</property>
+		<property name="contentFieldManager">
+			<ref bean="contentFieldManager" />
+		</property>
+		<property name="contentModelHelper">
+			<ref bean="contentModelHelper" />
+		</property>
+	</bean>
+	<bean id="fieldEditAction"
+		class="org.openuap.cms.cm.action.ContentFieldEditAction">
+		<description>内容域编辑控制器</description>
+		<property name="contentTableManager">
+			<ref bean="contentTableManager" />
+		</property>
+		<property name="contentFieldManager">
+			<ref bean="contentFieldManager" />
+		</property>
+		<property name="contentModelHelper">
+			<ref bean="contentModelHelper" />
+		</property>
+	</bean>
+</beans>

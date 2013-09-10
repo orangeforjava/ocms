@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- created by Weiping Ju $Date: 2006/08/31 02:26:01 $-->
+<directory>
+	<object type="0" name="psn" key="org.openuap.cms.psn" title="发布点管理">
+		<permission key="1" name="viewPsn">查看发布点</permission>
+		<permission key="2" name="addPsn">添加发布点</permission>
+		<permission key="3" name="editPsn">编辑发布点</permission>
+		<permission key="4" name="deletePsn">删除发布点</permission>
+		<permission key="5" name="checkPsn">检测发布点</permission>
+		<permission key="6" name="listPsn">列表发布点</permission>
+	</object>
+</directory>
+

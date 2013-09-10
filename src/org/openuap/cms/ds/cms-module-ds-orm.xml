@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-ds-orm.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<beans>	
+	<bean id="ds-Mapping"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<property name="mappings">
+			<list>
+				<value>
+					org/openuap/cms/ds/model/DataSourceModel.hbm.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="ds-OracleMapping"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<property name="dialect">
+			<value>org.hibernate.dialect.Oracle9Dialect</value>
+		</property>
+		<property name="mappings">
+			<list>
+				<value>
+					org/openuap/cms/ds/model/oracle/DataSourceModel.hbm.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- Middle tier application context definition for the CMS application.
+-->
+<beans>
+	<bean id="ds-HandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/ds/ds.jhtml">
+					<ref local="dataSourceAction" />
+				</entry>
+				<entry key="/admin/ds/dsEdit.jhtml">
+					<ref local="dataSourceEditAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="dataSourceAction"
+		class="org.openuap.cms.ds.action.DataSourceAction">
+		<property name="dataSourceManager" ref="dataSourceManager" />
+	</bean>
+	<bean id="dataSourceEditAction"
+		class="org.openuap.cms.ds.action.DataSourceEditAction">
+		<property name="dataSourceManager" ref="dataSourceManager" />
+	</bean>
+</beans>

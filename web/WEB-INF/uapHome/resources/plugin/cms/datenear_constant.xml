@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <items>
+    <item key="0">任何时间的文章</item>
+    <item key="1">最近一天内的文章</item>
+	<item key="7">最近一个星期内的文章</item>
+	<item key="30">最近一个月内的文章</item>
+	<item key="60">在两个月内的文章</item>
+	<item key="90">在三个月内的文章</item>
+	<item key="180">在半年内的文章</item>
+	<item key="365">一年内的文章</item>
+  </items>
+</directory>

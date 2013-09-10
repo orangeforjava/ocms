@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench>
+	<global>
+		<appname pos="100">内容管理系统</appname>
+		<logo-image pos="100">
+			html/plugin/cms/base/images/logo.gif
+		</logo-image>
+		<login-image pos="100">
+			html/plugin/cms/base/images/cms-logo.gif
+		</login-image>
+	</global>
+	<!-- Server -->
+	<tab id="tab-home" name="系统首页"
+		url="admin/publish.jhtml?action=NodeFS" description="系统首页"
+		pos="001">
+		<sidebar id="manager-publish-q" name="发布管理" type="js" pos="010" plugin="org.openuap.cms.publish">
+		    <item id="all-publish-q" name="所有发布站点"
+				url="admin/publish.jhtml?action=NodeFS" description="所有站点"  plugin="org.openuap.cms.publish" permission="2"/>
+			<item id="all-publish-q-t" name="发布站点树显示"
+				url="admin/publish.jhtml" description="发布站点树显示模式" target="_self" plugin="org.openuap.cms.publish" permission="2"/>
+		</sidebar>
+		<!--  -->
+		<sidebar id="site-manager-q" name="站点管理" type="js" pos="020"
+			plugin="org.openuap.cms.node">
+			<item id="manager-site-q" name="站点定义"
+				url="admin/node.jhtml?action=Tree" description="站点定义"
+				plugin="org.openuap.cms.node" permission="2" />
+			<item id="manager-site-q" name="站点树显示"
+				url="admin/node.jhtml" description="以树型方式显示站点" target="_self"
+				plugin="org.openuap.cms.node" permission="2" />
+		</sidebar>
+	</tab>
+	<tab id="tab-setting" name="设置" description="设置" pos="002"
+		plugin="org.openuap.cms">
+		<sidebar id="system-setting" name="系统设置" pos="001">
+			<!-- Profile Settings -->
+			<item id="config-base" name="基本配置" url="admin/config.jhtml"
+				description="系统基本配置信息" pos="10" default="true"/>
+			<item id="config-sys" name="系统配置" url="admin/config.jhtml?action=SysConfig"
+				description="系统基本配置信息" pos="20" />
+			<item id="config-publish" name="发布设置"
+				url="admin/publish/config.jhtml" description="系统发布设置" pos="100"/>
+			
+		</sidebar>
+		
+	</tab>
+	<!-- 系统管理 -->
+	<tab id="tab-system" name="系统" description="系统管理" pos="003"
+		plugin="org.openuap.cms">
+		<sidebar id="schedule-list" name="计划任务管理" pos="001">
+			<!-- Service Properties -->
+			<item id="list-schedule" name="计划任务列表"
+				url="admin/schedule.jhtml" description="计划任务列表" />
+		</sidebar>
+		<sidebar id="badwords-manager" name="敏感词管理" pos="002">
+			<item id="badwords-list" name="敏感词列表" url="admin/badwords.jhtml"	description="敏感词列表" />
+		</sidebar>
+		<sidebar id="cache-manager" name="缓存管理" pos="003">
+			<item id="manager-cache" name="缓存管理" url="admin/cache.jhtml"
+				description="缓存管理" />
+		</sidebar>
+		<sidebar id="vfs-list" name="虚拟文件系统管理" pos="010">
+			<!-- Service Properties -->
+			<item id="ftp-list" name="FTP管理"
+				url="admin/vfs/ftp.jhtml" description="FTP管理" />
+		</sidebar>
+		<sidebar id="ds-manager" name="数据源管理" pos="020">
+			<!-- Service Properties -->
+			<item id="ds-list" name="数据源管理"
+				url="admin/ds/ds.jhtml" description="数据源管理" />
+		</sidebar>
+		
+		<sidebar id="data-manager" name="数据管理" pos="020">
+		    <item id="export-manager" name="数据备份管理"
+				url="admin/data/export.jhtml" description="数据备份管理" />
+			<item id="import-manager" name="数据恢复管理"
+				url="admin/data/import.jhtml" description="数据恢复管理" />			
+		</sidebar>
+		<sidebar id="sys-manager" name="系统侦测" pos="040">
+		    <item id="syslog" name="系统日志"
+				url="admin/log/sys_log.jhtml" description="系统运行日志" />		
+		</sidebar>
+	</tab>
+	<tab id="tab-cms" name="内容" description="内容" pos="004"
+		plugin="org.openuap.cms">
+		<!-- 发布管理 -->
+		<sidebar id="manager-publish" name="发布管理" type="js" pos="010" plugin="org.openuap.cms.publish">
+		    <item id="all-publish" name="所有发布站点"
+				url="admin/publish.jhtml?action=NodeFS" description="所有站点" plugin="org.openuap.cms.publish" permission="2"/>
+			<item id="all-publish" name="发布站点树显示"
+				url="admin/publish.jhtml" description="发布站点树显示模式" target="_self" plugin="org.openuap.cms.publish" permission="2"/>
+		</sidebar>
+		<!-- 站点管理 -->
+		<sidebar id="site-manager" name="站点管理" type="js" pos="020">
+			<item id="manager-site" name="站点管理"
+				url="admin/node.jhtml?action=Tree" description="站点管理"
+				plugin="org.openuap.cms.node" permission="2" />
+			<item id="manager-site-tree" name="站点树显示"
+				url="admin/node.jhtml" description="以树型方式显示站点" target="_self"
+				plugin="org.openuap.cms.node" permission="2" />
+		</sidebar>	
+		<!-- 资源管理 -->
+		<sidebar id="manager-resource" name="资源管理" type="js" pos="040">
+			<item id="all-resource" name="所有本地资源"
+					url="admin/resource.jhtml" description="所有本地资源" target="_self"/>
+		</sidebar>
+		<!-- 模板管理 -->
+		<sidebar id="manager-template" name="模板管理" type="js" pos="030">
+			<item id="all-template" name="本地模板"
+			url="admin/template.jhtml" target="_self" description="所有本地模板"/>
+			<!-- <item id="template-cate" name="模板分类管理"
+			url="admin/templateCate.jhtml" description="模板分类管理"/> -->
+			<item id="template-var" name="模板变量管理"
+			url="/admin/tplVar.jhtml" description="模板变量管理"/>
+		</sidebar>
+		<!-- 模板标签管理 -->
+		<sidebar id="manager-tag" name="模板标签管理" pos="050">
+		    <item id="all-tpltag" name="模板调用标签"
+				url="admin/tpltag.jhtml" description="模板调用标签"/>
+		</sidebar>
+		<!-- 发布点管理 -->	
+		<sidebar id="psn-manager" name="发布点管理" pos="060">
+			<item id="psn-list" name="发布点列表" url="admin/psn.jhtml"
+				description="发布点列表" />
+		</sidebar>
+		<sidebar id="cm-manager" name="内容模型管理" pos="070">
+			<item id="cms-list" name="内容模型列表" url="admin/content.jhtml"
+				description="内容模型列表" />
+		</sidebar>
+		<sidebar id="keywords-manager" name="关键词管理" pos="070" plugin="org.openuap.cms.keywords">
+			<item id="keywords-list" name="关键词列表" url="admin/keywords.jhtml"
+				description="关键词列表" plugin="org.openuap.cms.keywords" permission="2"/>
+		</sidebar>
+	</tab>
+	<tab id="tab-modules" name="模块" url="admin/modules.jhtml"
+		description="功能模块" pos="010">
+		<sidebar id="comment-manager" name="评论管理" pos="-100">
+			<item id="comment-config" name="评论设置"
+				url="admin/comment/configt.htm" description="评论设置" />
+			<item id="comment-list" name="评论管理"
+				url="admin/comment/comment.htm" description="评论管理" />
+		</sidebar>
+	</tab>
+	<!-- 数据管理 -->
+	
+</workbench>

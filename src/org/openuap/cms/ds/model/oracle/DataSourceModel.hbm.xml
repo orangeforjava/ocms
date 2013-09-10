@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+                            "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<!--
+	$Id: DataSourceModel.hbm.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.ds.model">
+	<class name="DataSourceModel" table="cms_ds">
+		<id name="id" column="id" type="long" unsaved-value="0">
+			<generator class="sequence">
+				<param name="sequence">cms_psn_seq</param>
+			</generator>
+		</id>
+		<property name="name" type="string">
+			<column name="name" not-null="true" />
+		</property>
+		<property name="type" type="string">
+			<column name="type" not-null="true" />
+		</property>
+		<property name="driverClassName" type="string">
+			<column name="driverClassName" not-null="true" />
+		</property>
+		<property name="url" type="string">
+			<column name="url" not-null="true" />
+		</property>
+		<property name="userName" type="string">
+			<column name="userName" not-null="true" />
+		</property>
+		<property name="password" type="string">
+			<column name="password" />
+		</property>
+
+		<property name="properties" type="text">
+			<column name="properties" />
+		</property>
+		<property name="description" type="text">
+			<column name="description" />
+		</property>
+		<property name="status" type="integer">
+			<column name="status" />
+		</property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- - Middle tier application context definition for the CMS application. -->
+<beans default-lazy-init="true">
+	<bean id="setupHandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/setup/superman.jhtml">
+					<ref local="supermanAction" />
+				</entry>
+				<entry key="/uninstall.jhtml">
+					<ref local="uninstallAction" />
+				</entry>
+			</map>
+		</property>
+		<property name="order" value="10" />
+	</bean>
+	<bean id="uninstallAction" class="org.openuap.cms.setup.action.UnInstallAction" />
+	<bean id="supermanAction" class="org.openuap.cms.setup.action.SupermanAction">
+		<property name="baseUserManager">
+			<ref bean="baseUserManager" />
+		</property>
+	</bean>
+</beans>

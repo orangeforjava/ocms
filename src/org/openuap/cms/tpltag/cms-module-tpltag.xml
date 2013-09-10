@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-tpltag.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<beans>
+	<!-- DAO -->
+	<import resource="cms-module-tpltag-dao.xml"/>	
+	<!-- BIZ -->
+	<bean id="templateTagManager"
+		class="org.openuap.cms.tpltag.manager.impl.TemplateTagManagerImpl">
+		<property name="dao">
+			<ref bean="templateTagDao" />
+		</property>
+	</bean>
+	<!-- TPL -->
+	<import resource="cms-module-tpltag-tpl.xml"/>
+</beans>

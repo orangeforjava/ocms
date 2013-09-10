@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- $Id: cms-module-psn-web.xml 3938 2010-10-27 03:25:16Z orangeforjava $
+-->
+<beans>
+	<bean id="psnHandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/psn.jhtml">
+					<ref local="psnAction" />
+				</entry>
+				<entry key="/admin/psnEdit.jhtml">
+					<ref local="psnEditAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="psnAction"
+		class="org.openuap.cms.psn.action.PsnAction">
+		<property name="psnManager">
+			<ref bean="psnManager" />
+		</property>
+	</bean>
+	<bean id="psnEditAction"
+		class="org.openuap.cms.psn.action.PsnEditAction">
+		<property name="psnManager">
+			<ref bean="psnManager" />
+		</property>
+	</bean>
+</beans>

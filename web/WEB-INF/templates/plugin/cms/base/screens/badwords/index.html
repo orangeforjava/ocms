@@ -1,0 +1,117 @@
+[#assign actionTitle="敏感词管理" /]
+[#assign _TITLE_="敏感词管理" /]
+[#assign actions=[{"action":"","title":"敏感词列表","url":"${baseUrl}admin/badwords.jhtml"},
+{"action":"","title":"添加词条","url":"javaScript:add()"}
+]]
+[#include "/plugin/cms/common/includes/header.htm"/]
+[#import "/plugin/cms/base/macros/pager-macros.html" as mypager /]
+
+		<script type="text/javaScript" charset="UTF-8" language="javaScript">
+			
+			function SelectAll()
+			  {
+			  for (var i=0;i<document.results.elements.length;i++)
+			    {
+			    var e = document.results.elements[i];
+			    		e.checked = true;
+			    }
+			  }
+			function DeselectAll()
+			  {
+			  for (var i=0;i<document.results.elements.length;i++)
+			    {
+			    var e = document.results.elements[i];
+			    		e.checked = false;
+			    }
+			  }
+			
+			function ChangeAll()
+			{
+				if(document.results.op.checked)	
+				{
+					SelectAll();
+				}
+				else 
+				{
+					DeselectAll();
+				}
+			}
+			function add(){
+				document.location='${baseUrl}admin/badwords.jhtml?action=Add';
+			}
+		</script>
+	
+		
+		<br />
+		<form name="results">
+		<table border="0" cellspacing="1" cellpadding="4" width="100%"
+			align=center class="maintable">
+			
+			<tr class="table_td1">
+				<td width=3% align=center><input type=checkbox name="op" value="" onClick="ChangeAll()"></td>
+				<TD WIDTH='10%' NOWRAP align=center><font color="#0000FF"><b>序号</b></font></TD>
+				<TD WIDTH='40%' NOWRAP align=center><font color="#0000FF"><b>名称</b></font></TD>
+				<TD WIDTH='10%' NOWRAP align=center><font color="#0000FF"><b>范围</b></font></TD>
+				<TD WIDTH='10%' NOWRAP align=center><font color="#0000FF"><b>类型</b></font></TD>
+				<TD WIDTH='10%' NOWRAP align=center><font color="#0000FF"><b>状态</b></font></TD>
+				<TD WIDTH='20%' NOWRAP align=center><font color="#0000FF"><b>操作</b></font></TD>
+			</tr>
+			[#list badwordses as badwords]
+			<TR class="table_td2">
+				<td width=3%>
+				<input type="checkbox" name="ids" value="${badwords.id}">
+				</td>
+				<TD WIDTH='10%' NOWRAP align=center>
+				${badwords.pos}
+				</TD>
+				<TD width=40%>
+				<a href='#' target=_blank class=topic>
+				${badwords.title}		
+				</a></TD>
+				<TD WIDTH='10%' NOWRAP align=center>
+				[#if badwords.scope==-1]
+					所有
+				[#elseif badwords.scope==1]
+					评论
+				[#elseif badwords.scope==2]
+					注册
+				[#elseif badwords.scope==3]
+					签名
+				[/#if]
+				</TD>
+				<TD WIDTH='10%' NOWRAP align=center>
+				[#if badwords.type==0]
+					高亮
+				[#elseif badwords.type==1]
+					替换
+				[/#if]
+				</TD>
+				<TD WIDTH='10%' NOWRAP align=center>
+				[#if badwords.status==0]
+					可用
+				[#else]
+					停用
+				[/#if]
+				</TD>
+				<TD WIDTH='20%' NOWRAP align=center>[<a href="${baseUrl}admin/badwords.jhtml?action=Edit&id=${badwords.id}">编辑</a>]
+				[<a onclick="return confirm('您确认删除此敏感词条?');" href="${baseUrl}admin/badwords.jhtml?action=Del&id=${badwords.id}">删除</a>]
+				[<a href="${baseUrl}admin/badwords.jhtml?action=Test&id=${badwords.id}">测试</a>]
+				
+				</TD>
+				</TR>
+			[/#list]
+			<tr>
+				<td colspan="7" class="table_td2">
+					<input type="button" value="全部选择" onClick="SelectAll()" class=btnStyle>
+					<input type="button" value="全部取消" onClick="DeselectAll()" class=btnStyle>
+					<input type="submit" name="action_delete_post" value="删除" class=btnStyle onClick="return confirmAction('您确认删除选定的敏感词条?');" >
+					<div align=right>		
+					[#assign pageUrl=baseUrl+"admin/badwords.htm?action=UserList&pageNum="+pageNum+"&page="/]
+					[@mypager.pageBuilder pb=pb baseUrl=pageUrl closeUrl=""/]
+					</div>
+				</td>
+			</tr>
+		</table>
+		</form>
+<br/>
+[#include "/plugin/cms/common/includes/footer.htm"/]

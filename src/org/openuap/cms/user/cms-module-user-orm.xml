@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id$
+-->
+<beans>
+	<bean id="userMappingResources"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<description>用户Hibernate影射文件</description>
+		<property name="mappings">
+			<list>
+				<value>org/openuap/cms/user/model/BaseUser.hbm.xml</value>
+				<value>org/openuap/cms/user/model/BaseRole.hbm.xml</value>
+				<value>org/openuap/cms/user/model/BaseUserRole.hbm.xml</value>
+				<value>org/openuap/cms/user/model/BaseUserPermission.hbm.xml</value>
+				<value>org/openuap/cms/user/model/BaseRolePermission.hbm.xml</value>
+				<value>org/openuap/cms/user/model/BaseRolePermField.hbm.xml</value>
+				<value>org/openuap/cms/user/model/BaseUserPermField.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+</beans>

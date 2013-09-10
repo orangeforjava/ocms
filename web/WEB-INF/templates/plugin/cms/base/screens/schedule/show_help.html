@@ -1,0 +1,17 @@
+
+<p>
+<div align=left><b>${scheduleLang.get('schedule.task_help')} ${schedule.task} </b></div></p>
+
+<hr size=1 color=#000000 noshade>
+<#if help?exists>
+${help}
+<#else>
+${scheduleLang.get('schedule.no_help')}
+</#if>
+<hr size=1 color=#000000 noshade>
+<br>
+<center>
+<form>
+<input type=button value='${scheduleLang.get('schedule.close')}' onclick="window.close();" class=btnStyle>
+</form>
+<br><br><br>

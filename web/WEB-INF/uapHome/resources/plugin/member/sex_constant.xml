@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <sexs>
+    <sex key="不限">不限</sex>
+    <sex key="男">男</sex>
+	<sex key="女">女</sex>
+  </sexs>
+</directory>

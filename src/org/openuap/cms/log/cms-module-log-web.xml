@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+	<!--
+		-$Id: cms-module-log-web.xml 3995 2011-01-05 15:13:31Z orangeforjava $
+	-->
+<beans>
+	<bean id="log-HandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/log/sys_log.jhtml">
+					<ref local="sysLogAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="sysLogAction" class="org.openuap.cms.log.action.SysLogAction">
+
+	</bean>
+</beans>

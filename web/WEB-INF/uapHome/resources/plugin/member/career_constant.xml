@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <props>
+    <prop key="-1">请选择</prop>
+    <prop key="1">护士</prop>
+    <prop key="2">医生</prop>
+	<prop key="3">学生</prop>
+	<prop key="100">其他职业</prop>
+  </props>
+</directory>

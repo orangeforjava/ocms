@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-core.xml 3402 2008-12-16 14:37:14Z orangeforjava $
+-->
+<beans default-lazy-init="false">
+
+	<bean id="bootstrapManager"
+		class="org.openuap.runtime.setup.BootstrapManagerFactoryBean" />
+	<!-- FreeMarker -->
+	<bean id="freemarkerConfigurer"
+		class="org.openuap.cms.CmsFreeMarkerConfigurer">
+		<description></description>
+		<property name="templateLoaderPath"
+			value="WEB-INF/templates/" />
+		<property name="configLocation">
+			<value>classpath:/freemarker.properties</value>
+		</property>
+	</bean>
+	<alias alias="cmsFreemarkerConfigurer" name="freemarkerConfigurer" />
+	<!-- NativeJdbcExtractor for the C3P0 connection pool above -->
+	<!-- (just needed for oracleLobHandler) -->
+	<bean id="nativeJdbcExtractor"
+		class="org.springframework.jdbc.support.nativejdbc.C3P0NativeJdbcExtractor"
+		lazy-init="true" />
+	<!-- LobHandler for Oracle JDBC drivers -->
+	<!-- (refers to the NativeJdbcExtractor above to get access to native OracleConnections) -->
+	<bean id="oracleLobHandler"
+		class="org.springframework.jdbc.support.lob.OracleLobHandler"
+		lazy-init="true">
+		<property name="nativeJdbcExtractor" ref="nativeJdbcExtractor" />
+	</bean>
+	<!-- LobHandler for well-behaved JDBC drivers -->
+	<!-- (simply delegating to corresponding PreparedStatement and ResultSet methods) -->
+	<bean id="defaultLobHandler"
+		class="org.springframework.jdbc.support.lob.DefaultLobHandler"
+		lazy-init="true" />
+	<bean id="dataSource"
+		class="org.openuap.runtime.setup.jdbc.ConfigurableDataSourceFactoryBean"
+		lazy-init="true">
+		<property name="jdbcDataSourceConfig">
+			<ref bean="jdbcDataSourceConfig" />
+		</property>
+		<property name="dataSourceClass">
+			<value>com.mchange.v2.c3p0.ComboPooledDataSource</value>
+		</property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.openuap.cms.CmsLocalSessionFactoryBean">
+		<description>静态SessionFactory</description>
+		<property name="findMappingByClass">
+			<value>true</value>
+		</property>
+		<property name="hibernateConfig">
+			<ref bean="hibernateConfig" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.transaction.factory_class">
+					org.hibernate.transaction.JDBCTransactionFactory
+				</prop>
+				<prop key="hibernate.cache.provider_class">
+					net.sf.ehcache.hibernate.SingletonEhCacheProvider
+				</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.use_sql_comments">false</prop>
+				<prop key="hibernate.generate_statistics">false</prop>
+			</props>
+		</property>
+		<property name="eventListeners">
+			<map>
+				<entry key="merge">
+					<bean
+						class="org.springframework.orm.hibernate3.support.IdTransferringMergeEventListener" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="schemaHelper" class="org.openuap.cms.CmsSchemaHelper">
+		<property name="hibernateConfig">
+			<ref bean="hibernateConfig" />
+		</property>
+		<property name="findMappingByClass">
+			<value>true</value>
+		</property>
+	</bean>
+	<bean id="cmsTransactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="jdbcTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		lazy-init="true">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="baseTransactionProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		abstract="true">
+		<property name="transactionManager">
+			<ref bean="jdbcTransactionManager" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="do*">PROPAGATION_REQUIRED</prop>
+				<prop key="write*">PROPAGATION_REQUIRED</prop>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<alias alias="transactionManager" name="cmsTransactionManager" />
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messages" />
+	</bean>
+	<bean id="dynamicSessionFactory"
+		class="org.openuap.runtime.setup.hibernate.DynamicLocalSessionFactoryBean">
+		<description>
+			动态SessionFactory，
+		</description>
+		<property name="hibernateConfig">
+			<ref bean="hibernateConfig" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.transaction.factory_class">
+					org.hibernate.transaction.JDBCTransactionFactory
+				</prop>
+				<prop key="hibernate.cache.provider_class">
+					com.opensymphony.oscache.hibernate.OSCacheProvider
+				</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.use_sql_comments">false</prop>
+				<prop key="hibernate.generate_statistics">false</prop>
+				<prop key="hibernate.default_entity_mode">
+					dynamic-map
+				</prop>
+			</props>
+		</property>
+		<property name="eventListeners">
+			<map>
+				<entry key="merge">
+					<bean
+						class="org.springframework.orm.hibernate3.support.IdTransferringMergeEventListener" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="dynamicTransactionManager"
+		class="org.openuap.runtime.setup.hibernate.DynamicHibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="dynamicSessionFactory" />
+		</property>
+	</bean>
+	<!--  -->
+	<bean id="applicationEventMulticaster"
+		class="org.openuap.event.DynamicApplicationEventMulticaster">
+		<description>事件采用动态指定异步或者同步机制</description>
+	</bean>
+	<!-- Import -->
+	<!-- user -->
+	<import resource="user/cms-module-user.xml" />
+	<import resource="schedule/cms-module-schedule.xml" />
+	<import resource="badwords/cms-module-badwords.xml"/>
+	<import resource="cm/cms-module-cm.xml" />
+	<import resource="psn/cms-module-psn.xml" />
+	<import resource="ds/cms-module-ds.xml" />
+	<import resource="engine/cms-module-engine.xml" />
+	<import resource="node/cms-module-node.xml" />
+	<import resource="node/cms-module-node-permission.xml" />
+	
+	<import resource="publish/cms-module-publish.xml" />
+	<import resource="repo/cms-module-repo.xml" />
+	<import resource="resource/cms-module-resource.xml" />
+	<import resource="security/cms-module-permission.xml" />	
+	<import resource="search/cms-module-search.xml" />
+	<import resource="stat/cms-module-stat.xml" />
+	<import resource="tpl/cms-module-tpl.xml" />
+	<import resource="tpltag/cms-module-tpltag.xml" />
+	<import resource="vfs/cms-module-vfs.xml" />
+	<import resource="editor/cms-module-editor.xml" />
+	<import resource="data/cms-module-data.xml" />
+	<import resource="comment/cms-module-comment.xml" />
+	<import resource="survey/cms-module-survey.xml" />
+	<import resource="log/cms-module-log.xml" />
+	<import resource="keywords/cms-module-keywords.xml" />
+	<!-- 
+		
+	 -->
+</beans>

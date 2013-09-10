@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>模板管理(编辑)-${targetFile}</title>
+<base  href="${baseUrl}"/>
+<link type="text/css" rel="StyleSheet" href="html/plugin/cms/base/css/style.css" />
+<script type="text/javascript" src="html/common/js/prototype.js"></script>
+<script type="text/javascript">
+/**
+var ie55 = /MSIE ((5\.[56789])|([6789]))/.test( navigator.userAgent ) &&
+			navigator.platform == "Win32";
+
+if ( !ie55 ) {
+	window.onerror = function () {
+		return true;
+	};
+}
+
+function writeNotSupported() {
+	if ( !ie55 ) {
+		document.write( "<p class=\"warning\">" +
+			"This script only works in Internet Explorer 5.5" +
+			" or greater for Windows</p>" );
+	}
+}
+**/
+</script>
+
+<style type="text/css">
+<!--
+.cmsButton {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	background-color: #F1F1F1;
+	border: 1px solid #999;
+}
+-->
+</style>
+
+<script language="JavaScript">
+var NodeID = '${nodeId}';
+var PATH = '${path}';
+var targetFile = '${targetFile}';
+var o = '${mode}';
+
+function init()
+{
+	if(o == 'add' && document.FM.content.value=='') {
+		tabClick(0);
+		document.FM.content.focus();
+	}
+	//@todo,it will implement the wyswyg
+	/**var oFCKeditor = new FCKeditor( 'content' ) ;
+	oFCKeditor.BasePath	= '${baseUrl}html/fckeditor/';
+	oFCKeditor.Height="450";
+	oFCKeditor.EditMode=1;
+	//alert(oFCKeditor.BasePath);
+	oFCKeditor.Config['FullPage'] = true ;
+	oFCKeditor.ReplaceTextarea() ;
+	//FCK.SwitchEditMode();**/
+	setEditorTDSize();
+}
+window.onload = init;
+function setEditorTDSize(){
+	//
+	var height=getWindowHeight();
+	//alert(height);
+	var el=$("EditorTD");
+	el.style.height=height-10;
+}
+function getWindowHeight() {
+	if (window.self && self.innerHeight) {
+		return self.innerHeight;
+	}
+	if (document.documentElement && document.documentElement.clientHeight) {
+	
+		return document.documentElement.clientHeight;
+	}
+	return 0;
+}
+function FCKeditor_OnComplete(editorInstance) {
+	//window.status = editorInstance.Description;
+	editorInstance.Commands.GetCommand("FitWindow").Execute();
+}
+</script>
+<style type=text/css>
+TD {
+	FONT-SIZE: 12px;
+	COLOR: #000000;
+	FONT-FAMILY: "MS Shell Dlg"
+}
+
+.tab {
+	PADDING-RIGHT: 5px;
+	PADDING-LEFT: 5px;
+	FONT-SIZE: 12px;
+	PADDING-BOTTOM: 1px;
+	CURSOR: hand;
+	PADDING-TOP: 5px;
+	LETTER-SPACING: 1px
+}
+</style>
+</head>
+<body onresize="setEditorTDSize();" style="margin: 0pt; padding: 0pt; border: 1px buttonhighlight;"  >
+
+
+<script language=JavaScript>
+
+function tabClick(idx)
+{
+	if(idx==1||idx==2){
+		alert('此功能正在开发中!');
+		return;
+	}
+	for (i = 0; i < 3; i++) {
+		
+
+		if (i == idx) {
+
+			var tabImgLeft = eval("document.all.tabImgLeft__" + idx);
+
+			var tabImgRight = eval("document.all.tabImgRight__" + idx);
+
+			var tabLabel = eval("document.all.tabLabel__" + idx);
+
+			var tabContent = eval("document.all.tabContent__" + idx);
+
+
+			tabImgLeft.src = "html/common/mpc/tab_active_left.gif";
+
+			tabImgRight.src = "html/common/mpc/tab_active_right.gif";
+
+			tabLabel.background = "html/common/mpc/tab_active_bg.gif";
+
+			tabContent.style.visibility = "visible";
+
+			tabContent.style.display = "block";
+
+		}
+  else {
+			var tabImgLeft = eval("document.all.tabImgLeft__" + i);
+
+			var tabImgRight = eval("document.all.tabImgRight__" + i);
+
+			var tabLabel = eval("document.all.tabLabel__" + i);
+
+			var tabContent = eval("document.all.tabContent__" + i);
+
+
+			tabImgLeft.src = "html/common/mpc/tab_unactive_left.gif";
+
+			tabImgRight.src = "html/common/mpc/tab_unactive_right.gif";
+
+			tabLabel.background = "html/common/mpc/mpc/tab_unactive_bg.gif";
+
+			tabContent.style.visibility = "hidden";
+
+			tabContent.style.display = "none";
+
+
+		}
+
+	}
+
+
+}
+var isTextModeChanged = false;
+function prepareUpdateTmp()
+{
+	
+	if(isTextModeChanged) {
+		//dosubmit
+		document.updateTmp.updateContent.value = document.FM.content.value;
+		document.updateTmp.submit();
+
+	}
+
+}
+
+function prepareShowSrc()
+{
+	
+	if(isTextModeChanged) {
+		//dosubmit
+		document.previewContentForm.previewContent.value = document.FM.content.value;
+		document.previewContentForm.submit();
+
+	}
+
+}
+
+</script>
+
+<script type="text/javascript">
+//writeNotSupported();
+
+</script>
+
+<script language="javascript">
+// Coded by windy_sk <windy_sk@126.com> 20040205
+
+
+
+function show_ln(){
+	var txt_ln	 = document.getElementById('txt_ln');
+	var txt_main	 = document.getElementById('txt_main');
+	txt_ln.scrollTop = txt_main.scrollTop;
+	while(txt_ln.scrollTop != txt_main.scrollTop) {
+		txt_ln.value += (icount++) + '\n';
+		txt_ln.scrollTop = txt_main.scrollTop;
+	}
+	return;
+}
+
+
+function editTab(){
+	var code, sel, tmp, r;
+	event.returnValue = false;
+	sel =event.srcElement.document.selection.createRange();
+	r = event.srcElement.createTextRange();
+
+	switch (event.keyCode){
+		case (8)	:
+			if (!(sel.getClientRects().length > 1)){
+				event.returnValue = true;
+				return;
+			}
+			code = sel.text;
+			tmp = sel.duplicate();
+			tmp.moveToPoint(r.getBoundingClientRect().left, sel.getClientRects()[0].top);
+			if(sel.parentElement() != tmp.parentElement()) return;;
+			sel.setEndPoint('startToStart', tmp);
+			sel.text = sel.text.replace(/^\t/gm, '');
+			code = code.replace(/^\t/gm, '').replace(/\r\n/g, '\r');
+			r.findText(code);
+			r.select();
+			break;
+		case (9)	:
+			if (sel.getClientRects().length > 1){
+				code = sel.text;
+				tmp = sel.duplicate();
+				tmp.moveToPoint(r.getBoundingClientRect().left, sel.getClientRects()[0].top);
+				if(sel.parentElement() != tmp.parentElement()) return;
+				sel.setEndPoint('startToStart', tmp);
+				sel.text = '\t'+sel.text.replace(/\r\n/g, '\r\t');
+				code = code.replace(/\r\n/g, '\r\t');
+				r.findText(code);
+				r.select();
+			}else{
+				sel.text = '\t';
+				sel.select();
+			}
+			break
+		case (13)	:
+			tmp = sel.duplicate();
+			tmp.moveToPoint(r.getBoundingClientRect().left, sel.getClientRects()[0].top);
+			if(sel.parentElement() != tmp.parentElement()) return;
+			tmp.setEndPoint('endToEnd', sel);
+			sel.text = '\r\n' + tmp.text.replace(tmp.text.replace(/^[\t ]+/g, ""),"");
+			sel.select();
+			break;
+		default		:
+			event.returnValue = true;
+			break;
+	}
+	return;
+}
+
+
+function runcode() {
+	var str = document.getElementById("txt_main").value;
+	var code_win = window.open('about:blank');
+	code_win.document.open();
+	code_win.document.writeln("<script>");
+	code_win.document.writeln("function reportError(msg,url,line){\nline-=14;\nvar str='You have found an error as below: \\n\\n';\nstr+='Err: '+msg+' on line: '+(line);\nalert(str);\nopener.goto(line);\nopener.focus();\nwindow.onerror=null;\nsetTimeout('self.close()',10);\nreturn true;\n}");
+	code_win.document.writeln("window.onerror = reportError;");
+	code_win.document.writeln("<\/script>");
+	code_win.document.writeln(str);
+	code_win.document.close();
+	return;
+}
+
+
+function savecode() {
+	var str = document.getElementById("txt_main").value;
+	var code_win = window.open('about:blank','_blank','top=10000');
+	code_win.document.open();
+	code_win.document.writeln(str);
+	code_win.document.close();
+	code_win.document.execCommand('saveas','','code.html');
+	code_win.close();
+	return;
+}
+
+
+function goto(ln) {
+	if(!/^\d+$/.test(ln) || ln==0) return;
+	var obj = document.getElementById("txt_main");
+	var rng = obj.createTextRange();
+	var arr = obj.value.split(/\n/);
+	if(ln>arr.length) ln = arr.length;
+	var str_tmp = "";
+	for(var i=0; i<ln-1; i++) {
+		str_tmp += arr[i];
+	}
+	rng.moveStart('character',str_tmp.length);
+	str_tmp = "";
+	for(i=ln; i<arr.length; i++) {
+		str_tmp += arr[i];
+	}
+	rng.moveEnd('character',-str_tmp.length);
+	rng.select();
+	return;
+}
+function processTextChange(change){
+	if(change){
+	}
+}
+function insertMacro(title,content){
+	var rs=prompt(title,content);
+	if(rs!=null&&rs!=""){
+		FM.content.insertAdjacentText('afterBegin',rs);
+	}
+}
+</script>
+<script type="text/javascript" language="javascript">
+function previewTemplate(){
+	//alert('模版预览');
+	var targetPreview = showModalDialog("${baseUrl}admin/template.jhtml?action=PreviewSetting&nodeId=${nodeId?default("")}&indexId=${indexId?default("")}&publishId=${publishId?default("")}","previewSetting","dialogWidth:410px;dialogHeight:180px;help:0;status:0;scroll:no");
+	//var targetPreview = showModalDialog("${baseUrl}/admin/template.jhtml?action=PreviewSetting&nodeId=${nodeId?default("")}&indexId=${indexId?default("")}&publishId=${publishId?default("")}","previewSetting","dialogWidth:1024px;dialogHeight:768px;help:0;status:0;scroll:yes");
+	if(targetPreview!=null){
+		//alert(targetPreview);
+		var type=targetPreview["type"];
+		var value=targetPreview["targetId"];
+		//alert(type+","+value);
+		document.FM.action="${baseUrl}admin/template.jhtml?action=PreviewTpl";
+		document.FM.target="_blank";
+		//alert('what?');
+		if(type==0){
+			document.FM.nodeId.value=value;				
+		}else if(type==1){
+			document.FM.indexId.value=value;
+		}else if(type==2){
+			document.FM.publishId.value=value;
+		}
+		document.FM.type.value=type;
+		document.FM.submit();
+	}	
+}
+
+</script>
+<form action="${baseUrl}admin/template.jhtml?action=UpdateTmpSubmit&nodeId=${nodeId}&path=${path}&targetFile=${targetFile}" method="post" name="updateTmp" > 
+<input type="hidden" name="updateContent" />
+ </form>
+<form action="${baseUrl}admin/template.jhtml?action=PreviewSrc&nodeId=${nodeId}&path=${path}&targetFile=${targetFile}" method="post" name="previewContentForm" target="previewSrcFrame"> 
+<input type="hidden" name="previewContent" />
+ </form>
+
+
+<table cellspacing=0 cellpadding=0 width="100%"  align=center border=0 bgcolor="threedface">
+
+<tbody>
+  <tr>
+    <td></td></tr>
+  <tr>
+    <td bgcolor="menu"  >
+      <table cellspacing=0 cellpadding=0 width="100%" border=0>
+        <tbody>
+        <tr>
+          <td
+          style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px;"
+          valign=top class="bigborder" >
+<div id=tabContent__0 style="VISIBILITY: visible; BACKGROUND-COLOR: #9EBEF5">
+<form action="${baseUrl}admin/templateEdit.jhtml?action=EditSubmit" method="post" name="FM" >
+<table width="100%" height="100%" border=0   cellpadding=0 cellspacing=2 >
+<!--actionFrame-->
+<tr><td align="left" id="EditorTD"  valign="top" bgcolor="#9EBEF5" height="100%">
+<input type="hidden" name="path" value="${path}"/>
+<input type="hidden" name="targetFile" value="${targetFile}"/>
+<input type="hidden" name="mode" value="${mode}"/>
+<input type="hidden" name="nodeId" value="${nodeId?default('0')}"/>
+<input type="hidden" name="indexId" value="${indexId?default('0')}"/>
+<input type="hidden" name="publishId" value="${publishId?default('0')}"/>
+<input type="hidden" name="type" />
+<textarea id='content' name='content' onkeydown='editTab()'  style='display: none; height: 420; width =100%; background-color: #FFFFFF;' onchange="javascript:isTextModeChanged = true;" >${content?default('&nbsp;')?html}</textarea>
+<#--<iframe id="eWebEditor1" src="editor/cmseditor.html?id=content&style=cms_template&baseUrl=${baseUrl}" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>-->
+<@editor.editor instanceName="content" value="" height="100%" type="cms_tpl_fckeditor" toolbarSet="CMS"/>
+ </td>
+ </tr>
+</table>
+</form>
+</div>
+
+
+<div id=tabContent__1 style="DISPLAY: none; VISIBILITY: hidden">
+
+</div>
+<div id=tabContent__2 style="DISPLAY: none; VISIBILITY: hidden" >
+
+
+ </div>
+
+
+
+ </td>
+       </tr></tbody></table></td></tr>
+ </tbody></table>
+
+
+</body>
+</html>

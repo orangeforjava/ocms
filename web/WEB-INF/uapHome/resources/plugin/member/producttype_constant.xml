@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <products>
+    <product key="请选择">请选择产品</product>
+    <product key="护理仪器">护理用品--护理仪器</product>
+	<product key="睡眠保健用品"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--睡眠保健用品]]></product>
+    <product key="护理用品"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--护理用品]]></product>
+    <product key="减肥用品"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--减肥用品]]></product>
+    <product key="视力护理用品"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--视力护理用品]]></product>
+    <product key="家用血压计"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--家用血压计]]></product>
+    <product key="家用血糖仪"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--家用血糖仪]]></product>
+    <product key="血压调节用品"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--血压调节用品]]></product>
+    <product key="骨及关节康复用品"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--骨及关节康复用品]]></product>
+    <product key="电子脉冲治疗仪"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--电子脉冲治疗仪]]></product>
+    <product key="乳房护理"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--乳房护理]]></product>
+    <product key="气血循环机"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--气血循环机]]></product>
+    <product key="其他保健用品"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--其他保健用品]]></product>
+    <product key="免疫抗疲劳">保健食品--免疫抗疲劳</product>
+    <product key="调节血脂、血糖、血压"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--调节血脂、血糖、血压]]></product>
+	<product key="延缓衰老"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--延缓衰老]]></product>
+	<product key="改善记忆、睡眠"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--改善记忆、睡眠]]></product>
+	<product key="改善视力"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--改善视力]]></product>
+	<product key="改善胃肠"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--改善胃肠]]></product>
+	<product key="促进生长发育"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--促进生长发育]]></product>
+	<product key="补钙、补血"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--补钙、补血]]></product>
+	<product key="护肝、养肾"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--护肝、养肾]]></product>
+	<product key="美容、减肥"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--美容、减肥]]></product>
+	<product key="其他保健食品"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--其他保健食品]]></product>
+    <product key="保健茶">保健茶</product>
+	<product key="药酒、保健酒">药酒、保健酒</product>
+	<product key="功能饮料">功能饮料</product>
+	<product key="性保健品">性保健品</product>
+	<product key="医疗器械">医疗器械</product>
+  </products>
+</directory>

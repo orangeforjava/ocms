@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- created by Weiping Ju $Date: 2006/08/31 02:26:01 $-->
+<directory>
+	<object type="1" name="user" key="org.openuap.user" title="用户/权限管理">
+		<permission key="1" name="viewUser">查看用户</permission>
+		<permission key="2" name="addUser">添加用户</permission>
+		<permission key="3" name="editUser">编辑用户</permission>
+		<permission key="4" name="deleteUser">删除用户</permission>
+		<permission key="5" name="viewRole">查看权限组</permission>
+		<permission key="6" name="addRole">添加权限组</permission>
+		<permission key="7" name="editRole">编辑权限组</permission>
+		<permission key="8" name="deleteRole">删除权限组</permission>
+		<permission key="9" name="viewUsePermission">查看用户权限</permission>
+		<permission key="10" name="editUserPermission">编辑用户权限</permission>
+		<permission key="11" name="viewRolePermission">查看权限组权限</permission>
+		<permission key="12" name="editRolePermission">编辑角色权限</permission>
+		<permission key="13" name="viewMember">查看会员</permission>
+		<permission key="14" name="addMember">添加会员</permission>
+		<permission key="15" name="editMember">编辑会员</permission>
+		<permission key="16" name="deleteMember">删除会员</permission>
+		<permission key="17" name="auditMember">审核会员</permission>
+		<permission key="18" name="changeMemberRank">改变会员等级</permission>
+	    <permission key="19" name="viewUserRole">查看用户所属权限组</permission>
+	    <permission key="20" name="viewRoleUser">查看权限组包含用户</permission>
+		<permission key="21" name="addUserToRole">添加用户角色</permission>
+		<permission key="22" name="addRoleToUser">添加角色用户</permission>
+		<permission key="23" name="removeUserFromRole">删除角色用户</permission>
+		<permission key="24" name="removeRoleFromUser">删除用户角色</permission>
+	</object>
+</directory>
+

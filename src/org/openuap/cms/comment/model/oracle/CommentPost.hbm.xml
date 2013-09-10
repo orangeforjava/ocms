@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: CommentPost.hbm.xml 3950 2010-11-02 09:10:01Z orangeforjava $
+	评论跟帖定义！
+-->
+<hibernate-mapping package="org.openuap.cms.comment.model">
+	<class name="CommentPost" table="comment_post">
+		<id name="id" type="long" unsaved-value="0">
+			<column name="id" />
+			<generator class="sequence">
+				<param name="sequence">comment_post_seq</param>
+			</generator>
+		</id>
+		<property name="rootId" type="long">
+			<column name="rootId" />
+		</property>
+		<property name="parentId" type="long">
+			<column name="parentId" />
+		</property>
+		<property name="objectId" type="string">
+			<column name="objectId" not-null="false" />
+		</property>
+		<property name="objectType" type="string">
+			<column name="objectType" not-null="false" />
+		</property>
+		<property name="catalogId" type="long">
+			<column name="catalogId" not-null="false" />
+		</property>
+		<property name="creationDate" type="long">
+			<column name="creationDate" not-null="true" />
+		</property>
+		<property name="lastModifyDate" type="long">
+			<column name="lastModifyDate" />
+		</property>
+		<property name="userId" type="long">
+			<column name="userId" />
+		</property>
+		<property name="userName" type="string">
+			<column name="userName" length="100" />
+		</property>
+		<property name="title" type="string">
+			<column name="title" length="200" />
+		</property>
+		<property name="content" type="text">
+			<column name="content" />
+		</property>
+		<property name="ip" type="string">
+			<column name="ip" length="15" />
+		</property>
+		<property name="realIp" type="string">
+			<column name="realIp" length="15" />
+		</property>
+		<property name="agreeCount" type="integer">
+			<column name="agreeCount" length="11" />
+		</property>
+		<property name="opposeCount" type="integer">
+			<column name="opposeCount" length="11" />
+		</property>
+		<property name="hiddenIpStatus" type="integer">
+			<column name="hiddenIpStatus" length="4" not-null="true" default="0"/>
+		</property>
+		<property name="status" type="integer">
+			<column name="status" length="11" />
+		</property>
+		
+	</class>
+</hibernate-mapping>

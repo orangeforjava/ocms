@@ -1,0 +1,296 @@
+
+<#assign allCount=dynamicContentManager.getNodeAllContentCount(node.nodeId) />
+<#assign pCount=dynamicContentManager.getNodeAllPublishContentCount(node.nodeId) />
+<#assign actionTitle="${node.name}<font id=description>[<B>${node.nodeId?c}</B>]</font>(<span class=pS>${pCount?c}</span>/<span class=aS>${allCount?c}</span>)" />
+<#assign _TITLE_="内容发布管理" />
+<#assign actions=[
+{"action":"ContentList2","title":"发布管理","url":"${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}","class":"view"},
+{"action":"","title":"添加内容","url":"javaScript:site_doing('newdoc','${node.nodeId?c}');","class":"add"}
+{"action":"","title":"附加发布","url":"${baseUrl}admin/extrapublish.jhtml?action=List&nodeId=${node.nodeId?c}","class":"view"}
+{"action":"","title":"资源管理","url":"${baseUrl}admin/resource.jhtml?action=ListResource&nodeId=${node.nodeId?c}","class":"view"}
+{"action":"","title":"站点设置","url":"${baseUrl}admin/nodeEdit.jhtml?mode=edit&nodeId=${node.nodeId?c}","class":"view"}
+{"action":"","title":"回收站","url":"${baseUrl}admin/publish.jhtml?action=RecycleContentList&nodeId=${node.nodeId?c}","class":"view"}
+
+]>
+<#include "/plugin/cms/base/includes/pagehead.html">
+
+<#import "/plugin/cms/base/macros/pager-macros.html" as mypager />
+<#import "/plugin/cms/base/macros/tabler-macros.html" as tabler />
+
+<script src="html/common/window/js/prototype.js" type="text/javascript"></script>
+<script src="html/common/window/js/effects.js" type="text/javascript"></script>
+<script src="html/common/window/js/window.js" type="text/javascript"></script>
+<link href="html/common/window/themes/window/window.css" rel="stylesheet" type="text/css"/>
+<link href="html/common/window/themes/window/vista.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript">
+var win;
+CSS.preloadImages();
+function openFullWindow(url,caption,w,h,rzable,dable) {
+     
+        win=new UI.URLWindow({
+		resizable:true,
+		draggable:true,
+        width: w||800, 
+        height: h||600,
+        theme: "vista",
+		shadow: true, 
+		shadowTheme: "drop_shadow", 
+        url: url});
+        UI.defaultWM.options.blurredWindowsDontReceiveEvents = true;
+        win.setHeader(caption);
+        win.center({auto:false});
+		win.maximize();
+        win.show().focus();
+ }
+ function openWindow(url,caption,w,h) {
+			        
+			        win=new UI.URLWindow({
+					resizable:false,
+					draggable:false,
+			        width: w||800, 
+			        height: h||600,
+			        theme: "vista",
+					shadow: true, 
+					shadowTheme: "drop_shadow", 
+			        url: url});
+			        UI.defaultWM.options.blurredWindowsDontReceiveEvents = true;
+			        win.setHeader(caption);
+			        win.center({auto:true});
+			        win.show(true).focus();
+}
+function site_edit(nid){
+	var url="${baseUrl}admin/nodeEdit.jhtml?mode=edit&nodeId="+nid;
+	//openFullWindow(url,"站点设置");
+	
+}
+function content_edit(iid){
+	var url="${baseUrl}admin/publishEdit.jhtml?action=ContentEditorFrameset&mode=edit&nodeId="+NodeID  + "&indexId=" + iid;
+	openFullWindow(url,"内容编辑");
+}
+</script>
+<script type="text/javaScript">
+
+var globalAction;
+var globalNodeID;
+function callBack(rs){
+	//
+	switch(globalAction){
+		case 'refresh':
+		{
+			refreshNode(rs);
+			break;
+		}
+		case 'site_publish':
+		{
+			publishNode(rs);
+			break;
+		}
+		case "site_unpublish":
+		{
+			unpublishNode(rs);
+			break;
+		}
+		case "site_migration":
+		{
+			migrationNodeData(rs);
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
+}
+</script>
+<!---->
+<link href="html/common/menu/skins/officexp/officexp.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="html/common/menu/poslib.js"></script>
+<script type="text/javascript" src="html/common/menu/scrollbutton.js"></script>
+<script type="text/javascript" src="html/common/menu/menu4.js"></script>
+
+<link rel="stylesheet" type="text/css" media="all" href="/html/common/cal/calendar-blue2.css" title="system" />
+<script type="text/javascript" src="/html/common/cal/calendar.js"></script>
+<script type="text/javascript" src="/html/common/cal/calendar-zh.js"></script>
+<script type="text/javascript" src="/html/common/cal/calendar-setup.js"></script>
+
+<script type="text/javascript" src="html/common/tree/xtree.js"></script>
+<script type="text/javascript" src="html/common/tree/xmlextras.js"></script>
+<script type="text/javascript" src="html/common/tree/xloadtree.js"></script>
+
+
+<style>
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 10pt;
+	width: 300;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.subtitleholder {
+	font-family: ms sans serif, arial;
+	font-size: 10pt;
+
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.timeholder {
+	font-family: ms sans serif, arial;
+	font-size: 10pt;
+	width: 90;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.table_plan_td1 {
+	background-color: #FDEEB9
+}
+.pS{
+	color:#00FF00;
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+}
+.aS{
+	font-family: ms sans serif, arial;
+	color:#0000FF;
+	font-size: 8pt;
+}
+</style>
+<script type="text/javascript" src="html/plugin/cms/base/js/common.js"></script>
+<script type="text/javascript" src="html/plugin/cms/base/js/table.js"></script>
+<!-- <script type="text/javascript" src="html/plugin/cms/base/js/publish.js?v=2008060302"></script> -->
+<script type="text/javascript">
+<#include "../publish.js">
+</script>
+<SCRIPT>
+
+var NodeID = '${node.nodeId?c}';
+var TableID = '${node.tableId}';
+var baseUrl='${baseUrl}';
+
+</script>
+<#if rootNodes.size() gt 0>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"  class="maintable" >
+  
+   <tr class="table_td2" height=25>
+	  <td BGCOLOR='#D9E4F0' title="点击右侧+展开"><B>子结点内容发布管理</B>(点击右侧"+"展开)
+	  <a href="javaScript:void(0);" onclick="collapse_change('childnode')">
+		<img id="menuimg_childnode" src="html/plugin/cms/base/images/menu_add.gif" border="0" style="float: right; margin-top: -12px; margin-right: 8px;" /></a>
+	  </td>     
+  </tr>
+  <!--start-->
+  <tbody id="menu_childnode" style="display: none">
+  <tr class="table_td2" >
+    <td nowrap>
+  		<script type="text/javascript">
+//XP Look
+webFXTreeConfig.rootIcon		= "html/common/tree/images/xp/folder_p_closed.gif";
+webFXTreeConfig.openRootIcon	= "html/common/tree/images/xp/folder_p_out.gif";
+webFXTreeConfig.folderIcon		= "html/common/tree/images/xp/folder_p_closed.gif";
+webFXTreeConfig.openFolderIcon	= "html/common/tree/images/xp/folder_p_out.gif";
+webFXTreeConfig.fileIcon		= "html/common/tree/images/xp/folder_p_closed.gif";
+webFXTreeConfig.lMinusIcon		= "html/common/tree/images/xp/Lminus.png";
+webFXTreeConfig.lPlusIcon		= "html/common/tree/images/xp/Lplus.png";
+webFXTreeConfig.tMinusIcon		= "html/common/tree/images/xp/Tminus.png";
+webFXTreeConfig.tPlusIcon		= "html/common/tree/images/xp/Tplus.png";
+webFXTreeConfig.iIcon			= "html/common/tree/images/xp/I.png";
+webFXTreeConfig.lIcon			= "html/common/tree/images/xp/L.png";
+webFXTreeConfig.tIcon			= "html/common/tree/images/xp/T.png";
+webFXTreeConfig.blankIcon		= "html/common/tree/images/blank.png";
+//
+WebFXTree.prototype.toString = function() {
+	var str = "" +
+		"<div id=\"" + this.id + "-cont\" class=\"webfx-tree-container\" style=\"display: " + ((this.open)?'block':'none') + ";\">";
+	var sb = [];
+	for (var i = 0; i < this.childNodes.length; i++) {
+		sb[i] = this.childNodes[i].toString(i, this.childNodes.length);
+	}
+	this.rendered = true;
+	return str + sb.join("") + "</div>";
+};
+//
+WebFXTreeItem.prototype.toString = function (nItem, nItemCount) {
+	var foo = this.parentNode;
+	var indent = '';
+	if (nItem + 1 == nItemCount) { this.parentNode._last = true; }
+	var i = 0;
+	while (foo.parentNode) {
+		foo = foo.parentNode;
+		indent = "<img id=\"" + this.id + "-indent-" + i + "\" src=\"" + ((foo._last)?webFXTreeConfig.blankIcon:webFXTreeConfig.iIcon) + "\">" + indent;
+		i++;
+	}
+	this._level = i;
+	if (this.childNodes.length) { this.folder = 1; }
+	else { this.open = false; }
+	if ((this.folder) || (webFXTreeHandler.behavior != 'classic')) {
+		if (!this.icon) { this.icon = webFXTreeConfig.folderIcon; }
+		if (!this.openIcon) { this.openIcon = webFXTreeConfig.openFolderIcon; }
+	}
+	else if (!this.icon) { this.icon = webFXTreeConfig.fileIcon; }
+	//var label = this.text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	label = this.text;
+	var str = "<div id=\"" + this.id + "\" ondblclick=\"webFXTreeHandler.toggle(this);\" class=\"webfx-tree-item\" onkeydown=\"return webFXTreeHandler.keydown(this, event)\"" +
+		" onmouseover='this.style.backgroundColor=\"#C0C0C0\"' "+
+		" onmouseout='this.style.backgroundColor=\"#FFFFFF\"' "+
+		">"+
+		indent +
+		"<img id=\"" + this.id + "-plus\" src=\"" + ((this.folder)?((this.open)?((this.parentNode._last)?webFXTreeConfig.lMinusIcon:webFXTreeConfig.tMinusIcon):((this.parentNode._last)?webFXTreeConfig.lPlusIcon:webFXTreeConfig.tPlusIcon)):((this.parentNode._last)?webFXTreeConfig.lIcon:webFXTreeConfig.tIcon)) + "\" onclick=\"webFXTreeHandler.toggle(this);\">" +
+		"<img id=\"" + this.id + "-icon\" class=\"webfx-tree-icon\" src=\"" + ((webFXTreeHandler.behavior == 'classic' && this.open)?this.openIcon:this.icon) + "\" onclick=\"webFXTreeHandler.select(this);\">" +
+		"<a href=\"" + this.action + "\" id=\"" + this.id + "-anchor\" onfocus=\"webFXTreeHandler.focus(this);\" onblur=\"webFXTreeHandler.blur(this);\"" +
+		(this.target ? " target=\"" + this.target + "\"" : "") +
+		" oncontextmenu=\"rightMenu('" + this.cId + "', '" + this.extra + "');return false;\">" + label + "</a>"+
+		"&nbsp;-"+
+		"[<a href=\"javascript:site_doing('view_index','"+this.cId+"')\">查看首页</a>]&nbsp;"+
+		"[<a href=\"javascript:site_doing('refresh_index',''\">刷新首页</a>]&nbsp;"+
+		"[<a href=\"javascript:site_doing('newdoc','"+this.cId+"')\">新建内容</a>]&nbsp;"+
+      	"[<a href=\"javascript:site_doing('refresh','"+this.cId+"')\">更新结点</a>]&nbsp;"+
+      	"[<a href=\"javascript:site_doing('site_publish','"+this.cId+"')\">发布结点</a>]&nbsp;"+
+      	"[<a href=\"javascript:site_doing('site_unpublish','"+this.cId+"')\">取消发布结点</a>]&nbsp;"+
+      	"[<a href=\"javascript:site_doing('site_republish','"+this.cId+"')\">重新发布结点</a>]&nbsp;"+
+		"</div>" +
+		"<div id=\"" + this.id + "-cont\" class=\"webfx-tree-container\" style=\"display: " + ((this.open)?'block':'none') + ";\">";
+	var sb = [];
+	for (var i = 0; i < this.childNodes.length; i++) {
+		sb[i] = this.childNodes[i].toString(i,this.childNodes.length);
+	}
+	this.plusIcon = ((this.parentNode._last)?webFXTreeConfig.lPlusIcon:webFXTreeConfig.tPlusIcon);
+	this.minusIcon = ((this.parentNode._last)?webFXTreeConfig.lMinusIcon:webFXTreeConfig.tMinusIcon);
+	return str + sb.join("") + "</div>";
+}
+
+var tree = new WebFXTree("站点根");
+	<#list rootNodes as node>
+	<#assign allCount=dynamicContentManager.getNodeAllContentCount(node.nodeId) />
+	<#assign pCount=dynamicContentManager.getNodeAllPublishContentCount(node.nodeId) />
+	
+	<#if nodeManager.getChildNodesCount(node.nodeId)==0>
+	tree.add(new WebFXTreeItem("${node.name}[${node.nodeId?c}](<span class=pS>${pCount?c}</span>/<span class=aS>${allCount?c}</span>)","${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}&type=main", "main", "${node.nodeId?c}"));
+	<#else>
+	tree.add(new WebFXLoadTreeItem("${node.name}[${node.nodeId?c}](<span class=pS>${pCount?c}</span>/<span class=aS>${allCount?c}</span>)", "${baseUrl}admin/publish.jhtml?action=PublishXml&nodeId=${node.nodeId?c}", "${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}&type=main", "main", "${node.nodeId?c}"));
+	</#if>
+	</#list>
+//
+document.write(tree);
+</script>
+  	</td>  	
+  </tr>
+  <!--end-->	
+  </tbody>
+</table>
+</#if>
+
+<table border="0" align="center" cellpadding="0" cellspacing="0"  width="100%" style="border-bottom:solid #c9c9c9 1px">
+
+<tr height=40>
+	<td nowrap valign="middle" width="100%">
+	外部内容模型无内容列表.
+	</td>
+</tr>
+</table>
+
+<#include "/plugin/cms/base/includes/footer.html">

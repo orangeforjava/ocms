@@ -1,0 +1,88 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<title>publish operation result</title>
+		<base href="${baseUrl}" />
+		<link type="text/css" rel="StyleSheet"
+			href="html/plugin/cms/workbench/images/style.css" />
+		[#if rs=="success"]
+			[#if op=="edit"||op=="add"]
+			<meta http-equiv="refresh"
+				content="2;url='${baseUrl}admin/contentEdit.jhtml?tableId=${cid}'">
+			[#else]
+			<meta http-equiv="refresh"
+				content="2;url='${baseUrl}admin/content.jhtml'">
+			[/#if]
+		[/#if]
+	</head>
+	<body>
+		<br>
+		<br>
+		<div align=center>
+			<table width="100%" height="100%" border="0" cellpadding="20"
+				cellspacing="0">
+				<tr>
+				<td align="center" valign="top">
+					<table width="50%" height="100" border="0" cellpadding="4"
+						cellspacing="1" class="table_border">
+						<tr class="table_td2">
+							<td>
+								[#if op=="edit"] 
+									[#if rs=="success"]
+										编辑内容模型成功 
+									[#else]
+									编辑内容模型失败，原因为:${msgs?default("")} 
+									[/#if]
+								[#elseif op=="add"]
+									[#if rs=="success"]
+										添加内容模型成功 
+									[#else]
+										添加内容模型失败，原因为:<br/>${msgs?default("")}
+									[/#if]
+								[#elseif op="updateSchemaBatch"]
+									[#if rs=="success"]
+										批量更新内容模型表定义成功. 
+									[#else]
+										批量更新内容模型表定义失败，原因为:${msgs?default("")} 
+									[/#if]
+								[#elseif op="updateSchema"]
+									[#if rs=="success"] 
+										更新内容模型表定义成功. 
+									[#else]
+										更新内容模型表定义失败，原因为:${msgs?default("")} 
+									[/#if]
+								[#elseif op="SetIndexPropBatch"]
+									[#if rs=="success"]
+										批量更新内容模型索引定义成功. 
+									[#else]
+										批量更新内容模型索引定义失败，原因为:${msgs?default("")} 
+									[/#if]
+								[#elseif op="SetIndexProp"]
+									[#if rs=="success"]
+										更新内容模型索引定义成功. 
+									[#else]
+										更新内容模型索引定义失败，原因为:${msgs?default("")} 
+									[/#if]							
+								[/#if]
+								<br/>
+								<br/>
+								[#if rs=="success"]
+									[#if op=="edit"|| op=="add"]
+									<a href="${baseUrl}admin/contentEdit.jhtml?tableId=${cid}">如果您的浏览器没有自动跳转，请点击这里</a>
+									<br />
+									[#else]
+									<a href="${baseUrl}admin/content.jhtml">如果您的浏览器没有自动跳转，请点击这里</a>
+									<br />
+									[/#if]
+								[/#if]
+							</td>
+						</tr>
+					</table>
+				</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

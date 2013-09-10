@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <sdinfotypes>
+    <sdinfotype key="请选择">请选择信息类型</sdinfotype>
+    <sdinfotype key="供应">供应</sdinfotype>
+	<sdinfotype key="采购">采购</sdinfotype>
+	<sdinfotype key="合作">合作</sdinfotype>
+	<sdinfotype key="代理">代理</sdinfotype>
+  </sdinfotypes>
+</directory>

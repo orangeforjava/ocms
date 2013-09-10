@@ -1,0 +1,274 @@
+<#assign noLayout="true"/>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>publish tree</title>
+<base  href="${baseUrl}"/>
+<script type="text/javascript" src="html/common/js/jquery-1.4.3.min.js"></script>
+<script type="text/javascript" src="html/common/contextmenu/jquery.contextmenu.js"></script>
+<link rel="stylesheet" type="text/css" href="html/common/contextmenu/css/jquery.contextmenu.css" media="all">
+
+
+<link type="text/css" rel="stylesheet" href="html/common/tree/xtree.css" />
+<script type="text/javascript" src="html/common/tree/xtree.js"></script>
+<script type="text/javascript" src="html/common/tree/xmlextras.js"></script>
+<script type="text/javascript" src="html/common/tree/xloadtree.js"></script>
+<link href="html/plugin/cms/workbench3/img/base.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+
+body {
+	background:	white;
+	color:		black;
+}
+.pS{
+	color:#FF0000;
+}
+.aS{
+	color:#0000FF;
+}
+</style>
+<SCRIPT language="JavaScript" type="text/javaScript">
+var elo;
+var loadmenuok=false;
+var type = 'main';
+var ua = '' + navigator.userAgent;
+//
+var addheight=0;
+if(ua.indexOf('Windows XP')!=-1||ua.indexOf('Windows NT')!=-1){
+	if(ua.indexOf('MSIE 6')!=-1||ua.indexOf('MSIE 7')!=-1){
+		addheight=20;
+		//alert(addheight);
+	}
+}
+
+
+
+function going(action, NodeID) {
+	switch(action) {
+		case 'newdoc':
+			var leftPos = (screen.availWidth-800) / 2
+			var topPos = (screen.availHeight-600) / 2
+			window.open('${baseUrl}admin/publish.jhtml?type=main&action=ContentEditorFrameset&mode=add&nodeId='+NodeID,'','width=800,height=600,scrollbars=no,resizable=no,titlebar=0,top=' + topPos + ',left=' + leftPos);
+
+			break;
+		case 'tpl':
+			//top.panelWork.location = 'admin_tpl.php?op=sId::' + sId +';o::list;NodeID::' + NodeID;
+
+			break;
+		case 'site':
+			parent.main.location = '${baseUrl}admin/nodeEdit.jhtml?mode=edit&nodeId=' + NodeID;
+
+			break;
+		case 'publish':
+			break;
+
+		case 'refresh':
+		{
+			var arr = showModalDialog("${baseUrl}admin/publish.jhtml?action=RefreshSettingDialog&nodeId="+ NodeID,"color","dialogWidth:300px;dialogHeight:"+(280+addheight)+"px;help:0;status:0;scroll:no");
+
+			if(arr['content_num'] != null && arr['content_num'] != '') {
+			
+			var url='${baseUrl}admin/publish.jhtml?action=RefreshNode&nodeId=' + NodeID + '&refreshIndex=' + arr['refresh_index'] + '&refreshContent=' + arr['refresh_content'] + '&refreshExtra=' + arr['refresh_extra'] + '&includeSub=' + arr['include_sub'] + '&contentNum=' + arr['content_num'];
+			$.post(url,function(transport) {
+					var returnValue=transport;
+					if(returnValue!=null&&returnValue!="-1"){
+						alert('恭喜，成功开始结点更新任务！');
+					}else{
+						alert('对不起，无法开始结点更新任务！');
+					}
+				}
+			);
+			}
+			break;
+		}
+		case 'site_publish':
+		{
+			var arr = showModalDialog("${baseUrl}admin/publish.jhtml?action=PublishSettingDialog&nodeId="+ NodeID,"color","dialogWidth:300px;dialogHeight:"+(160+addheight)+"px;help:0;status:0;scroll:no");
+			//alert(arr);
+			if(arr['content_num'] != null && arr['content_num'] != '') {
+				var url='${baseUrl}admin/publish.jhtml?action=PublishNode&nodeId='+ NodeID + '&includeSub=' + arr['include_sub'] + '&contentNum=' + arr['content_num'];
+				$.post(url,function(transport) {
+					var returnValue=transport;
+					if(returnValue!=null&&returnValue!="-1"){
+						alert('恭喜，成功开始结点发布任务！');
+					}else{
+						alert('对不起，无法开始结点发布任务！');
+					}
+				}
+				);
+
+			}
+			break;
+		}
+		case 'refresh_index':
+		{
+		    var url='${baseUrl}admin/publish.jhtml?action=RefreshNodeIndex&nodeId=' + NodeID;
+		    $.post(url,function(transport) {
+					var returnValue=transport;
+					if(returnValue!=null&&returnValue!="-1"){
+						alert('恭喜，成功开始刷新首页任务！');
+					}else{
+						alert('对不起，无法开始刷新首页任务！');
+					}
+				}
+			);			
+			break;
+		}
+		case 'site_unpublish':
+		{
+			var arr = showModalDialog("${baseUrl}/admin/publish.jhtml?action=UnPublishSettingDialog&nodeId="+ NodeID,"color","dialogWidth:300px;dialogHeight:"+(160+addheight)+"px;help:0;status:0;scroll:no");
+			//alert(arr);
+			if(arr['content_num'] != null && arr['content_num'] != '')             {
+				var url='${baseUrl}admin/publish.jhtml?action=UnPublishNode&nodeId=' + NodeID +  '&includeSub=' + arr['include_sub'] + '&contentNum=' + arr['content_num'];
+				$.post(url,function(transport) {
+						var returnValue=transport;
+						if(returnValue!=null&&returnValue!="-1"){
+							alert('恭喜，成功开始结点取消发布任务！');
+						}else{
+							alert('对不起，无法开始结点取消发布任务！');
+						}
+					}
+					);
+			  }
+			  break;
+
+		}
+		case 'site_republish':
+		{
+			var arr = showModalDialog("${baseUrl}admin/publish.jhtml?action=RePublishSettingDialog&nodeId="+ NodeID,"color","dialogWidth:300px;dialogHeight:"+(160+addheight)+"px;help:0;status:0;scroll:no");
+			//alert(arr);
+			if(arr['content_num'] != null && arr['content_num'] != '') 		            {
+
+				var url='${baseUrl}/admin/publish.jhtml?action=RePublishNode&nodeId=' + NodeID +  '&includeSub=' + arr['include_sub'] + '&contentNum=' + arr['content_num'];
+				$.post(url,function(transport) {
+						var returnValue=transport;
+						if(returnValue!=null&&returnValue!="-1"){
+							alert('恭喜，成功开始结点重新发布任务！');
+						}else{
+							alert('对不起，无法开始结点重新发布任务！');
+						}
+					}
+					);
+				
+			  }
+			  break;
+		}
+		
+		case 'view_index':
+		{
+			window.open("${baseUrl}admin/publish.jhtml?action=ViewIndex&nodeId=" +NodeID,'')
+			break;
+		}
+		case "edit_index_template":
+		{
+			var leftPos = (screen.availWidth-800) / 2
+			var topPos = (screen.availHeight-600) / 2
+			window.open('${baseUrl}admin/template.jhtml?action=NodeTplEdit&extra=index&mode=edit&nodeId=' + NodeID + '&indexId=0', '','width=800,height=600,scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+			break;
+		}
+		case "edit_content_template":
+		{
+			var IndexID = prompt('输入IndexID（可选）', '');
+			var leftPos = (screen.availWidth-800) / 2
+			var topPos = (screen.availHeight-600) / 2
+			var popupWin = window.open('${baseUrl}admin/template.jhtml?action=NodeTplEdit&extra=content&mode=edit&nodeId='+NodeID+'&indexId=' + IndexID, '','width=800,height=600,scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);			
+			break;
+		}
+		case "edit_img_template":
+		{
+			var leftPos = (screen.availWidth-800) / 2
+			var topPos = (screen.availHeight-600) / 2
+			var popupWin = window.open('${baseUrl}admin/template.jhtml?action=NodeTplEdit&extra=img&mode=edit&nodeId=' + NodeID + '&indexId=0', '','width=800,height=600,scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+			break;
+		}
+		
+ 	}
+}
+
+var cmenu;
+function rightMenu(evt,NodeID,extra) {
+	if(evt==null)evt=window.event;//IE
+	var event = $.event.fix(evt); 
+	if(cmenu){
+		cmenu.hide();
+	}
+	//alert(NodeID);
+	if(NodeID=='root'){
+		var menu = [
+				{'整站更新': function() {going("refresh","0")}},
+				{ '整站发布':function(){going("site_publish","0")} },
+				
+				
+				];
+
+		cmenu = $.contextMenu.create(menu,{theme:'vista'});
+		 	//alert('cmenu');
+		cmenu.show(this,evt);
+	}else{
+		var menu = [
+				{'查看首页': function() {going("view_index",NodeID)}},
+				{'刷新首页':function(){going("refresh_index",NodeID)} },
+				$.contextMenu.separator,
+				{'编辑首页模版':function(){going("edit_index_template",NodeID)}},
+				{'编辑内容页模版':function(){going("edit_content_template",NodeID)}},
+				{'编辑图片页模版':function(){going("edit_img_template",NodeID)}},
+				$.contextMenu.separator,
+				{'新建文档':function(){going("newdoc",NodeID)}},
+				$.contextMenu.separator,
+				{'结点更新':function(){going("refresh",NodeID)}},
+				{'结点发布':function(){going("site_publish",NodeID)}},
+				{'结点取消发布':function(){going("site_unpublish",NodeID)}},
+				{'结点重新发布':function(){going("site_republish",NodeID)}},
+				$.contextMenu.separator,
+				{'参数设置':function(){going("site",NodeID)}},
+				];
+
+		cmenu = $.contextMenu.create(menu,{theme:'vista'});
+		 	//alert('cmenu');
+		cmenu.show(this,event);
+	}
+	
+	evt.cancelBubble = true;
+  	evt.returnValue  = false;
+	return false;
+}
+</SCRIPT>
+</head>
+<body ondragstart="window.event.returnValue=false">
+<script type="text/javascript">
+
+/// XP Look
+webFXTreeConfig.rootIcon		= "html/common/tree/images/xp/folder_p_closed.gif";
+webFXTreeConfig.openRootIcon	= "html/common/tree/images/xp/folder_p_out.gif";
+webFXTreeConfig.folderIcon		= "html/common/tree/images/xp/folder_p_closed.gif";
+webFXTreeConfig.openFolderIcon	= "html/common/tree/images/xp/folder_p_out.gif";
+webFXTreeConfig.fileIcon		= "html/common/tree/images/xp/folder_p_closed.gif";
+webFXTreeConfig.lMinusIcon		= "html/common/tree/images/xp/Lminus.png";
+webFXTreeConfig.lPlusIcon		= "html/common/tree/images/xp/Lplus.png";
+webFXTreeConfig.tMinusIcon		= "html/common/tree/images/xp/Tminus.png";
+webFXTreeConfig.tPlusIcon		= "html/common/tree/images/xp/Tplus.png";
+webFXTreeConfig.iIcon			= "html/common/tree/images/xp/I.png";
+webFXTreeConfig.lIcon			= "html/common/tree/images/xp/L.png";
+webFXTreeConfig.tIcon			= "html/common/tree/images/xp/T.png";
+webFXTreeConfig.blankIcon		= "html/common/tree/images/blank.png";
+var rti;
+var tree = new WebFXTree("站点根");
+	<#list rootNodes as node>
+	<#assign allCount=dynamicContentManager.getNodeAllContentCount(node.nodeId) />
+	<#assign pCount=dynamicContentManager.getNodeAllPublishContentCount(node.nodeId) />
+	
+	<#if nodeManager.getChildNodesCount(node.nodeId)==0>
+	tree.add(new WebFXTreeItem("${node.name}[${node.nodeId?c}](<span class=pS>${pCount?c}</span>/<span class=aS>${allCount?c}</span>)","${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}&type=main", "main", "${node.nodeId?c}"));
+	<#else>
+	tree.add(new WebFXLoadTreeItem("${node.name}[${node.nodeId?c}](<span class=pS>${pCount?c}</span>/<span class=aS>${allCount?c}</span>)", "${baseUrl}admin/publish.jhtml?action=PublishXml&nodeId=${node.nodeId?c}", "${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}&type=main", "main", "${node.nodeId?c}"));
+	</#if>
+	</#list>
+//
+document.write(tree);
+</script>
+<div id="menudata"></div>
+</body>
+</html>

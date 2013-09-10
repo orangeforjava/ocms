@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 从业方式 -->
+<directory>
+  <props>
+    <prop key="0">--请选择--</prop>
+	<prop key="正式在编制">正式在编制</prop>
+	<prop key="聘用制">聘用制</prop>
+	<prop key="合同制">合同制</prop>
+	<prop key="生产实习">生产实习</prop>
+	<prop key="护理在校生">护理在校生</prop>
+  </props>
+</directory>

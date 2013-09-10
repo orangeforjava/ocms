@@ -1,0 +1,209 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>Exporter header</title>
+<base  href="${baseUrl}"/>
+<link rel='stylesheet' type='text/css' href='html/common/css/style.css' />
+<script type="text/javascript" src="${baseUrl}resource.jhtml?path=html/common/js/functions.js"></script>
+<BODY   style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px">
+
+<script language='JavaScript'>
+function refreshWorkArea()
+{
+ document.location =  document.location
+}
+var doImage = doImage;
+var TType = TType;
+var popupWin=null;
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	if (document.getElementById)
+		t = document.getElementById(idx);
+	else
+		t = document.all(idx);
+	if (t == null) return;
+	t.className=cls;
+}
+
+
+function popcalendar(id)
+{
+    var oElem = event.srcElement;
+    fieldname=id;
+
+
+     URL = '${baseUrl}html/common/cal/calendar.html';
+     opts ="width=210px,height=185px,top="+(event.clientY+170)+ ",left="+event.clientX ;
+
+     if (popupWin==null)
+       {popupWin=window.open( URL,"calendar", opts);}
+     if (popupWin.closed)
+       {popupWin=window.open( URL,"calendar", opts);}
+   else {
+  	 popupWin.close();
+  	 popupWin=window.open( URL,"calendar", opts);
+   }
+}
+</script>
+<SCRIPT>
+var elo;
+var loadmenuok=false;
+var type = 'main';
+var cId = '';
+var ua = '' + navigator.userAgent;
+//
+var addheight=0;
+if(ua.indexOf('Windows XP')!=-1||ua.indexOf('Windows NT')!=-1){
+	if(ua.indexOf('MSIE 6')!=-1||ua.indexOf('MSIE 7')!=-1){
+		addheight=20;
+		//alert(addheight);
+	}
+}
+function initrightmenu(){
+	loadmenuok = true;
+}
+
+
+
+function going(action, pId) {
+	switch(action) {
+		case 'viewpublish':
+			eval('var mPath = mPath_' + pId + '.href');
+			window.open(mPath,"","")
+
+			break;
+		default:
+			//
+
+	}
+	//
+}
+
+
+</SCRIPT>
+
+<SCRIPT language=JavaScript>
+<!--
+function gogo(url)
+{
+	top.panelWork.location = url;
+}
+
+function CheckAll(form)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall' && e.name !='copy')       e.checked = form.chkall.checked;
+   }
+  }
+
+//-->
+//
+function doing(action,param)
+{
+    switch(action){
+			
+			
+	}
+}
+
+
+
+function refreshWorkArea()
+{
+ parent.mainFrame.location =  parent.mainFrame.location
+}
+</script>
+<script>
+var mousemovecolor="#D4D4D4";
+var selectcolor ="#DDDDDD";
+var oldcolor;
+
+function GetRow(oElem)
+{
+	while (oElem)
+	{	//alert(oElem.tagName.toLowerCase())
+		if (oElem.tagName.toLowerCase() == "tr" || oElem.parentElement.tagName.toLowerCase() == "tbody")
+		    return oElem;
+		if (oElem.tagName.toLowerCase() == "table" || oElem.tagName.toLowerCase() == "th") return false;
+		oElem = oElem.parentElement;
+	}
+}
+
+
+function selected()
+{	//alert(pid)
+
+	var trstyle = GetRow( window.event.srcElement );
+	var a;
+	if( !trstyle )
+		return false;
+
+	if( trstyle.style.backgroundColor.toLowerCase() == selectcolor.toLowerCase())
+	{
+		trstyle.style.backgroundColor = "";
+		a=eval("p_"+ trstyle.id);
+		//alert(trstyle.id)
+		if (a!=null || a.checked)
+			a.checked=false
+		oldcolor = "";
+	}
+	else
+	{
+		trstyle.style.backgroundColor = selectcolor;
+		a=eval("p_"+ trstyle.id);
+		//alert(trstyle.id)
+		if (a!=null)
+			a.checked=true
+		oldcolor = selectcolor;
+
+
+	}
+}
+</script>
+<script language="javascript">
+lastDiv = null;
+function highLight(theDiv) {
+	if (lastDiv) {
+		lastDiv.style.border = 'solid 1px #F1F1F1';
+		lastDiv.style.background = '#F1F1F1';
+	}
+	//alert(theDiv);
+	lastDiv = theDiv;
+	theDiv.style.border = ' solid 1px #999';
+	theDiv.style.background = '#CCC';
+
+
+}
+
+</script>
+<div id="menudata"></div>
+<div id="msviLocalToolbar">
+  <table cellpadding="0" cellspacing="2" width="100%" height="19" border="0">
+    <tr>
+      <td class="lt0" style="cursor:default" id="tb_0" height="18" nowrap="nowrap"   >
+	  <font id=large>
+	  	  数据恢复管理</font>
+	  <font id=description><B></B></font></td>
+      <td></td>
+	  <td class="lt0" id="tb_1" nowrap="nowrap" onMouseOver="mhHover('msviLocalToolbar', 'tb_1', 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 'tb_1', 'lt0')" onClick="doing('list');highLight(this);">恢复信息列表</td>
+      <td><span class="ltsep">|</span></td>
+	  <td class="lt0" id="tb_4" nowrap="nowrap" onMouseOver="mhHover('msviLocalToolbar', 'tb_4', 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 'tb_4', 'lt0')" onClick="doing('setting');highLight(this);">恢复所有</td>
+     
+	   
+       
+      <td width="99%"></td>
+    </tr>
+  </table>
+</div>
+<script language="javascript">
+if (document.getElementById)
+		t = document.getElementById("tb_2");
+	else
+		t = document.all("tb_2");
+lastDiv = t;
+</script>
+</body>
+</html>

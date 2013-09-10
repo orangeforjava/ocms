@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<title>结点浏览</title>
+		<base href="${baseUrl}" />
+		<link rel='stylesheet' type='text/css'
+			href='html/plugin/cms/base/css/style.css' />
+		<script type="text/javascript" src="html/common/js/jquery-1.4.3.min.js"></script>
+		
+		<script language="javascript">
+
+	
+function setTargetNodeID(targetNodeID,targetNodeName)
+{   
+	<#if extra?default("")=="full">
+	document.form1.targetNodeID.value = targetNodeID+","+targetNodeName;
+	<#else>
+	document.form1.targetNodeID.value =targetNodeID;
+	</#if>
+	var url='${baseUrl}admin/node.jhtml?action=NavStr&nid='+targetNodeID;
+	//
+	$.get(url,function(rs){
+		if(rs){
+			$('#selTip').html(rs);
+		}
+	});
+	//alert(targetNodeID);
+}
+function ok()
+{
+	if(document.form1.targetNodeID.value == '') {
+		alert("请选择目标结点");
+		return false;
+	} else {
+		var rs=document.form1.targetNodeID.value;
+		try{
+		var parent = art.dialog.parent;
+		parent.callBack(rs);
+		art.dialog.close();
+		}catch(e){
+			try{
+			window.returnValue = document.form1.targetNodeID.value;
+			window.close();
+			}catch(e1){};
+		}
+		
+	}
+}
+function cancel(){
+	try{
+		art.dialog.close(); 
+		return false
+	}catch(e)
+	{
+		
+	}
+}
+</script>
+	</head>
+	<body>
+		<form name="form1" method="post" action="">
+		<input name="targetNodeID" type="hidden">
+		<table width="100%" border="0" cellspacing="5">
+			
+			<tr>
+				<td align="left" colspan="2">
+					选择目标结点<span style="color:green">					
+					<#if node??>
+					    上次选择：
+						<#list navNodes as nd>
+						${nd.name!''}
+						  <#if nd_index+1!=navNodes?size>
+						  &gt;&gt;
+						  </#if>
+						</#list>
+					</#if>
+					</span>
+				</td>
+			</tr>
+			<tr >
+				<td align="center" height="350" colspan="2">
+					<iframe name=workFrame frameborder=1 style="width: 98%; height: 98%"
+						src="${baseUrl}admin/node.jhtml?action=NodeSelect&extra=${extra?default('')}" >
+					</iframe>
+				</td>
+			</tr>
+			
+			<tr>
+				<td align=left >
+				当前选择：<span id="selTip" style="color:blue"></span>
+				</td>
+				<td align=right width="120">
+					<input type="button" name="Submit" value="确定"
+						onclick="return ok();">
+					&nbsp;&nbsp;
+					<input type="button" name="Submit2" value="取消"
+						onclick='return cancel();'>
+				</td>
+			</tr>
+			
+		</table>
+		</form>
+	</body>
+</html>

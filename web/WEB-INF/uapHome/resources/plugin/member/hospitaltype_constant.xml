@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <hospitaltypes>
+    <hospitaltype key="请选择">请选择医院性质</hospitaltype>
+    <hospitaltype key="综合医院">综合医院</hospitaltype>
+	<hospitaltype key="专科医院">专科医院</hospitaltype>
+	<hospitaltype key="中医医院">中医医院</hospitaltype>
+	<hospitaltype key="门诊">门诊</hospitaltype>
+  </hospitaltypes>
+</directory>

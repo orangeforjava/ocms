@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plugin PUBLIC "-//JPF//Java Plug-in Manifest 1.0" "http://jpf.sourceforge.net/plugin_1_0.dtd">
+<plugin id="org.openuap.cms" version="4.0.0"
+	class="org.openuap.cms.CmsPlugin">
+	<!-- 依赖性 声明 -->
+	<requires>
+		<import plugin-id="org.openuap.boot" exported="true" />		
+		<import plugin-id="org.openuap.tpl.engine" exported="true" />
+	</requires>
+	<!-- 运行时 类路径声明 -->
+	<runtime>
+		<library id="cms" path="classes/" type="code">
+			<export prefix="*" />
+		</library>
+		<library id="cms.templates" path="web/WEB-INF/templates/"
+			type="code">
+			<export prefix="*" />
+		</library>
+		<library id="cms.config" path="web/WEB-INF/config/"
+			type="code">
+			<export prefix="*" />
+		</library>
+		<!--<library id="cms.vfs.edtftpj" type="code"
+			path="web/WEB-INF/lib/edtftpj-pro.jar">
+		</library>-->
+	</runtime>
+	<!-- 基本扩展点声明 -->
+	<extension-point id="app-context" extension-multiplicity="any">
+		<parameter-def id="path" multiplicity="one" type="string"></parameter-def>
+		<parameter-def id="name" multiplicity="none-or-one"
+			type="string">
+		</parameter-def>
+	</extension-point>
+	<extension-point id="web-context" extension-multiplicity="any">
+		<parameter-def id="path" multiplicity="one" type="string"></parameter-def>
+		<parameter-def id="name" multiplicity="none-or-one"
+			type="string">
+		</parameter-def>
+	</extension-point>
+	<extension-point id="resource-deploy-file"
+		extension-multiplicity="any">
+		<parameter-def id="path" multiplicity="one" type="string"></parameter-def>
+		<parameter-def id="name" multiplicity="none-or-one"
+			type="string">
+		</parameter-def>
+	</extension-point>
+	<extension-point id="home-resource-deploy-file"
+		extension-multiplicity="any">
+		<parameter-def id="path" multiplicity="one" type="string"></parameter-def>
+		<parameter-def id="name" multiplicity="none-or-one"
+			type="string">
+		</parameter-def>
+	</extension-point>
+	<extension-point id="plugin-home-resource-deploy-file"
+		extension-multiplicity="any">
+		<parameter-def id="path" multiplicity="one" type="string"></parameter-def>
+		<parameter-def id="name" multiplicity="none-or-one"
+			type="string">
+		</parameter-def>
+	</extension-point>
+	<!-- 模板内容过滤器扩展点 -->
+	<extension-point id="freemarker.contentFilter"
+		extension-multiplicity="any">
+		<parameter-def id="bean" multiplicity="one" type="string"></parameter-def>
+	</extension-point>
+	<!-- 声明自定义结点扩展点 -->
+	<extension-point id="custom-node" extension-multiplicity="any">
+		<parameter-def id="beanName" multiplicity="one" type="string"></parameter-def>
+		<parameter-def id="iconPath" multiplicity="none-or-one"
+			type="string">
+		</parameter-def>
+	</extension-point>
+	<extension-point id="node-workbench-ui" extension-multiplicity="any">		
+		<parameter-def id="name" type="string"
+			multiplicity="none-or-one" />
+		<parameter-def id="path" type="string" multiplicity="one" />
+		<parameter-def id="description" multiplicity="none-or-one" />
+		<parameter-def id="icon" multiplicity="none-or-one" />
+	</extension-point>
+	<!-- WorkBench扩展点-->
+	<extension-point id="workbench-ui" extension-multiplicity="any">
+		<parameter-def id="name" type="string" multiplicity="one" />
+		<parameter-def id="path" type="string" multiplicity="one" />
+		<parameter-def id="description" multiplicity="none-or-one" />
+		<parameter-def id="icon" multiplicity="none-or-one" />
+	</extension-point>
+	<extension-point id="workbench-ui-property"
+		extension-multiplicity="any">
+		<parameter-def id="title" type="string" multiplicity="one" />
+		<parameter-def id="description" multiplicity="none-or-one" />
+		<parameter-def id="icon" multiplicity="none-or-one" />
+		<parameter-def id="admin-title" type="string"
+			multiplicity="one" />
+		<parameter-def id="admin-url" type="string" multiplicity="one" />
+		<parameter-def id="app-title" type="string" multiplicity="one" />
+		<parameter-def id="app-url" type="string" multiplicity="one" />
+		<parameter-def id="logout-url" type="string" multiplicity="one" />
+		<parameter-def id="status-url" type="string" multiplicity="none-or-one" />
+	</extension-point>
+	<extension-point id="permissions"
+		extension-multiplicity="any">
+		<parameter-def id="beanId" multiplicity="one" type="string"></parameter-def>
+	</extension-point>
+	<extension-point id="data-export" extension-multiplicity="any">
+		<parameter-def id="name" type="string" multiplicity="one" />
+		<parameter-def id="title" type="string" multiplicity="one" />
+		<parameter-def id="bean" type="string" multiplicity="one" />
+		<parameter-def id="description" multiplicity="none-or-one" />
+		<parameter-def id="icon" multiplicity="none-or-one" />
+	</extension-point>
+	<extension-point id="data-import" extension-multiplicity="any">
+		<parameter-def id="name" type="string" multiplicity="one" />
+		<parameter-def id="title" type="string" multiplicity="one" />
+		<parameter-def id="bean" type="string" multiplicity="one" />
+		<parameter-def id="description" multiplicity="none-or-one" />
+		<parameter-def id="icon" multiplicity="none-or-one" />
+	</extension-point>
+	
+	<!-- 基本扩展 -->
+	<extension id="cms" plugin-id="org.openuap.boot"
+		point-id="module">
+		<parameter id="name" value="the cms core plugin" />
+		<parameter id="contextFile" value="cms-ctx-core.properties" />
+	</extension>
+	<extension id="cms-res-file" plugin-id="org.openuap.cms"
+		point-id="resource-deploy-file">
+		<parameter id="path" value="res-cms-core.properties"></parameter>
+	</extension>
+	<extension id="cms-home-res-file" plugin-id="org.openuap.cms"
+		point-id="home-resource-deploy-file">
+		<parameter id="path"
+			value="res-home-cms-core.properties">
+		</parameter>
+	</extension>
+	<extension id="cms-plugin-home-res-file" plugin-id="org.openuap.cms"
+		point-id="plugin-home-resource-deploy-file">
+		<parameter id="path"
+			value="res-plugin-home-cms-core.properties">
+		</parameter>
+	</extension>
+	<extension id="cms-app-context" plugin-id="org.openuap.cms"
+		point-id="app-context">
+		<parameter id="path" value="classpath:/org/openuap/cms/cms-core.xml"></parameter>
+	</extension>
+	<extension id="cms-web-context" plugin-id="org.openuap.cms"
+		point-id="web-context">
+		<parameter id="path" value="classpath:/org/openuap/cms/cms-core-web.xml"></parameter>
+	</extension>
+	<extension id="cms-workbench-ui" plugin-id="org.openuap.cms"
+		point-id="workbench-ui">
+		<parameter id="name" value="cms-platform-ui" />
+		<parameter id="path" value="workbench-ui-cms.xml,workbench-ui-user.xml,workbench-ui-cms-survey.xml"></parameter>
+	</extension>
+	<extension id="cms-workbench-ui-property" plugin-id="org.openuap.cms"
+		point-id="workbench-ui-property">
+		<parameter id="title" value="内容管理系统"></parameter>
+		<parameter id="admin-title" value="内容管理系统控制中心"></parameter>
+		<parameter id="admin-url"
+			value="admin/publish.jhtml?action=NodeTreeTable">
+		</parameter>
+		<parameter id="app-title" value="内容管理系统"></parameter>
+		<parameter id="app-url" value="www/index.html"></parameter>
+		<parameter id="logout-url" value="admin/logout.jhtml"></parameter>
+		<parameter id="status-url" value="admin/cmsstatus.jhtml"></parameter>
+	</extension>
+	<!--用户模块权限-->
+	<extension id="user-permissions" plugin-id="org.openuap.cms"
+		point-id="permissions">
+		<parameter id="beanId" value="userPermissionControlPanel"></parameter>
+	</extension>
+	<!-- 编辑器 -->
+	<extension id="cms.editor-content-filter"
+		plugin-id="org.openuap.cms" point-id="freemarker.contentFilter">
+		<parameter id="bean" value="editorFreemarkerContentFilter"></parameter>
+	</extension>
+	<!--结点UI扩展-->
+	<extension id="cms-publish-node-ui" plugin-id="org.openuap.cms"
+		point-id="node-workbench-ui">
+		<parameter id="name" value="cms publish ui publish"></parameter>
+		<parameter id="path" value="workbench-node-ui-publish.xml"></parameter>
+	</extension>
+	<extension id="cms-survey-node-ui" plugin-id="org.openuap.cms"
+		point-id="node-workbench-ui">
+		<parameter id="name" value="cms survey ui publish"></parameter>
+		<parameter id="path" value="workbench-node-ui-survey.xml"></parameter>
+	</extension>
+	<!-- 模板引擎扩展 -->
+	<extension id="tpl-processor-set-tplcontent" plugin-id="org.openuap.tpl.engine"
+		point-id="tpl.processor">
+		<parameter id="bean" value="setTplContentProcessor"></parameter>
+	</extension>
+	<extension id="tpl-processor-skin" plugin-id="org.openuap.tpl.engine"
+		point-id="tpl.processor">
+		<parameter id="bean" value="skinProcessor"></parameter>
+	</extension>
+	<extension id="tpl-processor-multipage" plugin-id="org.openuap.tpl.engine"
+		point-id="tpl.processor">
+		<parameter id="bean" value="multipageProcessor"></parameter>
+	</extension>
+	<extension id="tpl-processor-freemarker" plugin-id="org.openuap.tpl.engine"
+		point-id="tpl.processor">
+		<parameter id="bean" value="freemarkerProcessor"></parameter>
+	</extension>
+	<extension id="tpl-processor-outfile" plugin-id="org.openuap.tpl.engine"
+		point-id="tpl.processor">
+		<parameter id="bean" value="outfileProcessor"></parameter>
+	</extension>
+	<extension id="cms-content-filter" plugin-id="org.openuap.tpl.engine"
+		point-id="freemarker.contentFilter">
+		<parameter id="bean" value="cmsFreeMarkerEngineContentFilter"></parameter>
+	</extension>
+	
+	<!--评论模板引擎内容扩展-->
+	<extension id="comment-content-filter" plugin-id="org.openuap.tpl.engine"
+		point-id="freemarker.contentFilter">
+		<parameter id="bean" value="commentFreeMarkerEngineContentFilter"></parameter>
+	</extension>
+	<extension id="cms-survey-content-filter" plugin-id="org.openuap.tpl.engine"
+		point-id="freemarker.contentFilter">
+		<parameter id="bean" value="surveyFreeMarkerEngineContentFilter"></parameter>
+	</extension>
+	<!-- 数据导入导出插件扩展 -->
+	<extension id="cm-data-export" plugin-id="org.openuap.cms"
+		point-id="data-export">
+		<parameter id="name" value="cm" />
+		<parameter id="title" value="内容模型" />
+		<parameter id="bean" value="cmDataExporter" />
+	</extension>
+	<extension id="cm-data-import" plugin-id="org.openuap.cms"
+		point-id="data-import">
+		<parameter id="name" value="cm" />
+		<parameter id="title" value="内容模型" />
+		<parameter id="bean" value="cmDataImporter" />
+	</extension>
+</plugin>

@@ -1,0 +1,6 @@
+<#macro show name params={}>	
+	<#assign rs=templateTagEngine.getTagContent(name,params,.globals)/>
+<#compress>
+${rs!''}
+</#compress>
+</#macro>

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>node-select</title>
+<base  href="${baseUrl}"/>
+<script type="text/javascript" src="html/common/tree/xtree.js"></script>
+<script type="text/javascript" src="html/common/tree/xmlextras.js"></script>
+<script type="text/javascript" src="html/common/tree/xloadtree.js"></script>
+<link type="text/css" rel="stylesheet" href="html/common/tree/xtree.css" />
+
+<style type="text/css">
+html { overflow-y: scroll; }
+body {
+	background:	white;
+	color:		black;
+}
+
+</style>
+</head>
+<body>
+<script type="text/javascript">
+
+/// XP Look
+webFXTreeConfig.rootIcon		= "html/common/tree/images/xp/folder.png";
+webFXTreeConfig.openRootIcon	= "html/common/tree/images/xp/openfolder.png";
+webFXTreeConfig.folderIcon		= "html/common/tree/images/xp/folder.png";
+webFXTreeConfig.openFolderIcon	= "html/common/tree/images/xp/openfolder.png";
+webFXTreeConfig.fileIcon		= "html/common/tree/images/xp/file.png";
+webFXTreeConfig.lMinusIcon		= "html/common/tree/images/xp/Lminus.png";
+webFXTreeConfig.lPlusIcon		= "html/common/tree/images/xp/Lplus.png";
+webFXTreeConfig.tMinusIcon		= "html/common/tree/images/xp/Tminus.png";
+webFXTreeConfig.tPlusIcon		= "html/common/tree/images/xp/Tplus.png";
+webFXTreeConfig.iIcon			= "html/common/tree/images/xp/I.png";
+webFXTreeConfig.lIcon			= "html/common/tree/images/xp/L.png";
+webFXTreeConfig.tIcon			= "html/common/tree/images/xp/T.png";
+webFXTreeConfig.blankIcon		= "html/common/tree/images/blank.png";
+var rti;
+var tree = new WebFXTree("站点根目录");
+	<#list rootNodes as node>
+	<#if nodeManager.getChildNodesCount(node.nodeId)==0>
+	tree.add(new WebFXTreeItem("${node.name}[${node.nodeId?c}]","javascript:parent.setTargetNodeID('${node.nodeId?c}','${node.name}')", "", "${node.nodeId?c}"));
+	<#else>
+	tree.add(new WebFXLoadTreeItem("${node.name}[${node.nodeId?c}]", "${baseUrl}admin/node.jhtml?action=NodeSelXml&nodeId=${node.nodeId?c}", "javascript:parent.setTargetNodeID('${node.nodeId?c}','${node.name}')", "", "${node.nodeId?c}"));
+	</#if>
+	</#list>
+//
+document.write(tree);
+</script>
+</body>
+</html>

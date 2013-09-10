@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-badwords-core-orm.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<beans>
+	<bean id="badwordsMapping"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<property name="mappings">
+			<list>
+				<value>org/openuap/cms/badwords/model/Badwords.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+</beans>	

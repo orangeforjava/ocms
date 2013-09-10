@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- Middle tier application context definition for the CMS application.
+-->
+<beans>
+	<bean id="nodeHandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/node.jhtml">
+					<ref local="nodeAction" />
+				</entry>
+				<entry key="/admin/nodeEdit.jhtml">
+					<ref local="nodeEditAction" />
+				</entry>
+				<entry key="/admin/nodeModule.jhtml">
+					<ref local="nodeModuleAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="nodeAction"
+		class="org.openuap.cms.node.action.NodeAction">
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+	</bean>
+	<bean id="nodeEditAction"
+		class="org.openuap.cms.node.action.NodeEditAction">
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="contentTableManager">
+			<ref bean="contentTableManager" />
+		</property>
+		<property name="psnManager">
+			<ref bean="psnManager" />
+		</property>
+	</bean>
+	<bean id="nodeModuleAction"
+		class="org.openuap.cms.node.action.NodeModuleAction">
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="nodeWorkbenchPluginManager">
+			<ref bean="nodeWorkbenchPluginManager" />
+		</property>
+	</bean>	
+</beans>

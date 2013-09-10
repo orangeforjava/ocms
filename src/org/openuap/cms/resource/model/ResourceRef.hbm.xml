@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+                            "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<!--
+  $Id: ResourceRef.hbm.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.resource.model">
+  <class name="ResourceRef" table="cms_resource_ref">
+    <composite-id name="id" class="ResourceRefKey">
+      <key-property name="indexId" column="IndexID" type="long"/>
+      <key-property name="nodeId" column="NodeID" type="long"/>
+      <key-property name="resourceId" column="ResourceID" type="long"/>
+    </composite-id>
+    <property name="nodeId" type="long" insert="false" update="false">
+      <column name="NodeID" not-null="true"/>
+    </property>
+    <property name="indexId" type="long" insert="false" update="false">
+      <column name="IndexID" not-null="true"/>
+    </property>
+    <property name="resourceId" type="long" insert="false" update="false">
+      <column name="ResourceID" not-null="true"/>
+    </property>
+  </class>
+</hibernate-mapping>

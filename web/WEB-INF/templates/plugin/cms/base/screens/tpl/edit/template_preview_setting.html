@@ -1,0 +1,195 @@
+<#global baseUrl=helper.getBaseURL()>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<#include "/includes/admin/meta.html"/>
+<title>确认模版应用对象</title>
+<base  href="${baseUrl}"/>
+<link rel='stylesheet' type='text/css' href='html/css/style.css' />
+<script type="text/javaScript" language="javaScript">
+var s_nodeId='${nodeId?default("")}';
+var s_indexId='${indexId?default("")}';
+var s_publishId='${publishId?default("")}';
+
+var s_nodeValue='${nodeValue?default("")}';
+var s_displayValue='${displayValue?default("")}';
+/**
+*
+**/
+function initDocument(){
+	disableAll();
+	setParam();
+}
+function closeMe(){
+ 	//alert('close');
+	window.returnValue=null;
+	window.close();
+}
+function ok(){
+	var previewTarget = new Object() ;
+	with(form1)
+	{
+		if(rbtn_indexId.checked){
+			if(indexId.value==null||indexId.value==""){
+				alert('请指定内容Id!');
+				btn_indexId.focus();
+			}
+			previewTarget["type"]=1;
+			previewTarget["targetId"]=indexId.value;
+			window.returnValue=previewTarget;
+			window.close();
+			//
+		}else if(rbtn_publishId.checked){
+			if(publishId.value==null||publishId.value==""){
+				alert('请指定附加页Id!');
+				btn_publishId.focus();
+			}
+			previewTarget["type"]=2;
+			previewTarget["targetId"]=publishId.value;
+			window.returnValue=previewTarget;
+			window.close();
+		}else if(rbtn_nodeId.checked){
+			if(nodeId.value==null||nodeId.value==""){
+				alert('请指定结点Id!');
+				btn_nodeId.focus();
+			}
+			//alert('what\'s wrong?');
+			previewTarget["type"]=0;
+			previewTarget["targetId"]=nodeId.value;
+			window.returnValue=previewTarget;
+			window.close();
+		}	
+	}
+}
+function setParam(){
+	with(form1)
+	{
+		if(s_indexId!=""){
+			rbtn_indexId.checked=true;
+			txt_indexId.disabled=false;
+			btn_indexId.disabled=false;
+			indexId.value=s_indexId;
+			txt_indexId.value=s_displayValue;
+			return;
+		}else if(s_publishId!=""){
+			rbtn_publishId.checked=true;
+			txt_publishId.disabled=false;
+			btn_publishId.disabled=false;
+			publishId.value=s_publishId;
+			txt_publishId.value=s_displayValue;
+			return;
+		}else if(s_nodeId!=""){
+			rbtn_nodeId.checked=true;
+			txt_nodeId.disabled=false;
+			btn_nodeId.disabled=false;
+			nodeId.value=s_nodeId;
+			txt_nodeId.value=s_displayValue+"["+s_nodeId+"]";
+			return;
+		}
+	}
+}
+function disableAll(){
+	with(form1)
+	{
+		txt_nodeId.disabled=true;
+		btn_nodeId.disabled=true;
+		//
+		txt_indexId.disabled=true;
+		btn_indexId.disabled=true;
+		//
+		txt_publishId.disabled=true;
+		btn_publishId.disabled=true;
+	}
+}
+function selNodeId(){
+	with(form1)
+	{
+		var targetNodeID = showModalDialog("${baseUrl}admin/adminSelect.jhtml?action=TargetNodeWindow&extra=full","color","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+		
+		if(targetNodeID != null && targetNodeID != '') {
+			var pos=targetNodeID.indexOf(",");
+			var tvalue=targetNodeID.substring(0,pos);
+			var text=targetNodeID.substring(pos+1);
+			nodeId.value=tvalue;
+			txt_nodeId.value=text+"["+tvalue+"]";
+		}
+	}
+}
+</script>
+</head>
+<body onload="initDocument();">
+<table width="400" border="0">
+ <form name="form1">
+  <tr>
+    <td><fieldset><legend>模版应用目标选择</legend>
+        <table width="100%" border="0">
+          <tr>
+            <td width="42%">
+			<#if indexId?default("")==""&&publishId?default("")=="">
+			<input type="radio" name="radiobutton" checked value="0" id="rbtn_nodeId" />
+			<#else>
+			<input type="radio" name="radiobutton"  value="0" id="rbtn_nodeId" />
+			</#if>
+            <label for="rbtn_nodeId">应用于结点首页</label></td>
+            <td width="58%">
+			
+			<input type="hidden" name="nodeId" value="${nodeId?default("")}" />
+			<#if nodeId?default("")!="">
+			<input type="text" readonly name="txt_nodeId" value="${nodeName?default("")}[${nodeId}]" size="30"/>
+			<#else>
+			<input type="text" readonly name="txt_nodeId"  size="30"/>
+			</#if>
+            <input type="button" name="btn_nodeId" onclick="selNodeId()" value="..." /></td>
+          </tr>
+          <tr>
+            <td>
+			<#if indexId?default("")!="">
+				<input type="radio" name="radiobutton" checked value="1" id="rbtn_indexId" />
+			<#else>
+				<input type="radio" name="radiobutton"  value="1" id="rbtn_indexId" />
+			</#if>
+            <label for="rbtn_indexId">应用于具体内容页</label></td>
+            <td>
+			<#if indexId?default("")!="">
+				<input type="hidden" name="indexId" value="${indexId?default("")}"/>
+			  	<input type="text" readonly name="txt_indexId" value="${displayValue?default("")}" size="30" />
+			<#else>
+			  	<input type="hidden" name="indexId" />
+			  	<input type="text" readonly name="txt_indexId" size="30" />
+			 </#if>
+              <input type="button" name="btn_indexId" value="..." /></td>
+          </tr>
+          <tr>
+            <td>
+			<#if publishId?default("")!="">
+				<input type="radio" name="radiobutton" checked value="2" id="rbtn_publishId" />
+			<#else>
+				<input type="radio" name="radiobutton" value="2" id="rbtn_publishId" />
+			</#if>
+            <label for="rbtn_publishId">应用于结点附加发布页</label></td>
+            <td>
+			<#if publishId?default("")!="">
+				  <input type="hidden" name="publishId" value="${publishId?default("")}"/>
+				  <input type="text" readonly name="txt_publishId" value="${displayValue?default("")}" size="30"/>
+			<#else>
+				<input type="hidden" name="publishId" />
+				<input type="text" readonly name="txt_publishId" size="30"/>
+			</#if>
+              <input type="button" name="btn_publishId" value="..." />
+			 
+			</td>
+          </tr>
+        </table>
+    </fieldset></td>
+  </tr>
+  <tr>
+    <td height="26" align="center">
+	<input type="button" name="Submit" onclick="javaScript:ok();" value="确 定" />    
+    <input type="button" name="Submit22" value="取 消" onclick="return closeMe();"/> 
+	<input type="reset" name="Submit2" value="重 置" />
+	</td>
+  </tr>
+  </form>
+</table>
+</body>
+</html>

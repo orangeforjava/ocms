@@ -1,0 +1,23 @@
+[#compress]
+[#if result=='success']
+	[#if jsoncallback??]
+	${jsoncallback}({"response":"success","nums":"${rs?size}","rs":[
+	[#list rs as var]
+	{"id":"${var['indexId']?c}","Title":"${var["Title"]}","url":"${var["url"]}"}[#if var_has_next],[/#if]	
+	[/#list]
+	]})
+	[#else]
+	{"response":"success","nums":"${rs?size}","rs":[
+	[#list rs as var]
+	{"id":"${var['indexId']?c}","Title":"${var["Title"]}","url":"${var["url"]}"}[#if var_has_next],[/#if]
+	[/#list]
+	]}
+	[/#if]
+[#else]
+	[#if jsoncallback??]
+	${jsoncallback}({"response":"success"})
+	[#else]
+	{"response":"error"}
+	[/#if]
+[/#if]
+[/#compress]

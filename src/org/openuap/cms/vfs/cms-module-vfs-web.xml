@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- Middle tier application context definition for the CMS application.
+-->
+<beans>
+	<bean id="vfs-HandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/vfs/ftp.jhtml">
+					<ref local="ftpSettingAction" />
+				</entry>
+				<entry key="/admin/vfs/ftpEdit.jhtml">
+					<ref local="ftpSettingEditAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="ftpSettingAction"
+		class="org.openuap.cms.vfs.action.FtpSettingAction">
+		<property name="ftpSettingManager" ref="ftpSettingManager" />
+	</bean>
+	<bean id="ftpSettingEditAction"
+		class="org.openuap.cms.vfs.action.FtpSettingEditAction">
+		<property name="ftpSettingManager" ref="ftpSettingManager" />
+	</bean>
+</beans>

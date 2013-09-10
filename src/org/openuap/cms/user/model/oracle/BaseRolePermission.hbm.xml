@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: BaseRolePermission.hbm.xml 4 2007-03-26 06:56:55Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.user.model">
+	<class name="BaseRolePermission" table="base_role_permission">
+		<composite-id name="id"
+			class="org.openuap.user.model.BaseRolePermissionId">
+			<key-property name="roleId" type="long">
+				<column name="roleId" />
+			</key-property>
+			<key-property name="objectType" type="string">
+				<column name="objectType" length="100"/>
+			</key-property>
+			<key-property name="objectId" type="string">
+				<column name="objectId" length="100"/>
+			</key-property>
+		</composite-id>
+		<property name="permission" type="long">
+			<column name="permission" not-null="true" />
+		</property>
+		<property name="roleId" type="long" insert="false"
+			update="false">
+			<column name="roleId" not-null="true" />
+		</property>
+		<property name="objectType" type="string" insert="false"
+			update="false">
+			<column name="objectType" not-null="true" length="100"/>
+		</property>
+		<property name="objectId" type="string" insert="false"
+			update="false">
+			<column name="objectId" not-null="true" length="100"/>
+		</property>
+		<set name="permissionFields" inverse="true" cascade="delete" lazy="false" order-by="fieldOrder">
+			<key>
+				<column name="roleId"></column>
+				<column name="objectType"></column>
+				<column name="objectId"></column>
+			</key>
+			<one-to-many class="BaseRolePermField" />
+		</set>
+	</class>
+</hibernate-mapping>

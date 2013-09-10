@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<constant type="Properties">
+	<org.openuap.cms.engine.task.PublishNodeTask><![CDATA[内容发布任务，定时执行内容发布、刷新操作<br><table width=100% align=center border=1>
+	<tr>
+	<td>属性</td>
+	<td>值</td>
+	<td>含义</td>
+	</tr>
+	<tr>
+		<td>mode</td>
+		<td>1</td>
+		<td>0-发布模式;1-更新模式;2-取消发布;3-重新发布模式</td>
+	</tr>
+	<tr>
+		<td>nodeId</td>
+		<td>-</td>
+		<td>发布结点Id,必须参数.</td>
+	</tr>
+	<tr>
+		<td>containChildNode</td>
+		<td>true</td>
+		<td>是否包含子结点，缺省为true.</td>
+	</tr>
+	<tr>
+		<td>containExtraPublish</td>
+		<td>true</td>
+		<td>是否包含附加发布页面，缺省为true.</td>
+	</tr>
+	<tr>
+		<td>containContent</td>
+		<td>true</td>
+		<td>是否包含内容页，缺省为true.</td>
+	</tr>
+	<tr>
+		<td>containIndex</td>
+		<td>true</td>
+		<td>是否包含首页，缺省为true.</td>
+	</tr>
+	<tr>
+		<td>processContentNums</td>
+		<td>true</td>
+		<td>每次处理内容页面数量，缺省为10.</td>
+	</tr>
+</table>]]>
+  </org.openuap.cms.engine.task.PublishNodeTask>
+  <org.openuap.cms.search.task.BuildIndexTask><![CDATA[内容发布任务，定时执行内容发布、刷新操作<br><table width=100% align=center border=1>
+	<tr>
+	<td>属性</td>
+	<td>值</td>
+	<td>含义</td>
+	</tr>
+	<tr>
+		<td>mode</td>
+		<td>0</td>
+		<td>0-增量模式;1-重建模式</td>
+	</tr>
+	<tr>
+		<td>modelIds</td>
+		<td>-</td>
+		<td>需要建立索引的内容模型id,多个id用逗号(",")分割.</td>
+	</tr>
+  </table>]]>
+  </org.openuap.cms.search.task.BuildIndexTask>
+   <org.openuap.cms.repo.task.VerifyNodeInfoTask><![CDATA[结点统计信息校验任务，重新更新结点的统计信息。<br><table width=100% align=center border=1>
+	<tr>
+	<td>属性</td>
+	<td>值</td>
+	<td>含义</td>
+	</tr>
+  </table>]]>
+  </org.openuap.cms.repo.task.VerifyNodeInfoTask>
+</constant>

@@ -1,0 +1,831 @@
+<#assign noLayout="true"/>
+<#import "/plugin/cms/base/macros/cms-macros.html" as cms />
+<#import "./content-edit-ui-macros.htm" as myui />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>发布内容编辑</title>
+<base  href="${baseUrl}"/>
+<link type="text/css" rel="StyleSheet" href="html/plugin/cms/base/css/style.css" />
+<link type="text/css" rel="StyleSheet" href="html/common/css/ui/ui-lightness/jquery-ui-1.8.6.custom.css" />
+<script src="html/common/js/jquery-1.4.3.min.js" language="javaScript"></script>
+<script src="html/common/js/jquery-ui-1.8.6.custom.min.js" language="javaScript"></script>
+<link rel="stylesheet" href="html/common/cal/calendar.css" type="text/css">
+<style type="text/css">
+<!--
+.A {
+	height: 20px;
+	BORDER: 1px solid #000000;
+	TEXT-DECORATION: none;
+}
+
+.line_height {
+	line-height: 25px;
+}
+div.imagespacer {
+	
+	text-align: left;
+	float: left;
+	font: 10pt verdana;
+	margin: 0px;
+	overflow: hidden;
+}
+div.imageholder {
+	margin: 0px;
+	padding: 0px;
+	cursor: default;
+}
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 100;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+//
+-->
+</style>
+<!-- <script src="resource.jhtml?path=html/common/editor/function_editor.js" type="text/javascript" language="javascript"></script> -->
+<script language="JavaScript" type="text/JavaScript">
+var NodeID = '${node.nodeId?c}';
+var IndexID = '';
+var o = 'Add';
+var PUBLISH_URL="${baseUrl}/admin/publish/";
+</script>
+<link rel="stylesheet" type="text/css" media="all" href="html/common/cal/calendar-blue2.css" title="system" />
+<script type="text/javascript" src="html/common/cal/calendar.js"></script>
+<script type="text/javascript" src="html/common/cal/calendar-zh.js"></script>
+<script type="text/javascript" src="html/common/cal/calendar-setup.js"></script>
+
+<script language="JavaScript" type="text/JavaScript">
+function Resource(vid,vurl,vtitle)
+{
+	this.id=vid;
+	this.url=vurl;
+	this.title=vtitle;
+	this.description="";
+}
+Resource.prototype.toHtml=function(name,index){
+	//
+	var html='<div style="height:120"><div class="imagespacer">';
+	html+='		<div class="imageholder" unselectable="on"  ondblclick="openwin(\'${baseUrl}resource/'+this.url+'\')">';
+	html+='			<img src="${baseUrl}/resource/'+this.url+'" width="100" height="100" unselectable="on" align="absmiddle"   border=0   />';
+	html+='		</div>';
+	html+='		<div class="titleholder">';
+	html+='		'+this.title;
+	html+='		</div>';
+	html+='</div>';
+	html+="&nbsp;内容：<textarea index=\""+index+"\"  style=\"height:120\" name='"+name+"-"+index+"-desc' id='"+name+"-"+index+"-desc' cols='80' rows='3'>"+this.description+"</textarea>";
+	html+='&nbsp;<span><button type="button" onclick="return MultiResUp(\''+name+'\','+index+')">&uarr;上移</button>';
+	html+='&nbsp;<button type="button" onclick="return MultiResDown(\''+name+'\','+index+')">&darr;下移</button>';
+	html+='&nbsp;&nbsp;<button type="button" onclick="return MultiResRemove(\''+name+'\','+index+')" style="color:red">删除</button></span>';
+	html+='</div>';
+	return html;
+}
+function MultiResRemove(ele,index){
+	//alert(ele+','+index);
+	if(confirm('您确认删除此图片吗？')){
+		eval(ele+"_MultiImg.splice("+index+",1)");
+		MultiResRefresh(ele);
+	}
+	return false;
+}
+function MultiResUp(ele,index){
+	eval('var multiRes='+ele+'_MultiImg');
+	var nums=multiRes.length;
+	
+	if(index>0&&index<nums){
+		var res=multiRes[index];
+		multiRes[index]=multiRes[index-1];
+		multiRes[index-1]=res;
+		MultiResRefresh(ele);
+	}
+	return false;
+}
+function MultiResDown(ele,index){
+	eval('var multiRes='+ele+'_MultiImg');
+	var nums=multiRes.length;
+	if(index>=0&&index<nums-1){
+		var res=multiRes[index];
+		multiRes[index]=multiRes[index+1];
+		multiRes[index+1]=res;
+		MultiResRefresh(ele);
+	}
+	return false;
+}
+function MultiResRefresh(ele){
+	eval('var nums='+ele+'_MultiImg.length');
+	
+	var html="";
+	
+	for(var i=0;i<nums;i++){
+		eval('var c='+ele+'_MultiImg[i].toHtml(\''+ele+'\','+i+')');
+		html+= c;
+		html+="<br/>";
+	}
+	if(html==""){
+		$("#"+ele+"-nameTip").show();
+	}
+	//alert(html);
+	//
+	$("#"+ele+"-DIV").html(html);
+	//
+	for(var i=0;i<nums;i++){			    	
+		$('#'+ele+'-'+i+'-desc').change(function(){
+			var index=$(this).attr('index');				    	
+			eval(ele+'_MultiImg[index][\'description\']=$(this).val()');
+		});
+	}
+}
+function MultiResField()
+{
+	this.nums=0;
+	this.reses=new Array();
+}
+
+MultiResField.prototype.fromString=function(input){
+	//
+	var ary=input.split("\u25A4");
+	if(ary.length>1){
+		this.nums=ary[0];
+		//
+		for(var i=0;i<this.nums;i++){
+			var ary2=ary[i+1].split("\u25D9");
+			var res=new Resource();
+			res.id=ary2[0];
+			res.url=ary2[1];
+			res.title=ary2[2];
+			res.description=ary2[3];
+			this.reses.push(res);
+		}
+	}
+}
+MultiResField.prototype.toString=function(){
+	if(this.nums>0){
+		var rs=this.nums+"";
+		for(var i=0;i<this.nums;i++){
+			rs=rs.concat("\u25A4");
+			rs=rs.concat(this.reses[i].id);
+			rs=rs.concat("\u25D9");
+			rs=rs.concat(this.reses[i].url);
+			rs=rs.concat("\u25D9");
+			rs=rs.concat(this.reses[i].title);
+			rs=rs.concat("\u25D9");
+			rs=rs.concat(this.reses[i].description);
+		}
+		return rs;
+	}else{
+		return "";
+	}
+}
+function onlyNum()
+{
+  if(!((event.keyCode>=48&&event.keyCode<=57)||(event.keyCode>=96&&event.keyCode<=105)|| event.keyCode==8 || event.keyCode==37 || event.keyCode==39 || event.keyCode==46 || event.keyCode==190 || event.keyCode==189))
+//考虑小键盘上的数字键
+    event.returnValue=false;
+}
+
+function mysubmit(form)
+{
+with(form){
+	selectValue.value=''
+	var icon=head.value;
+	var sep=seperator.value
+	for(i=1;i<mdoc.length;i++) {
+		var addtime=''
+		stringToSplit=mdoc.options[i].value
+		arrayOfStrings=stringToSplit.split('%@%')
+
+		dateToSplit=arrayOfStrings[1]
+		arrayOfDate=dateToSplit.split('-')
+		if(year.options[year.selectedIndex].value=='1') {
+			addtime=arrayOfDate[0]
+		}
+
+		if(month.options[month.selectedIndex].value=='1' && year.options[year.selectedIndex].value=='1') {
+			addtime=addtime+sep+arrayOfDate[1]
+		}else {
+			addtime=arrayOfDate[1]
+
+		}
+
+		if(date.options[date.selectedIndex].value=='1' && month.options[month.selectedIndex].value=='1') {
+			addtime=addtime+sep+arrayOfDate[2]
+		}else {
+			addtime=addtime+arrayOfDate[2]
+
+		}
+
+		if(time.options[time.selectedIndex].value=='1') {
+			addtime=addtime+' '+arrayOfDate[3]+':'+arrayOfDate[4]
+		}
+
+		selectValue.value+=icon + ' <A href=\"'+arrayOfStrings[0]+'\" target=\"_blank\">'+mdoc.options[i].text+'</A>    <FONT id=\"ADDTIME\">'+addtime+'</FONT><BR>\n'
+	}
+		window.returnValue = selectValue.value;
+		window.close();
+	}
+
+}
+function moveUp(obj)
+{
+	with (obj){
+		if(selectedIndex==0){
+			options[length]=new Option(options[0].text,options[0].value)
+			options[0]=null
+			selectedIndex=length-1
+			}
+		else if(selectedIndex>0) moveG(obj,-1)
+	}
+}
+
+function editContentLink(fieldName)
+{
+		var leftPos = (screen.availWidth-800) / 2
+		var topPos = (screen.availHeight-600) / 2
+			
+		var MyWIN = window.open("${baseUrl}admin/contentSelect.jhtml?indexId=" + IndexID + "&fieldName=" + fieldName + "&nodeId=" + NodeID,'','width=800,height=600,scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+}
+
+
+function GoSelect(obj)
+{
+	with (obj){
+ 		var IndexID = options[selectedIndex].value;
+		window.open("${baseUrl}admin/publish.jhtml?action=ViewPublish&indexId=" + IndexID + "&nodeId=" + NodeID,'')
+
+ 	}
+
+}
+
+function moveDown(obj)
+{
+	with (obj){
+		if(selectedIndex==length-1){
+			var otext=options[selectedIndex].text
+			var ovalue=options[selectedIndex].value
+			for(i=selectedIndex; i>0; i--){
+				options[i].text=options[i-1].text
+				options[i].value=options[i-1].value
+			}
+			options[i].text=otext
+			options[i].value=ovalue
+			selectedIndex=0
+			}
+		else if(selectedIndex<length-1) moveG(obj,+1)
+	}
+}
+function moveG(obj,offset)
+{
+	with (obj){
+		desIndex=selectedIndex+offset
+		var otext=options[desIndex].text
+		var ovalue=options[desIndex].value
+		options[desIndex].text=options[selectedIndex].text
+		options[desIndex].value=options[selectedIndex].value
+		options[selectedIndex].text=otext
+		options[selectedIndex].value=ovalue
+		selectedIndex=desIndex
+	}
+}
+/**
+*
+**/
+function setContentLinkValue(fieldName)
+{
+	eval("obj = document.FM.data_" + fieldName);
+ 	var returnValue;
+
+	with(obj) {
+ 		for(i=0; i <  obj.length ; i++){
+		    //
+			if(i==0) {
+				returnValue = options[i].value;
+			} else {
+				returnValue = returnValue + ',' + options[i].value;
+			}
+ 		}
+
+	}
+	//
+	//
+	if(returnValue == 'undefined') {
+		returnValue = '';
+	}
+ 	return returnValue;
+
+}
+function add(fieldName, param_index_id,param_title) {
+	eval("obj = document.FM.data_" + fieldName);
+	with(obj) {
+		length=obj.length
+		/*if(data.length > 24) {
+			var data1 = "..." + data.substr(data.length-24 ,24)
+		} else {
+			var data1 = data
+		}*/
+
+		options[length]=new Option(param_title,param_index_id)
+
+	}
+
+}
+function picker_content_add(fieldName, param_title) {
+ 	eval("obj = document.FM." + fieldName);
+
+	if(obj.value != '') {
+		obj.value=obj.value + ',' + param_title;
+
+	} else {
+		obj.value=  param_title;
+
+	}
+
+
+}
+function del(obj1) {
+
+
+	with(obj1) {
+		options[selectedIndex]=null
+		selectedIndex=length-1
+	}
+
+}
+var FieldDefaultValue = "";
+var FieldInputTpl = "";
+function InputPicker(action, form, element)
+{
+
+	switch(action) {
+		case 'color':
+			var arr = showModalDialog("html/color.htm","color","dialogWidth:200pt;dialogHeight:175pt;help:0;status:0");	break;
+		case 'date':
+			showCalendar(element, 'y-mm-dd');
+			break;
+		case 'upload':
+			var arr = showModalDialog('${baseUrl}admin/upload.html'+'?action=Display&mode=one&type=img_picker&nodeId=' + NodeID,"color","dialogWidth:390px;dialogHeight:120px;help:0;status:0;scroll:no");
+			break;
+		case 'upload_attach':
+			var returnValue = showModalDialog('${baseUrl}admin/upload.html' +'?action=Display&mode=one&type=attach&nodeId=' + NodeID,"color","dialogWidth:390px;dialogHeight:120px;help:0;status:0;scroll:no");
+			var arr = returnValue['url'];
+			break;
+		case 'tpl':
+			with(form){
+
+				eval("var varlue1=" + element + ".value;")
+
+			}
+
+			var arr = showModalDialog("${baseUrl}admin/template.jhtml?action=SelTplDialog&tpl=" + varlue1,"color","dialogWidth:428px;dialogHeight:286px;help:0;status:0;scroll:no");
+			break;
+		case 'psn':
+			with(form){
+
+				eval("var varlue1=" + element + ".value;")
+
+			}
+
+			var info = showModalDialog("${baseUrl}admin/psn.jhtml?action=SelPsnDialog&psn=" + varlue1 ,"color","dialogWidth:600px;dialogHeight:266px;help:0;status:0;scroll:no");
+			if(info['filename'] != null) {
+				var arr= '{PSN-URL:'+ info['PSNID'] + "}" +info['filename'];
+			}
+			break;
+		case 'content':
+			var leftPos = screen.availWidth / 2
+			var topPos = screen.availHeight / 2
+			var MyWIN = window.open("admin/publish.html" + "?action=PickerContent&extra=ui_init&indexId=" + IndexID + "&fieldName=" + element + "&nodeId=" + NodeID,'','width=500,height=380,scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+			break;
+		case 'url_content':
+			var leftPos = screen.availWidth / 2 ;
+			var topPos = screen.availHeight / 2 ;
+
+			if(FieldInputTpl != "") {
+				var sizeArray = FieldInputTpl.split("*");
+			} else {
+				var sizeArray = new Array();
+				sizeArray[0] = 500;
+				sizeArray[1] = 380;
+			}
+
+
+			var MyWIN = window.open("ui.jhtml?&o=picker_url_content&extra=ui_init&IndexID=" + IndexID + "&fieldName=" + element + "&NodeID=" + NodeID + "&url=" + urlencode(FieldDefaultValue),'','width=' + sizeArray[0] +',height='  + sizeArray[1]+',scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+			break;
+	}
+
+	if(arr != null && action != 'content' ) {
+		with(form){
+
+			eval(element + ".value= '" +  arr + "'")
+
+		}
+
+
+	}
+
+}
+</script>
+
+<script language="JavaScript" type="text/JavaScript">
+
+function psnSelect(psn,form, psn_element,url_element) {
+//showModalDialog
+var arr = showModalDialog("${baseUrl}admin/psn.jhtml?action=SelPsnDialog&psn=" + psn,"color","dialogWidth:428px;dialogHeight:266px;help:0;status:0;scroll:no");
+if(arr != null) {
+	var PSN = '{PSN:'+ arr;
+	var URL = '{PSN-URL:'+ arr;
+	with(form){
+
+	eval(psn_element + ".value= '" + PSN + "'")
+	eval(url_element + ".value= '" + URL + "'")
+
+	}
+}
+}//end function psnSelect
+
+/**
+*从资源库中选择资源
+*/
+function SelectResource(form, element,category){
+	var arr = showModalDialog("${baseUrl}admin/resourceSelect.jhtml?action=ResourceFrameset&nodeId=${node.nodeId?c}&category=" + category,category,"dialogWidth:558px;dialogHeight:446px;help:0;status:0;scroll:no;center:1");
+	//alert(arr);
+	if(arr != null&&arr!="") {
+		//alert(arr);
+		var resultAry=arr.split('|');
+	    arr="../resource/"+resultAry[0];
+		with(form){
+
+			eval(element + ".value= '" +  arr + "'")
+
+		}
+	}
+	return false;
+}//end function SelectResource
+function SelectSResource(form, element,category,extra){
+	var arr = showModalDialog("${baseUrl}admin/resourceSelect.jhtml?action=ResourceFrameset&nodeId=${node.nodeId?c}&category=" + category+"&"+extra,category,"dialogWidth:558px;dialogHeight:446px;help:0;status:0;scroll:no;center:1");
+	if(arr != null&&arr!="") {
+		
+	    var resultAry=arr.split('|');
+	    arr="../resource/"+resultAry[0];
+		with(form){
+
+			eval(element + ".value= '" +  arr + "'")
+
+		}
+	}
+}//end function SelectResource
+function openwin(targeturl) {
+
+		window.open(targeturl, '', 'width=300,height=170,resizable=1,scrollbars=yes');
+
+}
+function SelectMultiImg(form, element,category){
+	var arr = showModalDialog("${baseUrl}admin/resourceSelect.jhtml?action=ResourceFrameset&nodeId=${node.nodeId?c}&category=" + category,category,"dialogWidth:558px;dialogHeight:446px;help:0;status:0;scroll:no;center:1");
+	//
+	if(arr != null&&arr!="") {
+		//
+		var resultAry=arr.split('|');
+	    var url="../resource/"+resultAry[0];
+	    var title=resultAry[1];
+	    var id=resultAry[2];
+	    var res=new Resource(id,url,title);
+	    eval(element+"_MultiImg.push(res);");
+	    eval("var length="+element+"_MultiImg.length");
+	    $("#"+element+"-nameTip").hide();
+	    //
+	    var html="";
+	    for(var i=0;i<length;i++){
+	    	html+= eval(element+"_MultiImg["+i+"].toHtml('"+element+"',"+i+")");
+	    	html+="<br/>";
+	    }
+	    //var html=$("#"+element+"-DIV").html();
+	    //html+="<br/>"+res.toHtml(element,length-1);
+	    //alert(html);
+	    $("#"+element+"-DIV").html(html);
+	    //
+	    $('#'+element+"-"+(length-1)+"-desc").change(function(){
+	    	//alert($(this).val())
+	    	res.description=$(this).val();
+	    });
+	    
+	    //alert(resultAry[2]);
+	    //var
+	    
+		//with(form){
+		//	eval(element + ".value= '" +  arr + "'");
+		//}
+	}
+	return false;
+}//end function SelectResource
+/**
+* 准备提交
+**/
+function prepareSubmit()
+{
+	//准备预处理多图数据
+	<#list cfs as cf>
+		<#assign fieldInputPicker=cf.fieldInputPicker?default("")/>
+		<#assign fieldInputPickerExtra=cf.fieldInputPickerExtra?default("")/>
+		<#assign enableStatics=cf.enableStatics?default(0)/>
+		<#assign fieldTitle=cf.fieldTitle/>
+		<#assign fieldName=cf.fieldName/>
+		<#if enableStatics==1>
+		<#else>
+			<#if cf.fieldInput='MultiImg'>
+				var ${fieldName}_nums=${fieldName}_MultiImg.length;
+				var ${fieldName}_MultiResField=new MultiResField();
+				${fieldName}_MultiResField.nums=${fieldName}_nums;
+				${fieldName}_MultiResField.reses=${fieldName}_MultiImg;
+				var ${fieldName}_str=${fieldName}_MultiResField.toString();
+				//
+				//alert(${fieldName}_str);
+				$('#${fieldName}').val(${fieldName}_str);
+			</#if>
+		</#if>
+	</#list>
+	//return false;
+	return true;
+}
+function initMultiImgs(){
+	<#if mode=="edit">
+	<#list cfs as cf>
+		<#assign fieldInputPicker=cf.fieldInputPicker?default("")/>
+		<#assign fieldInputPickerExtra=cf.fieldInputPickerExtra?default("")/>
+		<#assign enableStatics=cf.enableStatics?default(0)/>
+		<#assign fieldTitle=cf.fieldTitle/>
+		<#assign fieldName=cf.fieldName/>
+		<#if enableStatics==1>
+		<#else>
+			<#if cf.fieldInput='MultiImg'>
+				
+				var ${fieldName}_MultiResField=new MultiResField();
+				${fieldName}_MultiResField.fromString($('#${fieldName}').val());
+				${fieldName}_MultiImg=${fieldName}_MultiResField.reses;
+				//
+				$("#${fieldName}-nameTip").hide();
+				var ${fieldName}_nums=${fieldName}_MultiResField.nums;
+				var html="";
+			    for(var i=0;i<${fieldName}_nums;i++){
+			    	html+= ${fieldName}_MultiImg[i].toHtml('${fieldName}',i);
+			    	html+="<br/>";
+			    }
+			    //var html=$("#"+element+"-DIV").html();
+			    //html+="<br/>"+res.toHtml(element,length-1);
+			    //alert(html);
+			    $("#${fieldName}-DIV").html(html);
+			    //
+			    for(var i=0;i<${fieldName}_nums;i++){
+			    	
+				    $('#${fieldName}-'+i+'-desc').change(function(){
+				    	var index=$(this).attr('index');
+				    	
+				    	${fieldName}_MultiImg[index]['description']=$(this).val();
+				    	//alert(res['description']);
+				    });
+			    }
+			</#if>
+		</#if>
+	</#list>
+	</#if>
+}
+$(function() {
+		$( "#tabs" ).tabs();
+		//
+		initMultiImgs();
+});
+</script>
+<style type="text/css">
+<!--
+.bigborder {
+	border-top: 0px #FFFFFF;
+	border-right: 0px solid #999999;
+	border-bottom: 0px solid #999999;
+	border-left: 0px solid #FFFFFF;
+}
+-->
+</style>
+
+</head>
+<body style="margin: 0pt; padding: 0pt; border: 1px buttonhighlight;">
+<form action="admin/publishEdit.jhtml?type=main&action=Submit&nodeId=${node.nodeId?c}" method="post" name="FM" >
+<input type="hidden" name="redirection" value="edit"/>
+<div id="tabs">
+	<ul>
+	<li><a href="#tabs-1">基本内容</a></li>
+	<li><a href="#tabs-2">其他内容</a></li>
+	<li><a href="#tabs-3">发布设置</a></li>
+	<li><a href="#tabs-4">附加资源</a></li>
+	</ul>
+	<div id="tabs-1">
+	<@myui.contentUI category=0/>
+	</div>
+	<div id="tabs-2">
+	<@myui.contentUI category=1/>
+	</div>
+	<div id="tabs-3">
+	<table  border=0   cellpadding=0 cellspacing=5 >
+<tr class='tablelist'>
+              <td align=right >发布日期:</td>
+              <td >
+<input name="date" type="text" class="button" id="dTime" onfocus="return Calendar.setup({
+        inputField     :    'dTime',
+        ifFormat       :    '%Y-%m-%d',
+        showsTime      :    false});"      value="${now?string('yyyy-MM-dd')}">
+                <select name="hour">
+				<#assign hour=now?string("HH")/>
+				<#list 0..24 as hh>
+				    <#assign padhh=(hh?string)?left_pad(2,"0")/>
+					<#if hour==padhh>
+						<option value="${padhh}" selected>${padhh}</option>
+					<#else>
+						<option value="${padhh}">${padhh}</option>
+					</#if>
+				</#list>
+                </select>
+                时                <select name="minute">
+				<#assign minute=now?string("mm")/>
+				<#list 0..60 as mm>
+					<#assign paddmm=(mm?string)?left_pad(2,"0")/>
+					<#if minute==paddmm>
+						<option value="${paddmm}" selected>${paddmm}</option>
+					<#else>
+						<option value="${paddmm}">${paddmm}</option>
+					</#if>
+				</#list>
+				</select>
+                分 <select name="second">
+                <#assign second=now?string("ss")/>
+				<#list 0..60 as ss>
+					<#assign paddss=(ss?string)?left_pad(2,"0")/>
+					<#if second==paddss>
+						<option value="${paddss}" selected>${paddss}</option>
+					<#else>
+						<option value="${paddss}">${paddss}</option>
+					</#if>
+				</#list>
+                </select>
+                秒
+			  </td>
+</tr>
+
+<tr class='tablelist'>
+              <td align=right >置顶权重:</td>
+              <td >
+			  <#if mode=="edit">
+				<input name="top" type="text" class="button" id="top" value="${contentIndex["top"]?default(0)?c}">
+              <#else>
+			  	<input name="top" type="text" class="button" id="top" value="0">
+			  </#if>
+			  </td>
+</tr>
+<tr class='tablelist'>
+              <td align=right >精华权重:</td>
+              <td >
+			  <#if mode=="edit">
+				<input name="pink" type="text" class="button" id="pink" value="${contentIndex["pink"]?default(0)?c}">
+              <#else>
+			  	<input name="pink" type="text" class="button" id="pink" value="0">
+			  </#if>
+			  </td>
+</tr>
+
+<tr>
+<td align=right  >自定义套用模板:</td>
+              <td >
+			  <#if mode=="edit">
+			  	<input name='selfTemplate' id="selfTemplate" type='text' value='${contentIndex["selfTemplate"]?default("")}' size="80%"  >
+			  <#else>
+			  	<input name='selfTemplate' id="selfTemplate" type='text' value='' size="80%"  >
+			  </#if>
+			  &nbsp;<input name="button5" type='button' tabindex='13' value='...' onclick="InputPicker('tpl',this.form,'selfTemplate')"> </td></tr>
+
+<tr>
+<td align=right  >自定义发布文件名:</td>
+              <td >
+			  <#if mode=="edit">
+			  	<input name='selfPublishFileName' id="selfPublishFileName" type='text' value='${contentIndex["selfPublishFileName"]?default("")}' size="80%"  >
+			  <#else>
+			  	<input name='selfPublishFileName' id="selfPublishFileName" type='text' value='' size="80%"  >
+			  </#if>
+			  </td></tr>
+
+<tr>
+<td align=right  >自定义发布点(PSN):</td>
+              <td >
+			  <#if mode=="edit">
+			  	<input name='selfPsn' id="selfPsn" type='text' value='${contentIndex["selfPsn"]?default("")}' size="80%">
+			  <#else>
+			  	<input name='selfPsn' id="selfPsn" type='text' value='' size="80%">
+			  </#if>
+			  &nbsp; <input name="button6" type='button' tabindex='13' value='...' onclick="psnSelect('',this.form,'selfPsn','selfPsnUrl')"> </td></tr>
+<tr><td align=right  >自定义发布URL :</td>
+              <td >
+			  <#if mode=="edit">
+			  	<input name="selfPsnUrl" id="selfPsnUrl" type="text" value="${contentIndex["selfpsnurl"]?default("")}" size="80%">
+			  <#else>
+			  	<input name="selfPsnUrl" id="selfPsnUrl" type="text" value="" size="80%">
+			  </#if>
+			  &nbsp; </td></tr>
+
+<tr><td align=right  > </td>
+              <td >&nbsp;  </td></tr>
+
+<tr><td align=right  >自定义外部URL   :</td>
+              <td >
+			  <#if mode=="edit">
+			  <input name='selfUrl' id="selfUrl" type='text' value='${contentIndex["selfUrl"]?default("")}' size=80%  >
+			  <#else>
+			  <input name='selfUrl' id="selfUrl" type='text' value='' size=80%  >
+			  </#if>
+			  &nbsp; </td></tr>
+			 <tr><td align=right  >自定义发布模式:</td>
+			 <td >
+			 <#list publishModes as pubMode>
+			 <#if contentIndex["publishMode"]?default(-1)==pubMode.mode>
+			 <input name="publishMode" type="radio" value="${pubMode.mode}" checked="checked" id="publishMode_${pubMode.mode}">
+			 <#else>
+			 <input name="publishMode" type="radio" value="${pubMode.mode}" id="publishMode_${pubMode.mode}">
+			 </#if>
+			 <label for="publishMode_${pubMode.mode}"  >${pubMode.title}</label>		
+			 </#list>
+			 </td></tr>
+			 <tr><td align=right  >查看权限:</td>	
+			 <td >
+			  <input name='permission' id="permission" type='text' value='${contentIndex["permission"]?default("")}' size=80%  ></td></tr>
+			  <tr><td align=right  >内容页入口URL:</td>
+			   <td >
+			  <input name="contentPortalUrl"  class='flat' size="100%"  id="contentPortalUrl" value="${contentIndex["contentportalurl"]?default("")}" ></td></tr>
+			</table>
+	</div>
+	<div id="tabs-4">
+		<table border="0" cellpadding="10" cellspacing="0" align="center"  >
+<tr><td>
+<#if imgRefList?has_content >
+<!--图片直接显示缩略图-->
+<fieldset class="search">
+ 	<legend><b>图片</b></legend>
+<table border="0" cellpadding="0" cellspacing="0"   >
+<tr><td>
+<#list imgRefList as imgRef>
+<div class="imagespacer" >
+			<div class="imageholder" >
+			<a href="${baseUrl}/resource/${imgRef.path}" target="_blank"><img src="${baseUrl}/resource/${imgRef.path}" width="160" height="120" border="0" /></a>
+			</div>
+</div>
+<br/>
+</#list>
+</td></tr>
+</table>
+</fieldset>
+<br>
+</#if>
+<#if attachRefList?has_content>
+<fieldset class="search">
+ 	<legend><b>附件</b></legend>
+<table border="0" cellpadding="3" cellspacing="0">
+<#list attachRefList as attachRef>
+ <tr><td>
+ <#assign type=attachRef.name[attachRef.name?last_index_of(".")+1..attachRef.name?length-1]/>
+ <img src="${baseUrl}html/images/icon/${type}.gif" border=0></td><td>
+<a href="${baseUrl}/resource/${attachRef.path}" target=_blank>
+${attachRef.title}
+</a>
+</td>
+<td></td></tr>
+</#list>
+ </table>
+</fieldset>
+</#if>
+<!--Flash显示地址-->
+<#if flashRefList?has_content>
+<fieldset class="search">
+ 	<legend><b>Flash</b></legend>
+<table border="0" cellpadding="3" cellspacing="0"   >
+<#list flashRefList as flashRef>
+ <tr><td>
+ <#assign type=flashRef.name[flashRef.name?last_index_of(".")+1..flashRef.name?length-1]/>
+ <img src="${baseUrl}html/images/icon/${type}.gif" border=0></td><td>
+<a href="${baseUrl}/resource/${flashRef.path}" target=_blank>
+${flashRef.title}
+</a>
+</td><td></td></tr>
+</#list>
+   </table>
+</fieldset>
+</#if>
+</td></tr>
+</table>
+	</div>
+</div>
+
+<input type="hidden" name="mode" value="${mode}"/>
+<#if mode=="edit">
+<input type="hidden" name="indexId" value="${indexId}"/>
+</#if>
+</form>
+</body>
+</html>

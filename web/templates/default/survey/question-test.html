@@ -1,0 +1,11 @@
+[@vote.question id=87 return="q"/]
+[#if q??]
+${q.questionTitle!''}<br/>
+[#assign items=q['items']/]
+[#list items as item]
+[#if item.image??&&item.image!='']
+<img src="${item['baseImage']}"/>
+[/#if]
+${item.questionItemText!''}<br/>
+[/#list]
+[/#if]

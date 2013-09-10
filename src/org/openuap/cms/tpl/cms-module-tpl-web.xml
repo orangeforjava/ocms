@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- Middle tier application context definition for the CMS application.
+-->
+<beans>
+	<bean id="tpl-HandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/template.jhtml">
+					<ref local="templateAction" />
+				</entry>
+				<entry key="/admin/templateEdit.jhtml">
+					<ref local="templateEditAction" />
+				</entry>
+				<entry key="/admin/templateCate.jhtml">
+					<ref local="templateCateAction" />
+				</entry>
+				<entry key="/admin/templateCateEdit.jhtml">
+					<ref local="templateCateEditAction" />
+				</entry>
+				<entry key="/admin/cateTplEdit.jhtml">
+					<ref local="cateTemplateEditAction" />
+				</entry>
+				<entry key="/admin/tplDesigner.jhtml">
+					<ref local="tplDesignerAction" />
+				</entry>
+				<entry key="/admin/tplVar.jhtml">
+					<ref local="templateVarAction" />
+				</entry>
+			</map>
+		</property>
+		<property name="order" value="100"/>
+	</bean>
+	<bean id="templateAction"
+		class="org.openuap.cms.tpl.action.TemplateAction">
+		<property name="templateManager">
+			<ref bean="templateManager" />
+		</property>
+	</bean>
+	<bean id="templateCateAction"
+		class="org.openuap.cms.tpl.action.TemplateCateAction">
+		<property name="templateCateManager">
+			<ref bean="templateCateManager" />
+		</property>
+	</bean>
+	
+	<bean id="templateEditAction"
+		class="org.openuap.cms.tpl.action.TemplateEditAction">
+		<property name="contentTableManager">
+			<ref bean="contentTableManager" />
+		</property>
+		<property name="contentFieldManager">
+			<ref bean="contentFieldManager" />
+		</property>
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="publishEngine">
+			<ref bean="publishEngine" />
+		</property>
+		<property name="cmsMacroEngine">
+			<ref bean="cmsMacroEngine" />
+		</property>
+		<property name="extraPublishManager">
+			<ref bean="extraPublishManager" />
+		</property>
+	</bean>
+	<bean id="tplDesignerAction"
+		class="org.openuap.cms.tpl.action.TemplateDesignerAction">
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+	</bean>
+	<bean id="templateVarAction"
+		class="org.openuap.cms.tpl.action.TemplateVarAction">
+		<property name="templateVarManager">
+			<ref bean="templateVarManager" />
+		</property>
+	</bean>
+	<bean id="templateCateEditAction"
+		class="org.openuap.cms.tpl.action.TemplateCateEditAction">
+		<property name="templateCateManager">
+			<ref bean="templateCateManager" />
+		</property>
+	</bean>
+	<bean id="cateTemplateEditAction"
+		class="org.openuap.cms.tpl.action.CateTemplateEditAction">
+		<property name="templateCateManager">
+			<ref bean="templateCateManager" />
+		</property>
+		<property name="templateManager">
+			<ref bean="templateManager" />
+		</property>
+	</bean>
+</beans>

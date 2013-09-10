@@ -1,0 +1,74 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<title>站点数据迁移</title>
+		<base href="${baseUrl}" />
+		<link rel="stylesheet" type="text/css"
+			href="html/plugin/cms/base/css/style.css" />
+		<script language="JavaScript" type="text/javascript">
+
+function info() {
+
+	var returnValue;
+	returnValue = new Array();
+	returnValue['include_sub'] = document.form.include_sub.checked ? 1 : 0;
+	returnValue['content_num'] = document.form.content_num.value;
+	parent.win.close();
+	parent.callBack(returnValue);
+
+}
+function cancel() {
+	parent.win.close();
+}
+</script>
+	</head>
+
+	<body>
+
+	    <form action="" method="post" name="form">
+		<table width="100%" border="0" cellspacing="8" cellpadding="0">
+			
+				<tr>
+					<td>
+						<fieldset class="search">
+							<legend>
+								迁移选项:
+							</legend>
+							<table width="100%" border="0" cellspacing="8" cellpadding="0">
+								<tr>
+									<td>
+										<input type="checkbox" name="include_sub" value="1"
+											id="include_sub">
+										<label for="include_sub">
+											子结点迁移
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										单次循环迁移内容数
+										<input name="content_num" type="text" id="content_num"
+											value="10" size="10">
+									</td>
+								</tr>
+
+							</table>
+						</fieldset>
+
+					</td>
+				</tr>
+				<tr>
+
+					<td height="20" align="right" id="submit_change">
+						<input type="button" name="Submit2" value="开始迁移" onclick='info()'>
+						&nbsp;
+						<input name="button" type="button" onclick="cancel();" value="取消">
+					</td>
+				</tr>
+			
+		</table>
+		</form>
+	</body>
+</html>

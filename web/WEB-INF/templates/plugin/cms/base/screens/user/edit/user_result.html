@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>user operation result</title>
+
+		<base href="${baseUrl}" />
+		<link rel='stylesheet' type='text/css'
+			href='html/common/css/style.css' />
+		<#if rs=="success"> 
+		<#if op=="edit">
+		<meta http-equiv="refresh"	content="1;url='${baseUrl}user/edit.jhtml'"/>
+		</#if> 
+		</#if>
+	</head>
+	<body>
+		<br>
+		<br>
+		<div align="center">
+			<table width="100%" height="100%" border="0" cellpadding="20"
+				cellspacing="0">
+				<tr>
+					<td align="center" valign="top">
+						<table width="50%" height="100" border="0" cellpadding="4"
+							cellspacing="1" class="table_border">
+							<tr class="table_td2">
+								<td>
+									<#if rs=="success"> 
+										<#if op=="edit"> 
+										编辑会员信息成功！ 
+										<#elseif op=="changePwd">
+										修改密码成功！ 
+									</#if> 
+									<#else> 
+									<#if op=="edit">
+										编辑会员信息失败，原因为：${msgs?default("")}！ 
+									<#elseif op=="changePwd">
+										修改密码失败，原因为：${msgs?default("")}
+								    </#if> 
+								    </#if>
+									<br/>
+									<br/>
+									<#if op=="edit"> 
+									<#if rs=="success">
+
+									<a href="${baseUrl}user/edit.jhtml">如果您的浏览器没有自动跳转，请点击这里</a>
+									<br>
+									<#else>
+									<a href="javaScript:history.back();">请点击这里</a>返回。 </#if> </#if>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

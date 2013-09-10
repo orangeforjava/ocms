@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <workdates>
+    <workdate key="请选择">请选择您可到职的日期</workdate>
+    <workdate key="随时">随时</workdate>
+	<workdate key="一个星期">一个星期</workdate>
+	<workdate key="两个星期">两个星期</workdate>
+	<workdate key="一个月">一个月</workdate>
+	<workdate key="三个月">三个月</workdate>
+	<workdate key="三个月以后">三个月以后</workdate>
+  </workdates>
+</directory>

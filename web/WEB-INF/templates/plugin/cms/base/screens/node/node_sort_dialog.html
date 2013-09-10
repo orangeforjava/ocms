@@ -1,0 +1,122 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<title>${node.name} - 结点排序权重设置</title>
+		<style type="text/css">
+body {
+	margin: 0px;
+	scrollbar-face-color: #B8B8B8;
+	scrollbar-highlight-color: #F5F9FF;
+	scrollbar-shadow-color: #828282;
+	scrollbar-3dlight-color: #828282;
+	scrollbar-arrow-color: #797979;
+	scrollbar-track-color: #ECECEC;
+	scrollbar-darkshadow-color: #ffffff
+}
+
+body,a,table,div,span,td,th,input,select {
+	font: 9pt;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.text {
+	border: 1 solid #aaaaaa;
+}
+
+.button {
+	height: 18;
+	border: 1 ridge #aaaaaa;
+	background-color: aaaaaa;
+	color: ffffff
+}
+
+.table {
+	border: 1px inset;
+	border-color: menu #FFFFFF #FFFFFF menu
+}
+</style>
+		<script language="javaScript" type="text/javaScript">
+function ok(){
+	try{	   
+		var rs=document.form1.NodeSort2.value;
+		var parent = art.dialog.parent;
+		parent.callBack(rs);
+		art.dialog.close();
+	}catch(ex){
+		alert(ex);
+		try{
+			window.returnValue=document.form1.NodeSort2.value;
+			window.close();
+		}catch(e){}
+	}
+}
+function cancel(){
+	try{
+		art.dialog.close(); 
+	}catch(ex){
+		try{
+			window.returnValue=null;
+			window.close();
+		}catch(e){}
+	}
+}
+</script>
+	</head>
+
+	<body text="#000000">
+
+
+
+		<table width="100%" border="0" cellspacing="8" cellpadding="0">
+			<form action="" method="post" enctype="multipart/form-data"
+				name="form1">
+			<tr>
+				<td>
+					<fieldset class="search">
+						<legend>
+							结点排序权重设置:
+						</legend>
+						<table width="100%" border="0" cellspacing="8" cellpadding="0">
+							<tr>
+								<td>
+									<table border="0" cellspacing="6" cellpadding="0">
+									   <tr align="left">
+											<td colspan="4">
+												"${node.name}"的当前设置：
+											</td>
+										</tr>
+										<tr>
+											<td>
+												权重:
+											</td>
+											<td>
+											</td>
+											<td>
+												<input name="NodeSort" type="text" id="NodeSort2"
+													value="${node.nodeSort?c}" size="10">
+											</td>
+											<td>
+												<input type="button" name="Submit" value="确定"
+													onclick="javaScript:ok();">
+												<input type="button" name="Submit2" value="取消"
+													onclick="javaScript:cancel();">
+											</td>
+										</tr>
+										
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td>
+								</td>
+							</tr>
+						</table>
+					</fieldset>
+				</td>
+			</tr>
+			</form>
+		</table>
+	</body>
+</html>

@@ -1,0 +1,20 @@
+<table summary="" id="pagehead" cellpadding="0" cellspacing="0" border="0" width="100%">
+	<tr>
+		<td nowrap width="1%"><h1>${actionTitle!""}&nbsp;&nbsp;</h1></td>
+		<#if actions??>
+		<td class="actions">		    
+			<table summary="" cellpadding="0" cellspacing="0" border="0" align="right">
+				<tr>
+					<#list actions as ac>
+						<#if ac['action']==actionName>
+							<td class="active"><a href="${ac['url']}" class="${ac['class']!'view'}">${ac["title"]}</a></td>
+						<#else>
+							<td><a href="${ac['url']}" class="${ac['class']!'view'}">${ac["title"]}</a></td>
+						</#if>
+					</#list>
+				</tr>
+			</table>
+		</td>
+		</#if>
+	</tr>
+</table>

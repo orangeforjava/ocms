@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-permission.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<beans>
+	<bean id="cmsPermissionControlPanel"
+		class="org.openuap.cms.security.CmsPluginPermissionControlPanel">
+		<description>CMS权限控制面板</description>
+	</bean>
+</beans>

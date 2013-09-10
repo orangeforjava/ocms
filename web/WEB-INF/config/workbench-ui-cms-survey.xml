@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench>
+   <tab id="tab-modules">
+		<sidebar id="sidebar-survey" name="调查问卷管理">
+			<item id="survey-list" name="调查问卷列表"
+				url="plugin/survey/survey.jhtml" description="调查问卷列表" />
+			<item id="survey-add" name="新建调查问卷"
+				url="plugin/survey/surveyEdit.jhtml" description="点击这里新建调查问卷" />
+			<item id="survey-import" name="导入调查问卷"
+				url="plugin/survey/survey.jhtml?action=ImportSurvey" description="点击这里导入调查问卷" />
+		</sidebar>
+	</tab>
+</workbench>

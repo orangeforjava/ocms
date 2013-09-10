@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>content link header</title>	
+<base  href="${baseUrl}"/>
+<link rel='stylesheet' type='text/css' href='html/plugin/cms/base/css/style.css' />
+
+<script language='JavaScript'>
+var fieldName = '${fieldName}';
+
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	if (document.getElementById)
+		t = document.getElementById(tbl);
+	else
+		t = document.all(tbl);
+	if (t == null) return;
+	if (t.getElementsByTagName)
+		d = t.getElementsByTagName("TD");
+	else
+		d = t.all.tags("TD");
+	if (d == null) return;
+	if (d.length <= idx) return;
+	d[idx].className = cls;
+}
+
+var NodeID = '${nodeId}'
+function doing(action)
+{
+	switch(action) {
+		
+		case 'changeNode':
+		{
+			NodeID = changeNode.options[changeNode.selectedIndex].value;
+			parent.editContentLink_mainFrame.location = '${baseUrl}admin/contentSelect.jhtml?action=EditContentLink&fieldName='+fieldName+'&indexId=${indexId}&nodeId=' + NodeID;
+			break;
+		}
+		case 'close':
+		{
+			sp_isRefash = true;
+			parent.window.close();
+			break;
+		}		
+	}
+}
+
+
+
+</script>
+</HEAD>
+<BODY STYLE="margin:0pt;padding:0pt;border: 1px buttonhighlight;"  >
+<div id="msviLocalToolbar">
+  <table cellpadding="0" cellspacing="2" width="100%" height="37" border="0">
+    <tr> 
+     
+
+     <td class="lt0" nowrap="nowrap" onMouseOver="mhHover('msviLocalToolbar', 0, 'lt1')" onMouseOut="mhHover('msviLocalToolbar',0, 'lt0')" onClick="doing('close')">关闭</td>    <td width=100%></td>
+
+      <td   > 
+<select  name="changeNode" id = "changeNode">
+<#import "/plugin/cms/base/macros/node-macros.html" as mynode />
+<#assign myNodeId=nodeId?int/>
+<@mynode.showNodesSel nodeManager=nodeManager selId=myNodeId/>
+ </select><td> <td > <INPUT name="Go" TYPE="button" value="Go" onClick="doing('changeNode')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	</tr>
+  </table>
+</div>
+</body>
+</html>

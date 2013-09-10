@@ -1,0 +1,119 @@
+[#assign actionTitle="关键词管理" /]
+[#assign _TITLE_="关键词管理" /]
+[#assign actions=[{"action":"","title":"关键词列表","url":"${baseUrl}admin/keywords.jhtml"},
+{"action":"","title":"添加关键词","url":"javaScript:add()"}
+]]
+[#include "/plugin/cms/common/includes/header.htm"/]
+[#import "/plugin/cms/base/macros/pager-macros.html" as mypager /]
+
+		<script type="text/javaScript" charset="UTF-8" language="javaScript">
+			
+			function SelectAll()
+			  {
+			  for (var i=0;i<document.results.elements.length;i++)
+			    {
+			    var e = document.results.elements[i];
+			    		e.checked = true;
+			    }
+			  }
+			function DeselectAll()
+			  {
+			  for (var i=0;i<document.results.elements.length;i++)
+			    {
+			    var e = document.results.elements[i];
+			    		e.checked = false;
+			    }
+			  }
+			
+			function ChangeAll()
+			{
+				if(document.results.op.checked)	
+				{
+					SelectAll();
+				}
+				else 
+				{
+					DeselectAll();
+				}
+			}
+			function add(){
+				document.location='${baseUrl}admin/keywords.jhtml?action=Add';
+			}
+			function del(id){
+				if(confirm('您确认删除此条关键词吗？')){
+				var url="${baseUrl}admin/keywords.jhtml?action=Del&id="+id;
+				$.get(url,function(data){
+					if(data=='1'){
+						alert('删除成功！');
+						document.location=document.location;
+					}else{
+						alert('删除失败，原因为:'+data);
+					}
+				});
+				}
+			}
+		</script>
+	
+		
+		<br />
+		<form name="results">
+		<table border="0" cellspacing="1" cellpadding="4" width="100%"
+			align=center class="maintable">
+			
+			<tr class="table_td1">
+				<td width=3% align=center><input type=checkbox name="op" value="" onClick="ChangeAll()"></td>
+				<TD WIDTH='10%' NOWRAP align=center><font color="#0000FF"><b>序号</b></font></TD>
+				<TD WIDTH='40%' NOWRAP align=center><font color="#0000FF"><b>名称</b></font></TD>
+				<TD WIDTH='10%' NOWRAP align=center><font color="#0000FF"><b>范围</b></font></TD>
+				<TD WIDTH='10%' NOWRAP align=center><font color="#0000FF"><b>数量</b></font></TD>
+				<TD WIDTH='10%' NOWRAP align=center><font color="#0000FF"><b>状态</b></font></TD>
+				<TD WIDTH='20%' NOWRAP align=center><font color="#0000FF"><b>操作</b></font></TD>
+			</tr>
+			[#list keywordses as keywords]
+			<tr class="table_td2">
+				<td width=3%>
+				<input type="checkbox" name="ids" value="${keywords.id?c}">
+				</td>
+				<td WIDTH='10%' NOWRAP align=center>
+				${keywords.pos}
+				</td>
+				<td width=40%>
+				<a href='${baseUrl}admin/keywords.jhtml?action=Edit&id=${keywords.id?c}' class=topic style="${keywords.style!''}">
+				${keywords.keyword}		
+				</a></td>
+				<td WIDTH='10%' NOWRAP align=center>
+				
+				</td>
+				<td WIDTH='10%' NOWRAP align=center>
+				${keywords.nums?c}
+				</td>
+				<td WIDTH='10%' NOWRAP align=center>
+				[#if keywords.status==0]
+					可用
+				[#else]
+					停用
+				[/#if]
+				</td>
+				<td width='20%' nowrap align=center>
+				[<a href="${baseUrl}admin/keywords.jhtml?action=Edit&id=${keywords.id?c}">编辑</a>]
+				[<a onclick="javaScript:del(${keywords.id?c});" href="javaScript:void(0)">删除</a>]
+				[<a href="${keywords.url!'#'}" target="_blank">测试</a>]
+				
+				</td>
+				</tr>
+			[/#list]
+			<tr>
+				<td colspan="7" class="table_td2">
+					<input type="button" value="全部选择" onClick="SelectAll()" class=btnStyle>
+					<input type="button" value="全部取消" onClick="DeselectAll()" class=btnStyle>
+					<input type="submit" name="action_del" value="删除" class=btnStyle onClick="return confirmAction('您确认删除选定的关键词条?');" >
+					<div align=right>		
+					[#assign pageUrl=baseUrl+"admin/keywords.htm?pageNum="+pageNum+"&page="/]
+					[@mypager.pageBuilder pb=pb baseUrl=pageUrl closeUrl=""/]
+					</div>
+				</td>
+			</tr>
+		</table>
+		</form>
+<br/>
+[#include "/plugin/cms/common/includes/footer.htm"/]

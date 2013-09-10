@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-engine.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<beans>
+	<!-- static engine -->
+	<bean id="contentPublishEngine"
+		class="org.openuap.cms.engine.content.impl.DefaultContentPublishEngine">
+		<description>内容发布引擎</description>
+		<property name="contentFieldManager">
+			<ref bean="contentFieldManager" />
+		</property>
+		<property name="dynamicContentManager">
+			<ref bean="dynamicContentManager" />
+		</property>
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="psnManager">
+			<ref bean="psnManager" />
+		</property>
+		<property name="resourcePublishEngine">
+			<ref bean="resourcePublishEngine" />
+		</property>
+		<property name="cmsStaticFileGenerateEngine">
+			<ref bean="cmsStaticFileGenerateEngine" />
+		</property>			
+	</bean>
+	<bean id="resourcePublishEngine"
+		class="org.openuap.cms.engine.resource.impl.DefaultResourcePublishEngine">
+		<description>资源发布引擎</description>
+		<property name="resourceManager">
+			<ref bean="cmsResourceManager" />
+		</property>
+		<property name="dynamicContentManager">
+			<ref bean="dynamicContentManager" />
+		</property>
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="psnManager">
+			<ref bean="psnManager" />
+		</property>
+	</bean>
+	<bean id="publishEngine"
+		class="org.openuap.cms.engine.impl.DefaultPublishEngine">
+		<description>发布引擎</description>
+		<property name="resourcePublishEngine">
+			<ref bean="resourcePublishEngine" />
+		</property>
+		<property name="contentPublishEngine">
+			<ref bean="contentPublishEngine" />
+		</property>
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="cmsStaticFileGenerateEngine">
+			<ref bean="cmsStaticFileGenerateEngine" />
+		</property>	
+	</bean>
+	
+	
+	<bean id="cmsMacroEngine"
+		class="org.openuap.cms.engine.macro.impl.DefaultCmsMacroEngine">
+		<description>cms宏引擎</description>
+		<property name="repoCmsMacroEngine">
+			<ref bean="repoCmsMacroEngine" />
+		</property>
+	</bean>
+	<bean id="repoCmsMacroEngine"
+		class="org.openuap.cms.engine.macro.impl.RepoCmsMacroEngineImpl">
+		<description>cms repo宏引擎</description>
+		<property name="dynamicContentManager">
+			<ref bean="dynamicContentManager" />
+		</property>
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="contentFieldManager">
+			<ref bean="contentFieldManager" />
+		</property>
+		<property name="contentTableManager">
+			<ref bean="contentTableManager" />
+		</property>
+		<property name="psnManager">
+			<ref bean="psnManager" />
+		</property>
+		<property name="extraPublishManager">
+			<ref bean="extraPublishManager" />
+		</property>
+	</bean>	
+	<bean id="indexedCmsMacroEngine"
+		class="org.openuap.cms.engine.macro.impl.IndexedCmsMacroEngineImpl">
+		<property name="searchEngine">
+			<ref bean="luceneSearchEngine" />
+		</property>
+	</bean>
+	<!-- 内容模板处理器 -->
+	<bean id="setTplContentProcessor"
+		class="org.openuap.cms.engine.generate.processor.SetTplContentProcessor">
+	</bean>
+	<bean id="multipageProcessor"
+		class="org.openuap.cms.engine.generate.processor.MultiPageTemplateProcessor">
+		<property name="cmsMacroEngine">
+			<ref bean="cmsMacroEngine" />
+		</property>
+	</bean>
+	<bean id="skinProcessor"
+		class="org.openuap.cms.engine.generate.processor.SkinProcessor">
+		<property name="psnManager">
+			<ref bean="psnManager" />
+		</property>
+	</bean>
+	<bean id="freemarkerProcessor"
+		class="org.openuap.cms.engine.generate.processor.FreeMarkerProcessor">
+		<property name="freeMarkerHelper">
+			<ref bean="freeMarkerHelper" />
+		</property>
+	</bean>
+	<bean id="outfileProcessor"
+		class="org.openuap.cms.engine.generate.processor.OutFileProcessor">
+		<property name="freeMarkerHelper">
+			<ref bean="freeMarkerHelper" />
+		</property>
+		<property name="psnManager">
+			<ref bean="psnManager" />
+		</property>
+	</bean>
+	<bean id="cmsFreeMarkerEngineContentFilter"
+		class="org.openuap.cms.engine.generate.processor.CmsFreeMarkerEngineContentFilter">
+		<property name="psnManager">
+			<ref bean="psnManager" />
+		</property>
+		<property name="cmsMacroEngine">
+			<ref bean="cmsMacroEngine" />
+		</property>
+	</bean>
+	<bean id="freeMarkerHelper"
+		class="org.openuap.cms.engine.generate.processor.FreeMarkerTplProcessorHelper">
+		<property name="freemarkerConfigurer">
+			<ref bean="freemarkerConfigurer" />
+		</property>
+	</bean>
+	<!-- <bean id="cmsTemplateEngine"
+		class="org.openuap.cms.publish.engine.generate.FreeMarkerTemplateEngine">
+		<description>cms模板引擎</description>
+		<property name="templateProcessors">
+			<list>
+				<ref bean="setTplContentProcessor"/>
+				<ref bean="skinProcessor" />
+				<ref bean="multipageProcessor"/>				
+				<ref bean="freemarkerProcessor" />
+				<ref bean="outfileProcessor" />
+			</list>
+		</property>
+	</bean> -->
+	<!-- static engine -->
+	<bean id="cmsStaticFileGenerateEngine"
+		class="org.openuap.cms.engine.generate.impl.DefaultCmsStaticFileGenerateEngine">
+		<description>静态文件产生引擎</description>
+		<property name="dynamicContentManager">
+			<ref bean="dynamicContentManager" />
+		</property>
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="psnManager">
+			<ref bean="psnManager" />
+		</property>
+		<property name="extraPublishManager">
+			<ref bean="extraPublishManager" />
+		</property>	
+	</bean>
+</beans>

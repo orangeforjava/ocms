@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <languages>
+    <language key="请选择">请您选择</language>
+    <language key="无">无</language>
+    <language key="英语">英语</language>
+	<language key="日语">日语</language>
+	<language key="法语">法语</language>
+	<language key="德语">德语</language>
+	<language key="俄语">俄语</language>
+	<language key="朝鲜语">朝鲜语</language>
+	<language key="西班牙语">西班牙语</language>
+	<language key="阿拉伯语">阿拉伯语</language>
+	<language key="其它">其它</language>
+  </languages>
+</directory>

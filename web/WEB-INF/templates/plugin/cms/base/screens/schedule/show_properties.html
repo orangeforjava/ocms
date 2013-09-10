@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<base  href="${baseUrl}"/>
+<title>schedule</title>
+<style type=text/css>BODY {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: Tahoma
+}
+P {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: Tahoma
+}
+TD {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: Tahoma
+}
+TEXTAREA {
+	FONT-SIZE: 12px; FONT-FAMILY: Tahoma
+}
+A {
+	TEXT-DECORATION: underline
+}
+A:link {
+	COLOR: #000000; TEXT-DECORATION: underline
+}
+A:visited {
+	COLOR: #000080; TEXT-DECORATION: underline
+}
+A:active {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+A:hover {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.head {
+	BACKGROUND-COLOR: #5d7cba
+}
+.neck {
+	BACKGROUND-COLOR: #d1d9e2
+}
+.odd {
+	BACKGROUND-COLOR: #efefef
+}
+.even {
+	BACKGROUND-COLOR: #f7f7f7
+}
+.nav {
+	COLOR: #000000; TEXT-DECORATION: underline
+}
+.nav:link {
+	COLOR: #000000; TEXT-DECORATION: underline
+}
+.nav:visited {
+	COLOR: #000000; TEXT-DECORATION: underline
+}
+.nav:active {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.nav:hover {
+	COLOR: #ff0000; TEXT-DECORATION: none
+}
+.topic {
+	TEXT-DECORATION: none
+}
+.topic:link {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+.topic:visited {
+	COLOR: #000080; TEXT-DECORATION: none
+}
+.topic:active {
+	COLOR: #ff0000; TEXT-DECORATION: none
+}
+.topic:hover {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.ilink {
+	COLOR: #0000ff; TEXT-DECORATION: underline
+}
+.ilink:link {
+	COLOR: #0000ff; TEXT-DECORATION: underline
+}
+.ilink:visited {
+	COLOR: #004080; TEXT-DECORATION: underline
+}
+.ilink:active {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.ilink:hover {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.mod {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+.mod:link {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+.mod:visited {
+	COLOR: #000080; TEXT-DECORATION: none
+}
+.mod:active {
+	COLOR: #ff0000; TEXT-DECORATION: none
+}
+.mod:hover {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.thd {
+	COLOR: #808080; TEXT-DECORATION: none
+}
+.thd:link {
+	COLOR: #808080; TEXT-DECORATION: underline
+}
+.thd:visited {
+	COLOR: #808080; TEXT-DECORATION: underline
+}
+.thd:active {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.thd:hover {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+.curpage {
+	FONT-SIZE: 9px; COLOR: #ffffff; FONT-FAMILY: Tahoma; TEXT-DECORATION: none
+}
+.page {
+	FONT-SIZE: 9px; COLOR: #003063; FONT-FAMILY: Tahoma; TEXT-DECORATION: none
+}
+.page:link {
+	FONT-SIZE: 9px; COLOR: #003063; FONT-FAMILY: Tahoma; TEXT-DECORATION: none
+}
+.page:visited {
+	FONT-SIZE: 9px; COLOR: #003063; FONT-FAMILY: Tahoma; TEXT-DECORATION: none
+}
+.page:active {
+	FONT-SIZE: 9px; COLOR: #ff0000; FONT-FAMILY: Tahoma; TEXT-DECORATION: none
+}
+.page:hover {
+	FONT-SIZE: 9px; COLOR: #ff0000; FONT-FAMILY: Tahoma; TEXT-DECORATION: none
+}
+.subject {
+	FONT-SIZE: 12px; FONT-FAMILY: Tahoma
+}
+.text {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: Tahoma
+}
+.codeStyle {
+	PADDING-RIGHT: 0.5em; MARGIN-TOP: 1em; PADDING-LEFT: 0.5em; FONT-SIZE: 9pt; MARGIN-BOTTOM: 1em; PADDING-BOTTOM: 0.5em; MARGIN-LEFT: 0pt; COLOR: #ffffff; PADDING-TOP: 0.5em; FONT-FAMILY: Courier New; BACKGROUND-COLOR: #000000
+}
+.smalltext {
+	FONT-SIZE: 11px; COLOR: #000000; FONT-FAMILY: Tahoma
+}
+.verysmalltext {
+	FONT-SIZE: 4px; COLOR: #000000; FONT-FAMILY: Tahoma
+}
+.member {
+	FONT-SIZE: 9px; COLOR: #003063; FONT-FAMILY: Tahoma
+}
+.btnStyle {
+	BORDER-TOP-WIDTH: 2px; BORDER-LEFT-WIDTH: 2px; FONT-SIZE: 12px; BORDER-LEFT-COLOR: #e9e9e9; BORDER-BOTTOM-WIDTH: 2px; BORDER-BOTTOM-COLOR: #e9e9e9; CURSOR: hand; COLOR: #ffffff; BORDER-TOP-COLOR: #e9e9e9; FONT-FAMILY: Tahoma; BACKGROUND-COLOR: #5d7790; BORDER-RIGHT-WIDTH: 2px; BORDER-RIGHT-COLOR: #e9e9e9
+}
+.selStyle {
+	BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; FONT-SIZE: 12px; BORDER-LEFT: black 1px solid; CURSOR: hand; COLOR: #000000; BORDER-BOTTOM: black 1px solid; FONT-FAMILY: Tahoma; BACKGROUND-COLOR: #ffffff
+}
+.inpStyle {
+	BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; FONT-SIZE: 12px; BORDER-LEFT: black 1px solid; COLOR: #000000; BORDER-BOTTOM: black 1px solid; FONT-FAMILY: Tahoma; BACKGROUND-COLOR: #ffffff
+}
+TABLE.data {
+	FONT-SIZE: 11px; BACKGROUND: #000000; FONT-FAMILY: tahoma,tahoma,arial
+}
+TABLE.data TR {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-SIZE: 12px; BACKGROUND: #ffffff; PADDING-BOTTOM: 6px; VERTICAL-ALIGN: middle; PADDING-TOP: 6px
+}
+TABLE.data TH {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-SIZE: 12px; BACKGROUND: #ffffff; PADDING-BOTTOM: 6px; VERTICAL-ALIGN: middle; PADDING-TOP: 6px
+}
+TABLE.data TD {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; PADDING-BOTTOM: 6px; VERTICAL-ALIGN: middle; PADDING-TOP: 6px
+}
+TABLE.data TH {
+	BACKGROUND: #dbeaf5; WHITE-SPACE: nowrap; FAFAD2: 
+}
+</style>
+</head>
+<body>
+<script>
+function save_all() {
+	var forms = document.forms;
+	var str="";
+	for(i=0;i<forms.length;i++) {
+		if(forms[i].name.indexOf("property")>-1) {
+			str+=forms[i].key.value+"="+forms[i].value.value+"&";
+		}
+	}
+	str = str.substring(0,str.length-1);	
+	document.all_value.value.value=str;
+	document.all_value.submit();
+}  	
+</script>  
+
+<table width='100%'  cellspacing=1 cellpadding=4 border=0>
+   <tr bgcolor='#D9E4F0'>
+         <td align=center width=10%><font color=#0000FF><b>${scheduleLang.get('schedule.property')}</b></font></td>
+         <td align=center width=10%><font color=#0000FF><b>${scheduleLang.get('schedule.value')}</b></font></td> 
+         <td align=center width=10%><font color=#0000FF><b>&nbsp;</b></font></td>
+    </tr>    
+
+ <#assign i=0 />
+ <#if properties?exists>
+    
+	<#list properties.keySet() as key>
+    	<#assign i=i+1 />
+      <form name="property${i}" action="${baseUrl}admin/schedule.jhtml?id=${task.id}" method="post">      
+        <tr class='even'> 
+            <td align=center>
+            <input type="text" name="key" value="${key}" size=16 class=subject>
+            </td>
+            <td align=center>
+            <textarea name="value" cols=70 rows=2>${properties.get(key)}</textarea>
+            </td>
+            <td align=center>
+            <input type="submit" name="action_save_task_property" value="${scheduleLang.get('btn.edit')}" class=btnstyle>
+            <input type="submit" name="action_remove_task_property" value="${scheduleLang.get('btn.delete')}"class=btnstyle>
+            </td>        
+        </tr>
+   
+      </form>
+
+    </#list>
+ </#if>
+
+    <tr bgcolor='#D9E4F0'> 
+        <td align=center colspan=3>
+			<input type="button" name="save_all" value="${scheduleLang.get('btn.schedule.save')}" class=btnstyle onClick="save_all()">
+        </td>        
+    </tr>
+
+
+  <form action="${baseUrl}admin/schedule.jhtml?id=${task.id}" method="post">  
+     <tr bgcolor='#D9E4F0'> 
+        <td align=center>
+        <input type="text" name="key" value="" size=16 class=subject>
+        </td>
+        <td align=center>
+        <textarea name="value" cols=70 rows=2></textarea>
+        </td>
+        <td align=center>
+        <input type="hidden" name="action" value="SaveTaskProperty"> 
+        <input type="submit" name="sub" value="${scheduleLang.get('btn.schedule.add')}" class=btnstyle>
+        </td>        
+    </tr>
+  </form>
+</table>  
+  
+   <form name="all_value" action="${baseUrl}admin/schedule.jhtml?id=${task.id}" method="post">  
+        <input type="hidden" name="action" value="SaveAllTaskProperties">        
+        <input type="hidden" name="value" value="">        
+  </form>  
+</body>
+</html>

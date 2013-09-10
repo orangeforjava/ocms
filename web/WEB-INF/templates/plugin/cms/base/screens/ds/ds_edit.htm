@@ -1,0 +1,175 @@
+
+[#assign actionTitle="数据源编辑" /] 
+[#assign _TITLE_="数据源信息编辑" /] 
+[#if ds.id??] 
+[#assign actions=[
+{"action":"List","title":"数据源信息管理","url":"${baseUrl}admin/ds/ds.jhtml","class":"view"},
+{"action":"","title":"数据源信息编辑","url":"${baseUrl}admin/ds/dsEdit.jhtml?id=${ds.id}","class":"add"}
+] ] 
+[#else] 
+[#assign actions=[
+{"action":"List","title":"数据源信息管理","url":"${baseUrl}admin/ds/ds.jhtml","class":"view"},
+{"action":"","title":"新建数据源","url":"${baseUrl}admin/ds/dsEdit.jhtml","class":"add"}
+]] 
+[/#if]
+
+[#include "/plugin/cms/common/includes/header.htm"/]
+[#if messageCode?exists]
+<center>
+	<div class='errormessage' style='width: 400px;'>
+		<img class='errormessage' src='html/common/images/info.gif'
+			align='absmiddle' />
+		&nbsp;
+		<span class='tab-r'>${messageCode}</span>
+	</div>
+</center>
+<br>
+[/#if]
+<script language="JavaScript">
+
+</script>
+[#import "/spring.ftl" as spring /]
+<form action="${baseUrl}admin/ds/dsEdit.jhtml" method="post"
+	name="clientform" id="clientform">
+	<input type="hidden" name="mode" value="${mode!'add'}" />
+	<div class="colorarea02">
+		<h2>
+			数据源基本信息
+		</h2>
+		<table border="0" cellspacing="0" cellpadding="4" width="98%"
+			align=center class="maintable">
+
+			<tr>
+				<th>
+					数据源名:
+				</th>
+				<td>
+					[@spring.bind "ds.name"/]
+					<input name="${spring.status.expression}" type="text" class="flat"
+						id="${spring.status.expression}"
+						value="${spring.status.value?default(" ")}" tabindex="8" />
+					&nbsp;必填
+				</td>
+			</tr>
+			<tr>
+				<th>
+					数据源描述:
+				</th>
+				<td>
+					[@spring.bind "ds.description"/]
+					<textarea name="${spring.status.expression}" cols="50" rows="5"
+						class="flat" id="${spring.status.expression}" tabindex="8">${spring.status.value?default("")}</textarea>
+					&nbsp;选填
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="colorarea02">
+		<h2>
+			连接信息
+		</h2>
+		<table border="0" cellspacing="0" cellpadding="4" width="100%"
+			align=center class="maintable">
+			<!-- -->
+			<tr>
+				<th>
+					数据库类型:
+				</th>
+				<td>
+					[@spring.bind "ds.type"/]
+					<select name="${spring.status.expression}"
+						id="${spring.status.expression}">
+						[#list databases as database]
+						[#if spring.status.value?default("")==database]
+						<option value="${database.name}" selected="selected">
+							${database.title}
+						</option>
+						[#else]
+						<option value="${database.name}">
+							${database.title}
+						</option>
+						[/#if]
+						[/#list]
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					驱动类(DriverClass):
+				</th>
+				<td>
+					[@spring.bind "ds.driverClassName"/]
+					<input name="${spring.status.expression}" type="text" class="flat"
+						id="${spring.status.expression}"
+						value="${spring.status.value?default(" ")}" tabindex="8" size="60" />
+					&nbsp;必填
+				</td>
+			</tr>
+			<tr>
+				<th>
+					连接URL:
+				</th>
+				<td>
+					[@spring.bind "ds.url"/]
+					<input name="${spring.status.expression}" type="text" class="flat"
+						id="${spring.status.expression}"
+						value="${spring.status.value?default(" ")}" tabindex="8" size="60" />
+					&nbsp;必填，数据连接URL地址
+				</td>
+			</tr>
+
+			<!-- 登录信息 -->
+			<tr>
+				<th>
+					用户名:
+				</th>
+				<td>
+					[@spring.bind "ds.userName"/]
+					<input name="${spring.status.expression}" type="text" class="flat"
+						id="${spring.status.expression}"
+						value="${spring.status.value?default(" ")}" tabindex="8" />
+					&nbsp;必填，数据库用户名
+				</td>
+			</tr>
+			<tr>
+				<th>
+					密码:
+				</th>
+				<td>
+					[@spring.bind "ds.password"/]
+					<input name="${spring.status.expression}" type="password"
+						class="flat" id="${spring.status.expression}"
+						value="${spring.status.value?default(" ")}" tabindex="8" />
+					&nbsp;必填，数据库用户密码
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<br />
+	<div class="buttons">
+		<input type="submit" name="submit" value="提交保存" class="submit">
+		<input type="reset" name="reset" value=" 重 置 ">
+	</div>
+</form>
+<script language='JavaScript'>
+function check(form, id) {
+	eval("var ischecked = " + form + "." + id + ".checked");
+	if (ischecked) {
+		eval(form + "." + id + "_hidden.value = '1'");
+	} else {
+		eval(form + "." + id + "_hidden.value = '0'");
+
+	}
+
+}
+function doing(action) {
+	switch (action) {
+	default:
+		break;
+
+	}
+}
+</script>
+<br />
+[#include "/plugin/cms/base/includes/footer.html"]

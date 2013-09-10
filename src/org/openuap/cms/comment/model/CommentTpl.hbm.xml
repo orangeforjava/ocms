@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: CommentTpl.hbm.xml 4017 2011-03-13 13:55:50Z orangeforjava $
+	评论跟帖定义！
+-->
+<hibernate-mapping package="org.openuap.cms.comment.model">
+	<class name="CommentTpl" table="comment_tpl">
+		<id name="id" type="int" unsaved-value="0">
+			<column name="id" />
+			<generator class="native" />
+		</id>
+		<property name="tplName" type="string">
+			<column name="tplName" not-null="true" />
+		</property>
+		<property name="directory" type="string">
+			<column name="directory" not-null="true" />
+		</property>
+		<property name="copyright" type="string">
+			<column name="copyright" not-null="false" />
+		</property>
+		<property name="reserved" type="boolean">
+			<column name="reserved" not-null="true" />
+		</property>
+	</class>
+</hibernate-mapping>

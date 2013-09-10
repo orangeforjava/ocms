@@ -1,0 +1,106 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>路径选择</title>
+<base  href="${baseUrl}"/>
+<style type="text/css">
+<!--
+body,tr,td,select {
+	color: #000000;
+	font-size: 11px; font-family: Tahoma, Arial;
+
+}
+
+div.imagespacer {
+	width:132;
+	height:18;
+	text-align:left;
+	float: left;
+	font: 10pt verdana;
+	margin: 0px;
+	overflow: ellipsis;
+}
+div.imageholder {
+	margin: 0px;
+	padding: 0px;
+	cursor: default;
+}
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 100;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+-->
+</style>
+<script language="javascript">
+var rootDir='${rootDir.canonicalPath}';
+lastDiv = null;
+if('${PATH?default("/")}' == '/') {
+	var PATH = '';
+
+} else {
+	var PATH = '${PATH?default("/")}';
+
+}
+function divClick(theDiv,filename)
+{
+	if (lastDiv) {
+		//lastDiv.style.border = "1 solid #CCCCCC";
+		lastDiv.style.background = "#FFFFFF";
+		lastDiv.style.color = "#000000"
+	}
+	lastDiv = theDiv;
+	//theDiv.style.border = "2 solid #316AC5";
+	theDiv.style.background = "#000066";
+	lastDiv.style.color = "#FFFFFF"
+	parent.document.form1.fileName.value= rootDir+PATH + '/' + filename
+	//document.getElementById("FileToDelete").value = filename;
+
+}
+
+function opendir(dirname)
+{
+	PATH = PATH + '/' + dirname;
+	
+	//alert(PATH);
+	window.location = '${baseUrl}admin/path.jhtml?action=PathListFile&PATH=' + encodeURIComponent(PATH)+"&rootDir="+encodeURIComponent(rootDir);
+}
+
+var message = ''
+switch(message) {
+	case '1':
+		alert("新建目录成功");
+		break;
+	case '2':
+		alert("新建目录失败");
+		break;
+
+}
+</script>
+</head>
+
+<body leftmargin="0" topmargin="0" >
+<#list fileList as file>
+<div class=imagespacer>
+			<TABLE border="0" cellpadding="0" cellspacing="2">
+			<TR>
+				<TD width=16 height=16><img src="html/common/images/icon/${file.icon}" width="16" height="16" ></TD>
+				<TD>
+				<#if file.isDir()>
+		<div  title="${file.name}" class=imageholder onDblClick="opendir('${file.name}')"  onclick="divClick(this,'${file.name}')">${file.name}</div>
+				<#else>
+		<div title="${file.name}" class=imageholder onDblClick=""  onclick="divClick(this,'${file.name}')">${file.name}</div>
+				</#if>
+				</TD>
+			</TR>
+			</TABLE>
+</div>
+</#list>
+</body>
+</html>

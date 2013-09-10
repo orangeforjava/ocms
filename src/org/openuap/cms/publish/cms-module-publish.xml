@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-publish.xml 3938 2010-10-27 03:25:16Z orangeforjava $
+-->
+<beans>
+	<import resource="cms-module-publish-dao.xml"/>
+	<!-- BIZ -->
+	<bean id="pathNameStrategy"
+		class="org.openuap.cms.util.file.impl.DatePathNameStrategy">
+	</bean>
+	<bean id="publishUpdateListener"
+		class="org.openuap.cms.publish.event.PublishUpdateListener">
+		<property name="extraPublishManager" ref="extraPublishManager"></property>
+		<property name="publishEngine" ref="publishEngine"></property>
+	</bean>
+	<bean id="org.openuap.cms.publish.reflection" class="org.openuap.cms.node.security.NodeResourceReflection">
+		<property name="nodeManager" ref="nodeManager"/>
+	</bean>
+	<bean id="extraPublishManager"
+		class="org.openuap.cms.publish.manager.impl.ExtraPublishManagerDBImpl">
+		<property name="extraPublishDao">
+			<ref bean="extraPublishDao" />
+		</property>
+		<property name="psnManager">
+			<ref bean="psnManager" />
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 收入水平 -->
+<directory>
+  <props>
+    <prop key="0">--请选择--</prop>
+	<prop key="1">1000以下</prop>
+	<prop key="2">1001~2000</prop>
+	<prop key="3">2001~3000</prop>
+	<prop key="4">3001~4000</prop>
+	<prop key="5">4001~5000</prop>
+	<prop key="6">5000以上</prop>	
+  </props>
+</directory>

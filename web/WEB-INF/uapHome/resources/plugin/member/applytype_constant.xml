@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <applytypes>
+    <applytype key="请选择">请您选择</applytype>
+    <applytype key="普通求职">普通求职</applytype>
+	<applytype key="应届毕业生">应届毕业生</applytype>
+	<applytype key="留学生">留学生</applytype>
+  </applytypes>
+</directory>

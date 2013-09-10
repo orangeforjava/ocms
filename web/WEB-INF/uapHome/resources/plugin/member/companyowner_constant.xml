@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <companyowners>
+    <companyowner key="请选择">请选择公司性质</companyowner>
+    <companyowner key="私营">私营</companyowner>
+	<companyowner key="国有">国有</companyowner>
+	<companyowner key="合资">合资</companyowner>
+	<companyowner key="股份">股份</companyowner>
+	<companyowner key="集体">集体</companyowner>
+  </companyowners>
+</directory>

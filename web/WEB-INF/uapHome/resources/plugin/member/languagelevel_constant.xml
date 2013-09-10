@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <languagelevels>
+    <language key="请选择">请您选择</language>
+    <languagelevel key="无">无</languagelevel>
+    <languagelevel key="四级">四级</languagelevel>
+	<languagelevel key="六级">六级</languagelevel>
+	<languagelevel key="八级">八级</languagelevel>
+	<languagelevel key="熟练">熟练</languagelevel>
+	<languagelevel key="精通">精通</languagelevel>
+	<languagelevel key="良好">良好</languagelevel>
+	<languagelevel key="一般">一般</languagelevel>
+  </languagelevels>
+</directory>

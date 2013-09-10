@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: SurveyArea.hbm.xml 3951 2010-11-02 10:13:17Z orangeforjava $
+-->
+<hibernate-mapping>
+	<class name="org.openuap.cms.survey.model.SurveyArea"
+		table="cms_survey_area">
+		<id name="id" type="long" column="id">
+			<generator class="sequence">
+				<param name="sequence">cms_survey_area_seq</param>
+			</generator>
+		</id>
+		<property name="areaName" type="string">
+			<column name="areaName" not-null="true" unique="true"
+				length="50">
+			</column>
+		</property>
+		<property name="defaultSurvey" type="long">
+			<column name="defaultSurvey"></column>
+		</property>
+		<property name="guid" type="string">
+			<column name="guid" length="200"></column>
+		</property>
+		<property name="description" type="text">
+			<column name="description"></column>
+		</property>
+		<property name="status" type="integer">
+			<column name="status" not-null="true" default="0"></column>
+		</property>
+		<property name="creationDate" type="long">
+			<column name="creationDate" not-null="true" default="0"></column>
+		</property>
+		
+		<property name="creationUserId" type="long">
+			<column name="creationUserId" not-null="true" default="0"></column>
+		</property>
+		<property name="creationUserName" type="long">
+			<column name="creationUserName" not-null="true"
+				default="0">
+			</column>
+		</property>
+		<property name="lastModifiedDate" type="long">
+			<column name="lastModifiedDate" not-null="true" default="0"></column>
+		</property>
+		<property name="lastModifiedUserId" type="long">
+			<column name="lastModifiedUserId" not-null="true" default="0"></column>
+		</property>
+		<property name="lastModifiedUserName" type="string">
+			<column name="lastModifiedUserName">
+			</column>
+		</property>
+		<!-- publish property -->
+		<property name="nodeId" type="long">
+			<column name="nodeId" not-null="true" default="0"></column>
+		</property>
+		<property name="publishMode" type="integer">
+			<column name="publishMode" not-null="true" default="0"></column>
+		</property>
+		<property name="publishDate" type="long">
+			<column name="publishDate" not-null="true" default="0"></column>
+		</property>
+		<property name="pos" type="integer">
+			<column name="pos" not-null="true" default="0"></column>
+		</property>
+		<property name="publishState" type="integer">
+			<column name="publishState" not-null="true" default="0"></column>
+		</property>
+		<property name="selfPsn" type="string">
+			<column name="selfPsn" />
+		</property>
+		<property name="selfPsnUrl" type="string">
+			<column name="selfPsnUrl" />
+		</property>
+		<property name="publishFileName" type="string">
+			<column name="publishFileName" />
+		</property>
+		<property name="tplType" type="integer">
+			<column name="tplType" not-null="true" default="0"></column>
+		</property>
+		<property name="tplPath" type="string">
+			<column name="tplPath" />
+		</property>
+		<property name="tplContent" type="text">
+			<column name="tplContent" />
+		</property>
+		<property name="portalUrl" type="string">
+			<column name="portalUrl" />
+		</property>
+
+	</class>
+</hibernate-mapping>

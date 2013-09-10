@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- created by Weiping Ju $Date: 2006/08/31 02:26:01 $-->
+<directory>
+	<object type="0" name="template" key="org.openuap.cms.tpl" title="系统模板管理">
+		<permission key="1" name="viewTpl">查看模版</permission>
+		<permission key="2" name="addTpl">添加模版</permission>
+		<permission key="3" name="editTpl">编辑模版</permission>
+		<permission key="4" name="deleteTpl">删除模版</permission>
+		<permission key="5" name="selTpl">选择模版</permission>
+		<permission key="6" name="changeTplName">变更模版名称</permission>
+		<permission key="7" name="uploadTpl">上传模版</permission>
+		<permission key="8" name="mkDir">建立模版目录</permission>
+		<permission key="9" name="copy">拷贝模版</permission>
+		<permission key="10" name="cut">剪切模版</permission>
+		<permission key="11" name="changeDirName">变更目录名称</permission>
+		<permission key="12" name="deleteDir">删除目录</permission>
+	</object>
+</directory>

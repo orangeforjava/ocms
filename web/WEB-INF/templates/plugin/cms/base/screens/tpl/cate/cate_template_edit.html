@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<HTML>
+<HEAD>
+<title>cate_template_edit</title>
+<base  href="${baseUrl}"/>	
+<link rel='stylesheet' type='text/css' href='html/css/style.css' />
+
+</HEAD>
+<BODY  topmargin=0 leftmargin=0 >
+<div id="CMSHelpMsgLayer" style="display:none">
+</div>
+<table width="100%"  border="0" align="center" cellspacing="1" class="table_border">
+  <tr> 
+    <td height="25" class="table_td1" style="padding-left:10px;">
+	<table width="100%"  border="0"  cellspacing="1"  >
+	<tr>
+	<td>当前位置：</td>
+	<td align="right">
+	
+	
+	</tr>
+	</table>	
+	</td>
+  </tr>
+</table>&nbsp;
+ 
+<script type="text/javascript" language="javascript">
+
+
+function doing(action)
+{
+	if(document.clientform.data_TplName.value=='') {
+		alert("");
+		return false;
+	}
+	var leftPos = (screen.availWidth-800) / 2
+	var topPos = (screen.availHeight-600) / 2 
+	switch(action) {
+		case 'editor':
+			 
+			break;
+		case 'upload':
+ 			
+			break;
+ 
+			
+		
+	}
+
+}
+
+function InputPicker(action, form, element)
+{
+	
+	switch(action) {
+		case 'color':
+			
+			break;
+		case 'date':
+			showCalendar(element, 'y-mm-dd');
+			break;
+		case 'upload':
+			
+			break;
+		case 'tpl':
+			with(form){
+
+				eval("var varlue1=" + element + ".value;")
+
+			}
+
+			var arr = showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=SelTplDialog&tpl=" + varlue1,"color","dialogWidth:428px;dialogHeight:286px;help:0;status:0;scroll:no");
+			break;	
+		case 'psn':
+			
+			break;
+	}
+
+	if(arr != null) {
+		with(form){
+
+			eval(element + ".value= '" +  arr + "'")
+
+		}
+
+
+	}
+
+}
+
+
+function psnSelect(psn,form, psn_element,url_element) {
+	var arr = showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=SelPsnDialog&psn=" + psn,"color","dialogWidth:428px;dialogHeight:266px;help:0;status:0;scroll:no");
+if(arr != null) {
+	var PSN = '{PSN:'+ arr;
+	var URL = '{PSN-URL:'+ arr;
+	with(form){
+
+	eval(psn_element + ".value= '" + PSN + "'")
+	eval(url_element + ".value= '" + URL + "'")
+
+	}
+}
+}//end function psnSelect
+function setPreview(){
+	var htmlstr = "";
+	if (imgPreview.src){
+		//
+		//alert(imgPreview.src);
+		var imgSrc=imgPreview.src;
+		
+		
+		
+		htmlstr += "<img id='PreviewImg' border=0 src='"+imgSrc+"' height=100 width=100 alt=''>";
+		//
+		tdPreview.innerHTML = htmlstr;
+		//
+
+	}
+}
+function SelectResource(form, element,category){
+    var arr;
+	var returnValue = showModalDialog("${baseUrl}admin/resourceSelect.jhtml?action=ResourceFrameset&category=" + category,category,"dialogWidth:558px;dialogHeight:446px;help:0;status:0;scroll:no");
+	//
+	if(returnValue != null&&returnValue!="") {
+	    arr="../resource/"+returnValue;
+		with(form){
+
+			eval(element + ".value= '" +  arr + "'")
+			//brandImage.value=arr;
+			imgPreview.src = '${baseUrl}util/automini.jhtml?src='+returnValue+'&pixel=100*100';
+		    setPreview();
+		}
+		//Img.src=arr;
+		//document.getElementById("brandImage").value=arr;
+		//document.getElementById("brandImage").src=arr;
+	}
+}//end function SelectResource
+
+</script>
+<#import "/spring.ftl" as spring />
+<table border="0" cellspacing="1" cellpadding="4" width="95%"  align="center" class="table_border">
+<form name='clientform' id="clientform" method='post' action='${baseUrl}/admin/cateTplEdit.jhtml' >
+    <input type="hidden" name="op" value="${op}"/>
+    <tr> 
+      <td colspan="4" class="table_header">新增分类模版</td>
+    </tr>
+	<tr> 
+      <td class="table_td1" width="100">模版分类名称 :</td>
+      <td class="table_td2" colspan="3">
+	  <#if tc?exists>
+	  	${tc.cateTitle}
+	  <#else>
+	  	分类模版根
+	  </#if>
+ 	  </td>
+    </tr> 
+    <tr> 
+      <td class="table_td1" width="100">模版名称(<font color="#FF0000">*</font>):</td>
+      <td class="table_td2" colspan="3">
+	  <@spring.bind "tpl.tplName"/>
+	  <input name='${spring.status.expression}' type='text' class='flat' id="${spring.status.expression}" tabindex='8'   size='80' value="${spring.status.value?default("")}">
+ 	  </td>
+    </tr>
+	<tr>
+		   <td class="table_td1"  >模版显示名(<font color="#FF0000">*</font>):</td>
+		   <td class="table_td2" colspan="3">
+		   <@spring.bind "tpl.tplTitle"/>
+		   <input name='${spring.status.expression}' id="${spring.status.expression}" type='text' size="80"    value="${spring.status.value?default("")}" >  
+		   </td>
+	</tr>
+<tr>
+<td class="table_td1"  >套用模板(<font color="#FF0000">*</font>):</td>
+     <td class="table_td2" colspan="3">
+	 <@spring.bind "tpl.tplPath"/>
+	 <input name='${spring.status.expression}' id="${spring.status.expression}" type='text' size="80" value='${spring.status.value?default("")}' >&nbsp;<input name="button5" type='button' tabindex='13' value='...' onClick="InputPicker('tpl',this.form,'${spring.status.expression}')"> 
+</td>
+<tr>
+      <td class="table_td1" >模版缩略图(<font color="#FF0000">*</font>):</td>
+      <td  class="table_td2" >
+	  <@spring.bind "tpl.tplImg"/>
+         <input name="${spring.status.expression}" readonly value="${spring.status.value?default("")}" type="text" class="flat" id="${spring.status.expression}" size="60"/>
+        &nbsp;<input name="file" type="button" value="选择" onClick="SelectResource(this.form,'${spring.status.expression}','img')"/>
+		</td>	
+		<td  class="table_td2"  colspan=2>
+		<div id=tdPreview style="height:100px;overflow: hidden;">&nbsp;</div>
+		</td>	
+</tr>
+
+<tr> 
+      <td class="table_td1">模版说明:</td>
+      <td class="table_td2" colspan="3">
+	  <@spring.bind "tpl.tplIntro"/>
+	  <TEXTAREA NAME="${spring.status.expression}" ROWS="8" COLS="45"><#compress>
+	  ${spring.status.value?default("")}
+	  </#compress></TEXTAREA> </td>
+</tr>
+    
+
+    <tr> 
+      <td colspan="4" class="table_td2" align=center>
+	  <input type='submit' name='submit' value=' 提 交 ' tabindex='13'  > 
+        &nbsp;&nbsp;&nbsp;&nbsp; <input type="reset" name="Submit" value=" 重 置 "></td>
+    </tr>
+</form>
+  </table>
+<img id="imgPreview" src="[@util.substr target=tpl.tplImg?default(' ') start=1/]" border=0 style="visibility:hidden" />
+</BODY>
+</HTML>

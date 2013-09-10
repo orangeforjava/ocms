@@ -1,0 +1,235 @@
+<#assign actionTitle="用户管理" />
+<#assign _TITLE_="用户管理" />
+<#assign actions=[
+{"action":"UserList","title":"用户管理","url":"${baseUrl}admin/user.jhtml?action=UserList","class":"view"},
+{"action":"","title":"添加用户","url":"${baseUrl}admin/userEdit.jhtml","class":"add"}
+
+]>
+
+<#include "/plugin/cms/common/includes/header.htm"/>
+
+<#import "./macros/pager-macros.html" as mypager />
+
+<link rel="stylesheet" type="text/css" media="all" href="/html/common/cal/calendar-blue2.css" title="system" />
+<script type="text/javascript" src="/html/common/cal/calendar.js"></script>
+<script type="text/javascript" src="/html/common/cal/calendar-zh.js"></script>
+<script type="text/javascript" src="/html/common/cal/calendar-setup.js"></script>
+
+<SCRIPT>
+
+/**
+* single process!
+**/
+function doing(action, userId) {
+	
+	switch(action) {
+		case 'edit':
+		{
+			//alert(userId);
+			document.location="${baseUrl}admin/userEdit.jhtml?mode=edit&userId="+userId;
+			alert('${baseUrl}admin/userEdit.jhtml?mode=edit&userId='+userId);
+			break;
+		}
+		case 'display_record':
+		{
+			document.location ="${baseUrl}admin/user.jhtml?action=UserList&pageNum=" + document.documentlist.offset.value;
+			break;
+		}
+	}	
+}
+
+
+
+</SCRIPT>
+
+<SCRIPT language=JavaScript>
+<!--
+function CheckAll(form)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall' && e.name !='copy')       e.checked = form.chkall.checked;
+   }
+  }
+
+//-->
+
+
+</script>
+<script>
+var mousemovecolor="#D4D4D4";
+var selectcolor ="#DDDDDD";
+var oldcolor;
+
+function GetRow(oElem)
+{
+	while (oElem)
+	{	//alert(oElem.tagName.toLowerCase())
+		if (oElem.tagName.toLowerCase() == "tr" || oElem.parentElement.tagName.toLowerCase() == "tbody")
+		    return oElem;
+		if (oElem.tagName.toLowerCase() == "table" || oElem.tagName.toLowerCase() == "th") return false;
+		oElem = oElem.parentElement;
+	}
+}
+/**
+* batch process!
+**/
+function going(form, o)
+{
+	
+}
+</script>
+<form action="" method="get">
+  <table cellpadding="0" cellspacing="0" width="100%"  border="0" class="toptable">
+    <tr>
+      <td  height="20" nowrap="nowrap" >显示:
+ 	<select name="FId" id="select2" onChange="doing('advanced_search', this.options[this.selectedIndex].value)">
+	  <#if state?default("")=="">
+	  	<option selected>所有用户</option>
+        <option value="1">所有已停用用户</option>
+        <option value="0">所有未停用用户</option>
+	  <#elseif state?default("")=="1">
+	  	<option >所有用户</option>
+        <option value="1" selected>所有已停用用户</option>
+        <option value="0">所有未停用用户</option>
+	  <#elseif state?default("")=="0">
+	  	<option>所有用户</option>
+        <option value="1">所有已停用用户</option>
+        <option value="0" selected>所有未停用用户</option>
+	  </#if>
+		  
+		        </select>按日期查询:
+        <INPUT TYPE="text" NAME="dTime"   id="dTime" onFocus="return Calendar.setup({
+        inputField     :    'dTime',
+        ifFormat       :    '%Y-%m-%d',
+        showsTime      :    false});" value="" >
+        <INPUT name="Go" TYPE="button" value="执行" onClick="doing('date_search')">
+      用户名查询: <INPUT TYPE="text" NAME="SearchKeywords" id="SearchKeywords"   value="">
+        <INPUT name="Go" TYPE="button"  value="执行" onClick="doing('keyword_search')">
+
+   </td>
+   
+   </tr>
+  </table>
+</form>
+<form method="post" action="admin/user.jhtml?action=UserList" name="documentlist" >
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"  class="table_border" >
+  <tbody>
+ 
+    <tr class="table_td2">
+      <td align="center" height=25></td>
+      <td align="center"><B>ID</B></td>
+      <td align="center"><B>排序</B></td>
+	  <td align="center"><B>登录名</B></td>
+	  <td align="center"><B>用户名</B></td>
+	  <td align="center"><B>类型</B></td>      
+      <td align="center"><B>状态</B></td>
+	  <td align="center"><B>产生日期</B></td>
+	  <td align="center"><B>上次登录日期</B></td>
+	  <td align="center"><B>登录次数</B></td>
+      <td colspan="5" align="center"><B>操作</B></td>
+  </tr>
+  <!--start-->
+<#list users as user>
+  <tr class="table_td1" id="${user.id?c}" onmouseover='this.style.backgroundColor="#FFFFFF"' onmouseout='this.style.backgroundColor=""' >
+      <td noWrap height=25> <input type='checkbox' name='pData' value='${user.id?c}' id="p_${user.id?c}" ></td>
+      <td align="center" noWrap   ><div class="subtitleholder">${user.id?c}</div></td>
+	  <td noWrap > ${user.pos?c}</td>
+	 <td   noWrap  style="cursor:hand" id="">
+<#compress>
+	  <div class="titleholder">
+	  &nbsp;&nbsp;
+	  <A href="javascript:void(0);" onClick="javascript:void(0);" class="o" style="cursor:hand"   oncontextmenu="javascript:void(0);" title="${user.name}">${user.name}</A>	  	  
+	  </div>
+</#compress>
+	  </td>
+	  
+	  <td align="center" noWrap>
+	  <div class="subtitleholder">
+	  ${user.title!''}
+	  </div>
+	  </td>
+	  <td align="center" noWrap  ><div class="subtitleholder">
+	  <#if user.type==16>
+	  管理员
+	  <#elseif user.type==32>
+	  系统用户
+	  <#elseif user.type==4096>
+	  会员
+	  </#if>
+	  </div></td>
+	  <td align="center" noWrap  ><div class="subtitleholder">
+	  <#if user.status==0>
+	  正常
+	  <#elseif user.status==1>
+	  禁用
+	  <#elseif user.status==2>
+	  锁定
+	  <#elseif user.status==4>
+	  过期
+	  <#elseif user.status==8>
+	  密码过期
+	  <#elseif user.status==-1>
+	  待审核
+	  </#if>
+	  </div></td>
+      <td align="center" noWrap ><div class="timeholder">${(action.getDate(user.creationDate?default(0)))?string("yyyy-MM-dd HH:mm")}</div></td>
+	  <td align="center" noWrap ><div class="timeholder">${(action.getDate(user.lastLoginDate?default(0)))?string("yyyy-MM-dd HH:mm")}</div></td>
+      <td align="center" noWrap  >
+	  <div class="subtitleholder">
+	  ${user.loginTimes?default(0)}
+	  </div>
+	  </td>
+     <td colspan="5" align="center" noWrap>
+	 <#assign roleCount=roleManager.getUserRoleCount(user.id)/>
+	  <A HREF="${baseUrl}admin/user.jhtml?action=ViewUserPermission2&userId=${user.id?c}" onClick="javascript:void(0);">最终权限</A>&nbsp;
+	  <A HREF="${baseUrl}admin/user.jhtml?action=UserSelfPermission2&userId=${user.id?c}" onClick="javascript:void(0);">本身权限</A>&nbsp;
+	  <A HREF="${baseUrl}admin/user.jhtml?action=ViewUserRoles&userId=${user.id?c}" onClick="javascript:void(0);">权限组(<font color=red>${roleCount}</font>)</A>&nbsp;
+	  <A HREF="${baseUrl}admin/userEdit.jhtml?mode=edit&userId=${user.id?c}" onClick="javascript:void(0);">编辑</A>&nbsp;
+	  <A HREF="${baseUrl}admin/user.jhtml?action=Delete&userId=${user.id?c}" onClick="return confirm('确认删除吗?')">删除</A>
+	  </td>
+ </tr>
+ </#list>
+ <!--end-->
+    <tr class="Tablelistbg">
+      <td colspan="16" align="left" bgcolor="#F5F5F5"> 
+      <table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align=left>
+            <input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  >
+              <label for="chkall" >全选</label>&nbsp;&nbsp;
+
+			 <select name="actionMap" id="actionMap" >
+            	 <option value="del">删除</option>
+			 </select>
+
+			  <input type="button" value="执行" class=button onClick="going(this.form,actionMap.options[actionMap.selectedIndex].value)">
+
+            </td>
+			<td height="20" align="right" nowrap="nowrap"> <INPUT name="go_display" TYPE="button" value="显示:" onClick="doing('display_record')" ></td>
+	  <td   height="20" nowrap="nowrap" align="right"  width=80> &nbsp;&nbsp;<INPUT TYPE="text" NAME="offset" size=1 value="${pageNum}"> 条记录
+
+   </td>
+          </tr>
+        </table></td>
+    </tr>
+  
+
+ <#if pb.pages() gt 1>
+  <tr >
+    <td colspan="16" height=25 bgcolor="#FFFFFF">
+	<table border=0 align="right" width="100%">
+	<tr>
+	<td align=right>
+	<#assign pageUrl=baseUrl+"admin/user.jhtml?action=UserList&pageNum="+pageNum+"&page="/>
+	<@mypager.pageBuilder pb=pb baseUrl=pageUrl closeUrl=""/>
+	</td>
+	</tr>
+	</table>
+	 </td>
+  </tr>
+  </#if>
+  </tbody>
+</table>
+</form>
+<br/>
+<#include "/plugin/cms/base/includes/footer.html">

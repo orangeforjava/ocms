@@ -1,0 +1,110 @@
+<#global baseUrl=helper.getBaseURL()>
+<html>
+<head>
+<#include "/includes/admin/meta.html"/>
+<title>resource</title>
+<base  href="${baseUrl}"/>
+<script type="text/javascript" src="${baseUrl}/html/tree/xtree.js"></script>
+<script type="text/javascript" src="${baseUrl}/html/tree/xmlextras.js"></script>
+<script type="text/javascript" src="${baseUrl}/html/tree/xloadtree.js"></script>
+<link type="text/css" rel="stylesheet" href="${baseUrl}/html/tree/xtree.css" />
+<LINK href="html/menu/skins/officexp/officexp.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="html/menu/poslib.js"></script>
+<script type="text/javascript" src="html/menu/scrollbutton.js"></script>
+<script type="text/javascript" src="html/menu/menu4.js"></script>
+<style type="text/css">
+
+body {
+	background:	white;
+	color:		black;
+}
+
+</style>
+<script type="text/javascript">
+
+cssFile='${baseUrl}/html/menu/skins/officexp/officexp.css';
+//
+Menu.prototype.cssFile = cssFile;
+function going(action, cId) {
+	switch(action) {
+		
+		case 'create_cate':
+		{
+			parent.panelWork.location = '${baseUrl}admin/templateCateEdit.jhtml?op=add&parentId='+cId;
+
+			break;
+		}
+	}
+}//end function going
+
+function rootGo()
+{
+	parent.panelWork.location="${baseUrl}admin/template.jhtml?action=List";
+	//return false;
+
+}
+
+function rightMenu(cId, extra) {
+	var left, top;
+	left = window.event.screenX;
+	top = window.event.screenY;
+	//
+	if(cId == 'root') {
+		var toolMenu = new Menu();
+		//toolMenu.width = 80;
+		toolMenu.add(new MenuItem('新建根分类','javascript:going("create_cate","0")'));
+
+		//menudata.innerHTML = toolMenu
+
+		elo=window.event.srcElement;
+		toolMenu.invalidate();
+		toolMenu.show( left, top );
+	}else{
+		var toolMenu = new Menu();
+		//toolMenu.width = 80;
+		toolMenu.add(new MenuItem('新建子分类','javascript:going("create_cate",'+cId+')'));
+
+		//menudata.innerHTML = toolMenu
+
+		elo=window.event.srcElement;
+		toolMenu.invalidate();
+		toolMenu.show( left, top )
+	}
+
+}
+</script>
+</head>
+
+<body ondragstart="window.event.returnValue=false" oncontextmenu="window.event.returnValue=false" onselectstart="event.returnValue=false">
+<script type="text/javascript">
+/// XP Look
+webFXTreeConfig.rootIcon		= "${baseUrl}/html/tree/images/xp/folder.png";
+webFXTreeConfig.openRootIcon	= "${baseUrl}/html/tree/images/xp/openfolder.png";
+webFXTreeConfig.folderIcon		= "${baseUrl}/html/tree/images/xp/folder.png";
+webFXTreeConfig.openFolderIcon	= "${baseUrl}/html/tree/images/xp/openfolder.png";
+webFXTreeConfig.fileIcon		= "${baseUrl}/html/tree/images/xp/folder.png";
+webFXTreeConfig.lMinusIcon		= "${baseUrl}/html/tree/images/xp/Lminus.png";
+webFXTreeConfig.lPlusIcon		= "${baseUrl}/html/tree/images/xp/Lplus.png";
+webFXTreeConfig.tMinusIcon		= "${baseUrl}/html/tree/images/xp/Tminus.png";
+webFXTreeConfig.tPlusIcon		= "${baseUrl}/html/tree/images/xp/Tplus.png";
+webFXTreeConfig.iIcon			= "${baseUrl}/html/tree/images/xp/I.png";
+webFXTreeConfig.lIcon			= "${baseUrl}/html/tree/images/xp/L.png";
+webFXTreeConfig.tIcon			= "${baseUrl}/html/tree/images/xp/T.png";
+webFXTreeConfig.blankIcon		= "${baseUrl}/html/tree/images/blank.png";
+var rti;
+
+//
+var tree=new WebFXTree("模版分类根","javascript:void(0)");
+	<#list templateCates as tplCate>
+	<#if tcManager.getChildCategoryCount(tplCate.id)==0>
+	tree.add(new WebFXTreeItem("${tplCate.cateTitle}[${tplCate.id}]","${baseUrl}admin/templateCateEdit.jhtml?op=edit&tplCateId=${tplCate.id}&parentId=${tplCate.parentId}", "panelWork", "${tplCate.id}"));
+	<#else>
+	tree.add(new WebFXLoadTreeItem("${tplCate.cateTitle}[${tplCate.id}]", "${baseUrl}admin/template.jhtml?action=TplCateEditXml&parentId=${tplCate.id}", "${baseUrl}admin/templateCateEdit.jhtml?op=edit&tplCateId=${tplCate.id}&parentId=${tplCate.parentId}", "panelWork", "${tplCate.id}"));
+	</#if>
+	</#list>
+//
+document.write(tree);
+</script>
+<div id="menudata"></div>
+</body>
+</html>

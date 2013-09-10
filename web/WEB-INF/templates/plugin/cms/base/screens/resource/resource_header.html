@@ -1,0 +1,118 @@
+<#import "/plugin/cms/base/macros/node-macros.html" as mynode />
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>resource header</title>
+<base  href="${baseUrl}"/>
+
+<link rel='stylesheet' type='text/css' href='html/plugin/cms/base/css/style.css'/>
+<script>
+function returnImg(url)
+{
+
+parent.mainFrame.location = parent.mainFrame.location;
+}
+
+function returnInfo(a, b,c,d) {
+	parent.mainFrame.location = parent.mainFrame.location;
+
+}
+
+function loadBarUnDisplay() {
+	parent.mainFrame.loadBarUnDisplay();
+	document.form.Submit1.disabled = false;
+	parent.mainFrame.refreshMe();
+}
+</script>
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+-->
+</style>
+</head>
+<body>
+<div id="msviLocalToolbar">
+  <table border="0" cellspacing="0" >
+          <tr>
+            <td width="80" >&nbsp;&nbsp;按结点查看:</td>
+<td>
+<select name="Category" id="Category">
+<option value="img">图片</option>
+<option value="attach">附件</option>
+<option value="sattach">受控附件</option>
+<option value="flash">Flash</option>
+ </select>
+</td>
+<td>
+<select name="haveLinks" id="haveLinks">
+<option value="2">所有</option>
+<option value="1">有引用</option>
+<option value="0">无引用</option>
+ </select>
+</td>
+            <td >
+		<select name="selectNode"  id="selectNode" style="width:250" onChange="if(this.options[this.selectedIndex].value != ''){
+parent.mainFrame.location=('admin/resource.jhtml?action=ResourceList&nodeId='+this.options[this.selectedIndex].value + '&category=' + Category.options[Category.selectedIndex].value + '&haveLinks=' + haveLinks.options[haveLinks.selectedIndex].value);
+} ">            <option value="0">查看所有</option>
+<#if node?exists>
+<#assign selId=node.nodeId?default(0)/>
+<#else>
+<#assign selId=0/>
+</#if>
+			<@mynode.showNodesSel nodeManager=nodeManager selId=selId/>
+		</select>
+
+			</td>
+            <td>
+
+<script>
+var action=new Array( "go")
+var tooltip=new Array(  "Go")
+
+var s=
+'     ' +
+'    <style>' +
+'    .Utoolbutton{border:1 double;border-color:#F1F1F1 #F1F1F1 #F1F1F1 #F1F1F1; background:#F1F1F1}' +
+'    .Dtoolbutton{border:1 double;border-color:#FFFFFF #999999 #999999 #FFFFFF; background:threedface}' +
+'    .Ctoolbutton{border:1 double;border-color:#999999 #FFFFFF #FFFFFF #999999; background:threedface}' +
+'    </style>' +
+'    <table border=0 cellPadding=0 cellSpacing=0 ><tbody>' +
+'      <tr><td colspan="2">';
+for (var i=0;i<action.length;i++) {
+    s+='<img width="20" height="20" src="${baseUrl}/html/common/images/' + action[i] + '.gif" class="Utoolbutton" onmouseover="this.className=\'Dtoolbutton\';" onmouseout="this.className=\'Utoolbutton\';" onclick="this.className=\'Ctoolbutton\';'
+     if(i==0) s+= "parent.mainFrame.location = '${baseUrl}/admin/resource.jhtml?action=ResourceList&nodeId='+selectNode.options[selectNode.selectedIndex].value + '&category=' + Category.options[Category.selectedIndex].value + '&haveLinks=' + haveLinks.options[haveLinks.selectedIndex].value;"
+	s+='" title="' + tooltip[i] + '" hspace="2" vspace="0">'
+}
+
+s+=
+'      </td></tr></table>' ;
+
+document.write(s)
+</script>
+
+
+
+			</td>
+			 <form  action="admin/upload.jhtml?action=UploadFile&mode=picker" method="post" enctype="multipart/form-data" name="form" target="operation" onSubmit="this.Submit1.disabled=true;">
+			<td align="right" width="350"> <input name="uploadFile" type="file" id="uploadFile" >
+                   &nbsp;&nbsp;<input type="submit" name="Submit1" value="上传" onClick="document.form.NodeID.value = selectNode.options[selectNode.selectedIndex].value; document.form.category.value=Category.options[Category.selectedIndex].value ;parent.mainFrame.loadBarDisplay();">  
+				   <input type="hidden" name="changeName" value="1"    id="changeName4">
+				   <input type="hidden" name="type"  id="type" value="0">
+				   <input type="hidden" name="category"  id="category" value="0">
+				   <input type="hidden" name="nodeId"  id="NodeID">
+             </td>
+			</form>
+          </tr>
+        </table>
+</div>
+<iframe name=operation src="" frameborder=0 class=button style="display:none"> </iframe>
+</body>
+</html>

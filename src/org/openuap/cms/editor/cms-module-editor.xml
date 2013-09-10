@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-editor.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<beans>
+	<bean id="editorFreemarkerContentFilter"
+		class="org.openuap.cms.editor.engine.FckeditorFreeMarkerEngineContentFilter">
+		<property name="fckeditorMacro">
+			<ref bean="fckeditorMacro" />
+		</property>
+	</bean>
+	<bean id="fckeditorMacro"
+		class="org.openuap.cms.editor.macros.support.DefaultFckeditorMacro">
+	</bean>
+</beans>

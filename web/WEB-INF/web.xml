@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+	<display-name>OpenUap CMS v4 Runtime Web</display-name>
+
+	<context-param>
+		<param-name>bootContextConfigLocation</param-name>
+		<param-value>classpath:/bootstrapContext.xml</param-value>
+		<description>Runtime BootStrap context</description>
+	</context-param>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:/runtime.xml</param-value>
+	</context-param>
+	<!-- URLRewriteFilter -->
+	<!--
+		<filter> <filter-name>UrlRewriteFilter</filter-name> <filter-class>
+		org.tuckey.web.filters.urlrewrite.UrlRewriteFilter </filter-class>
+		<init-param> <param-name>logLevel</param-name>
+		<param-value>DEBUG</param-value> </init-param> <init-param>
+		<param-name>confReloadCheckInterval</param-name>
+		<param-value>0</param-value> </init-param> </filter> <filter-mapping>
+		<filter-name>UrlRewriteFilter</filter-name>
+		<url-pattern>/*</url-pattern> </filter-mapping>
+	-->
+	<!-- /URLRewriteFilter -->
+	<listener>
+		<listener-class>
+			org.openuap.runtime.setup.BaseConfigurationListener
+		</listener-class>
+	</listener>
+	<listener>
+		<listener-class>
+			org.openuap.runtime.setup.BaseContextLoaderListener
+		</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>runtime</servlet-name>
+		<servlet-class>
+			org.openuap.runtime.setup.spring.BootstrappedDispatcherServlet
+		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:/runtime-web.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>runtime</servlet-name>
+		<url-pattern>*.htm</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>runtime</servlet-name>
+		<url-pattern>*.jhtml</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>runtime</servlet-name>
+		<url-pattern>/api/uc.php</url-pattern>
+	</servlet-mapping>
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/404.jsp</location>
+
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/403.html</location>
+	</error-page>
+</web-app>

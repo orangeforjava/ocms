@@ -1,0 +1,17 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>模板管理(编辑)-${decodeTargetFile}</title>
+<base  href="${baseUrl}"/>
+</head>
+<frameset rows="39,0,*" frameborder="NO" border="0" framespacing="0">
+  <frame src="${baseUrl}admin/templateEdit.jhtml?action=EditorHeader&path=${path}&targetFile=${targetFile}&nodeId=${nodeId}&indexId=${indexId?default(0)}&mode=${mode}&tpl=${tpl}" name="topFrame" scrolling="no" noresize >
+  <frame src="" name="actionFrame" scrolling="no" noresize >
+  <frame src="${baseUrl}admin/templateEdit.jhtml?action=Edit&path=${path}&targetFile=${targetFile}&nodeId=${nodeId}&indexId=${indexId?default(0)}&mode=${mode}&tpl=${tpl}" name="mainFrame" scrolling="auto">
+</frameset>
+<noframes><body>
+</body></noframes>
+</html>

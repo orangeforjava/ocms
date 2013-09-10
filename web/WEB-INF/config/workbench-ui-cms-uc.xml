@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench>
+
+	<tab id="tab-setting" name="设置">
+		<sidebar id="uc-setting" name="UC通行证设置" pos="010" plugin="org.openuap.cms">			
+			<item id="uc-client-setting" name="UC通行证设置" url="admin/uc/config.jhtml"	description="UC通行证设置"/>
+		</sidebar>
+			
+	</tab>	
+</workbench>

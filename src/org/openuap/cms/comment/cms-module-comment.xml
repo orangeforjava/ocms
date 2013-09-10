@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<description>评论模块！</description>
+	<import resource="cms-module-comment-orm.xml" />
+	<import resource="cms-module-comment-orm-oracle.xml" />
+	
+	<!--
+		**DAO**
+	-->
+	<!--comment-->
+	<bean id="commentDaoImpl" class="org.openuap.cms.comment.dao.hibernate.CommentDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="commentDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target" ref="commentDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<!--
+		**MANAGER**
+	-->
+	<bean id="commentManager" class="org.openuap.cms.comment.manager.impl.CommentManagerImpl">
+		<property name="commentDao">
+			<ref bean="commentDao" />
+		</property>
+	</bean>
+	<!--
+		**SERVICE**
+	-->
+	<bean id="commentService" class="org.openuap.cms.comment.service.impl.CommentServiceImpl">
+		<property name="commentManager">
+			<ref bean="commentManager" />
+		</property>
+		<!--
+			<property name="dynamicContentManager"> <ref
+			bean="dynamicContentManager" /> </property>
+		-->
+	</bean>
+	<bean id="commentAjaxService" class="org.openuap.base.util.AjaxServiceMapping">
+		<property name="serviceMapping">
+			<map>
+				<entry key="commentService">
+					<ref local="commentService" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="commentFreeMarkerEngineContentFilter"
+		class="org.openuap.cms.comment.engine.filter.CommentFreeMarkerEngineContentFilter">
+		<property name="commentMacroEngine" ref="commentMacroEngine" />
+	</bean>
+	<bean id="commentMacroEngine"
+		class="org.openuap.cms.comment.engine.support.DefaultCommentMacroEngine">
+		<property name="commentManager">
+			<ref bean="commentManager" />
+		</property>
+	</bean>
+</beans>

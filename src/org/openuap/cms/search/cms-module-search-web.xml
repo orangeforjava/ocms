@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="searchHandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/contentIndex.jhtml">
+					<ref local="contentIndexAction" />
+				</entry>
+				<entry key="/plugin/search.jhtml">
+					<ref local="luceneSearchAction" />
+				</entry>
+				<entry key="/admin/search.jhtml">
+					<ref local="adminFullTextSearchAction" />
+				</entry>
+				<entry key="/admin/dbSearch.jhtml">
+					<ref local="dbSearchAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="luceneSearchAction"
+		class="org.openuap.cms.search.action.SearchAction">
+		<property name="searchEngine">
+			<ref bean="luceneSearchEngine" />
+		</property>
+	</bean>
+	<bean id="adminFullTextSearchAction"
+		class="org.openuap.cms.search.action.admin.SearchAction">
+		<property name="searchEngine">
+			<ref bean="luceneSearchEngine" />
+		</property>
+		<property name="contentTableManager">
+			<ref bean="contentTableManager" />
+		</property>
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+	</bean>
+	<bean id="dbSearchAction"
+		class="org.openuap.cms.search.action.SearchAction">
+		<property name="searchEngine">
+			<ref bean="dbSearchEngine" />
+		</property>
+	</bean>
+	<bean id="contentIndexAction"
+		class="org.openuap.cms.search.action.admin.IndexAction">
+		<property name="indexEngine">
+			<ref bean="indexEngine" />
+		</property>
+		<property name="contentTableManager">
+			<ref bean="contentTableManager" />
+		</property>
+		<property name="rsemHelper">
+			<ref bean="rsemHelper" />
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,12 @@
+<#macro check command="CompatibleBrowser">
+<#compress>
+	<#local rs=fckeditorMacro.checkTag(request,command)/>
+	${rs!''}
+</#compress>
+</#macro>
+<#macro editor instanceName value="" params={} basePath="" type="cms_fckeditor" toolbarSet="Default" width="100%" height="200"  >
+<#compress>
+	<#local rs=fckeditorMacro.editorTag(request,instanceName,width,height,toolbarSet,value,basePath,type,params)/>
+	${rs!''}
+</#compress>
+</#macro>

@@ -1,0 +1,194 @@
+[#assign actionTitle="编辑敏感词" /]
+[#assign _TITLE_="编辑敏感词" /]
+[#assign actions=[{"action":"","title":"敏感词列表","url":"${baseUrl}admin/badwords.jhtml"},
+{"action":"","title":"添加词条","url":"javaScript:add()"}
+]]
+[#include "/plugin/cms/common/includes/header.htm"/]
+
+		<script type="text/javaScript" charset="UTF-8" language="javaScript">
+			
+			
+			function add(){
+				document.location='${baseUrl}admin/badwords.jhtml?action=Add';
+			}
+		</script>
+	
+		<FORM ACTION='${baseUrl}admin/badwords.jhtml' METHOD='post' border=0
+			onsubmit="return checkForm();">
+			<input type="hidden" name="action" value="Save" />
+			<table border=0 cellspacing=1 cellpadding=4 WIDTH='100%'
+				class="maintable" align="center">
+				<TR>
+					<TD COLSPAN=2 class="table_td1">
+						<font color=#0000FF><B>编辑</B> - ${badwords.title!''} </font>
+					</TD>
+				</TR>
+				<tr class="table_td2">
+					<td width=20%>
+						<b>标题</b>
+
+					</td>
+					<td>
+						<INPUT TYPE='text' NAME='title' SIZE=83 MAXLENGTH=40
+							VALUE="${badwords.title!''}" class="flat">
+					</td>
+				</tr>
+				<tr class="table_td2">
+					<td width=20%>
+						<b>范围</b>
+					</td>
+					<td>
+						<SELECT NAME='scope' SIZE=1 class=selStyle>
+							[#if badwords.scope==-1]
+							<OPTION VALUE='-1' SELECTED>
+								所有
+							</OPTION>
+							<OPTION VALUE='1'>
+								评论
+							</OPTION>
+							<OPTION VALUE='2'>
+								注册
+							</OPTION>
+							<OPTION VALUE='3'>
+								签名
+							</OPTION>
+							[#elseif badwords.scope==1]
+							<OPTION VALUE='-1'>
+								所有
+							</OPTION>
+							<OPTION VALUE='1' SELECTED>
+								评论
+							</OPTION>
+							<OPTION VALUE='2'>
+								注册
+							</OPTION>
+							<OPTION VALUE='3'>
+								签名
+							</OPTION>
+							[#elseif badwords.scope==2]
+							<OPTION VALUE='-1'>
+								所有
+							</OPTION>
+							<OPTION VALUE='1'>
+								评论
+							</OPTION>
+							<OPTION VALUE='2' SELECTED>
+								注册
+							</OPTION>
+							<OPTION VALUE='3'>
+								签名
+							</OPTION>
+							[#elseif badwords.scope==3]
+							<OPTION VALUE='-1'>
+								所有
+							</OPTION>
+							<OPTION VALUE='1'>
+								评论
+							</OPTION>
+							<OPTION VALUE='2'>
+								注册
+							</OPTION>
+							<OPTION VALUE='3' SELECTED>
+								签名
+							</OPTION>
+							[/#if]
+						</SELECT>
+					</td>
+				</tr>
+				<tr class="table_td2">
+					<td width=20%>
+						<b>排序</b>
+					</td>
+					<td>
+						&nbsp;
+						<INPUT TYPE='text' NAME='pos' SIZE=6 MAXLENGTH=4
+							VALUE="${badwords.pos!'0'}" class="flat">
+					</td>
+				</tr>
+				<tr class="table_td2">
+					<td width=20%>
+						<b>类型</b>
+					</td>
+					<td>
+						<SELECT NAME='type' SIZE=1 class=selStyle>
+							[#if badwords.type==0]
+							<OPTION VALUE='0' SELECTED>
+								套红
+							</OPTION>
+							<OPTION VALUE='1'>
+								替换
+							</OPTION>
+							[#elseif badwords.type==1]
+							<OPTION VALUE='0'>
+								套红
+							</OPTION>
+							<OPTION VALUE='1' SELECTED>
+								替换
+							</OPTION>
+							[/#if]
+						</SELECT>
+					</td>
+				</tr>
+				<tr class="table_td2">
+					<td width=20%>
+						<b>启用</b>
+					</td>
+					<td>
+						<INPUT TYPE='checkbox' NAME='status' value="0" [#if badwords.status==0]CHECKED [/#if]/> </td>
+				</tr>
+				<tr class="table_td2">
+					<td width=20% valign=top>
+						<b>敏感词</b>多个敏感词用";"分割
+					</td>
+					<td>
+						<textarea NAME='find' cols=83 rows=8 WRAP='VIRTUAL'>${badwords.find!''}</textarea>
+					</td>
+				</tr>
+
+				<tr class="table_td2">
+					<td width=20% valign=top>
+						<b>替换</b>
+					</td>
+					<td>
+						<textarea NAME='replacement' cols=83 rows=3 WRAP='VIRTUAL'>${badwords.replacement!''}</textarea>
+					</td>
+				</tr>
+				
+			</TABLE>
+			<div align="center">
+			<INPUT TYPE='hidden' NAME="id" VALUE='${badwords.id!''}'/>
+			<INPUT TYPE='submit' NAME="action_save" VALUE=' 保 存 ' class=btnStyle/>
+			</div>
+		</FORM>
+		<script language=JavaScript type="text/javaScript">
+		<!--
+		
+		function checkForm()
+		{	
+		    //
+		    var title=$F("title");
+		    var find=$F("find");
+		    if(title==null||title==""){
+		    	alert('the badwords title should not be empty!');
+		    	$("title").focus();
+		    	return false;
+		    }
+		    if(find==null||find==""){
+		    	alert('the badwords value should not be empty!');
+		    	$("find").focus();
+		    	return false;
+		    }
+			return true;
+		}
+		function checkReplyDuration(){
+			var duration=$('post.reply_duration').value;
+			//alert(duration);
+			duration=duration.toString();
+			if(duration==null||duration==""||!LogicalValue(duration,'integer')){
+			    alert('Reply Duration value must a valid integer!');
+				$('post.reply_duration').focus();
+			}
+		}
+		//-->
+		</script>
+[#include "/plugin/cms/common/includes/footer.htm"/]

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <roles>
+    <role key="请选择">请在以下列表中选择</role>
+    <role key="高级">高级</role>
+	<role key="中级">中级</role>
+	<role key="初级">初级</role>
+	<role key="暂无">暂无</role>
+	<role key="其它">其它</role>
+  </roles>
+</directory>

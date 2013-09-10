@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tree>
+  <#list folders as folder>
+  <#if !folder.isExistChildren()>
+  	<tree text="${folder.name}" action="${helper.getBaseURL()}/admin/template.jhtml?action=List&amp;path=${folder.encodedPath}" target="main" cId="${folder.name}"/>
+  <#else>
+  	<tree text="${folder.name}" action="${helper.getBaseURL()}/admin/template.jhtml?action=List&amp;path=${folder.encodedPath}" src="${helper.getBaseURL()}/admin/template.jhtml?action=TplXml&amp;path=${folder.encodedPath}" target="main" cId="${folder.path}"/>
+  </#if>
+  </#list>
+</tree>

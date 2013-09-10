@@ -1,0 +1,10 @@
+[#if ci??]
+${callback}({"response":"success","commentNum":"${ci['commentNum']?c}",
+"dits":"${ci['dits']?c}",
+"hitsTotal":"${ci['hitsTotal']?c}","hitsWeek":"${ci['hitsWeek']?c}",
+"hitsMonth":"${ci['hitsMonth']?c}","hitsToday":"${ci['hitsToday']?c}",
+"downs":"${ci['downs']?c}"
+})
+[#else]
+${callback}({"response":"error"})
+[/#if]

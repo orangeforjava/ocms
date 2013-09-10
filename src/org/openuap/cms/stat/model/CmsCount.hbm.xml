@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+    $Id: CmsCount.hbm.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.stat.model">
+    <class name="CmsCount" table="cms_count">
+        <id name="indexId" type="long">
+            <column name="indexId" />
+            <generator class="assigned" />
+        </id>
+        <property name="contentId" type="long">
+            <column name="contentId" not-null="true" />
+        </property>
+        <property name="nodeId" type="long">
+            <column name="nodeId" not-null="true" />
+        </property>
+        <property name="tableId" type="long">
+            <column name="tableId" not-null="true" />
+        </property>
+        <property name="hitsTotal" type="long">
+            <column name="hitsTotal" not-null="true" />
+        </property>
+        <property name="hitsToday" type="long">
+            <column name="hitsToday" not-null="true" />
+        </property>
+        <property name="hitsWeek" type="long">
+            <column name="hitsWeek" not-null="true" />
+        </property>
+        <property name="hitsMonth" type="long">
+            <column name="hitsMonth" not-null="true" />
+        </property>
+        <property name="commentNum" type="long">
+            <column name="commentNum" not-null="true" />
+        </property>
+        <property name="hitsDate" type="long">
+            <column name="hitsDate" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

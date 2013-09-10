@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-comment-orm.xml 3950 2010-11-02 09:10:01Z orangeforjava $
+-->
+<beans>
+	<bean id="comment-Mapping"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<property name="mappings">
+			<list>
+				<value>
+					org/openuap/cms/comment/model/CommentThread.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/comment/model/CommentPost.hbm.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+</beans>

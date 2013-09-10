@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: Survey.hbm.xml 3951 2010-11-02 10:13:17Z orangeforjava $
+-->
+<hibernate-mapping>
+	<class name="org.openuap.cms.survey.model.Survey"
+		table="cms_survey_survey">
+		<id name="surveyId" type="long" column="surveyId">
+			<generator class="sequence">
+				<param name="sequence">cms_survey_survey_seq</param>
+			</generator>
+		</id>
+		<property name="surveyName" type="string" column="surveyName"
+			length="200" not-null="true" />
+		<property name="surveyCreationDate" type="long"
+			column="surveyCreationDate" />
+		<property name="surveyType" type="integer" column="surveyType" />
+		<property name="surveyDescription" type="text"
+			column="surveyDescription" />
+		<property name="surveyStatus" type="integer"
+			column="surveyStatus" />
+		<property name="deleted" type="integer" column="deleted"
+			length="1" />
+		<property name="surveyGuid" type="string" column="surveyGuid" />
+		<property name="creationUserId" type="long"
+			column="creationUserId" />
+		<property name="creationUserName" type="string"
+			column="creationUserName" />
+		<!-- associations -->
+		<set name="questions" order-by="questionPos asc" lazy="false"
+			inverse="false" cascade="none" batch-size="10">
+			<key>
+				<column name="surveyId" />
+			</key>
+			<one-to-many class="org.openuap.cms.survey.model.Question" />
+		</set>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+<!--
+body {
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+-->
+</style>
+<title>user permission</title>
+<base  href="${helper.getBaseURL()}"/>
+<link rel='stylesheet' type="text/css" href="html/plugin/user/css/style.css"/>
+<script type="text/javascript" src="html/common/tabpane/js/tabpane.js"></script>
+<link type="text/css" rel="StyleSheet" href="html/common/tabpane/css/luna/tab.css"/>
+<style type="text/css">
+<!--
+body,tr,td {
+	color: #000000;
+	font-size: 11px; font-family: Tahoma, Arial;
+
+}
+div.imagespacer {
+	width:150;
+	height:18;
+	text-align:left;
+	float: left;
+	font: 10pt verdana;
+	margin: 0px;
+	overflow: hidden;
+}
+div.imageholder {
+	margin: 0px;
+	padding: 0px;
+	cursor: default;
+}
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 60;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.flagTrue{
+	border:1px solid #009900;
+	width:15;
+	text-align:center;
+}
+div.flagFalse{
+	border:1px solid #FF0000;
+	width:15;
+	text-align:center;
+}
+-->
+</style>
+<SCRIPT language=JavaScript>
+<!--
+function CheckAll(form,elementName)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];       
+    if (e.name ==elementName)
+		e.checked = form.chkall.checked;
+   }
+  }
+
+//-->
+
+
+</script>
+<script language="javascript">
+lastDiv = null;
+function highLight(theDiv) {
+	if (lastDiv) {
+		lastDiv.style.border = 'solid 1px #F1F1F1';
+		lastDiv.style.background = '#F1F1F1';
+	}
+	//alert(theDiv);
+	lastDiv = theDiv;
+	theDiv.style.border = ' solid 1px #999';
+	theDiv.style.background = '#CCC';
+
+
+}
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	if (document.getElementById)
+		t = document.getElementById(tbl);
+	else
+		t = document.all(tbl);
+	if (t == null) return;
+	if (t.getElementsByTagName)
+		d = t.getElementsByTagName("TD");
+	else
+		d = t.all.tags("TD");
+	if (d == null) return;
+	if (d.length <= idx) return;
+	d[idx].className = cls;
+}
+function doing(action,param)
+{
+	switch(action) {
+		case 'viewUserSelfPerm':
+		{
+			parent.mainFrame.location="${baseUrl}/admin/user.jhtml?action=UserSelfPermission&userId=${user.id?c}";
+			break;
+		}
+		case 'viewUserPerm':
+		{
+			parent.mainFrame.location="${baseUrl}/admin/user.jhtml?action=ViewUserPermission&userId=${user.id?c}";
+			break;
+		}		
+		case 'viewUserRole':
+		{
+			parent.mainFrame.location="${baseUrl}/admin/user.jhtml?action=ViewUserRoles&userId=${user.id?c}";
+			break;
+		}
+		case 'addRole':
+		{
+			var arr = showModalDialog("${baseUrl}/admin/user.jhtml?action=SelRoleFrameset","selRole","dialogWidth:640px;dialogHeight:480px;help:0;status:0;scroll:no");
+			if(arr != null&&arr!='') {
+				//alert(arr);
+				var returnValue = cms_send("${baseUrl}/admin/user.jhtml","action=AddRole&userId=${user.id?c}&roleIds="+arr);
+
+				//alert(returnValue);
+				if(returnValue=="1"){
+					alert('添加权限组成功！');
+					document.location = document.location;
+				}else{
+					alert('添加权限组失败！');
+					document.location = document.location;
+				}
+			}
+		}
+	}	
+}
+
+function displayObjPerm(id){
+	var el = eval('p_'+id);
+	if(el.style.display=="none"){
+		el.style.display="";
+	}else{
+		el.style.display="none";
+	}
+}
+</script>
+</head>
+<body >
+<div id="msviLocalToolbar">
+  <table cellpadding="0" cellspacing="2" width="100%" height="15" border="0">
+    <tr>
+      <td class="lt0" height="15" nowrap="nowrap"   >
+	  <strong>
+	  <img src="${baseUrl}html/plugin/user/images/user2.gif" align="absmiddle"/>用户:${user.name}(${user.title?default("")})</strong>
+	  <font id=description></font></td>
+      <td></td>
+	  <#if !authUser.isAdmin()>
+	  <td id="t2" class="lt0" style="border:solid 1px #999;background:#CCC" nowrap="nowrap" onMouseOver="mhHover('msviLocalToolbar', 2, 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 2, 'lt0')" onClick="doing('viewUserPerm');highLight(this);">用户最终权限</td>
+	  <td><span class="ltsep">|</span></td>
+      <td id="t4" class="lt0" nowrap="nowrap" onMouseOver="mhHover('msviLocalToolbar', 4, 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 4, 'lt0')" onClick="doing('viewUserSelfPerm');highLight(this);">用户自身权限</td>
+	  <td><span class="ltsep">|</span></td>
+      <td id="t6" class="lt0" nowrap="nowrap" onMouseOver="mhHover('msviLocalToolbar', 6, 'lt1')" onMouseOut="mhHover('msviLocalToolbar', 6, 'lt0')" onClick="doing('viewUserRole');highLight(this);">权限组设置</td>
+	  </#if>
+	  <td class="lt0" height="15" nowrap="nowrap" width="99%">
+	  <#if authUser.isAdmin()>
+		<font color="red">[此用户是系统管理员用户，此用户拥有所有权限！]</font>
+	  </#if>
+	  </td>
+	<tr>
+  </table>
+</div>
+<br>
+<#if !authUser.isAdmin()>
+<fieldset class="search">
+ 	<legend><b>用户所属权限组 </b></legend>
+    <table width="100%" border="0" cellpadding="2" cellspacing="1" class="table_border">
+	<form name="roleForm" >
+	<tr class="table_td2">
+	<td align="center" height=20 width="20"></td>
+	<td align="center" height=20 width="20"><B>ID</B></td>	
+ 	<td align="center"><B>角色名称</B></td>
+	<td align="center"><B>状态</B></td>
+	<td align="center"><B>产生日期</B></td>
+	<td align="center"><B>修改日期</B></td>
+	<td align="center"><B>操作</B></td>
+	</tr>
+	<#list roles as role>
+	<tr class="table_td1" id="${role.roleId}" onmouseover='this.style.backgroundColor="#FFFFFF"' onmouseout='this.style.backgroundColor=""' >
+      <td noWrap >
+	  </td>
+      <td align="center" noWrap ><div class="subtitleholder">${role.roleId?c}</div></td>
+	  <td   noWrap  style="cursor:hand" id="">
+		<table  border="0"  cellpadding="0" cellspacing="0"  >
+			<tr>
+			<td>
+			<#compress>
+	 		 <div class="titleholder">
+	  			&nbsp;&nbsp;
+	  			<A HREF="javascript:void(0);" onClick="javascript:void(0);" class="o" style="cursor:hand"   oncontextmenu="javascript:void(0);" title="${role.name}">${role.name}</A>	  	  
+	  			</div>
+				</#compress>
+			</td>
+			<td></td>
+			</tr>
+			</table>
+	  </td>
+	  <td align="center" noWrap  ><div class="subtitleholder">${role.status}</div></td>
+      <td align="center" noWrap ><div class="timeholder">${(action.getDate2(role.creationDate?default(0)))?string("yyyy-MM-dd HH:mm")}</div></td>
+	  <td align="center" noWrap ><div class="timeholder">${(action.getDate2(role.modificationDate?default(0)))?string("yyyy-MM-dd HH:mm")}</div></td>
+	  <td align="center" noWrap  >查看权限 </td>
+	 </tr>
+	</#list>
+	
+	</form>
+</table>
+</fieldset>
+</#if>
+
+<#if !authUser.isAdmin()>
+<fieldset class="search">
+ 	<legend><b>用户最终权限信息</b></legend>
+<table width="100%" border="0" cellpadding="1" cellspacing="2">
+<tr><td>
+<div class="errormessage"><img class="errormessage" src="html/common/images/info.gif" align="absmiddle">&nbsp;<span class="tab-r">提示：1）所有xxx权限表示对于所有的此类对象的操作权限；具体xxx权限表示对于具体的某个此类对象的操作权限。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2）如果用户拥有所有xxx权限，则无论具体对象权限是否设置，用户都会拥有相应权限。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3）此处显示的是用户的最终权限，包括用户自己拥有与从权限组继承而来的权限。</span></div>
+</td>
+</tr>
+</table>
+<br/>
+<div  class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ) );
+</script>
+<#list ptdList as  ptd>
+
+<div class="tab-page" id="tabPage_${ptd.name}">
+<h2 class="tab" >${ptd.title}</h2>
+<fieldset class="search" >
+ <legend><b>所有${ptd.title}</b></legend>
+ <table width="100%" border="0" cellpadding="1" cellspacing="2">
+ 	<form  method="post" name="${ptd.name}Form">
+	<input type="hidden" name="objectType" value="${ptd.objectType}">
+	
+	<tr>
+	<td width="100%">
+ 
+ <#list pMap[ptd.name] as up>
+ 	<div class="imagespacer">	
+	<TABLE border="0" cellpadding="0" cellspacing="2">
+			<TR>
+				<TD width=16 height=16>
+				<#if up.isHold()>
+				<div class="flagTrue"><FONT size=1 COLOR=#009900>√</FONT></div>
+				<#else>
+				<div class="flagFalse"><FONT size=1 COLOR=#FF0000>×</FONT></div>
+				</#if>
+				</TD>
+				<TD width=80 nowrap="nowrap" >
+				<div class="titleholder" >${up.name}</div>
+			  </TD>
+			</TR>
+	</TABLE>
+ 	</div>
+ </#list>
+    </td>
+	</tr>
+	</form>
+	</table>	
+</fieldset>
+
+<#if ptd.name=="node"||ptd.name="publish">
+<fieldset class="search" >
+ <legend><b>具体${ptd.title}</b></legend> 
+ <table width="100%" border="0" cellpadding="2" cellspacing="1" class="table_border">
+ 	
+	<tr class="table_td2">
+	<td align="center" height=20 width="20"></td>
+	<td align="center"  width="20"><B>ID</B></td>
+ 	<td align="center" width="200"><B>名称</B></td>
+	<td align="center"><B>操作</B></td>
+	</tr>
+	<#assign my_obj=pObjMap[ptd.name]/>
+    <#if my_obj?exists&&(my_obj?has_content)>
+	<#list my_obj.keySet() as oid>	
+	<#if oid!=-1>
+	<#assign node=action.getNode(oid)/>
+	<#if node?exists&&(node?has_content)>
+ 	<tr class="table_td1" onmouseover='this.style.backgroundColor="#FFFFFF"' onmouseout='this.style.backgroundColor=""'>
+	<td noWrap align="center" height="20" width="20"></td>
+	<td align="center" width="20">${oid}</td>
+ 	<td align="center" width="200">${node.name}</td>
+	<td align="center"><a href="javascript:displayObjPerm('${ptd.objectType}_${oid}');">查看对象权限</a></td>
+	</tr>
+	<tr  class="table_td1" id="p_${ptd.objectType}_${oid}" style="display:none">
+	<td colspan="4"  align="left" width="100%">
+	<fieldset class="search" >
+ 	<legend><b>${node.name}-${ptd.title}</b></legend>
+    <table width="100%" bgcolor="#FFFFFF" border="0" cellpadding="1" cellspacing="2">
+ 	
+	<tr>
+	<td width="100%">
+ 
+ <#list my_obj.get(oid) as up>
+ 	<div class="imagespacer">	
+	<TABLE border="0" cellpadding="0" cellspacing="2">
+			<TR>
+				<TD width=16 height=16>
+				<#if up.isHold()>
+				<div class="flagTrue"><FONT size=1 COLOR=#009900>√</FONT></div>
+				<#else>
+				<div class="flagFalse"><FONT size=1 COLOR=#FF0000>×</FONT></div>
+				</#if>
+				</TD>
+				<TD width=80 nowrap="nowrap" >
+				<label class="titleholder" for="${ptd.name}_${oid}_${up.permission?c}">${up.name}</label>
+			  </TD>
+			</TR>
+	</TABLE>
+ 	</div>
+ </#list>
+    </td>
+	</tr>
+	<tr>
+	<td width="100%">
+	
+	</td>
+	</tr>
+	</table>
+	</fieldset>
+	</td>
+	</tr>
+	</#if>
+	</#if>
+	</#list>	
+	</#if>
+	</table>
+</fieldset>
+</#if>
+</div>
+</#list>
+</div>
+</fieldset>
+</#if>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+</body>
+</html>

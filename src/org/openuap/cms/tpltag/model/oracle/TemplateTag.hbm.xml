@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+                            "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<!--
+	$Id: TemplateTag.hbm.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.tpltag.model">
+	<class name="TemplateTag" table="cms_template_tag">
+		<id name="id" column="id" type="long" unsaved-value="0">
+			<generator class="sequence">
+				<param name="sequence">cms_template_tag_seq</param>
+			</generator>
+		</id>
+		<property name="nodeId" type="long">
+			<column name="nodeId" not-null="false" default="0" />
+		</property>
+		<property name="userId" type="long">
+			<column name="userId" not-null="false" />
+		</property>
+		<property name="userName" type="string">
+			<column name="userName" not-null="false" />
+		</property>
+		<property name="creationDate" type="long">
+			<column name="creationDate" not-null="false" />
+		</property>
+		<property name="editorId" type="long">
+			<column name="editorId" not-null="false" />
+		</property>
+		<property name="editorName" type="string">
+			<column name="editorName" not-null="false" />
+		</property>
+		<property name="editedDate" type="long">
+			<column name="editedDate" not-null="false" />
+		</property>
+		<property name="name" type="string">
+			<column name="name" not-null="true" length="200" />
+		</property>
+		<property name="description" type="text">
+			<column name="description" not-null="false" />
+		</property>
+		<property name="modelId" type="long">
+			<column name="modelId" not-null="false" />
+		</property>
+		<property name="tplType" type="integer">
+			<column name="tplType" not-null="true" default="0" />
+		</property>
+		<property name="templatePath" type="string">
+			<column name="templatePath" not-null="false" />
+		</property>
+		<property name="templateContent" type="text">
+			<column name="templateContent" not-null="false" />
+		</property>
+		<property name="status" type="integer">
+			<column name="status" not-null="true" default="0" />
+		</property>
+		<property name="cacheType" type="integer">
+			<column name="cacheType" not-null="true" default="0" />
+		</property>
+		<property name="outType" type="integer">
+			<column name="outType" not-null="true" default="0" />
+		</property>
+		<property name="tagHelperClassName" type="string">
+			<column name="tagHelperClassName" not-null="false" />
+		</property>
+		<property name="paramsXML" type="text">
+			<column name="paramsXML" not-null="false" />
+		</property>
+		<property name="pos" type="integer">
+			<column name="pos" not-null="true" default="0" />
+		</property>
+		<property name="settingTplPath" type="string">
+			<column name="settingTplPath" not-null="false" />
+		</property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,115 @@
+<#assign noLayout="true"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<title>站点更新</title>
+		<base href="${baseUrl}" />
+		<link rel="stylesheet" type="text/css"
+			href="html/plugin/cms/base/css/style.css" />
+		<script language="JavaScript">
+
+function info() {
+
+	var returnValue;
+	returnValue = new Array();
+	returnValue['refresh_index'] = document.form.refresh_index.checked ? 1 : 0;
+	returnValue['refresh_content'] = document.form.refresh_content.checked ? 1
+			: 0;
+	returnValue['refresh_extra'] = document.form.refresh_extra.checked ? 1 : 0;
+	//returnValue['refresh_extra'] = document.form.refresh_extra.checked ? 1:0;
+	returnValue['include_sub'] = document.form.include_sub.checked ? 1 : 0;
+	returnValue['content_num'] = document.form.content_num.value;
+	var parent = art.dialog.parent;
+	parent.callBack(returnValue);
+	art.dialog.close();
+
+}
+function cancel() {
+	art.dialog.close(); 
+	return false
+}
+</script>
+	</head>
+	<body>
+		<div>
+			<form action="" method="post" name="form">
+				<table width="100%" border="0" cellspacing="4" cellpadding="0">
+					<tr>
+						<td>
+							<fieldset class="search">
+								<legend>
+									更新内容:
+								</legend>
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td>
+											<input name="refresh_index" type="checkbox"
+												id="refresh_index" value="1" checked>
+											<label for="refresh_index">
+												首页
+											</label>
+											<br>
+											<input name="refresh_content" type="checkbox"
+												id="refresh_content" value="1" checked>
+											<label for="refresh_content">
+												内容页
+												<br>
+											</label>
+
+											<input name="refresh_extra" type="checkbox"
+												id="refresh_extra" value="1" checked>
+											<label for="refresh_extra">
+												附加发布
+												<br>
+											</label>
+
+										</td>
+									</tr>
+
+								</table>
+							</fieldset>
+							<br>
+							<fieldset class="search">
+								<legend>
+									更新选项:
+								</legend>
+								<table width="100%" border="0" cellspacing="8" cellpadding="0">
+									<tr>
+										<td>
+											<input type="checkbox" name="include_sub" value="1"
+												id="include_sub">
+											<label for="include_sub">
+												更新子结点
+											</label>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											单次循环更新内容页数
+											<input name="content_num" type="text" id="content_num"
+												value="10" size="10">
+										</td>
+									</tr>
+
+								</table>
+							</fieldset>
+
+						</td>
+					</tr>
+					<tr>
+
+						<td height="20" align="right" id=submit_change>
+							<input type="button" class="button" name="Submit2" value="开始更新"
+								onclick='info();'>
+							&nbsp;
+							<input name="button" type=button onclick="cancel();" value="取消">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</body>
+</html>

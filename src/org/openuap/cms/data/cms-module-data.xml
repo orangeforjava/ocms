@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-data.xml 3947 2010-11-01 14:23:26Z orangeforjava $
+-->
+<beans>
+	<description>数据管理模块</description>
+
+	<!--Manager-->
+	<bean id="dataExportManager"
+		class="org.openuap.cms.data.manager.impl.DataExportManagerImpl">
+
+	</bean>
+	<bean id="dataImportManager"
+		class="org.openuap.cms.data.manager.impl.DataImportManagerImpl">
+
+	</bean>
+</beans>

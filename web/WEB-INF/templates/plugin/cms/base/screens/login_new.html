@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>OpenUAP CMS 管理控制台</title>
+<base  href="${baseUrl}"/>
+<link rel="stylesheet" href="html/plugin/cms/base/images/admincp.css" type="text/css" media="all" />
+<meta content="OpenUAP org." name="Copyright" />
+<script language="JavaScript" type="text/javascript" src="html/common/js/prototype.js"></script>
+<script type="text/javascript">
+if (self.parent.frames.length != 0) {
+	self.parent.location=document.location;
+}
+function admin_login_submit(){
+			var MId,user_name,user_pass,targeturl;
+			var	user_name = document.loginform.username.value;
+			var user_pass = document.loginform.password.value;
+			var user_code=document.loginform.code.value;
+			//
+			var success=true;
+			if(user_code==''){
+				alert("请输入安全校验码！");
+				return false;
+			}else{
+			    var url='${baseUrl}admin/login.jhtml?action=CheckSecurityCode&code='+user_code;
+				new Ajax.Request(url,{
+				method: 'post',asynchronous:false,
+				onSuccess: function(transport) {
+					var returnValue=transport.responseText;
+					if(returnValue== '0'){
+						alert("安全校验码不匹配,请重新输入！");
+						success=false;
+					}
+				}
+				});				
+			}
+			if(!success){
+				return false;
+			}
+			//
+			if((user_name!='') && (user_pass!='')){
+		
+				targeturl='${baseUrl}admin/login.jhtml';
+				return true;
+		
+				}else{
+					alert("请输入用户名和密码！");
+				}
+				return false;
+			}
+</script>
+</head>
+<body><div id="append"></div>
+
+
+<div class="container">
+	<form action="admin/login.jhtml" method="post" name="loginform" id="loginform" target="_top" onsubmit="return admin_login_submit();">
+		<input type="hidden" name="action" value="Login"/>
+		<input type="hidden" name="done" value="${done!''}"/>
+		<table class="mainbox">
+			<tr>
+				<td class="loginbox">
+					<h1>OpenUAP CMS</h1>
+					<p>OpenUAP CMS 是一个自由灵活的内容管理系统。</p>
+				</td>
+				<td class="login">
+					<#if errorMsg?exists>
+					<div class="errormsg loginmsg"><p>${errorMsg!''}</p></div>
+					</#if>
+					<p>&nbsp;您好，${userSession.name}，<a href="user/logout.jhtml?done=${done!''}">退出</a></p>
+					<p id="usernamediv">用户名:<input type="text" name="username" class="txt" tabindex="1" id="username" value="${userSession.name}" /></p>
+					<p>密　码:<input type="password" name="password" class="txt" tabindex="2" id="password" value="" /></p>
+					<p>验证码:<input type="text" name="code" class="txt" tabindex="2" id="code" value="" style="margin-right:5px;width:107px;" /><img title="如果您无法识别验证码，请点图片更换" onclick="this.src='${baseUrl}sc.jhtml'" src="${baseUrl}sc.jhtml?key=${key}" border=0 align="absmiddle" style="POSITION: relative; TOP: 0px"></p>
+
+					<p class="loginbtn"><input type="submit" name="submit" value="登 录" class="btn" tabindex="3" /></p>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script type="text/javascript">
+	$('password').focus();
+</script>
+<div class="footer">Powered by OpenUAP CMS 4.0.0 &copy; 2005 - 2010 <a href="http://www.openuap.org/" target="_blank">OpenUAP</a> org.</div>
+
+</body>
+</html>

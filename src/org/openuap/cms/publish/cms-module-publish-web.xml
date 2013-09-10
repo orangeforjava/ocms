@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- Middle tier application context definition for the CMS application.
+-->
+<beans>
+	<bean id="pubHandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/publish.jhtml">
+					<ref local="publishAction" />
+				</entry>
+				<entry key="/admin/publishEdit.jhtml">
+					<ref local="publishEditAction" />
+				</entry>
+				<entry key="/admin/extrapublish.jhtml">
+					<ref local="extraPublishAction" />
+				</entry>
+				<entry key="/admin/publishSearch.jhtml">
+					<ref local="publishSearchAction" />
+				</entry>
+				<entry key="/publish/content.jhtml">
+					<ref local="dynamicContentViewAction" />
+				</entry>
+				<entry key="/publish/index.jhtml">
+					<ref local="dynamicIndexViewAction" />
+				</entry>
+				<entry key="/publish/extra.jhtml">
+					<ref local="dynamicExtraViewAction" />
+				</entry>
+				<entry key="/admin/contentSelect.jhtml">
+					<ref local="contentSelectAction" />
+				</entry>
+				<entry key="/admin/publish/config.jhtml">
+					<ref local="publishConfigAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="publishAction"
+		class="org.openuap.cms.publish.action.PublishAction">
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="contentFieldManager">
+			<ref bean="contentFieldManager" />
+		</property>
+		<property name="dynamicContentManager">
+			<ref bean="dynamicContentManager" />
+		</property>
+		<property name="psnManager">
+			<ref bean="psnManager" />
+		</property>
+		<property name="publishEngine">
+			<ref bean="publishEngine" />
+		</property>
+		<property name="cmsMacroEngine">
+			<ref bean="cmsMacroEngine" />
+		</property>
+	</bean>
+	<bean id="publishEditAction"
+		class="org.openuap.cms.publish.action.PublishEditAction">
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="contentFieldManager">
+			<ref bean="contentFieldManager" />
+		</property>
+		<property name="dynamicContentManager">
+			<ref bean="dynamicContentManager" />
+		</property>
+		<property name="resourceManager">
+			<ref bean="cmsResourceManager" />
+		</property>
+		<property name="publishEngine">
+			<ref bean="publishEngine" />
+		</property>
+		<property name="cmsMacroEngine">
+			<ref bean="cmsMacroEngine" />
+		</property>
+		<property name="countManager">
+			<ref bean="countManager" />
+		</property>
+	</bean>
+	<bean id="extraPublishAction"
+		class="org.openuap.cms.publish.action.ExtraPublishAction">
+		<property name="extraPublishManager">
+			<ref bean="extraPublishManager" />
+		</property>
+		<property name="publishEngine">
+			<ref bean="publishEngine" />
+		</property>
+		<property name="psnManager">
+			<ref bean="psnManager" />
+		</property>
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+	</bean>
+	<bean id="publishSearchAction"
+		class="org.openuap.cms.publish.action.SearchAction">
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="contentFieldManager">
+			<ref bean="contentFieldManager" />
+		</property>
+		<property name="dynamicContentManager">
+			<ref bean="dynamicContentManager" />
+		</property>
+	</bean>
+	<bean id="dynamicContentViewAction"
+		class="org.openuap.cms.publish.action.DynamicContentViewAction">
+		<property name="publishEngine">
+			<ref bean="publishEngine" />
+		</property>
+	</bean>
+	<bean id="dynamicIndexViewAction"
+		class="org.openuap.cms.publish.action.DynamicIndexViewAction">
+		<property name="publishEngine">
+			<ref bean="publishEngine" />
+		</property>
+	</bean>
+	<bean id="dynamicExtraViewAction"
+		class="org.openuap.cms.publish.action.DynamicExtraViewAction">
+		<property name="publishEngine">
+			<ref bean="publishEngine" />
+		</property>
+	</bean>
+	<bean id="contentSelectAction"
+		class="org.openuap.cms.publish.action.ContentSelectAction">
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="contentFieldManager">
+			<ref bean="contentFieldManager" />
+		</property>
+		<property name="dynamicContentManager">
+			<ref bean="dynamicContentManager" />
+		</property>
+	</bean>
+	<bean id="publishConfigAction"
+		class="org.openuap.cms.publish.config.action.PublishConfigAction">
+
+	</bean>
+</beans>

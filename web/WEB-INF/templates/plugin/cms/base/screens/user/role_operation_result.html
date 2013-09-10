@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>role operation result</title>
+
+<base  href="${baseUrl}"/>
+<link type="text/css" rel="StyleSheet" href="html/plugin/user/css/style.css" />
+<#if rs=="1">
+<meta http-equiv="refresh" content="2;url='${ref}'">
+</#if>
+</HEAD>
+<BODY>
+<br><br>
+<div align=center>
+  <table width="100%" height="100%" border="0" cellpadding="20" cellspacing="0">
+    <td align="center" valign="top">
+        <table width="50%" height="100" border="0" cellpadding="4" cellspacing="1" class="table_border">
+          <tr class="table_td2">
+            <td>
+			<#if op=="add">
+				<#if rs=="1">
+				添加角色成功
+				<#else>
+				添加角色失败，原因为:${ex.getMessage()}
+				</#if>
+			<#elseif op=="edit">
+				<#if rs=="1">
+				编辑角色成功
+				<#else>
+				编辑角色失败，原因为:${ex.getMessage()}
+				</#if>			
+			</#if>
+			<br><br>
+			<#if rs=="1">
+			如果您的浏览器没有自动跳转，请点击<a href="${ref}">这里</a> <br>
+			<#else>
+			请点击<a href="javascript:history.back();">这里</a>返回。
+			</#if>
+               </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+</BODY>
+</HTML>

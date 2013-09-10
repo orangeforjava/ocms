@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: keywords_permission.xml 4033 2011-03-22 17:15:53Z orangeforjava $-->
+<directory>
+	<object type="0" name="keywords" key="org.openuap.cms.keywords" title="关键词管理">
+		<permission key="1" name="viewKeywords">查看关键词</permission>
+		<permission key="2" name="addKeywords">添加关键词</permission>
+		<permission key="3" name="editKeywords">编辑关键词</permission>
+		<permission key="4" name="deleteKeywords">删除关键词</permission>
+	</object>
+</directory>

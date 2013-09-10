@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+                            "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<!--
+	$Id: Psn.hbm.xml 3938 2010-10-27 03:25:16Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.psn.model">
+	<class name="Psn" table="cms_psn">
+		<id name="id" column="id" type="long" unsaved-value="0">
+			<generator class="sequence">
+				<param name="sequence">cms_psn_seq</param>
+			</generator>
+		</id>
+		<property name="name" type="string">
+			<column name="name" not-null="true" />
+		</property>
+		<property name="psn" type="string">
+			<column name="psn" not-null="true" />
+		</property>
+		<property name="url" type="string">
+			<column name="url" not-null="true" />
+		</property>
+		<property name="description" type="string">
+			<column name="description" />
+		</property>
+	</class>
+</hibernate-mapping>

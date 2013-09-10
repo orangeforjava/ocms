@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <nationalities>
+    <nationality key="中国">中国</nationality>
+    <nationality key="韩国">韩国</nationality>
+	<nationality key="日本">日本</nationality>
+	<nationality key="法国">法国</nationality>
+	<nationality key="意大利">意大利</nationality>
+	<nationality key="朝鲜">朝鲜</nationality>
+	<nationality key="美国">美国</nationality>
+	<nationality key="英国">英国</nationality>
+	<nationality key="泰国">泰国</nationality>
+  </nationalities>
+</directory>

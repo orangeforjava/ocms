@@ -1,0 +1,583 @@
+<#assign allCount=dynamicContentManager.getNodeAllContentCount(node.nodeId) />
+<#assign pCount=dynamicContentManager.getNodeAllPublishContentCount(node.nodeId) />
+<#assign actionTitle="${node.name}<font id=description>[<B>${node.nodeId?c}</B>]</font>(<span class=pS>${pCount?c}</span>/<span class=aS>${allCount?c}</span>)" />
+<#assign _TITLE_="内容发布管理" />
+<#assign actions=[
+{"action":"ContentList2","title":"发布管理","url":"${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}","class":"view"},
+{"action":"","title":"添加内容","url":"javaScript:site_doing('newdoc','${node.nodeId?c}');","class":"add"}
+{"action":"","title":"附加发布","url":"${baseUrl}admin/extrapublish.jhtml?action=List&nodeId=${node.nodeId?c}","class":"view"}
+{"action":"","title":"回收站","url":"${baseUrl}admin/publish.jhtml?action=RecycleContentList&nodeId=${node.nodeId?c}","class":"view"}
+{"action":"","title":"资源管理","url":"${baseUrl}admin/resource.jhtml?action=ListResource&nodeId=${node.nodeId?c}","class":"view"}
+{"action":"","title":"站点设置","url":"${baseUrl}admin/nodeEdit.jhtml?mode=edit&nodeId=${node.nodeId?c}","class":"view"}
+
+
+]>
+
+
+<#import "/plugin/cms/base/macros/tabler-macros.html" as tabler />
+<#import "/plugin/cms/base/macros/node-macros.html" as mynode />
+
+<script src="html/common/window/js/effects.js" type="text/javascript"></script>
+<script src="html/common/window/js/window.js" type="text/javascript"></script>
+<link href="html/common/window/themes/window/window.css" rel="stylesheet" type="text/css"/>
+<link href="html/common/window/themes/window/vista.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript">
+var win;
+CSS.preloadImages();
+function openFullWindow(url,caption,w,h,rzable,dable) {
+     
+        win=new UI.URLWindow({
+		resizable:true,
+		draggable:true,
+        width: w||800, 
+        height: h||600,
+        theme: "vista",
+		shadow: true, 
+		shadowTheme: "drop_shadow", 
+        url: url});
+        UI.defaultWM.options.blurredWindowsDontReceiveEvents = true;
+        win.setHeader(caption);
+        win.center({auto:false});
+		win.maximize();
+        win.show().focus();
+ }
+ function openWindow(url,caption,w,h) {
+			        
+			        win=new UI.URLWindow({
+					resizable:false,
+					draggable:false,
+			        width: w||800, 
+			        height: h||600,
+			        theme: "vista",
+					shadow: true, 
+					shadowTheme: "drop_shadow", 
+			        url: url});
+			        UI.defaultWM.options.blurredWindowsDontReceiveEvents = true;
+			        win.setHeader(caption);
+			        win.center({auto:true});
+			        win.show(true).focus();
+}
+function site_edit(nid){
+	var url="${baseUrl}admin/nodeEdit.jhtml?mode=edit&nodeId="+nid;
+	//openFullWindow(url,"站点设置");
+	
+}
+function content_edit(iid){
+	var url="${baseUrl}admin/publishEdit.jhtml?action=ContentEditorFrameset&mode=edit&nodeId="+NodeID  + "&indexId=" + iid;
+	openFullWindow(url,"内容编辑");
+}
+</script>
+<script type="text/javaScript">
+
+var globalAction;
+var globalNodeID;
+function callBack(rs){
+	//
+	switch(globalAction){
+		case 'refresh':
+		{
+			refreshNode(rs);
+			break;
+		}
+		case 'site_publish':
+		{
+			publishNode(rs);
+			break;
+		}
+		case "site_unpublish":
+		{
+			unpublishNode(rs);
+			break;
+		}
+		case "site_republish":
+		{
+			republishNode(rs);
+			break;
+		}
+		case "site_migration":
+		{
+			migrationNodeData(rs);
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
+}
+</script>
+<!---->
+<link href="html/common/menu/skins/officexp/officexp.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="html/common/menu/poslib.js"></script>
+<script type="text/javascript" src="html/common/menu/scrollbutton.js"></script>
+<script type="text/javascript" src="html/common/menu/menu4.js"></script>
+
+<link rel="stylesheet" type="text/css" media="all" href="/html/common/cal/calendar-blue2.css" title="system" />
+<script type="text/javascript" src="/html/common/cal/calendar.js"></script>
+<script type="text/javascript" src="/html/common/cal/calendar-zh.js"></script>
+<script type="text/javascript" src="/html/common/cal/calendar-setup.js"></script>
+
+<script type="text/javascript" src="html/common/tree/xtree.js"></script>
+<script type="text/javascript" src="html/common/tree/xmlextras.js"></script>
+<script type="text/javascript" src="html/common/tree/xloadtree.js"></script>
+
+
+<style>
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 10pt;
+	width: 300;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.subtitleholder {
+	font-family: ms sans serif, arial;
+	font-size: 10pt;
+
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.timeholder {
+	font-family: ms sans serif, arial;
+	font-size: 10pt;
+	width: 90;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.table_plan_td1 {
+	background-color: #FDEEB9
+}
+.pS{
+	color:#00FF00;
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+}
+.aS{
+	font-family: ms sans serif, arial;
+	color:#0000FF;
+	font-size: 8pt;
+}
+</style>
+<script type="text/javascript" src="html/plugin/cms/base/js/common.js"></script>
+<script type="text/javascript" src="html/plugin/cms/base/js/table.js"></script>
+<!-- <script type="text/javascript" src="html/plugin/cms/base/js/publish.js?v=2008060302"></script> -->
+<script type="text/javascript">
+<#include "../publish.js">
+</script>
+<script type="text/javascript" >
+
+var NodeID = '${node.nodeId?c}';
+var TableID = '${node.tableId}';
+var baseUrl='${baseUrl}';
+//右键菜单
+cssFile='${baseUrl}html/common/menu/skins/officexp/officexp.css';
+Menu.prototype.cssFile = cssFile;
+//数据表排序
+var order_desc='${order}';
+var order_mode='${order_mode}';
+</script>
+
+<#if rootNodes.size() gt 0>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"  class="maintable" >
+  
+   <tr class="table_td2" height=25>
+	  <td BGCOLOR='#D9E4F0' title="点击右侧+展开"><B>子结点内容发布管理</B>(点击右侧"+"展开)
+	  <a href="javaScript:void(0);" onclick="collapse_change('childnode')">
+		<img id="menuimg_childnode" src="html/plugin/cms/base/images/menu_add.gif" border="0" style="float: right; margin-top: -12px; margin-right: 8px;" /></a>
+	  </td>     
+  </tr>
+  <!--start-->
+  <tbody id="menu_childnode" style="display: none">
+  <tr class="table_td2" >
+    <td nowrap>
+  		<script type="text/javascript">
+//XP Look
+webFXTreeConfig.rootIcon		= "html/common/tree/images/xp/folder_p_closed.gif";
+webFXTreeConfig.openRootIcon	= "html/common/tree/images/xp/folder_p_out.gif";
+webFXTreeConfig.folderIcon		= "html/common/tree/images/xp/folder_p_closed.gif";
+webFXTreeConfig.openFolderIcon	= "html/common/tree/images/xp/folder_p_out.gif";
+webFXTreeConfig.fileIcon		= "html/common/tree/images/xp/folder_p_closed.gif";
+webFXTreeConfig.lMinusIcon		= "html/common/tree/images/xp/Lminus.png";
+webFXTreeConfig.lPlusIcon		= "html/common/tree/images/xp/Lplus.png";
+webFXTreeConfig.tMinusIcon		= "html/common/tree/images/xp/Tminus.png";
+webFXTreeConfig.tPlusIcon		= "html/common/tree/images/xp/Tplus.png";
+webFXTreeConfig.iIcon			= "html/common/tree/images/xp/I.png";
+webFXTreeConfig.lIcon			= "html/common/tree/images/xp/L.png";
+webFXTreeConfig.tIcon			= "html/common/tree/images/xp/T.png";
+webFXTreeConfig.blankIcon		= "html/common/tree/images/blank.png";
+//
+WebFXTree.prototype.toString = function() {
+	var str = "" +
+		"<div id=\"" + this.id + "-cont\" class=\"webfx-tree-container\" style=\"display: " + ((this.open)?'block':'none') + ";\">";
+	var sb = [];
+	for (var i = 0; i < this.childNodes.length; i++) {
+		sb[i] = this.childNodes[i].toString(i, this.childNodes.length);
+	}
+	this.rendered = true;
+	return str + sb.join("") + "</div>";
+};
+//
+WebFXTreeItem.prototype.toString = function (nItem, nItemCount) {
+	var foo = this.parentNode;
+	var indent = '';
+	if (nItem + 1 == nItemCount) { this.parentNode._last = true; }
+	var i = 0;
+	while (foo.parentNode) {
+		foo = foo.parentNode;
+		indent = "<img id=\"" + this.id + "-indent-" + i + "\" src=\"" + ((foo._last)?webFXTreeConfig.blankIcon:webFXTreeConfig.iIcon) + "\">" + indent;
+		i++;
+	}
+	this._level = i;
+	if (this.childNodes.length) { this.folder = 1; }
+	else { this.open = false; }
+	if ((this.folder) || (webFXTreeHandler.behavior != 'classic')) {
+		if (!this.icon) { this.icon = webFXTreeConfig.folderIcon; }
+		if (!this.openIcon) { this.openIcon = webFXTreeConfig.openFolderIcon; }
+	}
+	else if (!this.icon) { this.icon = webFXTreeConfig.fileIcon; }
+	//var label = this.text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	label = this.text;
+	var str = "<div id=\"" + this.id + "\" ondblclick=\"webFXTreeHandler.toggle(this);\" class=\"webfx-tree-item\" onkeydown=\"return webFXTreeHandler.keydown(this, event)\"" +
+		" onmouseover='this.style.backgroundColor=\"#C0C0C0\"' "+
+		" onmouseout='this.style.backgroundColor=\"#FFFFFF\"' "+
+		">"+
+		indent +
+		"<img id=\"" + this.id + "-plus\" src=\"" + ((this.folder)?((this.open)?((this.parentNode._last)?webFXTreeConfig.lMinusIcon:webFXTreeConfig.tMinusIcon):((this.parentNode._last)?webFXTreeConfig.lPlusIcon:webFXTreeConfig.tPlusIcon)):((this.parentNode._last)?webFXTreeConfig.lIcon:webFXTreeConfig.tIcon)) + "\" onclick=\"webFXTreeHandler.toggle(this);\">" +
+		"<img id=\"" + this.id + "-icon\" class=\"webfx-tree-icon\" src=\"" + ((webFXTreeHandler.behavior == 'classic' && this.open)?this.openIcon:this.icon) + "\" onclick=\"webFXTreeHandler.select(this);\">" +
+		"<a href=\"" + this.action + "\" id=\"" + this.id + "-anchor\" onfocus=\"webFXTreeHandler.focus(this);\" onblur=\"webFXTreeHandler.blur(this);\"" +
+		(this.target ? " target=\"" + this.target + "\"" : "") +
+		" oncontextmenu=\"rightMenu('" + this.cId + "', '" + this.extra + "');return false;\">" + label + "</a>"+
+		"&nbsp;-"+
+		"[<a href=\"javascript:site_doing('view_index','"+this.cId+"')\">查看首页</a>]&nbsp;"+
+		"[<a href=\"javascript:site_doing('refresh_index',''\">刷新首页</a>]&nbsp;"+
+		"[<a href=\"javascript:site_doing('newdoc','"+this.cId+"')\">新建内容</a>]&nbsp;"+
+      	"[<a href=\"javascript:site_doing('refresh','"+this.cId+"')\">更新结点</a>]&nbsp;"+
+      	"[<a href=\"javascript:site_doing('site_publish','"+this.cId+"')\">发布结点</a>]&nbsp;"+
+      	"[<a href=\"javascript:site_doing('site_unpublish','"+this.cId+"')\">取消发布结点</a>]&nbsp;"+
+      	"[<a href=\"javascript:site_doing('site_republish','"+this.cId+"')\">重新发布结点</a>]&nbsp;"+
+		"</div>" +
+		"<div id=\"" + this.id + "-cont\" class=\"webfx-tree-container\" style=\"display: " + ((this.open)?'block':'none') + ";\">";
+	var sb = [];
+	for (var i = 0; i < this.childNodes.length; i++) {
+		sb[i] = this.childNodes[i].toString(i,this.childNodes.length);
+	}
+	this.plusIcon = ((this.parentNode._last)?webFXTreeConfig.lPlusIcon:webFXTreeConfig.tPlusIcon);
+	this.minusIcon = ((this.parentNode._last)?webFXTreeConfig.lMinusIcon:webFXTreeConfig.tMinusIcon);
+	return str + sb.join("") + "</div>";
+}
+
+var tree = new WebFXTree("站点根");
+	<#list rootNodes as node>
+	<#assign allCount=dynamicContentManager.getNodeAllContentCount(node.nodeId) />
+	<#assign pCount=dynamicContentManager.getNodeAllPublishContentCount(node.nodeId) />
+	
+	<#if nodeManager.getChildNodesCount(node.nodeId)==0>
+	tree.add(new WebFXTreeItem("${node.name}[${node.nodeId?c}](<span class=pS>${pCount?c}</span>/<span class=aS>${allCount?c}</span>)","${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}&type=main", "main", "${node.nodeId?c}"));
+	<#else>
+	tree.add(new WebFXLoadTreeItem("${node.name}[${node.nodeId?c}](<span class=pS>${pCount?c}</span>/<span class=aS>${allCount?c}</span>)", "${baseUrl}admin/publish.jhtml?action=PublishXml&nodeId=${node.nodeId?c}", "${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}&type=main", "main", "${node.nodeId?c}"));
+	</#if>
+	</#list>
+//
+document.write(tree);
+</script>
+  	</td>  	
+  </tr>
+  <!--end-->	
+  </tbody>
+</table>
+</#if>
+
+<form>
+<table border="0" align="center" cellpadding="0" cellspacing="0"  width="100%" style="border-bottom:solid #c9c9c9 1px">
+<tr height=40><td width="99%" >
+<#assign navNodes=node.getNavNodes(0) />
+<#list navNodes as navNode>
+  <#if navNode_index+1=navNodes?size>
+	<a href="${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${navNode['nodeId']?c}" />${navNode['name']!}</a> 
+  <#else>
+    <a href="${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${navNode['nodeId']?c}" />${navNode['name']!}</a> &gt; 
+  </#if>
+</#list>
+</td>
+<td nowrap valign="middle" width="1%">
+&nbsp;&nbsp;转到&nbsp;</td><td valign="middle" nowrap>
+	<select  name="changeNode" id = "changeNode" onchange="javascript:window.location='${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId='+(this.options[this.selectedIndex].value);">
+		<@mynode.showNodesSel nodeManager=nodeManager selId=node.nodeId/>
+    </select>
+	</td></tr>
+</table>
+</form>
+<form>
+<table border="0" align="center" cellpadding="0" cellspacing="0"  width="100%" style="border-bottom:solid #c9c9c9 1px">
+<tr height=40><td width="99%" ><a href="${node.nodeUrl}" target="_blank">结点首页</a></td><td nowrap valign="middle" width="1%">
+&nbsp;&nbsp;结点操作&nbsp;</td><td valign="middle" nowrap>
+	<select name="nodeActionMap" id="nodeActionMap" >
+          <option value="refresh_index">更新首页</option>
+          <option value="view_index">查看首页</option>
+          <option value="">--------</option>
+          <option value="refresh">结点更新</option>
+          <option value="site_publish">结点发布</option>
+          <option value="site_unpublish">结点取消发布</option>
+          <option value="site_republish">结点重新发布</option>
+          <option value="">--------</option>
+          <option value="edit_index_template">编辑首页模板</option>
+          <option value="edit_content_template">编辑内容页模板</option>
+          <option value="">--------</option>
+          <option value="site_migration">迁移结点数据</option>
+	</select>
+	<input type="button" value=" 执 行 " class="button" onClick="site_doing(this.form.nodeActionMap.options[nodeActionMap.selectedIndex].value)"/>
+	</td></tr>
+</table>
+</form>
+<div id="menudata"></div>
+<form action="${baseUrl}admin/publish.jhtml" method="post" name="searchForm"> 
+     <input name="action" type="hidden" value="ContentList2"/>
+     <input name="order" type="hidden" value="${order}"/>
+	 <input name="order_mode" type="hidden" value="${order_mode}"/>
+	 <input name="order_name" type="hidden" value="${order_name}"/>
+	 <input name="page" type="hidden" value="${page}"/>	 
+	 <input name="pageNum" type="hidden" value="${pageNum}"/>
+	 <input name="nodeId" type="hidden" value="${nodeId}"/>
+<table cellspacing="0" cellpadding="0" width="100%"  class="toptable">
+<tr><td>
+作者：
+<select name="author" id="author">
+	  <#if author?default("")=="">
+	  	<option selected value="">所有文章</option>
+        <option value="me">我的文章</option>
+        <option value="others">不是我的文章</option>
+	  <#elseif author?default("")=="me">
+	  	<option value="">所有文章</option>
+        <option value="me" selected>我的文章</option>
+        <option value="others">不是我的文章</option>
+	  <#elseif author?default("")=="others">
+	  	<option value=""> 所有文章</option>
+        <option value="me">我的文章</option>
+        <option value="others" selected>不是我的文章</option>
+	  </#if></select>
+发布状态:<select name="state" id="state">
+	  <#if state?default("")=="">
+	  	<option selected value="">所有文章</option>
+        <option value="1">所有已发布文章</option>
+        <option value="0">所有未发布文章</option>
+	  <#elseif state?default("")=="1">
+	  	<option value="">所有文章</option>
+        <option value="1" selected>所有已发布文章</option>
+        <option value="0">所有未发布文章</option>
+	  <#elseif state?default("")=="0">
+	  	<option value=""> 所有文章</option>
+        <option value="1">所有已发布文章</option>
+        <option value="0" selected>所有未发布文章</option>
+	  </#if></select>
+
+日期:<INPUT TYPE="text" NAME="pubDate"   id="pubDate" onFocus="return Calendar.setup({
+        inputField     :    'pubDate',
+        ifFormat       :    '%Y-%m-%d',
+        showsTime      :    false});" value="${pubDate?default('')}" >
+        至
+		<INPUT TYPE="text" NAME="pubDate2"   id="pubDate2" onFocus="return Calendar.setup({
+        inputField     :    'pubDate2',
+        ifFormat       :    '%Y-%m-%d',
+        showsTime      :    false});" value="${pubDate2?default('')}" >
+关键字:  <INPUT TYPE="text" NAME="keyword" id="keyword"   value="${keyword!}">
+<INPUT name="submit1" TYPE="submit"  value="搜索"><INPUT name="reset1" TYPE="reset"  value="重置">
+</td></tr>
+</table>
+</form>
+
+<form method="post" action="${baseUrl}admin/publish.jhtml?type=main&nodeId=${node.nodeId?c}" name="documentlist" >
+
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"  class="table_border" >
+  <TBODY>
+ 
+    <tr class="table_td2">
+	  <@tabler.table_header orderBy=order_name sort=order_mode header_content=" 
+      <td align='center' height=25></td>
+      <td align='center'><B><a href='javascript:sorter(@ci.indexId@,@asc@,@I^D@);'>ID</a></B></td>
+	  <td align='center'><B><a href='javascript:sorter(@ci.sort@,@asc@,@排^序@);'>排序</a></B></td>	  
+	  <td align='center'><B><a href='javascript:sorter(@ci.hitsTotal@,@asc@,@点^击@);'>点击</a></B></td>
+	  <td align='center'><B><a href='javascript:sorter(@ci.contentTitle@,@asc@,@标^题@);'>标题</a></B></td>
+	  <td align='center'><B><a href='javascript:sorter(@ci.creationUserName@,@asc@,@编^辑@);'>编辑</a></B></td>      
+      <td align='center'><B><a href='javascript:sorter(@ci.publishDate@,@asc@,@发布^日期@);'>发布日期</a></B></td>
+	   <td align='center'><B><a href='javascript:sorter(@ci.state@,@asc@,@状^态@);'>状态</a></B></td>
+	  <td align='center' colspan='5'><B>执行操作</B></td>
+	  <td align='center' title='类型'><B>T</B></td>">
+	  </@tabler.table_header>
+     
+  </tr>
+  <!--start-->
+<#list contents as content>
+  
+  <#assign type=content["type"]?default(1)/>
+  <tr class="table_td1" id="${content["indexId"]?c}" onmouseover='this.style.backgroundColor="#FFFFFF"'
+                    onmouseout='this.style.backgroundColor=""' >
+
+
+
+      <td noWrap > <input type='checkbox' name='pData' value='${content["indexId"]?c}' id="p_${content["indexId"]?c}" ></td>
+      <td align="center" noWrap   ><div class="subtitleholder">${content["indexId"]?c}</div></td>
+	  <td noWrap > ${content["sort"]?c}</td>
+	  <td align="center" noWrap   ><div class="subtitleholder">${content["hitsTotal"]}</div></td>
+	 	 		      <td   noWrap  style="cursor:hand" id="">
+<table  border="0" cellpadding="0" cellspacing="0" style="border:0" >
+<tr>
+<td style="border:0">
+<#compress>
+<#assign state=content["state"]/>
+	  <div class="titleholder">
+	  &nbsp;&nbsp;
+	  <#if content["top"] gt 0>
+		<img src="html/plugin/cms/base/images/top.gif" title="置顶[${content["top"]}]" border=0 align="middle">
+	  </#if>
+	  <#if content["pink"] gt 0>
+		<img src="html/plugin/cms/base/images/pink.gif" title="精华[${content["pink"]}]" border=0 align="middle">
+      </#if>
+      <#assign title=StringUtil.highlightWords(content['contentTitle']!'',keyword!'')/>
+	  <#if type==1>
+		  <#if state==1>
+		  <A href="javascript:void(0);" onClick="doing('view','${content["indexId"]?c}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu(event,'${content["indexId"]?c}', '1','1','0','0','0');return false;" title="${content['contentTitle']!''}">${title}</A>
+		  <#else>
+		  <A href="javascript:void(0);" onClick="doing('view','${content["indexId"]?c}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu(event,'${content["indexId"]?c}', '0','1','0','0','0');return false;" title="${content['contentTitle']!''}">${title}</A>
+		  </#if>
+	  <#elseif type==0>
+	  	  <#if state==1>
+			  <A href="javascript:void(0);" onClick="doing('view','${content["indexId"]?c}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu(event,'${content["indexId"]?c}', '1','0','0');return false;" title="${content['contentTitle']!''}"><span class="ltsep">${title}</span></A>
+		  <#else>
+			  <A href="javascript:void(0);" onClick="doing('view','${content["indexId"]?c}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu(event,'${content["indexId"]?c}', '0','0','0');return false;" title="${content['contentTitle']!''}"><span class="ltsep">${title}</span></A>
+		  </#if>
+	  <#elseif type==2>
+	    <#if state==1>
+			  <A href="javascript:void(0);" onClick="doing('view','${content["indexId"]?c}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu(event,'${content["indexId"]?c}', '1','2','0','0','0');return false;" title="${content['contentTitle']!''}">${title}</A>
+		  <#else>
+			  <A href="javascript:void(0);" onClick="doing('view','${content["indexId"]?c}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu(event,'${content["indexId"]?c}', '0','2','0','0','0');return false;" title="${content['contentTitle']!''}">${title}</A>
+		  </#if>
+	  </#if>	  
+	  </div>
+</#compress>
+</td>
+<td style="border:0">&nbsp;
+      <#if photoFieldName?exists>
+	  	<#if content['contentPhoto']?default("")!="">
+			<a href="${baseUrl}${action.getPhotoUrl(content['contentPhoto'])}" target="_blank"><img title="首页图片，点击查看" src="html/common/images/image.gif" border=0></a>
+		</#if>
+	  </#if></td>
+</tr>
+</table>
+	  </td>
+
+
+	       <td align="center" noWrap  ><div class="subtitleholder" title="${content['creationUserName']!''}">${content['creationUserName']!''}</div></td>
+      <td align="center" noWrap ><div class="timeholder">${(action.getDate(content["publishDate"]))?string("yyyy-MM-dd HH:mm")}</div></td>
+      <td align="center" noWrap  >
+	  <div class="subtitleholder">
+
+	  <#if state==1>
+<FONT  COLOR="#3300CC">	已发布</FONT>
+	  <#else>
+<FONT  COLOR="#3300CC">	待发布</FONT>
+	  </#if>
+	  </div>
+
+	  </td>
+     <td colspan="5" align="center" noWrap>
+	 <#if type==1>
+		 <#if state==1>
+			<A HREF="${content['url']!'#'}" target="_blank" id="URL_${content['indexId']?c}">浏览</A>
+			<A HREF="${baseUrl}admin/publish.jhtml?action=Refresh&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}">更新</A>
+		 <#else>
+			<A HREF="${baseUrl}admin/publish.jhtml?action=Publish&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}">发布</A>
+		 </#if>
+		  <#if state==1>
+		 <A href="${baseUrl}comment/view.htm?id=${content['indexId']?c}" target="_blank">评论(${content['commentNum']?c})</A>
+		 </#if>
+		  <A HREF="javascript:void(0);" onClick="javaScript:doing('edit','${content["indexId"]?c}')">编辑</A>
+		  <A HREF="${baseUrl}admin/publishEdit.jhtml?action=Del&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}" onClick="return confirm('确认删除吗?')">删除</A>
+	  <#elseif type==0>
+	  		<#if state==1>
+				<A HREF="${content['url']?default('#')}" target="_blank" id="URL_${content['indexId']}">浏览</A>
+				<A HREF="${baseUrl}admin/publish.jhtml?action=Refresh&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}">更新</A>				
+			<#else>
+				<A HREF="${baseUrl}admin/publish.jhtml?action=Publish&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}">发布</A>
+			</#if>
+			 <A HREF="${baseUrl}admin/publishEdit.jhtml?action=Del&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}" onClick="return confirm('确认删除吗?')">删除</A>
+	  <#elseif type==2>
+	  		<#if state==1>
+				<A HREF="${content["url"]?default("#")}" target="_blank" id="URL_${content['indexId']?c}">浏览</A>			
+			<#else>
+				<A HREF="${baseUrl}admin/publish.jhtml?action=Publish&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}">发布</A>
+			</#if>
+			 <A HREF="${baseUrl}admin/publishEdit.jhtml?action=Del&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}" onClick="return confirm('确认删除吗?')">删除</A>
+	  </#if>
+	  </td>
+ <td align="center" width="28">
+ 	
+	<#if type==1>
+		实
+	<#elseif type==0>
+		<font color="#AAAAAA">虚</font>
+	<#elseif type==2>
+		<font color="blue">索引</font>
+	</#if>
+</td>
+ </tr>
+ </#list>
+ <!--end-->
+    <tr class="Tablelistbg">
+      <td colspan="17" align="left" bgcolor="#F5F5F5"> 
+      <table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align=left>
+            <input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  >
+              <label for="chkall" >全选</label>&nbsp;&nbsp;
+
+			 <select name="actionMap" id="actionMap" >
+          <option value="refresh">更新</option>
+            <option value="publish">发布</option>
+          <option value="unpublish">取消发布</option>
+              <option value="copy">复制</option>
+            <option value="cut">转移</option>
+          <option value="del">删除</option>
+            <option value="createLink">创建虚链接</option>
+              <option value="createIndexLink">创建索引链接</option>
+
+
+			  </select>
+
+			  <input type="button" value="执行" class="button" onClick="going(this.form,actionMap.options[actionMap.selectedIndex].value)">
+
+            </td>
+			<td height="20" align="right" nowrap="nowrap"> <INPUT name="go_display" TYPE="button" value="显示:" onClick="doing('display_record')" ></td>
+	  <td   height="20" nowrap="nowrap" align="right"  width=80> &nbsp;&nbsp;<INPUT TYPE="text" NAME="offset" size=1 value="${pageNum}"> 条记录
+
+   </td>
+          </tr>
+        </table></td>
+    </tr>
+	
+  
+  <#if pb.pages() gt 1>
+  <tr class="Tablelistbg">
+    <td colspan="15" height=25 >
+	<table border=0 align="right" width="100%" bgcolor="#FFFFFF">
+	<tr>
+	<td align=right>
+	<#assign pageUrl=baseUrl+"admin/publish.jhtml?action=ContentList2&nodeId="+nodeId?string+"&where=${where}&order=${order}&order_mode=${order_mode}&order_name=${order_name}&pageNum="+pageNum+"&page="/>
+	<@mypager.pageBuilder2 pb=pb baseUrl=pageUrl closeUrl=""/>
+	</td>
+	</tr>
+	</table>
+	 </td>
+  </tr>
+  </#if>
+  </tbody>
+</table>
+<INPUT TYPE="hidden" name="referer" value ="" >
+</form>
+<center><p>注：缺省内容按照“置顶->发布日期->发布状态->排序权重”的优先顺序进行排序</p></center>

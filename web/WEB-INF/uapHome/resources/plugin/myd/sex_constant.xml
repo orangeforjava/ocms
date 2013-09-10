@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <props>
+    <prop key="男">男</prop>
+	<prop key="女">女</prop>
+  </props>
+</directory>

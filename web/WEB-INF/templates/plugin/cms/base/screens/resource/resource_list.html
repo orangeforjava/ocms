@@ -1,0 +1,407 @@
+<#import "/plugin/cms/base/macros/pager-macros.html" as mypager />
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>resource list</title>
+<base  href="${baseUrl}"/>
+<link rel='stylesheet' type='text/css' href='html/plugin/cms/base/css/style.css'/>
+<style type="text/css">
+<!--
+<#if category=="img">
+div.imagespacer {
+	width: 110;
+	height: 156;
+	text-align: center;
+	float: left;
+	font: 10pt verdana;
+	margin: 5px;
+	overflow: hidden;
+}
+div.imageholder {
+	margin: 0px;
+	padding: 0px;
+	border: 1 solid #CCCCCC;
+ 	width: 100;
+	height: 100;
+}
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 110;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+<#elseif category=="flash">
+div.imagespacer {
+	width: 360;
+	height: 206;
+	text-align: center;
+	float: left;
+	font: 10pt verdana;
+	margin: 5px;
+	overflow: hidden;
+}
+div.imageholder {
+	margin: 0px;
+	padding: 0px;
+	border: 1 solid #CCCCCC;
+ 	width: 350;
+	height: 150;
+}
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 360;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+<#elseif category=="attach">
+body,tr,td,select {
+	color: #000000;
+	font-size: 11px; font-family: Tahoma, Arial;
+
+}
+
+div.imagespacer {
+	width: ;
+	height: 18;
+	text-align: left;
+	float: left;
+	font: 10pt verdana;
+	margin: 0px;
+	overflow: hidden;
+}
+div.imageholder {
+	margin: 0px;
+	height: 16;
+	padding: 0px;
+	cursor: default;
+}
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 100;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.3d {
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #FFFFFF;
+	border-right-color: #808080;
+	border-bottom-color: #808080;
+	border-left-color: #FFFFFF;
+	background-color: #D4D0C8;
+}
+</#if>
+
+-->
+</style>
+<script language="javascript" type="text/javascript" src="html/plugin/cms/base/js/mouse_up.js"></script>
+<script language="javascript" type="text/javascript" src="html/common/js/jquery-1.4.3.min.js"></script>
+<script language="javascript" type="text/javascript" src="html/common/js/yoxview/yoxview-init.js"></script>
+
+<script language="javascript" type="text/javascript">
+
+function refreshMe()
+{
+    <#if node?exists>
+		<#assign nodeId=node.nodeId>
+	<#else>
+		<#assign nodeId=0>
+	</#if>
+    <#assign url=baseUrl+"admin/resource.jhtml?action=ResourceList&category="+category+"&haveLinks="+haveLinks+"&nodeId="+nodeId?c+"&pageNum=${pageNum}&page="/>
+    //var url='${url+"&page="+page}';
+    //parent.mainFrame.location =url;
+	parent.mainFrame.location=parent.mainFrame.location;
+}
+function CheckAll(form)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall' && e.name !='copy')       e.checked = form.chkall.checked;
+   }
+  }
+
+
+function viewQuoteContents(ResourceID)
+{
+	var leftPos = (screen.availWidth-800) / 2
+	var topPos = (screen.availHeight-600) / 2
+	window.open('admin/resource.jhtml?action=ViewQuoteContents&resourceId='+ ResourceID
+
+,'','width=500,height=300,scrollbars=yes,resizable=yes,titlebar=0,top=' + topPos + ',left='
+
++ leftPos);
+}
+
+
+function going(form, o)
+{
+	//document.documentlist.referer.value = document.location;
+
+	with(form) {
+		switch(o) {
+			case 'del':
+				if(confirm("确认批量删除选定图片吗?")) {
+					action = action + '?action=Del&multi=1';
+
+					submit();
+				}
+				break;
+		}
+	}
+}
+
+lastDiv = null;
+function divClick(theDiv,filename) {
+	if (lastDiv) {
+		
+		lastDiv.style.borderStyle="solid";
+		lastDiv.style.borderWidth =1;
+		lastDiv.style.borderColor="#CCCCCC";
+	}
+	lastDiv = theDiv;
+	theDiv.style.borderStyle="solid";
+	theDiv.style.borderWidth =2;
+	theDiv.style.borderColor="#316AC5";
+
+	//document.getElementById("FileToDelete").value = filename;
+	//alert('filename='+filename);
+}
+function gotoFolder(rootfolder,newfolder) {
+	//window.navigate("ftb.imagegallery.aspx?frame=1&rif=" + rootfolder + "&cif=" + newfolder);
+}
+function returnImage(imagename,width,height) {
+	var arr = new Array();
+	arr["filename"] = imagename;
+	arr["width"] = width;
+	arr["height"] = height;
+	window.parent.returnValue = arr;
+	window.parent.close();
+}
+function openwin(targeturl) {
+
+		window.open(targeturl, '',
+
+'width=300,height=170,resizable=1,scrollbars=yes');
+		//showModalDialog(targeturl,"color1","dialogWidth:400pt;dialogHeight:300pt;help:0;status:0;resizable:1");
+
+}
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        //$(".yoxview").yoxview();
+        
+    });
+   
+</script>
+
+</head>
+<body topmargin="0" leftmargin="0">
+<!-- “正在装入提示框”脚本文件 -->
+<script type="text/javascript">
+function loadBarDisplay()
+{
+  var x,y;
+   x = document.body.clientWidth;
+   y = document.body.clientHeight;
+
+		var top = (y/2) - 50;
+		var left = (x/2) - 150;
+		if( left<=0 ) left = 10;
+
+
+	loader.style.left = left + "px"
+	loader.style.top = top + "px";
+
+	loader.style.display='';
+
+	return;
+
+}
+
+function loadBarUnDisplay()
+{
+	loader.style.display='none';
+	
+
+}
+</script>
+
+<DIV id=loader style="DISPLAY: none; Z-INDEX: 2; LEFT: 0px; POSITION: absolute; TOP: 0px">
+<TABLE class=loader style="FILTER: Alpha(opacity=75)" cellSpacing=1 cellPadding=5
+
+bgColor=#bbbbb summary="Loader Layout" border=0>
+  <TBODY><TR><TD align=left bgColor=#ffffff>
+      <P><IMG style="MARGIN: 3px" height=32   src="html/plugin/cms/base/images/clocks.gif" width=32
+
+align=left><STRONG>文件正在上传中...</STRONG><BR>
+	  <SPAN style="FONT-SIZE: 8pt">Please wait until this uploading is completely
+
+finished.</SPAN></P></TD></TR></TBODY></TABLE>
+</DIV>
+<#if category=="attach"||category=="sattach">
+<form method="post" action="admin/resource.jhtml" name="documentlist" >
+<TABLE border="0" cellpadding="1" cellspacing="0" width=100% >
+  
+  <tr>
+<td colspan="3"  class="3d" height=15>&nbsp;&nbsp;名称</td>
+<td class="3d" align=center>大小&nbsp;&nbsp;</td>
+<td class="3d">&nbsp;&nbsp;创建时间</td>
+<td class="3d">&nbsp;&nbsp;创建人</td>
+<td class="3d">&nbsp;&nbsp;执行操作</td>
+</tr>
+<#list resources as resource1>
+	<#list resource1 as r1>
+		<#if r1_index==0>
+			<#assign resource=r1 />
+		<#else>
+		    <#assign userName=r1 />
+		</#if>
+	</#list>
+	<TR onmouseover='this.style.backgroundColor="#F1F1F1"'
+                    onmouseout='this.style.backgroundColor=""'>
+      <td width=10 >
+			 <INPUT TYPE="checkbox" NAME="resourceId" value="${resource.resourceId}" id="p_${resource.resourceId}">
+
+</td>
+				<TD width=16 height=16>
+				<#assign type=resource.name[resource.name?last_index_of(".")+1..resource.name?length-1]/>
+ <IMG src="html/images/icon/${type}.gif" border=0  width="16" height="16">
+
+				</TD>
+				<TD>
+
+				 <A HREF="${baseUrl}resource/${resource.path}">
+			${resource.title}</a>
+				</TD>
+				<td align=right>
+			${resource.size}KB</td>
+<td>&nbsp;&nbsp;${action.getDate(resource.creationDate)?string("yyyy-MM-dd HH:mm")}</td>
+<td>&nbsp;&nbsp;${userName}</td>
+<td>&nbsp;&nbsp;
+<A HREF="${baseUrl}/admin/resource.jhtml?action=Del&resourceId=${resource.resourceId}" onClick="return confirm('确认删除吗?');">删除</A>
+</td>
+</TR>
+</#list>
+<TR >
+      <td colspan="5" ><input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  >
+<label for="chkall">全选</label>
+&nbsp;&nbsp;&nbsp;&nbsp;<select name="actionMap" id="actionMap" >
+
+
+          <option value="del">删除</option>
+
+
+			  </select>
+<INPUT TYPE="hidden" name="referer">
+			  <input type="button" value="执行" class=button onClick="going(this.form,actionMap.options[actionMap.selectedIndex].value)"> </td><td align=center><font color="#FF0000">[1]</font>&nbsp;&nbsp;</td>
+			</TR>
+ 
+ </table>
+</form>
+<#else>
+<form name="form" method="post"   action="${baseUrl}admin/resource.jhtml">
+	<input name="fileToDelete" id="FileToDelete" type="hidden" />
+	<input name="rootImagesFolder" id="RootImagesFolder" type="hidden" value="images" />
+	<input name="currentImagesFolder" id="CurrentImagesFolder" type="hidden" value="images" />
+<table width=100% height=100% cellpadding=0 cellspacing=0 border=0>
+	
+<tr><td valign="top">
+   
+    
+	<#list resources as resource1>
+	<#list resource1 as r1>
+		<#if r1_index==0>
+			<#assign resource=r1 />
+		<#else>
+		    <#assign userName=r1 />
+		</#if>
+	</#list>
+	<#if category=="img">
+	<div class="imagespacer" >
+			<div class="imageholder" unselectable="on"  ondblclick="openwin
+
+('${baseUrl}resource/${resource.path}')"  onclick="divClick(this);if
+
+(document.form.p_${resource.resourceId?c}.checked == true) {document.form.p_${resource.resourceId?c}.checked = false;} else
+
+{document.form.p_${resource.resourceId?c}.checked = true;}" > 
+
+				<img src="${baseUrl}resource/${resource.path}" align="absmiddle"  width="100" height="100"  border=0 title="文件名:${resource.name}尺
+
+寸:${resource.info?default("")}<br>大小:${resource.size}KB<br>创建时间:${resource.creationDate}<br>创建人:${userName}<br>来源:"  alt="文件名:${resource.name}<br>尺
+
+寸:${resource.info?default("")}<br>大小:${resource.size}KB<br>创建时间:${resource.creationDate}<br>创建人:${userName}<br>来源:" />
+			</div> 
+			<div class="titleHolder">
+						${resource.title}<BR>
+						 <INPUT TYPE="checkbox" NAME="resourceId"
+
+value="${resource.resourceId?c}" id="p_${resource.resourceId?c}">
+			</div>
+	</div>
+	
+<#elseif category=="flash">
+	<div class="imagespacer" >
+
+			<div class="imageholder" unselectable="on"  ondblclick="openwin('${baseUrl}resource/${resource.path}')"  onclick="divClick(this);if(document.form.p_${resource.resourceId}.checked == true) {document.form.p_${resource.resourceId}.checked = false;} else {document.form.p_${resource.resourceId}.checked = true;}"  >
+
+
+<object width=350 height=150 classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0"><param name="movie" value="${baseUrl}resource/${resource.path}"><param name="wmode" value="opaque"><param name="quality" value="autohigh"><embed width=350 height=150 src="${baseUrl}resource/${resource.path}" quality="autohigh" wmode="opaque" type="application/x-shockwave-flash" plugspace="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash"></embed></object>
+
+			</div>
+			<div class="titleHolder" title="文件名:${resource.name}<br>尺寸:${resource.info}<br>大小:${resource.size}KB<br>创建时间:${resource.creationDate}<br>创建人:${userName}<br>来源:">
+						${resource.title}<BR>
+						<A HREF="javascript:viewQuoteContents('${resource.resourceId}')" title=""><img src="html/images/icon-zone-linked.gif" border="0"  /></A>
+			<INPUT TYPE="checkbox" NAME="resourceId" value="${resource.resourceId}" id="p_${resource.resourceId}" disabled>
+			</div>
+		</div>
+	</#if>
+	</#list>
+</td></tr>
+<tr><td>
+<div id="msviLocalToolbar">
+<table width="100%" height="30" cellpadding=0 cellspacing=0 border=0>
+<tr><td  >
+ <input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  >
+              <label for="chkall" >全选</label>&nbsp;&nbsp;
+
+			 <select name="actionMap" id="actionMap" >
+             <option value="del">删除</option>
+			  </select>
+
+			  <input type="button" value="执行" class=button onClick="going(this.form,actionMap.options[actionMap.selectedIndex].value)">
+</td>
+<td>
+<@mypager.pageBuilder pb=pb baseUrl=url closeUrl=""/>
+</td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+
+</table>
+<input type="hidden" name="page" value="${page}"/>
+<input type="hidden" name="category" value="${category}"/>
+<input type="hidden" name="nodeId" value="${nodeId?c}">
+<input type="hidden" name="haveLinks" value="${haveLinks}">
+</form>
+</#if>
+</body>
+</html>

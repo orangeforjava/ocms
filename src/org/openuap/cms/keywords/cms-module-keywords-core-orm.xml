@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-keywords-core-orm.xml 4017 2011-03-13 13:55:50Z orangeforjava $
+-->
+<beans>
+	<bean id="keywordsMapping"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<property name="mappings">
+			<list>
+				<value>org/openuap/cms/keywords/model/Keywords.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+</beans>	

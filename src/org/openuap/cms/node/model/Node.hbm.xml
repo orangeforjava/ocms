@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+                            "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<!--
+	$Id: Node.hbm.xml 4013 2011-01-27 03:08:57Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.node.model">
+	<class name="Node" table="cms_node">
+		<id name="nodeId" column="NodeID" type="long"
+			unsaved-value="0">
+			<generator class="native" />
+		</id>
+		<property name="nodeGuid" type="string">
+			<column name="NodeGUID" />
+		</property>
+		<property name="tableId" type="long">
+			<column name="TableID" not-null="true" />
+		</property>
+		<property name="parentId" type="long">
+			<column name="ParentID" />
+		</property>
+		<property name="rootId" type="long">
+			<column name="RootID" not-null="true" />
+		</property>
+		<property name="inheritNodeId" type="long">
+			<column name="InheritNodeID" not-null="true" />
+		</property>
+		<property name="nodeType" type="integer">
+			<column name="NodeType" not-null="true" />
+		</property>
+		<property name="nodeSort" type="long">
+			<column name="NodeSort" not-null="true" />
+		</property>
+		<property name="name" type="string">
+			<column name="Name" />
+		</property>
+		<property name="contentPsn" type="string">
+			<column name="ContentPSN" />
+		</property>
+		<property name="contentUrl" type="string">
+			<column name="ContentURL" />
+		</property>
+		<property name="resourcePsn" type="string">
+			<column name="ResourcePSN" />
+		</property>
+		<property name="resourceUrl" type="string">
+			<column name="ResourceURL" />
+		</property>
+		<property name="publishMode" type="integer">
+			<column name="PublishMode" />
+		</property>
+		<property name="indexTpl" type="string">
+			<column name="IndexTpl" />
+		</property>
+		<property name="indexName" type="string">
+			<column name="IndexName" not-null="true" />
+		</property>
+		<property name="contentTpl" type="string">
+			<column name="ContentTpl" />
+		</property>
+		<property name="imageTpl" type="string">
+			<column name="ImageTpl" />
+		</property>
+		<property name="subDir" type="string">
+			<column name="SubDir" />
+		</property>
+		<property name="publishFileFormat" type="string">
+			<column name="PublishFileFormat" />
+		</property>
+		<property name="comment" type="integer">
+			<column name="IsComment" />
+		</property>
+		<property name="commentLength" type="integer">
+			<column name="CommentLength" />
+		</property>
+		<property name="print" type="integer">
+			<column name="IsPrint" />
+		</property>
+		<property name="grade" type="integer">
+			<column name="IsGrade" />
+		</property>
+		<property name="mail" type="integer">
+			<column name="IsMail" />
+		</property>
+		<property name="disabled" type="integer">
+			<column name="Disabled" not-null="true" />
+		</property>
+		<property name="autoPublish" type="integer">
+			<column name="AutoPublish" not-null="true" />
+		</property>
+		<property name="indexPortalUrl" type="string">
+			<column name="IndexPortalURL" not-null="true" />
+		</property>
+		<property name="contentPortalUrl" type="string">
+			<column name="ContentPortalURL" not-null="true" />
+		</property>
+		<property name="pager" type="string">
+			<column name="Pager" not-null="true" />
+		</property>
+		<property name="editor" type="string">
+			<column name="Editor" />
+		</property>
+		<property name="workflow" type="long">
+			<column name="WorkFlow" not-null="true" />
+		</property>
+		<property name="creationUserId" type="long">
+			<column name="CreationUserID" not-null="true" />
+		</property>
+		<property name="creationDate" type="long">
+			<column name="CreationDate" not-null="true" />
+		</property>
+		<property name="lastModifyDate" type="long">
+			<column name="LastModifyDate" />
+		</property>
+		<property name="lastModifyUserId" type="long">
+			<column name="LastModifyUserID" />
+		</property>
+		<!--
+			add a field:NodeURL-nodeUrl,it be used the node index url
+			if not add,it need get when get the node,it not a good operation.
+		-->
+		<property name="nodeUrl" type="string">
+			<column name="NodeURL" not-null="false" />
+		</property>
+		<property name="system" type="integer">
+			<column name="IsSystem" not-null="true" />
+		</property>
+		<property name="manageUrl" type="string">
+			<column name="ManageUrl" not-null="false" />
+		</property>
+		<property name="publishUrl" type="string">
+			<column name="PublishUrl" not-null="false" />
+		</property>
+		<property name="tableName" type="string">
+			<column name="TableName" not-null="false" />
+		</property>
+		<property name="extraPortalUrl" type="string">
+			<column name="extraPortalUrl" />
+		</property>
+		<!--  -->
+		<property name="description" type="text">
+			<column name="description" />
+		</property>
+		<property name="style" type="string">
+			<column name="style" length="200"/>
+		</property>
+		<property name="tplEncoding" type="string">
+			<column name="tplEncoding" length="200"/>
+		</property>
+		<property name="outEncoding" type="string">
+			<column name="outEncoding" length="200"/>
+		</property>
+		<property name="rssTpl" type="string">
+			<column name="rssTpl" />
+		</property>
+		<property name="rssNums" type="integer">
+			<column name="rssNums" default="0"/>
+		</property>
+		<property name="seoTitle" type="string">
+			<column name="seoTitle" length="200"/>
+		</property>
+		<property name="seoKeywords" type="text">
+			<column name="seoKeywords" />
+		</property>
+		<property name="seoDescription" type="text">
+			<column name="seoDescription" />
+		</property>
+		<property name="protectStatus" type="integer">
+			<column name="protectStatus"  default="0"/>
+		</property>
+		<!--  -->
+		<property name="menuStatus" type="integer">
+			<column name="menuStatus"  default="0"/>
+		</property>
+		<property name="menuPos" type="integer">
+			<column name="menuPos"  default="0"/>
+		</property>
+		<property name="menuName" type="string">
+			<column name="menuName"  length="200"/>
+		</property>
+		<property name="nodeIcon" type="string">
+			<column name="nodeIcon"  length="200"/>
+		</property>
+		<property name="addContentStatus" type="integer">
+			<column name="addContentStatus"  default="0"/>
+		</property>
+		<property name="nodeKind" type="integer">
+			<column name="nodeKind"  default="0"/>
+		</property>
+		<property name="contributionStatus" type="integer">
+			<column name="contributionStatus"  default="0"/>
+		</property>
+		<property name="autoRefreshMode" type="integer">
+			<column name="autoRefreshMode" not-null="true"
+				default="0">
+			</column>
+		</property>
+		<property name="contentCount" type="long">
+			<column name="contentCount"  default="0"/>
+		</property>
+		<property name="publishedConentCount" type="long">
+			<column name="publishedConentCount"  default="0"/>
+		</property>
+		<property name="groupBy" type="string">
+			<column name="groupBy"  length="250"/>
+		</property>
+	</class>
+</hibernate-mapping>

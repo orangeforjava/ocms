@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-keywords-core-orm-oracle.xml 4017 2011-03-13 13:55:50Z orangeforjava $
+-->
+<beans>
+	<bean id="keywordsOracleMapping"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<property name="dialect">
+			<value>org.hibernate.dialect.Oracle9Dialect</value>
+		</property>
+		<property name="mappings">
+			<list>
+				<value>org/openuap/cms/keywords/model/oracle/Keywords.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+</beans>	

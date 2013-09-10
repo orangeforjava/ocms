@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- created by Weiping Ju $Date: 2006/08/31 02:26:01 $-->
+<directory>
+	<object type="0" name="model" key="org.openuap.cms.cm" title="内容模型管理">
+		<permission key="1" name="viewModel">查看内容模型</permission>
+		<permission key="2" name="addModel">添加内容模型</permission>
+		<permission key="3" name="editModel">编辑内容模型</permission>
+		<permission key="4" name="deleteModel">删除内容模型</permission>
+		<permission key="5" name="updateModel">更新内容模型表定义</permission>
+		<permission key="6" name="changeStatus">变更内容模型状态</permission>
+		<permission key="7" name="changeType">变更内容模型类型</permission>
+	</object>
+</directory>

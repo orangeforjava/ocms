@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="compass"
+		class="org.openuap.runtime.setup.compass.BaseLocalCompassBean">
+		<property name="compassSettings">
+			<props>
+				<prop key="compass.transaction.factory">
+					org.compass.core.transaction.LocalTransactionFactory
+				</prop>
+				<prop key="compass.engine.analyzer.default.type">
+					jeasy.analysis.MMAnalyzer
+				</prop>
+				<prop key="compass.transaction.lockTimeout">20</prop>
+				<!--  <prop key="compass.engine.highlighter.default.encoder.type">
+					org.openuap.search.highlight.HtmlExtractorEncoder
+					</prop>-->
+				<prop
+					key="compass.engine.highlighter.default.encoder.type">
+					html
+				</prop>
+				<prop
+					key="compass.engine.highlighter.default.formatter.simple.pre">
+					<![CDATA[<font color=#FF0000><b>]]>
+				</prop>
+				<prop
+					key="compass.engine.highlighter.default.formatter.simple.post">
+					<![CDATA[</b></font>]]>
+				</prop>
+				<prop key="compass.engine.mergeFactor" >
+					500
+				</prop>
+				<prop key="compass.engine.optimizer.type" >
+					org.compass.core.lucene.engine.optimizer.DefaultLuceneSearchEngineOptimizer					
+				</prop>
+				<prop key="compass.engine.optimizer.aggressive.mergeFactor" >
+					10
+				</prop>
+				
+				<!--  <prop key="compass.transaction.isolation">
+					batch_insert
+					</prop>-->
+				<!--  
+					<prop key="compass.engine.connection">target/testindex</prop>
+				-->
+			</props>
+		</property>
+		<!-- <property name="transactionManager">
+			<ref bean="dynamicTransactionManager" />
+		</property> -->
+	</bean>
+	<bean id="rsemHelper"
+		class="org.openuap.cms.search.index.RSEMHelper">
+		<property name="freemarkerConfigurer">
+			<ref bean="freemarkerConfigurer" />
+		</property>
+	</bean>
+	<bean id="indexEngine"
+		class="org.openuap.cms.search.index.impl.DefaultIndexEngineImpl">
+
+		<property name="indexDao">
+			<ref bean="indexDao" />
+		</property>
+	</bean>
+	<bean id="indexDao"
+		class="org.openuap.cms.search.index.dao.impl.IndexDaoImpl">
+		<description>索引Dao实现.</description>
+		<property name="compass" ref="compass" />
+		<property name="contentTableManager" ref="contentTableManager" />
+		<property name="dynamicContentDao" ref="dynamicContentDao" />
+	</bean>
+	<bean id="dbSearchEngine"
+		class="org.openuap.cms.search.impl.DBSearchEngineImpl">
+		<property name="dynamicContentManager">
+			<ref bean="dynamicContentManager" />
+		</property>
+		<property name="contentTableManager">
+			<ref bean="contentTableManager" />
+		</property>
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+	</bean>
+	<bean id="luceneSearchEngine"
+		class="org.openuap.cms.search.impl.LuceneSearchEngineImpl">
+		<property name="compass">
+			<ref bean="compass" />
+		</property>
+		<property name="contentTableManager">
+			<ref bean="contentTableManager" />
+		</property>
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="contentFieldManager">
+			<ref bean="contentFieldManager" />
+		</property>
+	</bean>
+	
+</beans>

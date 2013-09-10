@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- $Id: cms-module-security-web.xml 3869 2010-10-25 07:28:52Z orangeforjava $
+-->
+<beans default-lazy-init="true">
+	
+</beans>

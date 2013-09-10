@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <companytypes>
+    <companytype key="请选择">请选择公司类别</companytype>
+    <companytype key="供应">供应</companytype>
+	<companytype key="销售">销售</companytype>
+  </companytypes>
+</directory>

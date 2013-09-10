@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- created by Weiping Ju $Date: 2006/08/31 02:26:01 $-->
+<directory>
+	<object type="1" name="node" key="org.openuap.cms.node" title="站点管理">
+		<permission key="1" name="viewNode">查看结点信息</permission>
+		<permission key="2" name="addChildNode">添加子结点</permission>
+		<permission key="3" name="addRootNode">添加根结点</permission>
+		<permission key="4" name="editNode">编辑结点</permission>
+		<permission key="5" name="deleteNode">删除结点</permission>
+		<permission key="6" name="moveNode">移动结点</permission>
+		<permission key="7" name="emptyNode">彻底删除结点</permission>
+		<permission key="8" name="sortNode">结点排序</permission>
+		<permission key="9" name="emptyRecycleBin">清空回收站</permission>
+		<permission key="10" name="restoreNode">恢复结点</permission>
+		<permission key="11" name="viewPermission">查看站点权限</permission>
+		<permission key="12" name="editPermission">编辑站点权限</permission>
+	</object>
+</directory>

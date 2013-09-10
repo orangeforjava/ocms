@@ -1,0 +1,49 @@
+[#ftl] 
+[#import "/macros/cms-macros-gbk.html" as cms /] 
+[#import "/macros/util-macros.html" as util /] 
+[#import "/macros/pager-macros-gbk.html" as pager /] 
+[#assign baseUrl=helper.getBaseURL()/] 
+[#assign pageUrl=baseUrl+"pub/search.jhtml?keyword=${keyword}&fields=${fields}&tpl=${tpl}&tableId=${tableId}&order=${order}&where=${where}&pageNum="+pageNum+"&page="/]
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<title>t_search_result_db.html</title>
+
+		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+		<meta http-equiv="description" content="this is my page">
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+		<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+	</head>
+
+	<body>
+		<div>
+		Took times:${searchTime}ms
+		</div>
+		[#list rs as var]
+		<table width="96%" border="0" align="center" cellpadding="0"
+			cellspacing="0">
+			<tr>
+				<td>
+					<A class="yyy14" href='${var["url"]}' target=_blank>[${var["nodeName"]}]-[@util.substr
+						target=var["Title"]?default("") start=0 limit=100 style=1
+						replace=keyword2 with=replaceWith/]</A>
+					<span class="unnamed1"><font color="#006600">[@util.date
+							timestamp=var["publishDate"] /]</font>
+					</span>
+					<BR>
+					<font size="-1">&nbsp;&nbsp;&nbsp;&nbsp;<span
+						class="unnamed1">[@util.htmlSubstr
+							target=var["Content"]?default("") start=0 limit=100
+							keyword=keyword2?default("")/]</span>
+					</font>
+				</td>
+			</tr>
+		</table>
+		[/#list]
+		<div>
+		[@pager.pageBuilder pb=pb baseUrl=pageUrl closeUrl="" style="1"/] 
+		</div>
+	</body>
+</html>

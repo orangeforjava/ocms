@@ -1,0 +1,348 @@
+[#assign actionTitle="内容模型编辑" /]
+[#assign _TITLE_="内容模型编辑" /]
+[#if contentTable.tableId??]
+[#assign actions=[
+{"action":"List","title":"内容模型管理","url":"${baseUrl}admin/content.jhtml","class":"view"},
+{"action":"Add","title":"新建内容模型","url":"${baseUrl}admin/contentEdit.jhtml","class":"add"},
+{"action":"","title":"内容模型编辑","url":"${baseUrl}admin/contentEdit.jhtml?tableId=${contentTable.tableId}","class":"view"}
+]]
+[#else]
+[#assign actions=[
+{"action":"List","title":"内容模型管理","url":"${baseUrl}admin/content.jhtml","class":"view"},
+{"action":"","title":"新建内容模型","url":"${baseUrl}admin/contentEdit.jhtml","class":"add"}
+]]
+[/#if]
+[#include "/plugin/cms/common/includes/header.htm"/]
+<script src="html/common/dialog/artDialog.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+function check(form,id)
+{
+	eval("var ischecked = " + form + "." + id + ".checked");
+
+	if(ischecked) {
+		eval( form + "." + id + "_hidden.value = '1'");
+	} else {
+		eval( form + "." + id + "_hidden.value = '0'");
+
+	}
+
+}
+function doing(action)
+{
+	switch(action) {
+		case 'orderfield':
+			{
+			//var arr = showModalDialog("${baseUrl}admin/contentEdit.jhtml?action=OrderField&tableId=${contentTable.tableId!'0'}" ,"color","dialogWidth:250px;dialogHeight:266px;help:0;status:0;scroll:no");
+			var url="${baseUrl}admin/contentEdit.jhtml?action=OrderField&tableId=${contentTable.tableId!'0'}";
+			var caption="模型字段排序";
+			art.dialog.open(url, {title: caption,lock:true});
+			//if(arr != '') {
+			//	window.location = window.location;
+			//
+			//}
+			break;
+			}
+		case 'newfield':
+			window.location="${baseUrl}admin/fieldEdit.jhtml?tableId=${contentTable.tableId!'0'}";
+			break;
+
+	}
+}
+</script>
+[#import "/spring.ftl" as spring /]
+		<form action="" method="post" name="clientform" id="clientform">
+		   <div class="colorarea02">
+			<h3>
+				模型基本信息
+			</h3>
+			<table border="0" cellspacing="1" cellpadding="4" width="98%"
+				align=center class="maintable">				
+				<tr>
+					<th>
+						内容模型名称
+					</th>
+					<td colspan="13">
+						[@spring.bind "contentTable.name"/]
+						<input name="${spring.status.expression}" type="text"
+							value="${spring.status.value?default("")}" id="name"/>							
+					</td>
+				</tr>
+				<tr>
+					<th>
+						内容模型表名
+					</th>
+					<td colspan="13">
+						[@spring.bind "contentTable.tableName"/]
+						<input name="${spring.status.expression}" type="text"
+							value="${spring.status.value?default("")}" id="tableName"/>
+					</td>
+				</tr>
+				<tr>
+					<th>
+						内容模型实体名
+					</th>
+					<td colspan="13">
+						[@spring.bind "contentTable.entityName"/]
+						<input name="${spring.status.expression}" type="text"
+							value="${spring.status.value?default("")}" id="entityName"/>
+					</td>
+				</tr>
+				<tr>
+					<th>
+						是否是系统表
+					</th>
+					<td colspan="13">
+						[@spring.bind "contentTable.system"/]
+						[#if contentTable.system?default(0)==1]
+						<input name="${spring.status.expression}" type="radio" checked
+							value="1" id="system"/>是&nbsp;
+						<input name="${spring.status.expression}" type="radio"
+							value="0" id="system"/>否
+						[#else]
+						<input name="${spring.status.expression}" type="radio" 
+							value="1" id="system"/>是&nbsp;
+						<input name="${spring.status.expression}" type="radio" checked
+							value="0" id="system"/>否
+						[/#if]
+					</td>
+				</tr>
+				<tr>
+					<th>
+						是否建立搜索索引
+					</th>
+					<td colspan="13">
+						[@spring.bind "contentTable.allowIndex"/]
+						[#if contentTable.allowIndex?default(0) gt 0]
+						<input name="${spring.status.expression}" type="radio" checked
+							value="1" id="allowIndex1"/>是&nbsp;
+						<input name="${spring.status.expression}" type="radio"
+							value="0" id="allowIndex0"/>否
+						[#else] 
+						<input name="${spring.status.expression}" type="radio" 
+							value="1" id="allowIndex1"/>是&nbsp;
+						<input name="${spring.status.expression}" type="radio" checked 
+							value="0" id="allowIndex0"/>否
+						[/#if] 
+					</td>
+				</tr>
+				</table>
+				</div>
+				
+				[#if contentTable.tableId??]
+				
+				 <div class="colorarea02">
+					
+				<table border="0" cellspacing="1" cellpadding="4" width="98%"
+				align=center>
+				<tr>
+					<td align="left">
+						<h3>
+						属性信息
+						</h3>
+					</td>
+					[#if contentTable.tableId??]
+					<td align=right>
+						<input type="button" name="Submit" value=" 新增字段 "
+							onclick="doing('newfield')">
+						<input type="button" name="Submit1" value=" 字段排序 "
+							onclick="doing('orderfield')">
+					</td>
+					[/#if]
+				</tr>
+				</table>
+				<table border="0" cellspacing="1" cellpadding="4" width="98%"
+				align=center class="maintable">	
+				
+				<tr align="center">
+					<td >
+						显示名
+					</td>
+					<td >
+						字段名
+					</td>
+					<td>
+						类型
+					</td>
+					<td>
+						标题
+					</td>
+					<td>
+						主内容
+					</td>
+					<td>
+						关键字
+					</td>
+					<td>
+						首图
+					</td>
+					<td>
+					附加分类
+					</td>
+					<td>
+						列表
+					</td>
+					<td>
+						搜索
+					</td>
+					<td>
+						投稿
+					</td>
+					<td>
+						采集
+					</td>
+					<td>
+						发布
+					</td>
+					<td>
+						执行操作
+					</td>
+				</tr>
+				[#list contentTable.contentFieldsSet as field]
+				[#if field.otherCategory==1]
+				<tr style="background-color:#c8c8c8">
+				[#else]
+				<tr>
+				[/#if]
+					<td >
+						${field.fieldTitle}
+					</td>
+					<td >
+						${field.fieldName}
+					</td>
+					<td >
+						${field.fieldType}
+					</td>
+
+					<td align=center>
+						[#if field.titleField?default(0)==0]
+						<a
+							href="admin/contentEdit.jhtml?action=SetTitle&tableId=${contentTable.tableId}&contentFieldId=${field.contentFieldId}">
+							<FONT COLOR=#FF0000>×</FONT>
+						</a> 
+						[#else]
+						<FONT size=1 COLOR=#009900>√</FONT> 
+						[/#if]
+					</td>
+					<td  align=center>
+						[#if field.mainField?default(0)==0]
+						<A
+							HREF="admin/contentEdit.jhtml?action=SetMain&tableId=${contentTable.tableId}&contentFieldId=${field.contentFieldId}">
+							<FONT COLOR=#FF0000>×</FONT>
+						</a> 
+						[#else]
+						<FONT size=1 COLOR=#009900>√</FONT> 
+						[/#if]
+					</td>
+					<td  align=center>
+						[#if field.keywordsField?default(0)==0]
+						<A
+							HREF="admin/contentEdit.jhtml?action=SetKeywords&tableId=${contentTable.tableId}&contentFieldId=${field.contentFieldId}">
+							<FONT COLOR=#FF0000>×</FONT>
+						</a> 
+						[#else]
+						<FONT size=1 COLOR=#009900>√</FONT> 
+						[/#if]
+					</td>
+					<td align=center>
+						[#if field.photoField?default(0)==0]
+						<A
+							HREF="admin/contentEdit.jhtml?action=SetPhoto&tableId=${contentTable.tableId}&contentFieldId=${field.contentFieldId}">
+							<FONT COLOR=#FF0000>×</FONT>
+						</a> 
+						[#else]
+						<FONT size=1 COLOR=#009900>√</FONT> 
+						[/#if]
+					</td>
+					<td  align=center width=60>
+						[#if field.otherCategory==1]
+						<input TYPE="checkbox" NAME="otherCategory"
+							value="${field.contentFieldId}" checked/>
+						[#else] 
+						<input TYPE="checkbox" NAME="otherCategory"
+							value="${field.contentFieldId}"/>
+						[/#if] 
+					</td>
+					<td  align=center width=60>
+						[#if field.fieldListDisplay==1]
+						<input TYPE="checkbox" NAME="fieldListDisplay"
+							value="${field.contentFieldId}" checked/>
+						[#else] 
+						<input TYPE="checkbox" NAME="fieldListDisplay"
+							value="${field.contentFieldId}"/>
+						[/#if] 
+					</td>
+
+					<td align=center>
+						[#if field.fieldSearchable?default(0)==1]
+						<input TYPE="checkbox" NAME="fieldSearchable"
+							value="${field.contentFieldId}" checked />
+						[#else] 
+						<input TYPE="checkbox" NAME="fieldSearchable"
+							value="${field.contentFieldId}"/>
+						[/#if] 
+					</td>
+
+					<td align=center>
+						[#if field.enableContribution?default(0)==1]
+						<input TYPE="checkbox" NAME="enableContribution"
+							value="${field.contentFieldId}" checked />
+						[#else] 
+						<input TYPE="checkbox" NAME="enableContribution"
+							value="${field.contentFieldId}" />
+						[/#if] 
+					</td>
+					<td align=center>
+						[#if field.enableCollection?default(0)==1]
+						<input TYPE="checkbox" NAME="enableCollection"
+							value="${field.contentFieldId}" checked />
+						[#else]
+						<input TYPE="checkbox" NAME="enableCollection"
+							value="${field.contentFieldId}" />
+						[/#if] 
+					</td>
+					<td align=center>
+						[#if field.enablePublish?default(0)==1]
+						<input TYPE="checkbox" NAME="enablePublish"
+							value="${field.contentFieldId}" checked />
+						[#else]
+						<input TYPE="checkbox" NAME="enablePublish"
+							value="${field.contentFieldId}" />
+						[/#if] 
+					</td>
+
+					<td align="center">
+						<A
+							HREF="admin/fieldEdit.jhtml?mode=edit&tableId=${contentTable.tableId}&contentFieldId=${field.contentFieldId}">编辑</A>
+					&nbsp;
+					<A
+							HREF="admin/contentEdit.jhtml?action=DelField&tableId=${contentTable.tableId}&contentFieldId=${field.contentFieldId}"
+							onclick="return confirm('确认删除吗?')">删除</A>						
+					</td>
+				</tr>
+				[/#list]
+				[/#if]
+			</table>
+			</div>
+			<table border="0" cellspacing="1" cellpadding="4" width="98%"
+				align=center>
+				<tr>
+					<td>
+						<input type='submit' name='submit' value=' 保 存 ' tabindex='13'>&nbsp;
+						<input type='reset' name='submit' value=' 重 置 ' tabindex='13'>&nbsp;
+					</td>
+					[#if contentTable.tableId??]
+					<td align=right>
+						<input type="button" name="Submit" value=" 新增字段 "
+							onclick="doing('newfield')">
+						<input type="button" name="Submit1" value=" 字段排序 "
+							onclick="doing('orderfield')">
+					</td>
+					[/#if]
+				</tr>
+			</table>
+		</form>
+<br/>
+<iframe name="actionFrame"  frameborder=0  style="width:0;height:0;" src="" >
+</Iframe>
+[#include "/plugin/cms/common/includes/footer.htm"/]

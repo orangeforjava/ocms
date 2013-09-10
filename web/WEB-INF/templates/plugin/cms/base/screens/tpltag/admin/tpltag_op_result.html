@@ -1,0 +1,53 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>publish operation result</title>
+<base  href="${baseUrl}"/>
+<link type="text/css" rel="StyleSheet" href="html/plugin/cms/base/css/style.css" />
+<#if rs=="success">
+<meta http-equiv="refresh" content="2;url='${baseUrl}admin/tpltag.jhtml'">
+</#if>
+</head>
+<body>
+<br><br>
+<div align=center>
+  <table width="100%" height="100%" border="0" cellpadding="20" cellspacing="0">
+    <tr>
+    <td align="center" valign="top">
+        <table width="50%" height="100" border="0" cellpadding="4" cellspacing="1" class="table_border">
+          <tr class="table_td2">
+            <td>
+			<#if op=="del">
+				<#if rs=="success">
+				删除模板标签成功
+				<#else>
+				删除模板标签失败，原因为:${msgs?default("")}
+				</#if>
+			<#elseif op=="edit">
+				<#if rs=="success">
+				编辑模板标签成功
+				<#else>
+				编辑模板标签失败，原因为:${msgs?default("")}
+				</#if>
+			<#elseif op=="add">
+				<#if rs=="success">
+				添加模板标签成功
+				<#else>
+				添加模板标签失败，原因为:${msgs?default("")}
+				</#if>			
+			</#if>			
+			<br><br>
+			<#if rs=="success">
+			<a href="admin/tpltag.jhtml">如果您的浏览器没有自动跳转，请点击这里</a> <br>
+			</#if>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

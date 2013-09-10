@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-node.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<beans>
+	<!-- DAO -->
+	<import resource="cms-module-node-dao.xml" />
+	<!-- BIZ -->
+	<bean id="nodeManager"
+		class="org.openuap.cms.node.manager.impl.NodeManagerDBImpl">
+		<property name="nodeDao">
+			<ref bean="nodeDao" />
+		</property>
+	</bean>
+	<bean id="nodeDataExporter"
+		class="org.openuap.cms.node.data.NodeDataExporter">
+	</bean>
+	<bean id="nodeDataImporter"
+		class="org.openuap.cms.node.data.NodeDataImporter">
+	</bean>
+	<!-- 资源反射，采用默认规则 -->
+	<bean id="org.openuap.cms.node.reflection" class="org.openuap.cms.node.security.NodeResourceReflection">
+		<property name="nodeManager" ref="nodeManager"/>
+	</bean>
+	<bean id="nodeWorkbenchPluginManager"
+		class="org.openuap.cms.node.ui.NodeWorkbenchPluginManager">
+		
+	</bean>
+</beans>

@@ -1,0 +1,208 @@
+<#import "/plugin/cms/base/macros/node-macros.html" as mynode />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>资源库选择</title>
+<base  href="${baseUrl}"/>
+ <#if node?exists>
+		<#assign nodeId=node.nodeId>
+	<#else>
+		<#assign nodeId=0>
+	</#if>
+    <#assign url=baseUrl+"admin/resourceSelect.jhtml?action=ResourceList&category="+category+""/>
+	<#assign dialog_url=baseUrl+"admin/resourceSelect.jhtml?action=ResourceDialog&category="+category+""/>
+<link rel='stylesheet' type='text/css' href='html/plugin/cms/base/css/style.css' />
+
+<script language="javascript">
+function psn_backward()
+{	//alert('a')
+			window.history.go(-1);
+}
+function showResource2(){
+	parent.mainFrame.location = "${dialog_url}&page=1&nodeId=" + document.form.selectNode.options[document.form.selectNode.selectedIndex].value;
+	return false;
+}
+function showResource(ipage){
+	parent.mainFrame.location = "${dialog_url}&page="+ipage+"&nodeId=" + document.form.selectNode.options[document.form.selectNode.selectedIndex].value;
+	return false;
+}
+function refreshResource(ipage){
+    workFrame.location = "${url}&page="+ipage+"&nodeId=" + document.form.selectNode.options[document.form.selectNode.selectedIndex].value;
+	return false;
+}//end  refreshResource
+function loadBarUnDisplay() {
+	workFrame.loadBarUnDisplay();
+	document.form.Submit1.disabled = false;
+}//end loadBarUnDisplay
+function loadBarUnDisplayAndRefresh(){
+    workFrame.loadBarUnDisplay();
+	document.form.Submit1.disabled = false;
+	refreshResource('${page}');
+}
+function processSubmit(){
+	document.form.NodeID.value = document.form.selectNode.options[document.form.selectNode.selectedIndex].value;
+	workFrame.loadBarDisplay();
+	document.form.Submit1.disabled=true;
+	return true;
+
+}//end processSubmit
+
+function OpenFile( fileUrl,form1 )
+{
+	if(fileUrl&&fileUrl!=null&&fileUrl!=""){
+		fileUrl="../resource/"+fileUrl;
+		try{
+		window.top.opener.SetUrl( encodeURI( fileUrl ).replace( '#', '%23' ) ) ;
+		window.top.close() ;
+		window.top.opener.focus() ;
+		}catch(e){
+			//
+			try{
+			window.top.returnValue = form1.fileName.value+'|'+form1.fileTitle.value+'|'+form1.fileId.value;
+			//
+			window.top.close() ;
+			}catch(e1){}
+		}
+	}else{
+		try{
+			window.top.close() ;
+			
+		}catch(e){
+			try{
+				window.close();
+				}catch(e1){}
+		}
+	}
+	
+}
+</script>
+</head>
+<body style="background: #F1F1F1;margin:0pt;padding:0pt;border: 1px buttonhighlight;" onLoad="workFrameReload()">
+<table width="100%" border="0" cellspacing="5">
+  <form  name="form" method="post" action="admin/upload.jhtml?action=UploadFile" enctype="multipart/form-data" target="operation" onSubmit="return processSubmit();">
+    <tr>
+      <td colspan="3" align="right">
+	  <table width="100%" border="0" cellspacing="0">
+          <tr>
+            <td width="15%" align="right">按结点选择:</td>
+            <td  width="200"><select name="selectNode" style="width:250" onChange="if(this.options[this.selectedIndex].value != ''){showResource2();
+} ">                 <option value="0">查看所有
+</option>
+<#if node?exists>
+<#assign selId=node.nodeId?default(0)/>
+<#else>
+<#assign selId=0/>
+</#if>
+			<@mynode.showNodesSel nodeManager=nodeManager selId=selId/>
+              </select></td>
+            <td align="left" valign="middle">
+
+
+<#macro pager url totalCount pageSize page >
+	<#local totalPage=totalCount/pageSize />
+	<#if (totalCount%pageSize) gt 0>
+	<#local totalPage=totalPage?int+1/>
+	</#if>
+	
+	<#if totalPage gt 0>
+    s+="<select name='nav' onChange='showResource(this.value)'>";
+	<#list 1..totalPage as ii>
+		<#if page==ii>
+		s+="<option value='${ii}' selected='selected' onclick='return showResource(\"${ii}\")'>第${ii}页</option>";
+		<#else>
+		s+="<option value='${ii}' onclick='return showResource(\"${ii}\")'>第${ii}页</option>";
+		</#if>
+	</#list>
+	s+="</select>";
+	
+	s+='<a href="#" target="_self" onClick="return refreshResource(\'${page}\')">刷新</a>';
+    </#if>
+</#macro>
+<script>
+
+var action=new Array( "back","forward","refresh2")
+var tooltip=new Array(  "上一页", "下一页", "刷新")
+
+var s=
+'     ' +
+'    <style>' +
+'    .Utoolbutton{border:1 double;border-color:threedface threedface threedface threedface; background:threedface}' +
+'    .Dtoolbutton{border:1 double;border-color:#FFFFFF #999999 #999999 #FFFFFF; background:threedface}' +
+'    .Ctoolbutton{border:1 double;border-color:#999999 #FFFFFF #FFFFFF #999999; background:threedface}' +
+'    </style>' +
+'    <table border=0 cellPadding=0 cellSpacing=0 ><tbody>' +
+'      <tr><td colspan="2">';
+
+<@pager url=url totalCount=totalCount pageSize=pageSize page=page/>
+
+s+=
+'      </td></tr></table>' ;
+
+document.write(s);
+
+</script>
+
+
+
+			</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+	<tr>
+      <td colspan="3" align="right">
+	  <table width="100%" border="0" cellspacing="0">
+
+          <tr>
+            <td width="15%" align="right">上传文件:</td>
+            <td  width="85%"><input type="file" name="uploadFile" style="width:300px;" />
+			<input type="submit" name="Submit1" value="上传">
+			<input type="hidden" name="msgView" value="resourceDialog"/>
+			<input type="hidden" name="changeName" value="1"    id="changeName4">
+			<input type="hidden" name="type"  id="type" value="0">
+			<input type="hidden" name="category"  id="category" value="${category}">
+			<input type="hidden" name="nodeId"  id="NodeID">
+			</td>
+          </tr>
+      </table>
+    <tr>
+      <td colspan="3" align="center" width="100%">
+<iframe name="workFrame" frameborder=1 class="button"  src="${baseUrl}admin/resourceSelect.jhtml?action=ResourceList&category=${category}&nodeId=${nodeId?c}&page=${page}"  style="width:100%;height:282;">
+                </iframe> </td>
+    </tr>
+    <tr>
+      <td width="18%">文件名:</td>
+      <td width="59%">
+      		<input name="fileName" type="text" style="width:350px" disabled/>
+        	<input name="returnFileName" type="hidden" id="returnFileName" value=""/>
+			<input name="fileTitle" type="hidden" id="fileTitle" value=""/>
+			<input name="fileId" type="hidden" id="fileId" value=""/>
+		</td>
+      <td width="20%">
+	  <input type="button" name="Submitx" value="  确定  " onClick="javaScript:OpenFile(this.form.fileName.value,this.form)">
+	  </td>
+    </tr>
+    <tr>
+      <td>文件类型</td>
+      <td><select name="" style="width:250;"  disabled>
+<option value="">图片</option>
+<option value="">附件</option>
+<option value="">受控附件</option>
+<option value="">FLASH</option>
+</select></td>
+      <td><input type="button" name="Submit2" value="  取消  " onClick="javaScript:OpenFile(this.form.fileName.value,this.form)""></td>
+    </tr>
+  </form>
+</table>
+
+
+<script language="javascript">
+function workFrameReload() {
+	//
+}
+</script>
+<iframe name="operation" src="" frameborder="0" class="button" style="display:none"> </iframe>
+</body>
+</html>

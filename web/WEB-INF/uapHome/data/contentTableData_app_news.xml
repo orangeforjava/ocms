@@ -1,0 +1,299 @@
+<data>
+  <contentTables>
+    <contentTable>
+      <hashValue>0</hashValue>
+      <tableId>1</tableId>
+      <contentFieldsSet class="org.hibernate.collection.PersistentSet">
+        <set class="linked-hash-set">
+          <contentField>
+            <hashValue>695</hashValue>
+            <contentFieldId>66</contentFieldId>
+            <contentTable reference="../../../.."/>
+            <tableId>1</tableId>
+            <fieldTitle>标题</fieldTitle>
+            <fieldName>Title</fieldName>
+            <fieldType>varchar</fieldType>
+            <fieldSize>200</fieldSize>
+            <fieldInput>text</fieldInput>
+            <fieldDefaultValue></fieldDefaultValue>
+            <fieldInputFilter></fieldInputFilter>
+            <fieldInputPicker></fieldInputPicker>
+            <fieldInputPickerExtra></fieldInputPickerExtra>
+            <fieldInputTpl></fieldInputTpl>
+            <fieldDescription></fieldDescription>
+            <fieldOrder>0</fieldOrder>
+            <fieldListDisplay>0</fieldListDisplay>
+            <mainField>0</mainField>
+            <titleField>1</titleField>
+            <keywordsField>0</keywordsField>
+            <photoField>0</photoField>
+            <fieldSearchable>1</fieldSearchable>
+            <enableContribution>0</enableContribution>
+            <enableCollection>0</enableCollection>
+            <enablePublish>0</enablePublish>
+            <enableStatics>0</enableStatics>
+            <indexType>TOKENIZED</indexType>
+            <storeType>YES</storeType>
+            <termVectorType>NO</termVectorType>
+          </contentField>
+          <contentField>
+            <hashValue>955</hashValue>
+            <contentFieldId>326</contentFieldId>
+            <contentTable reference="../../../.."/>
+            <tableId>1</tableId>
+            <fieldTitle>短标题</fieldTitle>
+            <fieldName>title1</fieldName>
+            <fieldType>varchar</fieldType>
+            <fieldSize>30</fieldSize>
+            <fieldInput>text</fieldInput>
+            <fieldDefaultValue></fieldDefaultValue>
+            <fieldInputFilter></fieldInputFilter>
+            <fieldInputPicker></fieldInputPicker>
+            <fieldInputPickerExtra></fieldInputPickerExtra>
+            <fieldInputTpl></fieldInputTpl>
+            <fieldDescription></fieldDescription>
+            <fieldOrder>0</fieldOrder>
+            <fieldListDisplay>0</fieldListDisplay>
+            <mainField>0</mainField>
+            <titleField>0</titleField>
+            <keywordsField>0</keywordsField>
+            <photoField>0</photoField>
+            <fieldSearchable>1</fieldSearchable>
+            <enableContribution>0</enableContribution>
+            <enableCollection>0</enableCollection>
+            <enablePublish>0</enablePublish>
+            <enableStatics>0</enableStatics>
+            <indexType>NO</indexType>
+            <storeType>NO</storeType>
+            <termVectorType>NO</termVectorType>
+          </contentField>
+          <contentField>
+            <hashValue>696</hashValue>
+            <contentFieldId>67</contentFieldId>
+            <contentTable reference="../../../.."/>
+            <tableId>1</tableId>
+            <fieldTitle>来源</fieldTitle>
+            <fieldName>Source</fieldName>
+            <fieldType>varchar</fieldType>
+            <fieldSize>200</fieldSize>
+            <fieldInput>text</fieldInput>
+            <fieldDefaultValue></fieldDefaultValue>
+            <fieldInputFilter></fieldInputFilter>
+            <fieldInputPicker></fieldInputPicker>
+            <fieldInputTpl></fieldInputTpl>
+            <fieldDescription></fieldDescription>
+            <fieldOrder>1</fieldOrder>
+            <fieldListDisplay>0</fieldListDisplay>
+            <mainField>0</mainField>
+            <titleField>0</titleField>
+            <keywordsField>0</keywordsField>
+            <photoField>0</photoField>
+            <fieldSearchable>1</fieldSearchable>
+            <enableContribution>0</enableContribution>
+            <enableCollection>0</enableCollection>
+            <enablePublish>0</enablePublish>
+            <indexType>NO</indexType>
+            <storeType>NO</storeType>
+            <termVectorType>NO</termVectorType>
+          </contentField>
+          <contentField>
+            <hashValue>697</hashValue>
+            <contentFieldId>68</contentFieldId>
+            <contentTable reference="../../../.."/>
+            <tableId>1</tableId>
+            <fieldTitle>关键字</fieldTitle>
+            <fieldName>KeyWords</fieldName>
+            <fieldType>varchar</fieldType>
+            <fieldSize>200</fieldSize>
+            <fieldInput>text</fieldInput>
+            <fieldDefaultValue></fieldDefaultValue>
+            <fieldInputFilter></fieldInputFilter>
+            <fieldInputPicker></fieldInputPicker>
+            <fieldInputPickerExtra></fieldInputPickerExtra>
+            <fieldInputTpl></fieldInputTpl>
+            <fieldDescription></fieldDescription>
+            <fieldOrder>2</fieldOrder>
+            <fieldListDisplay>0</fieldListDisplay>
+            <mainField>0</mainField>
+            <titleField>0</titleField>
+            <keywordsField>1</keywordsField>
+            <photoField>0</photoField>
+            <fieldSearchable>1</fieldSearchable>
+            <enableContribution>0</enableContribution>
+            <enableCollection>0</enableCollection>
+            <enablePublish>0</enablePublish>
+            <enableStatics>0</enableStatics>
+            <indexType>TOKENIZED</indexType>
+            <storeType>YES</storeType>
+            <termVectorType>NO</termVectorType>
+          </contentField>
+          <contentField>
+            <hashValue>698</hashValue>
+            <contentFieldId>69</contentFieldId>
+            <contentTable reference="../../../.."/>
+            <tableId>1</tableId>
+            <fieldTitle>首图</fieldTitle>
+            <fieldName>Photo</fieldName>
+            <fieldType>varchar</fieldType>
+            <fieldSize>200</fieldSize>
+            <fieldInput>text</fieldInput>
+            <fieldDefaultValue></fieldDefaultValue>
+            <fieldInputFilter></fieldInputFilter>
+            <fieldInputPicker>upload</fieldInputPicker>
+            <fieldInputTpl></fieldInputTpl>
+            <fieldDescription></fieldDescription>
+            <fieldOrder>3</fieldOrder>
+            <fieldListDisplay>0</fieldListDisplay>
+            <mainField>0</mainField>
+            <titleField>0</titleField>
+            <keywordsField>0</keywordsField>
+            <photoField>1</photoField>
+            <fieldSearchable>0</fieldSearchable>
+            <enableContribution>0</enableContribution>
+            <enableCollection>0</enableCollection>
+            <enablePublish>0</enablePublish>
+            <indexType>NO</indexType>
+            <storeType>NO</storeType>
+            <termVectorType>NO</termVectorType>
+          </contentField>
+          <contentField>
+            <hashValue>699</hashValue>
+            <contentFieldId>70</contentFieldId>
+            <contentTable reference="../../../.."/>
+            <tableId>1</tableId>
+            <fieldTitle>内容</fieldTitle>
+            <fieldName>Content</fieldName>
+            <fieldType>text</fieldType>
+            <fieldSize></fieldSize>
+            <fieldInput>RichEditor</fieldInput>
+            <fieldDefaultValue></fieldDefaultValue>
+            <fieldInputFilter></fieldInputFilter>
+            <fieldInputPicker></fieldInputPicker>
+            <fieldInputPickerExtra></fieldInputPickerExtra>
+            <fieldInputTpl></fieldInputTpl>
+            <fieldDescription></fieldDescription>
+            <fieldOrder>4</fieldOrder>
+            <fieldListDisplay>0</fieldListDisplay>
+            <mainField>1</mainField>
+            <titleField>0</titleField>
+            <keywordsField>0</keywordsField>
+            <photoField>0</photoField>
+            <fieldSearchable>1</fieldSearchable>
+            <enableContribution>0</enableContribution>
+            <enableCollection>0</enableCollection>
+            <enablePublish>0</enablePublish>
+            <enableStatics>0</enableStatics>
+            <indexType>TOKENIZED</indexType>
+            <storeType>COMPRESS</storeType>
+            <termVectorType>NO</termVectorType>
+          </contentField>
+          <contentField>
+            <hashValue>700</hashValue>
+            <contentFieldId>71</contentFieldId>
+            <contentTable reference="../../../.."/>
+            <tableId>1</tableId>
+            <fieldTitle>相关新闻</fieldTitle>
+            <fieldName>RelativeNews</fieldName>
+            <fieldType>contentlink</fieldType>
+            <fieldSize></fieldSize>
+            <fieldInput>text</fieldInput>
+            <fieldDefaultValue></fieldDefaultValue>
+            <fieldInputFilter></fieldInputFilter>
+            <fieldInputPicker>content</fieldInputPicker>
+            <fieldInputTpl></fieldInputTpl>
+            <fieldDescription></fieldDescription>
+            <fieldOrder>5</fieldOrder>
+            <fieldListDisplay>0</fieldListDisplay>
+            <mainField>0</mainField>
+            <titleField>0</titleField>
+            <keywordsField>0</keywordsField>
+            <photoField>0</photoField>
+            <fieldSearchable>0</fieldSearchable>
+            <enableContribution>0</enableContribution>
+            <enableCollection>0</enableCollection>
+            <enablePublish>0</enablePublish>
+            <indexType>NO</indexType>
+            <storeType>NO</storeType>
+            <termVectorType>NO</termVectorType>
+          </contentField>
+          <contentField>
+            <hashValue>701</hashValue>
+            <contentFieldId>72</contentFieldId>
+            <contentTable reference="../../../.."/>
+            <tableId>1</tableId>
+            <fieldTitle>推荐新闻</fieldTitle>
+            <fieldName>RecommentNews</fieldName>
+            <fieldType>contentlink</fieldType>
+            <fieldSize></fieldSize>
+            <fieldInput>text</fieldInput>
+            <fieldDefaultValue></fieldDefaultValue>
+            <fieldInputFilter></fieldInputFilter>
+            <fieldInputPicker>content</fieldInputPicker>
+            <fieldInputTpl></fieldInputTpl>
+            <fieldDescription></fieldDescription>
+            <fieldOrder>6</fieldOrder>
+            <fieldListDisplay>0</fieldListDisplay>
+            <mainField>0</mainField>
+            <titleField>0</titleField>
+            <keywordsField>0</keywordsField>
+            <photoField>0</photoField>
+            <fieldSearchable>0</fieldSearchable>
+            <enableContribution>0</enableContribution>
+            <enableCollection>0</enableCollection>
+            <enablePublish>0</enablePublish>
+            <indexType>NO</indexType>
+            <storeType>NO</storeType>
+            <termVectorType>NO</termVectorType>
+          </contentField>
+        </set>
+        <initialized>true</initialized>
+        <owner class="contentTable" reference="../.."/>
+        <cachedSize>-1</cachedSize>
+        <role>org.openuap.cms.cm.model.ContentTable.contentFieldsSet</role>
+        <key class="long">1</key>
+        <dirty>false</dirty>
+        <storedSnapshot class="map">
+          <entry>
+            <contentField reference="../../../set/contentField[7]"/>
+            <contentField reference="../../../set/contentField[7]"/>
+          </entry>
+          <entry>
+            <contentField reference="../../../set/contentField[8]"/>
+            <contentField reference="../../../set/contentField[8]"/>
+          </entry>
+          <entry>
+            <contentField reference="../../../set/contentField[5]"/>
+            <contentField reference="../../../set/contentField[5]"/>
+          </entry>
+          <entry>
+            <contentField reference="../../../set/contentField[6]"/>
+            <contentField reference="../../../set/contentField[6]"/>
+          </entry>
+          <entry>
+            <contentField reference="../../../set/contentField[3]"/>
+            <contentField reference="../../../set/contentField[3]"/>
+          </entry>
+          <entry>
+            <contentField reference="../../../set/contentField[2]"/>
+            <contentField reference="../../../set/contentField[2]"/>
+          </entry>
+          <entry>
+            <contentField reference="../../../set/contentField[4]"/>
+            <contentField reference="../../../set/contentField[4]"/>
+          </entry>
+          <entry>
+            <contentField reference="../../../set/contentField"/>
+            <contentField reference="../../../set/contentField"/>
+          </entry>
+        </storedSnapshot>
+      </contentFieldsSet>
+      <name>新闻内容模型</name>
+      <dsnid>0</dsnid>
+      <system>0</system>
+      <tableName>app_news</tableName>
+      <entityName>News</entityName>
+      <entityPublishName>NewsPublish</entityPublishName>
+      <allowIndex>1</allowIndex>
+    </contentTable>
+  </contentTables>
+</data>

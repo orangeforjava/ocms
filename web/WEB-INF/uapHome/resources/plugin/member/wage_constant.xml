@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <wages>
+    <wage key="面议">面议</wage>
+    <wage key="500以下">500以下</wage>
+	<wage key="600-700">600-700</wage>
+	<wage key="700-800">700-800</wage>
+	<wage key="800-900">800-900</wage>
+	<wage key="900-1000">900-1000</wage>
+	<wage key="1001-2000">1001-2000</wage>
+	<wage key="2001-3000">2001-3000</wage>
+	<wage key="3001-4000">3001-4000</wage>
+	<wage key="4001-5000">4001-5000</wage>
+	<wage key="5001-6000">5001-6000</wage>
+	<wage key="6001-7000">6001-7000</wage>
+	<wage key="7001-8000">7001-8000</wage>
+	<wage key="8001-9000">8001-9000</wage>
+	<wage key="9001-10000">9001-10000</wage>
+	<wage key="10000以上">10000以上</wage>
+  </wages>
+</directory>

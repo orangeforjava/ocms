@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- Middle tier application context definition for the CMS application.
+-->
+<beans>
+	<bean id="statHandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/counter.jhtml">
+					<ref local="counterAction" />
+				</entry>
+				<entry key="/stat.jhtml">
+					<ref local="statAction" />
+				</entry>
+				<entry key="/dit.jhtml">
+					<ref local="ditAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="counterAction"
+		class="org.openuap.cms.stat.action.CounterAction">
+		<property name="dynamicContentManager">
+			<ref bean="dynamicContentManager" />
+		</property>
+	</bean>
+	<bean id="statAction"
+		class="org.openuap.cms.stat.action.StatAction">
+		<property name="dynamicContentManager">
+			<ref bean="dynamicContentManager" />
+		</property>
+	</bean>
+	<bean id="ditAction"
+		class="org.openuap.cms.stat.action.DitAction">
+		<property name="dynamicContentManager">
+			<ref bean="dynamicContentManager" />
+		</property>
+	</bean>
+	
+</beans>

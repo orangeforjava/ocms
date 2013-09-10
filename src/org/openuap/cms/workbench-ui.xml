@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench>
+	<global>
+		<appname pos="0">内容管理系统</appname>
+		<logo-image pos="0">images/header-title.gif</logo-image>
+		<login-image pos="0">images/logo-wildfire.gif</login-image>
+	</global>
+	<tab id="tab-home" name="系统首页" url="admin/index.jhtml?action=Home"
+		description="系统首页" pos="000">
+	</tab>
+</workbench>

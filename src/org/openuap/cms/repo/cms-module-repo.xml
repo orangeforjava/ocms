@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-repo.xml 3938 2010-10-27 03:25:16Z orangeforjava $
+-->
+<beans>
+	<!-- DAO -->
+	<import resource="cms-module-repo-dao.xml"/>
+	<!-- BIZ -->	
+	<bean id="dynamicContentManager"
+		class="org.openuap.cms.repo.manager.impl.DynamicContentManagerDBImpl">
+		<property name="dynamicContentDao">
+			<ref bean="dynamicContentDao" />
+		</property>
+		<property name="contentIndexDao">
+			<ref bean="contentIndexDao" />
+		</property>
+		<property name="resourceRefDao">
+			<ref bean="resourceRefDao" />
+		</property>
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="contentTableManager">
+			<ref bean="contentTableManager" />
+		</property>
+	</bean>
+</beans>

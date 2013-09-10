@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+                            "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<!-- 
+	$Id: ContentIndexProp.hbm.xml 3938 2010-10-27 03:25:16Z orangeforjava $ 
+-->
+<hibernate-mapping package="org.openuap.cms.repo.model">
+	<class name="ContentIndexProp" table="cms_content_index_prop">
+		<composite-id>
+			<key-property name="indexId" column="indexId" type="long"></key-property>
+			<key-property name="name" column="name" type="string"></key-property>
+		</composite-id>
+		<property name="indexId" type="long" not-null="true"
+			insert="false" update="false">
+			<column name="indexId" />
+		</property>
+		<property name="name" type="string" not-null="true"
+			insert="false" update="false">
+			<column name="name" />
+		</property>
+		<property name="propValue" type="string">
+			<column name="propValue" length="4000" />
+		</property>
+	</class>
+</hibernate-mapping>

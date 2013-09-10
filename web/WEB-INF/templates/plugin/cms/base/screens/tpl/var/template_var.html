@@ -1,0 +1,42 @@
+
+<#assign actionTitle="模板变量管理" />
+
+<#assign _TITLE_="模板变量管理" />
+
+<#assign actions=[
+{"action":"","title":"模板变量管理","url":"${baseUrl}admin/tplVar.jhtml","class":"view"},
+{"action":"AddVar","title":"添加模板变量","url":"${baseUrl}admin/tplVarEdit.jhtml","class":"add"}
+]>
+
+<#include "/plugin/cms/common/includes/header.htm"/>
+
+<table width="100%" border="0" align="center" cellspacing="1" cellpadding="4" class="maintable">
+ 
+  <tr class="table_header"> 
+    <td height="25" colspan="6" ><strong>模板变量管理</strong></td>
+  </tr>
+  <tr  align=center class="table_td1"> 
+    <td>变量标识</td>
+    <td>变量名</td>
+    <td>变量值</td>
+    <td>全局变量</td>
+    <td>操作</td>
+  </tr>
+  <#list vars as var>
+  <tr><td class="table_td1"  >${var.title}</td><td  class="table_td2"  >${var.name}</td>
+    <td   class="table_td2"  >${var.value?default("")}</td>
+    <td   class="table_td2" align=center >
+	<#if var.global>
+		是
+	<#else>
+		否
+	</#if>
+	</td>
+  <td   class="table_td2" align=center>[<a href="${baseUrl}/admin/tplVarEdit.jhtml?action=Edit&id=${var.id?c}">编辑</a>] [<a href="${baseUrl}/admin/tplVar.jhtml?action&o=Del&id=${var.id?c}" onclick="return confirm('确认删除吗?')">删除</a>]</td></tr>
+  </#list>
+   <tr  align=center class="table_td2"> 
+    <td colspan=6>&nbsp;</td>
+  </tr>
+</table>
+<br/>
+<#include "/plugin/cms/common/includes/footer.htm"/>

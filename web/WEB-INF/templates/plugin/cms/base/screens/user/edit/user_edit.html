@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>company_edit</title>
+		<base href="${helper.getBaseURL()}" />
+		<link rel='stylesheet' type='text/css'
+			href='html/plugin/cms/user/images/style.css' />		
+	</head>
+	<body topmargin="0" leftmargin="0">
+
+		
+		<br />
+
+		<#import "/spring.ftl" as spring /> 
+		<@spring.bind "user.*"/> 
+		<#if spring.status.error>
+		<div class="global_error">
+			<#list spring.status.errorMessages as error> ${error}
+			<br />
+			</#list>
+		</div>
+		</#if>
+		<form action='${baseUrl}user/edit.jhtml' method='post'
+			name='clientform' onsubmit="return fm_chk(this)">
+
+			<table border="0" cellspacing="1" cellpadding="4" width="98%"
+				align="center" class="table_border">
+
+				<tr>
+					<td colspan="4" class="table_header">
+						用户基本信息
+					</td>
+				</tr>
+				<tr>
+					<td class="table_td1" width="79" nowrap>
+						登录名(
+						<font color="#FF0000">*</font>):
+					</td>
+					<td colspan="3" class="table_td2">
+						<@spring.bind "user.name"/>
+						${spring.status.value?default(" ")}
+					</td>
+				</tr>
+
+				<tr>
+					<td class="table_td1" width="79" nowrap>
+						用户类型(
+						<font color="#FF0000">*</font>):
+					</td>
+					<td colspan="3" class="table_td2">
+						<@spring.bind "user.type"/>
+						<select name="${spring.status.expression}" id="${spring.status.expression}" disabled="disabled">
+						  	  <#list userTypes as ut>
+							  <#if spring.status.value?default(256)==ut.code>
+							  	<option value="${ut.code}" selected="selected" >${ut.name}</option>
+							  <#else>
+							    <option value="${ut.code}">${ut.name}</option>
+							  </#if>
+							  </#list>
+					    </select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="table_header">
+						联系信息
+					</td>
+				</tr>
+				<tr>
+					<td class="table_td1" width="79" nowrap>
+						真实姓名:
+					</td>
+					<td class="table_td2">
+						<@spring.bind "user.title"/>
+						<input alt="联系人:全数字/无内容" name='${spring.status.expression}'
+							value="${spring.status.value?default(" ")}" type='text'
+							class='flat' id="${spring.status.expression}" />
+						&nbsp;
+						<label id="chk_title"></label>
+					</td>
+					<td class="table_td1" width="115" nowrap>
+						联系邮件(
+						<font color="#FF0000">*</font>):
+					</td>
+					<td class="table_td2">
+						<@spring.bind "user.email"/>
+						<input alt="联系邮件:全数字/邮件/无内容" name='${spring.status.expression}'
+							value="${spring.status.value?default(" ")}" size="30" type='text'
+							class='flat' id="${spring.status.expression}" />
+						&nbsp;
+						<label id="chk_email"></label>
+					</td>
+				</tr>
+
+				
+
+				<tr>
+					<td colspan="4" class="table_td2" align="center">
+						<input type='submit' name='submit' value=' 保 存 ' tabindex='13' />
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="reset" name="Submit" value=" 重 置 " />
+					</td>
+				</tr>
+
+			</table>
+		</form>
+		<script src="html/plugin/cms/base/js/fm_utf8.js"
+			type="text/javaScript" language="javaScript"></script>
+	</body>
+</html>

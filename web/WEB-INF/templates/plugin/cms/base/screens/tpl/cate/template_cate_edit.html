@@ -1,0 +1,173 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>node_edit</title>
+<base  href="${baseUrl}"/>
+<link rel='stylesheet' type='text/css' href='html/css/style.css' />
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+-->
+</style>
+<STYLE type=text/css>
+TD {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: "MS Shell Dlg"
+}
+.tab {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; FONT-SIZE: 12px; PADDING-BOTTOM: 1px; CURSOR: hand; PADDING-TOP: 5px; LETTER-SPACING: 1px
+}
+</STYLE>
+<script language="JavaScript">
+
+function psnSelect(psn,form, psn_element,url_element) {
+//showModalDialog
+var arr = showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=SelPsnDialog&psn=" + psn,"color","dialogWidth:428px;dialogHeight:266px;help:0;status:0;scroll:no");
+if(arr != null) {
+	var PSN = '{PSN:'+ arr;
+	var URL = '{PSN-URL:'+ arr;
+	with(form){
+
+	eval(psn_element + ".value= '" + PSN + "'")
+	eval(url_element + ".value= '" + URL + "'")
+
+	}
+}
+}//end function psnSelect
+
+
+
+
+
+function PublishFileFormat(form,element)
+{
+ 	with(form){
+		eval("var value1 = " + element + ".value")
+	}
+	var arr = showModalDialog('${baseUrl}/admin/adminSelect.jhtml?action=PublishFileFormat&value1=' + value1 ,"color","dialogWidth:428px;dialogHeight:266px;help:0;status:0;scroll:no");
+	if(arr != null && arr !='') {
+		with(form){
+
+			eval(element + ".value= '" +  arr + "'")
+
+		}
+
+
+	}
+
+}
+
+function tplSelect(tpl,form, element)
+{
+	//showModalDialog
+	var arr = showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=SelTplDialog&tpl=" + tpl,"color","dialogWidth:428px;dialogHeight:286px;help:0;status:0;scroll:no");
+	if(arr != null) {
+		with(form){
+
+			eval(element + ".value= '" +  arr + "'")
+
+		}
+
+
+	}
+}//end functin tplSelect
+</script>
+<script language='JavaScript'>
+
+function cate_submit(form)
+{
+	var cateName=document.clientform.cateName.value;
+	if(cateName==""){
+		alert("分类名称必须填写");
+		document.clientform.cateName.focus();
+		return false;
+	}
+	return true;
+}
+</script>
+</head>
+<body>
+<table width="100%"  border="0" align="center" cellspacing="1" class="table_border_xp">
+  <tr>
+    <td height="25" class="table_td1" style="padding-left:10px;">
+	<table width="100%"  border="0"  cellspacing="1"  >
+	<tr>
+	<td>当前位置：模版管理 -> 模版分类管理 -> 编辑模版分类</td>
+	<td align="right">
+	</tr>
+	</table>
+	</td>
+  </tr>
+</table>&nbsp;
+<#import "/spring.ftl" as spring />
+<TABLE cellSpacing=0 cellPadding=0 width="96%" border=0 align=center>
+ <form action='${baseUrl}/admin/templateCateEdit.jhtml' method='post' name='clientform' id="clientform "onSubmit='return cate_submit(this);'>
+ <input type="hidden" name="op" value="${op}"/>
+  <TR>
+     <TD
+          style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; "
+          vAlign=top class="bigborder" >
+
+
+  <table border="0" cellspacing="1" cellpadding="4" width="100%"  align=center class="table_border">
+    <#if op?default("add")=="add">
+	<tr >
+      <td width="20%" class="table_td1">父分类 :</td>
+      <td class="table_td2">
+	  <#if tplCate.parentId==0>
+	  	<font color="red">分类根结点</font>
+	  <#else>
+		  ${ptc.cateName}[${ptc.cateTitle?default("")}/${ptc.id?c}]
+	  </#if>
+	  </td>
+    </tr>	
+	<#else>
+	<tr >
+      <td width="20%" class="table_td1">分类位置 :</td>
+      <td class="table_td2">	  
+	  ${catePath?default("")}
+	  </td>
+    </tr>
+	</#if>
+	<tr>
+      <td class="table_td1"> 分类名称:</td>
+      <td class="table_td2">
+	  <@spring.bind "tplCate.cateName"/>
+	  <input name="${spring.status.expression}" id="${spring.status.expression}" size=30  class='flat' value="${spring.status.value?default("")}">(*) 
+	  </td>
+    </tr>
+    <tr >
+      <td class="table_td1">分类显示名 :</td>
+      <td class="table_td2">
+	  <@spring.bind "tplCate.cateTitle"/>
+	  <input name="${spring.status.expression}" id="${spring.status.expression}" size=30  class='flat' value="${spring.status.value?default("")}" >(*)</td>
+    </tr>
+    <tr >
+      <td class="table_td1">分类描述 :</td>
+      <td class="table_td2">
+	  <@spring.bind "tplCate.cateDesc"/>
+	  <textarea name="${spring.status.expression}" id="${spring.status.expression}"   class='flat' cols="50" rows="5">${spring.status.value?default("")}</textarea></td>
+    </tr>
+  </table>
+</TD>
+       </TR>
+<tr><td>
+<CENTER>
+<input type='submit' name='submit' value=' 提 交 ' tabindex='13'>
+<input TYPE="hidden" name="referer" value="">
+        &nbsp;&nbsp;&nbsp;&nbsp; <input type="reset" name="Submit" value=" 重 置 ">
+</CENTER>
+	   </TD>
+
+	   </TR>
+ 	   </form>
+</TABLE>
+
+</body>
+</html>

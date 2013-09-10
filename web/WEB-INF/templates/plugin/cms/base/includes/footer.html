@@ -1,0 +1,12 @@
+<div id="footer">
+	Powered by <a href="http://www.openuap.org/cms" target="_blank"><strong>OpenUAP<span> CMS</span></strong></a> <em>${version}</em> 
+	&copy; 2005-2008 <a href="http://www.openuap.org" target="_blank">OpenUAP.org</a>
+	<span class="smalltxt">
+	[#assign _end_  = action.getCurrentTimeMillis()/]
+	[#assign _x_   = _hander_start_-_request_start_/]
+	[#assign _y_   = _render_start_-_hander_start_/]
+	[#assign _z_   = _end_-_render_start_/]
+	[#assign _m_   = _x_+_y_/]
+	[#assign _t_   = _m_+_z_/]
+	<br>Time Cost: ${_t_} ( ${_x_}+${_y_}+${_z_}) ms</span>
+</div>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<directory>
+  <mandarinLevels>
+    <mandarinLevel key="标准">标准</mandarinLevel>
+    <mandarinLevel key="优秀">优秀</mandarinLevel>
+	<mandarinLevel key="良好">良好</mandarinLevel>
+	<mandarinLevel key="一般">一般</mandarinLevel>
+	<mandarinLevel key="较差">较差</mandarinLevel>
+  </mandarinLevels>
+</directory>

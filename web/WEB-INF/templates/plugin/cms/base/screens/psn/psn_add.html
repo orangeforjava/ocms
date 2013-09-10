@@ -1,0 +1,135 @@
+[#assign actionTitle="发布点编辑" /]
+[#assign _TITLE_="发布点编辑" /]
+[#assign actions=[
+{"action":"","title":"发布点管理","url":"${baseUrl}admin/psn.jhtml","class":"view"},
+{"action":"Add|Edit","title":"新建发布点","url":"${baseUrl}admin/psnEdit.jhtml","class":"add"}
+]]
+
+[#include "/plugin/cms/common/includes/header.htm"/]
+
+<script language="JavaScript" type="text/javascript">
+
+function show(MenuID)
+{
+
+ if(MenuID=="local")
+ {
+  $("#local").show();
+  //
+  $("#ftp").hide();
+  $("#ftp1").hide();
+  $("#ftp2").hide();
+  $("#ftp3").hide();
+ }
+ else if(MenuID=="ftp")
+ {
+  $("#local").hide();
+  //
+  $("#ftp").show();
+  $("#ftp1").show();
+  $("#ftp2").show();
+  $("#ftp3").show();
+ }	
+}
+
+
+</script>
+[#import "/spring.ftl" as spring /]
+[@spring.bind "psn.*"/]
+[#if spring.status.error]
+<div class="global_error"> 
+  [#list spring.status.errorMessages as error]
+  ${error} <br/>
+  [/#list] 
+  </div>
+[/#if]
+ <form action='admin/psnEdit.jhtml' method='post'  name='clientform'>
+  	[#if op?exists]<input name="op" type="hidden" value="${op}"/>[/#if]
+    
+<table border="0" cellspacing="0" cellpadding="4" width="98%"  align=center class="maintable">
+ 
+    <tr>
+      <th>发布点(PSN)标识名:</th>
+      <td>
+      [@spring.bind "psn.name"/]
+        <input name="${spring.status.expression}" value="${spring.status.value?default("")}" type="text" class="flat" id="Name" tabindex="8" [#if op?exists]readonly="readonly"[/#if]/>
+        &nbsp;(<font color="#FF0000">*</font>)<span class="field_error">${spring.status.errorMessage}</span></td>
+    </tr>
+    <tr>
+      <th>发布点(PSN)类型:</th>
+      <td>
+      [@spring.bind "psn.psnType"/]
+        <select name="${spring.status.expression}" id="select3" onchange="javaScript:show(document.clientform.psnType.options[document.clientform.psnType.selectedIndex].value)">
+          [#if spring.status.value?default("local")=="ftp"]
+          <option value="local">本地机</option>
+          <option value="ftp" selected>远程FTP</option>
+          [#else]
+          <option value="local" selected>本地机</option>
+          <option value="ftp" >远程FTP</option>
+          [/#if]
+        </select>
+        &nbsp;(<font color="#FF0000">*</font>) </td>
+    </tr>
+    <tr id="local" >
+      <th>本地路径:</th>
+      <td>
+      [@spring.bind "psn.localPath"/]
+        <input name='${spring.status.expression}' value="${spring.status.value?default("")}" type='text' class='flat' id="localPath" tabindex='8' size="50">
+        &nbsp;(<font color="#FF0000">*</font>) </td>
+    </tr>
+    <tr id="ftp" style='display:none'>
+      <th>FTP服务器地址:</th>
+      <td>[@spring.bind "psn.psnFtp.ftpHost"/]
+        <input name='${spring.status.expression}' type='text' class='flat' id="ftp_host" tabindex='8' value="${spring.status.value?default("")}">
+        &nbsp;端口:
+        [@spring.bind "psn.psnFtp.ftpPort"/]
+        <input name='${spring.status.expression}' type='text' class='flat' id="ftp_port" tabindex='8' value="${spring.status.value?default("21")}" size="6"></td>
+    </tr>
+    <tr id=ftp1 style='display:none'>
+      <th>FTP服务器账户:</th>
+      <td>
+        [@spring.bind "psn.psnFtp.ftpUser"/]
+        <input name='${spring.status.expression}' value="${spring.status.value?default("")}" type='text' class='flat' id="ftp_user" tabindex='8'>
+        &nbsp; </td>
+    </tr>
+    <tr id=ftp2 style='display:none'>
+      <th>FTP服务器账户密码:</th>
+      <td>
+      [@spring.bind "psn.psnFtp.ftpPass"/]
+        <input name='${spring.status.expression}' value="${spring.status.value?default("")}" type='password' class='flat' id="ftp_pass" tabindex='8'>
+        &nbsp; </td>
+    </tr>
+    <tr id=ftp3 style='display:none'>
+      <th>FTP目标路径:</th>
+      <td>
+      [@spring.bind "psn.psnFtp.ftpPath"/]
+        <input name='${spring.status.expression}' value="${spring.status.value?default("")}"  type='text' class='flat' id="ftp_path" tabindex='8'>
+        &nbsp; </td>
+    </tr>
+    <tr>
+      <th>URL:</th>
+      <td>
+      [@spring.bind "psn.url"/]
+        <input name="${spring.status.expression}" value="${spring.status.value?default("")}" type='text' class='flat' id="URL" tabindex='8' size="50">
+        &nbsp;(<font color="#FF0000">*</font>)</td>
+    </tr>
+    <tr>
+      <th>附加信息:</th>
+      <td>
+      [@spring.bind "psn.description"/]
+        <textarea name="${spring.status.expression}" cols="50" rows="5" class="flat" id="fieldname2" tabindex="8">${spring.status.value?default("")}</textarea>
+        &nbsp;</td>
+    </tr>
+</table>
+	<div class="buttons">
+		<input type="submit" name="submit" value="提交保存" class="submit">
+		<input type="reset" name="reset" value="重置">
+	</div>
+  </form>
+[#if psn.psnType?default("local")=="ftp"]
+<script type="text/javascript">
+	show('ftp');
+</script>
+[/#if]
+<br/>
+[#include "/plugin/cms/common/includes/footer.htm"/]

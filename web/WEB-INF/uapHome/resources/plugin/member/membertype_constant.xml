@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <membertypes>
+    <membertype key="-1">全部</membertype>
+    <membertype key="1">社会</membertype>
+	<membertype key="2">医院</membertype>
+	<membertype key="3">个人</membertype>
+	<membertype key="4">企业</membertype>
+	<membertype key="5">学校</membertype>
+  </membertypes>
+</directory>

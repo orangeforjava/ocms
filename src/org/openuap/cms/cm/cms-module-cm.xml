@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+$Id: cms-module-cm.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<beans default-lazy-init="true">
+	<!-- DAO -->
+	<import resource="cms-module-cm-dao.xml" />
+	<!-- BIZ -->
+	<bean id="contentTableManager"
+		class="org.openuap.cms.cm.manager.impl.ContentTableManagerDBImpl">
+		<description>内容模型表管理</description>
+		<property name="contentTableDao">
+			<ref bean="contentTableDao" />
+		</property>
+		<property name="contentFieldDao">
+			<ref bean="contentFieldDao" />
+		</property>
+	</bean>
+	
+	<bean id="contentFieldManager"
+		class="org.openuap.cms.cm.manager.impl.ContentFieldManagerDBImpl">
+		<description>内容域管理</description>
+		<property name="contentFieldDao">
+			<ref bean="contentFieldDao" />
+		</property>
+	</bean>
+	<bean id="contentModelHelper"
+		class="org.openuap.cms.cm.util.ContentModelHelper">
+		<description>内容模型帮助器</description>
+		<property name="freemarkerConfigurer">
+			<ref bean="cmsFreemarkerConfigurer" />
+		</property>
+		<property name="schemaHelper">
+			<ref bean="schemaHelper" />
+		</property>
+		<property name="hibernateConfig">
+			<ref bean="hibernateConfig" />
+		</property>
+	</bean>
+	<bean id="ContentModelMappingListener"
+		class="org.openuap.cms.cm.event.ContentModelMappingListener">
+		<description>动态内容模型映射</description>
+		<property name="contentModelHelper">
+			<ref bean="contentModelHelper" />
+		</property>
+	</bean>
+	<bean id="cmDataExporter"
+		class="org.openuap.cms.cm.data.CmDataExporter">
+		<description>内容模型数据导出</description>
+	</bean>
+	<bean id="cmDataImporter"
+		class="org.openuap.cms.cm.data.CmDataImporter">
+		<description>内容模型数据导入</description>
+	</bean>
+</beans>

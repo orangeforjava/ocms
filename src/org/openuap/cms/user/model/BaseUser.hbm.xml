@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: BaseUser.hbm.xml 89 2007-04-06 10:07:57Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.user.model">
+	<class name="BaseUser" table="base_user">
+		<id name="id" type="long" unsaved-value="0">
+			<column name="id" />
+			<generator class="native" />
+		</id>
+		<property name="eid" type="string">
+			<column name="eid" length="100" />
+		</property>
+		<property name="parentId" type="long" not-null="false">
+			<column name="parentId" default="0" />
+		</property>
+		<property name="name" type="string">
+			<column name="name" not-null="true" />
+		</property>
+		<property name="password" type="string">
+			<column name="password" not-null="true" />
+		</property>
+		<property name="title" type="string">
+			<column name="title" length="100" />
+		</property>
+		<!-- added by Weiping Ju $Date:2006/03/22 13:46$-->
+		<property name="nickName" type="string">
+			<column name="nickName" length="100" />
+		</property>
+		<property name="email" type="string">
+			<column name="email" length="100" />
+		</property>
+		<property name="mobile" type="string">
+			<column name="mobile" length="200" />
+		</property>
+		<property name="status" type="integer">
+			<column name="status" not-null="true" />
+		</property>
+		<property name="type" type="integer">
+			<column name="type" not-null="true" />
+		</property>
+		<property name="pos" type="integer">
+			<column name="pos" not-null="true" default="0" />
+		</property>
+		<property name="createdBy" type="string">
+			<column name="createdBy" length="100" />
+		</property>
+		<property name="creationDate" type="long">
+			<column name="creationDate" scale="0" />
+		</property>
+		<property name="modificationDate" type="long">
+			<column name="modificationDate" scale="0" />
+		</property>
+		<property name="lastLoginDate" type="long">
+			<column name="lastLoginDate" scale="0" />
+		</property>
+		<property name="loginTimes" type="long">
+			<column name="loginTimes" scale="0" />
+		</property>
+		<property name="lastLoginIp" type="string">
+			<column name="lastLoginIp" not-null="false" />
+		</property>
+		<property name="question" type="string">
+			<column name="question" not-null="false" />
+		</property>
+		<property name="answer" type="string">
+			<column name="answer" not-null="false" />
+		</property>
+		<property name="uid" type="integer">
+			<column name="uid" not-null="false" />
+		</property>
+		<set name="roles" table="base_user_role" lazy="false">
+			<key column="userId" />
+			<many-to-many column="roleId" class="BaseRole" />
+		</set>
+	</class>
+</hibernate-mapping>

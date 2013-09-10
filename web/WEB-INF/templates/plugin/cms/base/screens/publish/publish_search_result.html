@@ -1,0 +1,872 @@
+<#global baseUrl=helper.getBaseURL()>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<HTML>
+<HEAD>
+<#include "/includes/admin/meta.html"/>
+<#import "/macros/pager-macros.html" as mypager />
+<title>publish search result</title>
+<base  href="${baseUrl}"/>
+<link rel="stylesheet" type="text/css" href="html/css/style.css" />
+<link href="html/menu/skins/officexp/officexp.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="html/menu/poslib.js"></script>
+<script type="text/javascript" src="html/menu/scrollbutton.js"></script>
+<script type="text/javascript" src="html/menu/menu4.js"></script>
+<script type="text/javascript" src="${baseUrl}resource.jhtml?path=html/functions.js"></script>
+<link rel="stylesheet" href="html/calendar.css" type="text/css">
+
+<style>
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 200;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;			
+}		
+div.subtitleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;			
+}
+div.timeholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 90;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;			
+}	
+</style>
+<script language='JavaScript'>
+var doImage = doImage;
+var TType = TType;
+
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	if (document.getElementById)
+		t = document.getElementById(tbl);
+	else
+		t = document.all(tbl);
+	if (t == null) return;
+	if (t.getElementsByTagName)
+		d = t.getElementsByTagName("TD");
+	else
+		d = t.all.tags("TD");
+	if (d == null) return;
+	if (d.length <= idx) return;
+	d[idx].className = cls;
+}
+
+function refreshWorkArea()
+{
+}
+</script>
+<script type="text/javascript" src="${baseUrl}resource.jhtml?path=html/calendar.js"></script>
+<script type="text/javascript">
+Calendar._DN = new Array
+("周日",
+ "周一",
+ "周二",
+ "周三",
+ "周四",
+ "周五",
+ "周六",
+ "周日");
+Calendar._MN = new Array
+("一月",
+ "二月",
+ "三月",
+ "四月",
+ "五月",
+ "六月",
+ "七月",
+ "八月",
+ "九月",
+ "十月",
+ "十一月",
+ "十二月");
+
+Calendar._TT = {};
+Calendar._TT["TOGGLE"] = "Toggle first day of week";
+Calendar._TT["PREV_YEAR"] = "去年  ";
+Calendar._TT["PREV_MONTH"] = "上个月  ";
+Calendar._TT["GO_TODAY"] = "今天";
+Calendar._TT["NEXT_MONTH"] = "下个月  ";
+Calendar._TT["NEXT_YEAR"] = "明年  ";
+Calendar._TT["SEL_DATE"] = "选择日期";
+Calendar._TT["DRAG_TO_MOVE"] = "Drag to move";
+Calendar._TT["PART_TODAY"] = " (今天)";
+Calendar._TT["MON_FIRST"] = "Display Monday first";
+Calendar._TT["SUN_FIRST"] = "Display Sunday first";
+Calendar._TT["CLOSE"] = "关闭";
+Calendar._TT["TODAY"] = "今天";
+</script>
+<script type="text/javascript">
+
+var calendar = null; // remember the calendar object so that we reuse it and
+                     // avoid creation other calendars.
+
+// code from http://www.meyerweb.com -- change the active stylesheet.
+function setActiveStyleSheet(title) {
+  var i, a, main;
+  for(i=0; (a = document.getElementsByTagName("link")[i]); i++) {
+    if(a.getAttribute("rel").indexOf("style") != -1 && a.getAttribute("title")) {
+      a.disabled = true;
+      if(a.getAttribute("title") == title) a.disabled = false;
+    }
+  }
+  document.getElementById("style").innerHTML = title;
+  return false;
+}
+
+// This function gets called when the end-user clicks on some date.
+function selected(cal, date) {
+  cal.sel.value = date; // just update the date in the input field.
+  if (cal.sel.id == "sel1" || cal.sel.id == "sel3" || cal.sel.id == "sel5" || cal.sel.id == "sel7")
+    // if we add this call we close the calendar on single-click.
+    // just to exemplify both cases, we are using this only for the 1st
+    // and the 3rd field, while 2nd and 4th will still require double-click.
+    cal.callCloseHandler();
+}
+
+// And this gets called when the end-user clicks on the _selected_ date,
+// or clicks on the "Close" button.  It just hides the calendar without
+// destroying it.
+function closeHandler(cal) {
+  cal.hide();                        // hide the calendar
+
+  // don't check mousedown on document anymore (used to be able to hide the
+  // calendar when someone clicks outside it, see the showCalendar function).
+  Calendar.removeEvent(document, "mousedown", checkCalendar);
+}
+
+// This gets called when the user presses a mouse button anywhere in the
+// document, if the calendar is shown.  If the click was outside the open
+// calendar this function closes it.
+function checkCalendar(ev) {
+  var el = Calendar.is_ie ? Calendar.getElement(ev) : Calendar.getTargetElement(ev);
+  for (; el != null; el = el.parentNode)
+    // FIXME: allow end-user to click some link without closing the
+    // calendar.  Good to see real-time stylesheet change :)
+    if (el == calendar.element || el.tagName == "A") break;
+  if (el == null) {
+    // calls closeHandler which should hide the calendar.
+    calendar.callCloseHandler();
+    Calendar.stopEvent(ev);
+  }
+}
+
+// This function shows the calendar under the element having the given id.
+// It takes care of catching "mousedown" signals on document and hiding the
+// calendar if the click was outside.
+function showCalendar(id, format) {
+  var el = document.getElementById(id);
+  if (calendar != null) {
+    // we already have some calendar created
+    calendar.hide();                 // so we hide it first.
+  } else {
+    // first-time call, create the calendar.
+    var cal = new Calendar(true, null, selected, closeHandler);
+    calendar = cal;                  // remember it in the global var
+    cal.setRange(1900, 2070);        // min/max year allowed.
+    cal.create();
+  }
+  calendar.setDateFormat(format);    // set the specified date format
+  calendar.parseDate(el.value);      // try to parse the text in field
+  calendar.sel = el;                 // inform it what input field we use
+  calendar.showAtElement(el);        // show the calendar below it
+
+  // catch "mousedown" on document
+  Calendar.addEvent(document, "mousedown", checkCalendar);
+  return false;
+}
+
+var MINUTE = 60 * 1000;
+var HOUR = 60 * MINUTE;
+var DAY = 24 * HOUR;
+var WEEK = 7 * DAY;
+
+// If this handler returns true then the "date" given as
+// parameter will be disabled.  In this example we enable
+// only days within a range of 10 days from the current
+// date.
+// You can use the functions date.getFullYear() -- returns the year
+// as 4 digit number, date.getMonth() -- returns the month as 0..11,
+// and date.getDate() -- returns the date of the month as 1..31, to
+// make heavy calculations here.  However, beware that this function
+// should be very fast, as it is called for each day in a month when
+// the calendar is (re)constructed.
+function isDisabled(date) {
+  var today = new Date();
+  return (Math.abs(date.getTime() - today.getTime()) / DAY) > 10;
+}
+
+function flatSelected(cal, date) {
+  var el = document.getElementById("preview");
+  el.innerHTML = date;
+}
+
+function showFlatCalendar() {
+  var parent = document.getElementById("display");
+
+  // construct a calendar giving only the "selected" handler.
+  var cal = new Calendar(true, null, flatSelected);
+
+  // We want some dates to be disabled; see function isDisabled above
+  cal.setDisabledHandler(isDisabled);
+  cal.setDateFormat("DD, M d");
+
+  // this call must be the last as it might use data initialized above; if
+  // we specify a parent, as opposite to the "showCalendar" function above,
+  // then we create a flat calendar -- not popup.  Hidden, though, but...
+  cal.create(parent);
+
+  // ... we can show it here.
+  cal.show();
+}
+</script>
+<SCRIPT>
+var elo;
+var loadmenuok=false;
+var type = 'main';
+//var NodeID = '${nodeIds?default("")}';
+var TableID = '1';
+function initrightmenu(){
+	loadmenuok = true;
+}
+
+
+
+
+function addThread(url,TaskID) {
+	top.CrawlerTaskFrame.addThread(url , TaskID)
+	
+}
+
+function doing(action, IndexID, NodeID) {
+	var returnValue;
+	switch(action) {
+		case 'note':
+		{
+			alert('对不起，您你没有购买此模块！');
+			return;
+			var leftPos = (screen.availWidth-800) / 2
+			var topPos = (screen.availHeight-600) / 2
+			 window.open('admin_contribution.php?sId=4cda1578579a6323811a4fa98cd6b378&o=viewNote&NodeID='+NodeID  + '&ContributionID=' + IndexID,'','width=400,height=300,scrollbars=yes,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+
+			break;
+		}
+		case 'advanced_search':
+			parent.mainFrame.location = "${baseUrl}admin/publish.jhtml?action=ContentList&nodeId=" +NodeID + "&state=" + IndexID
+			break;
+
+		case 'viewLinkState':
+		{
+			//alert('对不起，此功能正在开发中！');
+			//return;
+			//
+			var leftPos = (screen.availWidth-800) / 2
+			var topPos = (screen.availHeight-600) / 2
+			window.open('${baseUrl}admin/publish.jhtml?action=ViewLinkState&indexId='+ IndexID  + '&nodeId=' + NodeID,'','width=400,height=300,scrollbars=yes,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+			 break;
+		}
+		case 'topIt':
+		{
+			var weight = showModalDialog("${baseUrl}admin/publish.jhtml?action=TopDialog&indexId=" + IndexID + '&nodeId=' + NodeID,"top","dialogWidth:324px;dialogHeight:150px;help:0;status:0;scroll:no");
+
+
+			if(weight != null && weight != '') {
+				returnValue = cms_send('${baseUrl}/admin/publish.jhtml','action=Top&weight='+ weight + '&indexId=' + IndexID + '&nodeId=' + NodeID);
+				if(returnValue == '1') {
+					alert("置顶设置成功");
+					document.location.reload();
+					return true;
+
+				} else {
+					alert("置顶设置失败");
+					document.location.reload();
+					return false;
+
+				}
+			}
+
+			break;
+		}
+		case 'pinkIt':
+		{
+			var weight = showModalDialog("${baseUrl}/admin/publish.jhtml?action=PinkDialog&indexId=" + IndexID + '&nodeId=' + NodeID,"pink","dialogWidth:324px;dialogHeight:150px;help:0;status:0;scroll:no");
+
+
+			if(weight != null && weight != '') {
+				returnValue = cms_send('${baseUrl}/admin/publish.jhtml','action=Pink&weight='+ weight + '&indexId=' + IndexID + '&nodeId=' + NodeID);
+				//alert(hello);
+				if(returnValue == '1') {
+					alert("精华设置成功");
+					document.location.reload();
+					return true;
+
+				} else {
+					alert("精华设置失败");
+					document.location.reload();
+					return false;
+
+				}
+
+			}
+
+			break;
+		}
+		case 'sortIt':
+		{
+			var weight = showModalDialog("${baseUrl}/admin/publish.jhtml?action=SortDialog&indexId=" + IndexID + '&nodeId=' + NodeID,"pink","dialogWidth:324px;dialogHeight:150px;help:0;status:0;scroll:no");
+
+
+			if(weight != null && weight != '') {
+				returnValue = cms_send('${baseUrl}/admin/publish.jhtml','action=Sort&weight='+ weight + '&indexId=' + IndexID + '&nodeId=' + NodeID);
+				//alert(hello);
+				if(returnValue == '1') {
+					alert("排序权重设置成功");
+					document.location.reload();
+					return true;
+
+				} else {
+					alert("排序权重设置失败");
+					document.location.reload();
+					return false;
+
+				}
+
+			}
+
+			break;
+		}
+		case 'viewpublish':
+			eval('var mPath = URL_' + IndexID + '.href');
+			window.open(mPath,"","")
+
+			break;
+		case 'getURL':
+			eval('var mPath = URL_' + IndexID + '.href');
+			prompt("文章发布URL地址",mPath);
+			break;
+		case 'copyURL':
+			eval('var mPath = URL_' + IndexID + '.href');
+			window.clipboardData.setData('Text', mPath);
+			break;
+		case 'edit':
+		{
+			var leftPos = (screen.availWidth-800) / 2
+			var topPos = (screen.availHeight-600) / 2
+			 window.open('${baseUrl}/admin/publish.jhtml?action=ContentEditorFrameset&mode=edit&nodeId='+NodeID  + '&indexId=' + IndexID,'','width=800,height=600,scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+			break;
+		}
+		case 'del':
+			if(confirm("确认删除吗?")) {
+				document.documentlist.referer.value = document.location;
+				document.documentlist.action = '/cmsware/admin/admin_publish.php?sId=4cda1578579a6323811a4fa98cd6b378&' + 'o=' + action + '&type=' + type + '&IndexID=' + IndexID + '&NodeID=' + NodeID  ;
+				document.documentlist.submit();
+
+			}
+			break;
+		case 'view':
+		{
+			var leftPos = (screen.availWidth-800) / 2
+			var topPos = (screen.availHeight-600) / 2
+			 window.open('${baseUrl}/admin/publish.jhtml?action=View&nodeId='+NodeID  + '&indexId=' + IndexID,'','width=800,height=600,scrollbars=yes,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+			break;
+		}
+		case 'cut':
+		{
+			var targetNodeID = showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=TargetNodeWindow","color","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+			if(targetNodeID==NodeID){
+				alert('您不能在同一结点内剪切！');
+				return;
+			}
+			if(targetNodeID != null && targetNodeID != '') {
+				//document.documentlist.referer.value = document.location;
+				document.documentlist.action = '${baseUrl}/admin/publish.jhtml?action=Cut&indexId=' + IndexID + '&nodeId=' + NodeID + '&targetNodeId=' + targetNodeID  ;
+				document.documentlist.submit();
+			}
+			break;
+		}
+		case 'copy':
+		{
+			var targetNodeID = showModalDialog("${baseUrl}admin/adminSelect.jhtml?action=TargetNodeWindow","node","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+			if(targetNodeID==NodeID){
+				alert('您不能在同一结点内剪切！');
+				return;
+			}
+			//
+			if(targetNodeID != null && targetNodeID != '') {
+				//document.documentlist.referer.value = document.location;
+				document.documentlist.action = '${baseUrl}admin/publish.jhtml?action=Copy&indexId=' + IndexID + '&nodeId=' + NodeID + '&targetNodeId=' + targetNodeID  ;
+				document.documentlist.submit();
+			}
+			break;
+		}
+		case 'createLink':
+		{
+			//alert('对不起，此功能正在开发中！');
+			//return;
+			var targetNodeID = showModalDialog("${baseUrl}admin/adminSelect.jhtml?action=TargetNodeWindow","node","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+			
+			if(targetNodeID != null && targetNodeID != '') {
+				if(targetNodeID==NodeID){
+					alert('对不起，您不能在同一结点创建虚链接！');
+					return;
+				}
+				document.documentlist.referer.value = document.location;
+				document.documentlist.action = '${baseUrl}admin/publish.jhtml?action=CreateLink&indexId=' + IndexID + '&nodeId=' + NodeID + '&targetNodeId=' + targetNodeID  ;
+				document.documentlist.submit();
+				//
+			}
+			break;
+		}
+		case 'createIndexLink':
+		{
+			//alert('对不起，此功能正在开发中！');
+			//return;
+			//
+			var targetNodeID = showModalDialog("${baseUrl}admin/adminSelect.jhtml?action=TargetNodeWindow","node","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+
+			if(targetNodeID != null && targetNodeID != '') {
+				if(targetNodeID==NodeID){
+					alert('对不起，您不能在同一结点创建虚链接！');
+					return;
+				}
+				document.documentlist.referer.value = document.location;
+				document.documentlist.action = '${baseUrl}admin/publish.jhtml?action=CreateIndexLink&indexId=' + IndexID + '&nodeId=' + NodeID + '&targetNodeId=' + targetNodeID  ;
+				document.documentlist.submit();
+				//
+			}
+			break;
+		}
+		case 'publish':
+		{
+			//
+			break;
+		}
+		case 'unpublish':
+		{
+			//document.documentlist.referer.value = document.location;
+			document.documentlist.action = '${baseUrl}/admin/publish.jhtml?action=UnPublish&indexId=' + IndexID + '&nodeId=' + NodeID;
+			document.documentlist.submit();
+				//alert(IndexID + '-' + targetNodeID)
+
+			break;
+		}
+		case 'refresh':
+			document.documentlist.referer.value = document.location;
+			document.documentlist.action = '/cmsware/admin/admin_publish.php?sId=4cda1578579a6323811a4fa98cd6b378&' + 'o=' + action + '&type=' + type + '&IndexID=' + IndexID + '&NodeID=' + NodeID + '&targetNodeID=' + targetNodeID  ;
+			document.documentlist.submit();
+			break;
+		case 'display_record':
+		{
+			parent.mainFrame.location = "${baseUrl}/admin/publish.jhtml?action=ContentList&nodeId=" + NodeID + "&pageNum=" + document.documentlist.offset.value;
+			break;
+		}
+		case 'date_search':
+		{
+			var DateString = document.getElementById('dTime');
+			
+			document.location = "${baseUrl}/admin/publishSearch.jhtml?action=DateSearch&tableId="+ TableID +"&nodeId=" + NodeID + "&offset=" + document.documentlist.offset.value + "&date=" + DateString.value;
+			//alert(document.location);
+			break;
+		}
+		case 'keyword_search':
+		{
+			var KeywordsString = document.getElementById('SearchKeywords');
+			document.location = "${baseUrl}/admin/publishSearch.jhtml?action=KeyWordSearch&tableId="+ TableID +"&nodeId=" + NodeID + "&offset=" + document.documentlist.offset.value + "&Keywords=" + encodeURIComponent(KeywordsString.value) ;
+			break;
+		}
+		case 'search_pro':
+		{
+			var KeywordsString = document.getElementById('SearchKeywords');
+			parent.document.location = "${baseUrl}/admin/publishSearch.jhtml?tableId="+ TableID +"&nodeId=" + NodeID;
+			break;
+		}
+		default:
+			document.location = document.location;
+
+	}
+	//sId=6891856b84ee23f2330ee8359cd3f60d&o=view&type=main&pId=41&cId=4
+}
+
+
+
+function rightMenu(pId, State, Type, Top,Pink, NodeID) {
+	var toolMenu = new WebFXMenu;
+
+
+	if(Type == '1') {
+		toolMenu.add(new WebFXMenuItem('查看','javascript:doing("view","'+ pId +'","'+ NodeID +'")','查看文档内容'));
+		toolMenu.add(new WebFXMenuItem('编辑','javascript:doing("edit","'+ pId +'","'+ NodeID +'")','编辑文档'));
+		toolMenu.add(new WebFXMenuItem('删除','javascript:doing("del","'+ pId +'","'+ NodeID +'")', '删除文档'));
+		toolMenu.add(new WebFXMenuItem('剪切','javascript:doing("cut","'+ pId +'","'+ NodeID +'")', '剪切文档'));
+		toolMenu.add(new WebFXMenuItem('复制','javascript:doing("copy","'+ pId +'","'+ NodeID +'")', '复制文档'));
+			} else {
+		toolMenu.add(new WebFXMenuItem('查看','javascript:doing("view","'+ pId +'","'+ NodeID +'")','查看文档内容'));
+		toolMenu.add(new WebFXMenuItem('删除','javascript:doing("del","'+ pId +'","'+ NodeID +'")', '删除文档'));
+		toolMenu.add(new WebFXMenuItem('剪切','javascript:doing("cut","'+ pId +'","'+ NodeID +'")', '剪切文档'));
+		toolMenu.add(new WebFXMenuItem('复制','javascript:doing("copy","'+ pId +'","'+ NodeID +'")', '复制文档'));
+			
+	
+	}
+
+	toolMenu.add(new WebFXMenuSeparator());
+	
+	toolMenu.add(new WebFXMenuItem('置顶设置','javascript:doing("topIt","'+ pId +'","'+ NodeID +'")','置顶设置'));
+
+	toolMenu.add(new WebFXMenuItem('精华设置','javascript:doing("pinkIt","'+ pId +'","'+ NodeID +'")','精华设置'));
+	toolMenu.add(new WebFXMenuItem('排序权重设置','javascript:doing("sortIt","'+ pId +'","'+ NodeID +'")','排序权重设置'));
+	
+
+
+	
+	/*toolMenu.add(new WebFXMenuSeparator());
+	toolMenu.add(new WebFXMenuItem('拷贝本页URL','javascript:copyurl()','拷贝本页的URL到剪贴板，您可以用CTRL-V粘贴。'));
+	toolMenu.add(new WebFXMenuItem('收藏本文','javascript:add2fav()','将本文添加到我的收藏夹。'));
+	toolMenu.add(new WebFXMenuItem('打印模式','javascript:printit(134855)','显示可供打印机输出的版本。'));
+	toolMenu.add(new WebFXMenuItem('推荐给好友','javascript:recommandit()','将本文推荐给您的朋友。'));
+	//document.write(toolMenu);*/
+	menudata.innerHTML = toolMenu 
+
+	elo=window.event.srcElement;
+	toolMenu.left = window.event.clientX;
+	toolMenu.top = window.event.clientY+document.body.scrollTop;
+	toolMenu.show();
+
+	//initrightmenu();
+
+}
+</SCRIPT>
+
+<SCRIPT language=JavaScript>
+<!--
+function CheckAll(form)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall' && e.name !='copy')       e.checked = form.chkall.checked; 
+   }
+  }
+
+//-->
+
+
+</script>
+<script>
+var mousemovecolor="#D4D4D4";
+var selectcolor ="#DDDDDD";
+var oldcolor;
+
+function GetRow(oElem)
+{
+	while (oElem)
+	{	//alert(oElem.tagName.toLowerCase())
+		if (oElem.tagName.toLowerCase() == "tr" || oElem.parentElement.tagName.toLowerCase() == "tbody") 
+		    return oElem;
+		if (oElem.tagName.toLowerCase() == "table" || oElem.tagName.toLowerCase() == "th") return false;
+		oElem = oElem.parentElement;
+	}
+}
+
+/*
+function selected()
+{	//alert(pid)
+
+	var trstyle = GetRow( window.event.srcElement );
+	var a;
+	if( !trstyle )
+		return false;
+
+	if( trstyle.style.backgroundColor.toLowerCase() == selectcolor.toLowerCase())
+	{
+		trstyle.style.backgroundColor = "";
+		a=eval("p_"+ trstyle.id);	
+		//alert(trstyle.id)
+		if (a!=null || a.checked) 
+			a.checked=false
+		oldcolor = "";
+	}
+	else
+	{		
+		trstyle.style.backgroundColor = selectcolor;
+		a=eval("p_"+ trstyle.id);
+		//alert(trstyle.id)
+		if (a!=null) 
+			a.checked=true
+		oldcolor = selectcolor;
+
+	
+	}
+}
+*/
+function going(form, o)
+{
+	document.documentlist.referer.value = document.location;
+	NodeID = '';
+	with(form) {
+		switch(o) {
+			case 'planPublish':
+			{
+			alert('对不起，此功能正在开发中！');
+			/**
+				document.documentlist.referer.value = document.location;
+				document.documentlist.action = '/cmsware/admin/admin_publish.php?sId=4cda1578579a6323811a4fa98cd6b378&' + '&multi=1&o=' + o + '&type=' + type +  '&NodeID=' + NodeID  ;
+				document.documentlist.submit();**/
+				break;
+			}
+			case 'refresh':
+			{
+				//document.documentlist.referer.value = document.location;
+				document.documentlist.action = '${baseUrl}/admin/publish.jhtml?action=Refresh&multi=1&type=' + type +  '&nodeId=' + NodeID;
+				document.documentlist.submit();
+				break;
+			}
+			case 'publish':
+			{
+				//document.documentlist.referer.value = document.location;
+				document.documentlist.action = '${baseUrl}/admin/publish.jhtml?action=Publish&multi=1&type=' + type +  '&nodeId=' + NodeID  ;
+				document.documentlist.submit();
+				break;
+			}
+			case 'unpublish':
+			{
+				//document.documentlist.referer.value = document.location;
+				document.documentlist.action = '${baseUrl}/admin/publish.jhtml?action=UnPublish&multi=1&nodeId=' + NodeID;
+				document.documentlist.submit();
+				break;
+			}
+			case 'copy':
+			{
+				var targetNodeID = showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=TargetNodeWindow","color","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+				if(targetNodeID==NodeID){
+					alert('您不能在同一结点内复制！');
+					return;
+				}
+				//
+				if(targetNodeID != null && targetNodeID != '') {
+					//document.documentlist.referer.value = document.location;
+					document.documentlist.action = '${baseUrl}/admin/publish.jhtml?action=Copy&multi=1&nodeId=' + NodeID+'&targetNodeId=' + targetNodeID  ;
+					document.documentlist.submit();
+					//alert(IndexID + '-' + targetNodeID)
+				}
+				break;
+			}
+			case 'cut':
+			{
+				var targetNodeID = showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=TargetNodeWindow","color","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+				if(targetNodeID==NodeID){
+					alert('您不能在同一结点内剪切！');
+					return;
+				}
+				//
+				if(targetNodeID != null && targetNodeID != '') {
+					//document.documentlist.referer.value = document.location;
+					document.documentlist.action = '${baseUrl}/admin/publish.jhtml?action=Cut&multi=1&nodeId=' + NodeID+'&targetNodeId=' + targetNodeID;
+					document.documentlist.submit();
+				}
+				break;
+			}
+			case 'del':
+			{
+				if(confirm("确认批量删除吗?")) {
+					document.documentlist.action = '${baseUrl}/admin/publish.jhtml?action=Del&multi=1&nodeId='+ NodeID;
+					document.documentlist.submit();
+				}
+				break;
+			}
+			case 'createLink':
+			{
+				alert('对不起，此功能正在开发中！');
+				return;
+				//
+				/**var targetNodeID = showModalDialog("admin_select.php?sId=4cda1578579a6323811a4fa98cd6b378&o=targetNodeWindow","color","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+
+				if(targetNodeID != null && targetNodeID != '') {
+					document.documentlist.referer.value = document.location;
+					document.documentlist.action = '/cmsware/admin/admin_publish.php?sId=4cda1578579a6323811a4fa98cd6b378&' + 'o=' + o + '&type=' + type + '&NodeID=' + NodeID + '&multi=1&targetNodeID=' + targetNodeID  ;
+					document.documentlist.submit();
+					//alert(IndexID + '-' + targetNodeID)
+				}**/
+				break;
+			}
+			case 'createIndexLink':
+			{
+				alert('对不起，此功能正在开发中！');
+				return;
+				//
+				/**var targetNodeID = showModalDialog("admin_select.php?sId=4cda1578579a6323811a4fa98cd6b378&o=targetNodeWindow","color","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+
+				if(targetNodeID != null && targetNodeID != '') {
+					document.documentlist.referer.value = document.location;
+					document.documentlist.action = '/cmsware/admin/admin_publish.php?sId=4cda1578579a6323811a4fa98cd6b378&' + 'o=' + o + '&type=' + type + '&NodeID=' + NodeID + '&multi=1&targetNodeID=' + targetNodeID  ;
+					document.documentlist.submit();
+					//alert(IndexID + '-' + targetNodeID)
+				}**/
+				break;
+				}
+			}//end switch
+		}//end if
+		else{
+			alert("请选择一个或多个内容。");
+		}	
+	}
+}
+</script>
+<BODY  style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px" >
+<div id="menudata"></div>
+<div id="msviLocalToolbar">
+  <table cellpadding="0" cellspacing="2" width="100%" height="19" border="0">
+   <form action="${baseUrl}admin/publish.jhtml" method="get"> <tr> 
+      
+      <td height="20" align="right" nowrap="nowrap" >按日期查询:</td>
+	  <td height="20" align="left" nowrap="nowrap"   > 
+        <INPUT TYPE="text" NAME="dTime"   id="dTime" onFocus="return showCalendar('dTime', 'y-mm-dd');" value="" > 
+        <INPUT name="Go" TYPE="button" value="执行" onClick="doing('date_search')">
+      </td>
+      <td height="20" align="right" nowrap="nowrap" >关键字查询: </td>
+	  <td   height="20" nowrap="nowrap" > <INPUT TYPE="text" NAME="SearchKeywords" id="SearchKeywords"   value=""> 
+        <INPUT name="Go" TYPE="button"  value="执行" onClick="doing('keyword_search')">
+
+   </td>
+   <td> <img src="html/images/search.gif" border="0" style="cursor:hand"  title="高级搜索" onClick="doing('search_pro')"/><span  title="高级搜索" onClick="doing('search_pro')" style="cursor:hand">高级搜索</span></td>
+   </tr></form>
+  </table>
+</div>
+
+<table width="100%" border="0" align="center" cellpadding="2" cellspacing="1"  class="table_border" >
+  <TBODY>
+  <form method="post" action="${baseUrl}/admin/publish.jhtml?type=main&nodeId=" name="documentlist" >
+
+    <tr class="table_td2"> 
+      <td align="center" height=25></td>
+ <td align="center"><B>ID</B></td>	  
+		<td align="center"><B>标题</B></td>
+	        <td align="center"><B>编辑</B></td>
+      <td align="center"><B>日期</B></td>
+      <td align="center"><B>状态</B></td>
+      <td colspan="5" align="center"><B>执行操作</B></td>
+ <td align="center" title="权重"><B>H</B></td>
+       <td align="center" title="类型"><B>T</B></td>
+  </tr>
+<#list contents as content>
+  <#list content as ct>
+  	<#if ct_index==0>
+		<#assign content_sys=ct>
+	<#elseif ct_index==1>
+		<#assign content_user=ct>
+	</#if>
+  </#list>
+<tr class="table_td1" id="${content_sys["indexId"]}" onmouseover='this.style.backgroundColor="#FFFFFF"' 
+                    onmouseout='this.style.backgroundColor=""'> 
+      <td noWrap > <input type='checkbox' name='pData' value='${content_sys["indexId"]}' id="p_${content_sys["indexId"]}" ></td>
+      <td align="center" noWrap   ><div class="subtitleholder">${content_sys["indexId"]}</div></td>
+	 	 		      <td   noWrap  style="cursor:hand" id="">
+<table  border="0"  cellpadding="0" cellspacing="0"  >
+<tr>
+<td>
+	  <div class="titleholder">
+	  &nbsp;&nbsp;
+	  	  	 
+	  <A HREF="javascript:void(0);" onClick="doing('view','${content_sys["indexId"]}','${content_sys["nodeId"]}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu('${content_sys["indexId"]}', '1','1','0','0','2');return false;" title="${content_user[titleFieldName]}">${content_user[titleFieldName]}</A>   
+	  </div>
+</td>
+<td>
+ 	  <!--<img src="/html/images/image.gif" border=0>-->
+	  </td>
+</tr>
+</table>
+
+	  
+	  </td>
+
+			
+	       <td align="center" noWrap  ><div class="subtitleholder" title="${content_user["lastModifiedUserName"]?default("")}">${content_user["lastModifiedUserName"]?default("")}</div></td>
+      <td align="center" noWrap ><div class="timeholder">${(action.getDate(content_sys["publishDate"]))?string("yyyy-MM-dd HH:mm")}</div></td>
+      <td align="center" noWrap  >
+	  <#assign state=content_sys["state"]/>
+	  <div class="subtitleholder">
+		<#if state==1>
+			<FONT  COLOR="#3300CC">	已发布</FONT>
+	  	<#else>
+			<FONT  COLOR="#3300CC">	待发布</FONT>
+	  	</#if>
+	  
+	  </div>
+	  
+	  </td>
+     <td colspan="5" align="center" noWrap>
+	    	  	  <A HREF="${baseUrl}/admin/publish.jhtml?action=Refresh&indexId=${content_sys["indexId"]}&nodeId=${content_sys["nodeId"]}">更新</A>
+	  	  
+	  	  <A HREF="javascript:void(0);" onClick="doing('edit','${content_sys["indexId"]}','${content_sys["nodeId"]}')">编辑</A>
+	  <A HREF="${baseUrl}/admin/publish.jhtml?action=Del&indexId=${content_sys["indexId"]}&nodeId=${content_sys["nodeId"]}" onClick="return confirm('确认删除吗?')">删除</A>	  
+	  </td>
+<td align="center" noWrap   ><div class="subtitleholder">${content_sys["sort"]}</div></td>   
+<td align="center" width="28">
+	<#assign type=content_sys["type"]?default(1)/>
+	<#if type==1>
+		实
+	<#elseif type==0>
+		虚
+	<#else>
+		索引
+	</#if>
+</td>
+</tr>
+</#list>
+<tr class="Tablelistbg"> 
+      <td colspan="16" align="left" bgcolor="#F5F5F5"> <table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr> 
+            <td align=left> 
+            <input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  > 
+              <label for="chkall" >全选</label>&nbsp;&nbsp;
+			               
+			 <select name="actionMap" id="actionMap" > 
+          <option value="createIndexLink">创建索引链接</option>
+          <option value="createLink">创建虚链接</option>
+           <option value="del">删除</option>
+          <option value="refresh">更新</option>
+            <option value="publish">发布</option>
+          <option value="unpublish">取消发布</option>
+      
+
+			  </select>
+
+			  <input type="button" value="执行" class=button onClick="going(this.form,actionMap.options[actionMap.selectedIndex].value)"> 
+         
+            </td>
+			<td height="20" align="right" nowrap="nowrap"> <!--<INPUT name="go_display" TYPE="button" value="显示:" onclick="doing('display_record')" >--></td>
+	  <td   height="20" nowrap="nowrap" align="right"  width=80> <!--&nbsp;&nbsp;<INPUT TYPE="text" NAME="offset" size=1 value=15> 条记录 -->
+       
+   </td>
+          </tr>
+        </table></td>
+    </tr>
+	<INPUT TYPE="hidden" name="referer" value ="" >
+  </form>
+  <tr class="table_td1"> 
+    <td colspan="15" height=25 >
+	<table border=0 align="right">
+	<tr>
+	<td align=right>
+	<#assign pageUrl=baseUrl+"admin/publish.jhtml?action=ContentList&nodeId="+nodeId?string+"&pageNum="+pageNum+"&page="/>
+	<@mypager.pageBuilder pb=pb baseUrl=pageUrl closeUrl=""/>
+	</td>
+	
+	</tr>
+	</table>
+	 </td>
+  </tr>
+  </tbody> 
+</table>
+</BODY>
+</HTML>

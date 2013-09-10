@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <marriages>
+    <marriage key="未婚">未婚</marriage>
+    <marriage key="已婚">已婚</marriage>
+	<marriage key="离异">离异</marriage>
+  </marriages>
+</directory>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	
+	<bean id="handlerMappingKeywords"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/keywords.jhtml">
+					<ref local="keywordsAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="keywordsAction"
+		class="org.openuap.cms.keywords.action.admin.KeywordsAction">
+		<property name="manager" ref="keywordsManager"></property>
+	</bean>
+</beans>

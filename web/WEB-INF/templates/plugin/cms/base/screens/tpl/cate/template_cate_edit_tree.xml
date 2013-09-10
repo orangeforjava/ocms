@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="${encoding}"?>
+<tree>
+  <#list templateCates as tplCate>
+  <#if tcManager.getChildCategoryCount(tplCate.id)==0>
+  	<tree text="${tplCate.cateTitle}[${tplCate.id}]" action="${helper.getBaseURL()}admin/templateCateEdit.jhtml?op=edit&amp;tplCateId=${tplCate.id}&amp;parentId=${tplCate.parentId}" target="panelWork" cId="${tplCate.id}"/>
+  <#else>
+  	<tree text="${tplCate.cateTitle}[${tplCate.id}]" action="${helper.getBaseURL()}/templateCateEdit.jhtml?op=edit&amp;tplCateId=${tplCate.id}&amp;parentId=${tplCate.parentId}" src="${helper.getBaseURL()}admin/template.jhtml?action=TplCateEditXml&amp;parentId=${tplCate.id}" target="panelWork" cId="${tplCate.id}"/>
+  </#if>
+  </#list>
+</tree>

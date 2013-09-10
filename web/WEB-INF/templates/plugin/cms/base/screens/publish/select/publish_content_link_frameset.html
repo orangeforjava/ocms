@@ -1,0 +1,16 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>内容选择</title>
+</head>
+
+<frameset rows="39,*" frameborder="NO" border="0" framespacing="0">
+  <frame src="${baseUrl}admin/contentSelect.jhtml?action=EditContentLinkHeader&fieldName=${fieldName}&nodeId=${nodeId}&indexId=${indexId}" name="editContentLink_topFrame" scrolling="no" noresize >
+  <frame src="${baseUrl}admin/contentSelect.jhtml?action=EditContentLink&nodeId=${nodeId}&indexId=${indexId}&fieldName=${fieldName}" name="editContentLink_mainFrame" scrolling="yes">
+</frameset>
+<noframes><body>
+</body></noframes>
+</html>

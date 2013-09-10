@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>内容选择</title>
+<base  href="${baseUrl}"/>
+<link rel='stylesheet' type='text/css' href='html/plugin/cms/base/css/style.css' />
+<script type="text/javascript" src="html/common/js/jquery-1.4.3.min.js"></script>
+<style>
+div.titleholder {
+	font-family: "ms sans serif", arial;
+	font-size: 8pt;
+	width: 200;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+div.subtitleholder {
+	font-family: "ms sans serif", arial;
+	font-size: 8pt;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+div.timeholder {
+	font-family: "ms sans serif", arial;
+	font-size: 8pt;
+	width: 90;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+</style>
+<script language='JavaScript'>
+var doImage = doImage;
+var TType = TType;
+
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	if (document.getElementById)
+		t = document.getElementById(tbl);
+	else
+		t = document.all(tbl);
+	if (t == null) return;
+	if (t.getElementsByTagName)
+		d = t.getElementsByTagName("TD");
+	else
+		d = t.all.tags("TD");
+	if (d == null) return;
+	if (d.length <= idx) return;
+	d[idx].className = cls;
+}
+
+</script>
+<script>
+var elo;
+var loadmenuok=false;
+var type = 'main';
+var NodeID = '${nodeId}';
+var TableID = '1';
+var fieldName='${fieldName}';
+var indexId='${indexId}';
+function initrightmenu(){
+	loadmenuok = true;
+}
+
+
+
+
+function addThread(url,TaskID) {
+	top.CrawlerTaskFrame.addThread(url , TaskID)
+	
+}
+
+function doing(action, IndexID) {
+	var returnValue;
+	switch(action) {
+
+		case 'addContentLink':
+			var Title = $('#Title_' + IndexID).text();
+			parent.window.opener.add(parent.editContentLink_topFrame.fieldName, IndexID, Title)
+ 			break;
+		case 'viewpublish':
+			eval('var mPath = URL_' + IndexID + '.href');
+			window.open(mPath,"","")
+
+			break;
+		case 'getURL':
+			eval('var mPath = URL_' + IndexID + '.href');
+			prompt("文章发布URL地址",mPath);
+			break;
+		case 'display_record':
+			document.location = "${baseUrl}admin/contentSelect.jhtml?action=EditContentLink&nodeId=" + NodeID +"&fieldName="+fieldName+"&indexId="+indexId+ "&pageNum=" +$('pageNum2').value;
+			break;
+
+		case 'date_search':
+			
+			break;
+		case 'keyword_search':
+			break;
+		case 'search_pro':
+			break;
+
+	}
+	//
+}
+
+
+
+</script>
+<link rel="stylesheet" type="text/css" media="all" href="/html/common/cal/calendar-blue2.css" title="system" />
+<script type="text/javascript" src="/html/common/cal/calendar.js"></script>
+<script type="text/javascript" src="/html/common/cal/calendar-zh.js"></script>
+<script type="text/javascript" src="/html/common/cal/calendar-setup.js"></script>
+
+</head>
+<body  style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px" >
+<br/>
+<form action="${baseUrl}admin/contentSelect.jhtml" method="post" name="searchForm"> 
+     <input name="action" type="hidden" value="EditContentLink"/>
+     <input name="order" type="hidden" value="${order}"/>
+	 <input name="order_mode" type="hidden" value="${order_mode}"/>
+	 <input name="order_name" type="hidden" value="${order_name}"/>
+	 <input name="page" type="hidden" value="${page}"/>	 
+	 <input name="pageNum" type="hidden" value="${pageNum}"/>
+	 <input name="nodeId" type="hidden" value="${nodeId}"/>
+	 <input name="fieldName" type="hidden" value="${fieldName}"/>
+	 <input name="indexId" type="hidden" value="${indexId}"/>
+<table cellspacing="0" cellpadding="0" width="100%"  class="toptable">
+<tr><td align="right">
+
+日期:<input type="text" name="pubDate"   id="pubDate" onFocus="return Calendar.setup({
+        inputField     :    'pubDate',
+        ifFormat       :    '%Y-%m-%d',
+        showsTime      :    false});" value="${pubDate?default('')}" />
+        至
+		<input type="text" name="pubDate2"   id="pubDate2" onFocus="return Calendar.setup({
+        inputField     :    'pubDate2',
+        ifFormat       :    '%Y-%m-%d',
+        showsTime      :    false});" value="${pubDate2?default('')}" />
+关键字:  <input type="text" name="keyword" id="keyword"   value="${keyword!}"/>
+
+<input name="submit1" type="submit"  value="搜索"/>
+<input name="reset1" type="reset"  value="重置"/>
+</td></tr>
+</table>
+</form>
+<table width="100%" border="0" align="center" cellpadding="2" cellspacing="1"  class="table_border" >
+  <tbody>
+  <form method="post"  name="documentlist" >
+
+  <tr class="table_td2"> 
+  <td align="center"><b>ID</b></td>	  
+ 		<td align="center"><b>标题</b></td>
+       <td align="center"><b>编辑</b></td>
+      <td align="center"><b>日期</b></td>
+  </tr>
+[#list contents as content]
+
+    <tr class="table_td1" id="${content['indexId']?c}" onmouseover='this.style.backgroundColor="#FFFFFF"' 
+                    onmouseout='this.style.backgroundColor=""'> 
+       <td align="center" nowrap   ><div class="subtitleholder">${content['indexId']?c}</div></td>
+       <td   nowrap  style="cursor: hand" id="">
+<table  border="0"  cellpadding="0" cellspacing="0"  >
+<tr>
+<td>
+	  <div class="titleholder">
+	  <a href="javascript:void(0);"  id="Title_${content['indexId']?c}"onclick="doing('addContentLink','${content['indexId']?c}')" class="o" style="cursor: hand"     title="${content['contentTitle']!''}">${content['contentTitle']!''}</a>   
+	  </div>
+</td>
+ 
+</tr>
+</table>	  
+	  </td>  
+      <td align="center" nowrap  ><div class="subtitleholder" title="${content['creationUserName']!''}">${content['creationUserName']!''}</div></td>
+      <td align="center" nowrap ><div class="timeholder">${(action.getDate(content["publishDate"]))?string("yyyy-MM-dd HH:mm")}</div></td>
+</tr>
+[/#list]
+
+    <tr class="Tablelistbg"> 
+      <td colspan="15" align="left" bgcolor="#F5F5F5"> 
+      <table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr> 
+            <td align=left> 
+            
+            </td>
+			<td height="20" align="right" nowrap="nowrap"> </td>
+	  	    <td height="20" nowrap="nowrap" align="right"> &nbsp;&nbsp;
+	  	    <input name="go_display" type="button" value="显示:" onclick="doing('display_record');" ><input type="text" name="pageNum2" id="pageNum2" size=5 value="${pageNum?default('15')}"> 条记录</td>
+          </tr>
+        </table></td>
+    </tr>
+  </form>
+  [#if pb.pages() gt 1]
+  <tr class="Tablelistbg">
+    <td colspan="15" height=25 >
+	<table border=0 align="right" width="100%" bgcolor="#FFFFFF">
+	<tr>
+	<td align=right>
+	[#assign pageUrl=baseUrl+"admin/contentSelect.jhtml?action=EditContentLink&fieldName=${fieldName}&indexId=${indexId}&nodeId="+nodeId?string+"&where=${where}&order=${order}&order_mode=${order_mode}&order_name=${order_name}&pageNum="+pageNum+"&page="/]
+	[@mypager.pageBuilder pb=pb baseUrl=pageUrl closeUrl=""/]
+	</td>
+	</tr>
+	</table>
+	 </td>
+  </tr>
+  [/#if]
+  </tbody> 
+</table>
+</body>
+</html>

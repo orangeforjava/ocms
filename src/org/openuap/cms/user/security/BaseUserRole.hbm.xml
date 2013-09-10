@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+  $Id: BaseUserRole.hbm.xml 4 2007-03-26 06:56:55Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.platform.user.model">
+  <class name="BaseUserRole" table="base_user_role">
+    <composite-id name="id" class="BaseUserRoleId">
+      <key-property name="userId" type="long">
+        <column name="userId"/>
+      </key-property>
+      <key-property name="roleId" type="long">
+        <column name="roleId"/>
+      </key-property>
+    </composite-id>
+    <property name="userId" type="long" insert="false" update="false">
+      <column name="userId" not-null="true"/>
+    </property>
+    <property name="roleId" type="long" insert="false" update="false">
+      <column name="roleId" not-null="true"/>
+    </property>
+  </class>
+</hibernate-mapping>

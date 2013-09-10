@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id$
+-->
+<beans>
+	<bean id="userOracleMappingResources"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<description>用户Hibernate影射文件</description>
+		<property name="dialect">
+			<value>org.hibernate.dialect.Oracle9Dialect</value>
+		</property>
+		<property name="mappings">
+			<list>
+				<value>org/openuap/cms/user/model/oracle/BaseUser.hbm.xml</value>
+				<value>org/openuap/cms/user/model/oracle/BaseRole.hbm.xml</value>
+				<value>org/openuap/cms/user/model/oracle/BaseUserRole.hbm.xml</value>
+				<value>org/openuap/cms/user/model/oracle/BaseUserPermission.hbm.xml</value>
+				<value>org/openuap/cms/user/model/oracle/BaseRolePermission.hbm.xml</value>
+				<value>org/openuap/cms/user/model/oracle/BaseRolePermField.hbm.xml</value>
+				<value>org/openuap/cms/user/model/oracle/BaseUserPermField.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+</beans>

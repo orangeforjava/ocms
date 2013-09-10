@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<constant type="Properties">
+	<pager.firstpage>首页</pager.firstpage>
+	<pager.prevpage>前一页</pager.prevpage>
+	<pager.nextpage>下一页</pager.nextpage>
+	<pager.lastpage>尾页</pager.lastpage>
+	<pager.pager>页次</pager.pager>
+	<pager.pp>每页</pager.pp>
+	<pager.nowp>当前显示</pager.nowp>
+	<pager.item>条</pager.item>
+	<pager.total>共</pager.total>
+	<pager.itemcount>条记录</pager.itemcount>
+	<pager.page>页</pager.page>
+	<pager.pagecount>总页数</pager.pagecount>
+	<pager.result>结果页码</pager.result>
+</constant>

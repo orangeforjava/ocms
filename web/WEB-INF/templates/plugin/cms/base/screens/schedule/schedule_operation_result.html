@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>publish operation result</title>
+<base  href="${baseUrl}"/>
+<link type="text/css" rel="StyleSheet" href="html/plugin/cms/base/css/style.css" />
+<#if rs=="success">
+<meta http-equiv="refresh" content="1;url='${baseUrl}admin/schedule.jhtml'">
+</#if>
+</HEAD>
+<BODY>
+<br><br>
+<div align=center>
+  <table width="100%" height="100%" border="0" cellpadding="20" cellspacing="0">
+    <td align="center" valign="top">
+        <table width="50%" height="100" border="0" cellpadding="4" cellspacing="1" class="table_border">
+          <tr class="table_td2">
+            <td>
+            <#if rs=="success">
+            	执行成功！
+            <#else>
+            	执行失败,原因为：<br/>
+            	${msgs!''}
+            </#if>						
+			<br><br>
+			<#if rs=="success">
+			<a href="admin/schedule.jhtml">如果您的浏览器没有自动跳转，请点击这里</a> <br>
+			</#if>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+</BODY>
+</HTML>

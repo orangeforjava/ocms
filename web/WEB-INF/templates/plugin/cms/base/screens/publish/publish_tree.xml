@@ -1,0 +1,14 @@
+[#assign noLayout="true"/]
+<?xml version="1.0" encoding="UTF-8"?>
+<tree>
+  [#list nodes as node]
+  [#assign allCount=dynamicContentManager.getNodeAllContentCount(node.nodeId) /]
+  [#assign pCount=dynamicContentManager.getNodeAllPublishContentCount(node.nodeId) /]
+	
+  [#if nodeManager.getChildNodesCount(node.nodeId)==0]
+  	<tree text="${node.name}[${node.nodeId?c}](&lt;span class=pS&gt;${pCount}&lt;/span&gt;/&lt;span class=aS&gt;${allCount}&lt;/span&gt;)" action="${helper.getBaseURL()}admin/publish.jhtml?action=ContentList2&amp;nodeId=${node.nodeId?c}&amp;type=main" target="main" cId="${node.nodeId?c}"/>
+  [#else]
+  	<tree text="${node.name}[${node.nodeId?c}](&lt;span class=pS&gt;${pCount}&lt;/span&gt;/&lt;span class=aS&gt;${allCount}&lt;/span&gt;)" action="${helper.getBaseURL()}admin/publish.jhtml?action=ContentList2&amp;nodeId=${node.nodeId?c}&amp;type=main" src="${helper.getBaseURL()}admin/publish.jhtml?action=PublishXml&amp;nodeId=${node.nodeId?c}" target="main" cId="${node.nodeId?c}"/>
+  [/#if]
+  [/#list]
+</tree>

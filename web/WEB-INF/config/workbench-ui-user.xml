@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench>
+	<!-- Users/Groups -->
+	<tab id="tab-users" name="用户" url="admin/user.jhtml?action=UserList"
+		description="用户权限管理" pos="003" plugin="org.openuap.user">
+		<!-- Users -->
+		<sidebar id="sidebar-users" name="用户管理" pos="002" plugin="org.openuap.user">
+			<item id="user-list" name="所有用户" url="admin/user.jhtml?action=UserList"
+				description="列出系统中的所有用户" permission="2">
+			</item>
+			<item id="user-create" name="新增用户" url="admin/userEdit.jhtml"
+				description="新建立系统用户" permission="4"/>
+		</sidebar>
+		<!-- Groups -->
+		<sidebar id="sidebar-roles" name="角色管理" pos="001" plugin="org.openuap.user">
+			<!-- Group Summary -->
+			<item id="role-list" name="角色列表" url="admin/user.jhtml?action=RoleList"	description="角色列表" permission="32">
+
+			</item>
+			<!-- Create New Group -->
+			<item id="role-create" name="新建角色"
+				url="admin/roleEdit.jhtml" description="新建角色" permission="64"/>
+		</sidebar>
+	</tab>
+	<tab id="tab-setting" name="设置">
+		<sidebar id="security-setting" name="登录设置" pos="010" plugin="org.openuap.cms">			
+			<item id="passport-setting" name="通行证设置" url="admin/user/config.jhtml"	description="通行证设置"/>
+		</sidebar>
+			
+	</tab>
+	<tab id="profile-setting" name="我的面板">
+		<sidebar id="user-setting" name="个人信息设置" pos="100" plugin="org.openuap.user">
+			<item id="user-changepwd" name="修改密码" url="user/changepwd.jhtml"	description="个人修改密码" permission="any"/>
+			<item id="user-edit" name="个人资料修改" url="user/edit.jhtml"	description="个人资料修改" permission="any"/>
+			
+		</sidebar>
+	</tab>
+	<tab id="tab-home">
+		<sidebar id="user-setting-q" name="我的面板" pos="100" plugin="org.openuap.user">
+			<item id="user-changepwd-q" name="修改密码" url="user/changepwd.jhtml"	description="个人修改密码" permission="any"/>
+			<item id="user-edit-q" name="个人资料修改" url="user/edit.jhtml"	description="个人资料修改" permission="any"/>			
+		</sidebar>
+	</tab>
+</workbench>

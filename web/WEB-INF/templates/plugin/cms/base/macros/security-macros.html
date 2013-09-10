@@ -1,0 +1,24 @@
+<#--------------------------------------------------------------------------->
+<#------------------------security macro------------------------------------->
+<#--------------------------------------------------------------------------->
+<#--
+name:the security macro
+author:Weiping Ju
+date:2005/12/30 11:15
+description:
+	
+history:
+	
+-->
+<#macro perm objectType objectId hasPermission>
+	<#local has=securityUtil.hasPermission(objectType,objectId,hasPermission)/>
+	<#if has>
+		<#nested>
+	</#if>
+</#macro>
+<#macro auth return="authUser">
+	<#local au=securityUtil.getAuthUser()/>
+	<#assign tmp="<#global ${return}=au>"/>
+  	<#assign tmp2=tmp?interpret/>
+  	<@tmp2></@tmp2>
+</#macro>

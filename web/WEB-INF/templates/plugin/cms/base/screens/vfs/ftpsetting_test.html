@@ -1,0 +1,219 @@
+ 
+<#assign actionTitle="FTP信息测试" />
+<#assign _TITLE_="FTP信息测试" />
+<#assign actions=[
+{"action":"","title":"FTP信息测试","url":"${baseUrl}admin/vfs/ftp.jhtml","class":"view"}]>
+
+<#include "/plugin/cms/common/includes/header.htm"/>
+
+<#import "/plugin/cms/base/macros/pager-macros.html" as mypager />
+<#import "/plugin/cms/base/macros/tabler-macros.html" as tabler />
+
+
+
+<script type="text/javascript" src="html/plugin/cms/base/js/common.js"></script>
+
+		<script type="text/javascript" language="javaScript">
+function loadSystemModel(){
+	window.location="${baseUrl}admin/content.jhtml?action=LoadSystemModel";
+}
+function doAction(action,p){
+	switch(action){
+		case'UpdateRSEM':{
+		    //alert('${baseUrl}admin/contentIndex.jhtml?action=UpdateRSEM&tableId='+p+'&r='+document.location);
+			document.location ='${baseUrl}admin/contentIndex.jhtml?action=UpdateRSEM&tableId='+p+'&r='+document.location;
+			
+			break;
+		}
+		case 'UpdateIndex':{
+			document.location ='${baseUrl}admin/contentIndex.jhtml?action=UpdateIndex&tableId='+p+'&r='+document.location;
+			break;
+		}		
+		default:{
+			break;
+		}
+	}
+}
+function batch_doing(vAction,vForm){
+	with(vForm) {
+		var count = 0;
+      	var checkboxObj = pData;
+		//alert(vAction);
+      	if(checkboxObj == null)
+      	{
+      		alert('有误');
+        	return ;
+      	}
+      	else
+      	{
+        	for (var i = 0; i < checkboxObj.length; i++)
+        	{
+          		if(checkboxObj[i].checked)
+          		count++;
+        	}
+      	}
+		if(count > 0 || (checkboxObj.length == null && checkboxObj.checked))
+		{
+			switch(vAction) {
+				case 'UpdateSchema':
+				{
+					if(confirm("您是否确认更新上述内容模型的表定义？")){
+						vForm.action ="${baseUrl}admin/content.jhtml?action=UpdateSchema&multi=1";
+						vForm.submit();
+					}
+					//
+					break;
+				}
+				case "UpdateRSEM":
+				{
+					if(confirm("您是否确认更新上述内容模型的索引定义？")){
+						vForm.action ="${baseUrl}admin/contentIndex.jhtml?action=UpdateRSEM&multi=1&r="+document.location;
+						vForm.submit();
+					}					
+					//
+					break;
+				}
+				case "UpdateIndex":
+				{
+					if(confirm("您是否确认更新上述内容模型的索引数据？")){
+						vForm.action ="${baseUrl}admin/contentIndex.jhtml?action=UpdateIndex&multi=1&r="+document.location;
+						vForm.submit();
+					}					
+					//
+					break;
+				}
+				case "SetIndexProp":
+				{
+					if(confirm("您是否确认更新上述内容模型的索引属性？")){
+						vForm.action ="${baseUrl}admin/content.jhtml?action=SetIndexProp&multi=1";
+						vForm.submit();
+					}					
+					//
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}//end switch
+		}else{
+			alert("请选择一个或多个内容！");
+		}
+	}
+}
+</script>
+
+		
+	    <#if messageCode??>
+		<center>
+			<div class='errormessage' style='width: 400px;'>
+				<img class='errormessage' src='html/images/info.gif'
+					align='absmiddle'>
+					&nbsp; 
+				<span class='tab-r'>${messageCode}</span>
+			</div>
+		</center>
+		<br/>
+		</center>
+		</#if>
+		<form name="formList" method="post">
+		<table border="0" cellspacing="1" cellpadding="4" width="100%"
+			align=center class="maintable">
+			<tr>
+			   
+				<td width="10%" align="center">
+					<B>名称</B>
+				</td>
+				<td width="20%" align="center">
+					<B>属性</B>
+				</td>
+				 <td width="10%" align="center" nowrap>
+					所有者
+				</td>			
+				<td width="10%" align="center">
+					<B>大小</B>
+				</td>
+				<td width="10%" align="center">
+					<B>修改日期</B>
+				</td>
+				<td align="center">
+					<B>类型</B>
+				</td>
+			</tr>
+			<#list files as file>
+			<tr>
+			    <td noWrap > 
+			    	${file.name}
+			    </td>
+				<td width="10%" class="table_td2" align=center>
+					${file.permissions!""}
+				</td>
+				<td width="20%" class="table_td2">
+					${file.owner!""}
+				</td>
+				<td width="20%" align="center" class="table_td2">
+					${file.size()}
+				</td>
+				<td width="10%" align="center" class="table_td2">
+					${file.lastModified()?datetime}
+				</td>
+				<td align="center" class="table_td2">
+					<#if file.isDir()>
+					目录
+					<#elseif file.isLink()>
+					链接
+					<#else>
+					文件
+					</#if>
+				</td>
+			</tr>
+			</#list>
+			<tr class="Tablelistbg">
+      <td colspan="6" align="left" bgcolor="#F5F5F5"> 
+      <table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align=left>
+            <input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  >
+              <label for="chkall" >全选</label>&nbsp;&nbsp;
+
+				 <select name="actionMap" id="actionMap" >
+				 	 <option value="" selected>--选择操作--</option>
+		         	 <option value="Delete">删除</option>
+				 </select>
+			  <input type="button" value="执行" class="button" onClick="batch_doing(this.form.actionMap.options[actionMap.selectedIndex].value,this.form)">
+
+            </td>
+          </tr>
+        </table></td>
+    		</tr>
+    		
+		</table>
+	    </form>
+		<br/>
+		<script language='JavaScript'>
+function edit(form,id)
+{
+	eval("var isdisabled = " + form + "." + id + ".disabled");
+
+	if(isdisabled) {
+		eval(form + "." + id + ".disabled = false");
+	} else {
+		eval(form + "." + id + ".disabled = true");
+
+	}
+
+}
+function formCheck(form)
+{
+	if(form.tname.value == '') {
+		alert("请填写标签名称");
+		form.tname.focus();
+		form.tname.style.background = '#FFFFE1';
+		return false;
+	}
+}
+
+</script>
+
+<br/>
+<#include "/plugin/cms/base/includes/footer.html">

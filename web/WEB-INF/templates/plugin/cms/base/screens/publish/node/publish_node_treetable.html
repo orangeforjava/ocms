@@ -1,0 +1,221 @@
+<#assign actionTitle="内容发布管理" />
+<#assign _TITLE_="内容发布管理" />
+<#assign actions=[{"action":"NodeFS","title":"发布管理","url":"${baseUrl}admin/publish.jhtml?action=NodeFS"}]>
+
+<#assign noLayout="true"/>
+<#include "/plugin/cms/common/includes/header.htm"/>
+
+<#import "/plugin/cms/base/macros/pager-macros.html" as mypager />
+<#import "/plugin/cms/base/macros/tabler-macros.html" as tabler />
+<#import "/plugin/cms/base/screens/publish/publish-macros.html" as mynoder />
+
+<script src="html/common/dialog/artDialog.js" type="text/javascript"></script>
+<!-- 
+<script src="html/common/window/js/prototype.js" type="text/javascript"></script>
+<script src="html/common/window/js/effects.js" type="text/javascript"></script>
+<script src="html/common/window/js/window.js" type="text/javascript"></script>
+<link href="html/common/window/themes/window/window.css" rel="stylesheet" type="text/css"/>
+<link href="html/common/window/themes/window/vista.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript">
+			var win;
+			//CSS.preloadImages();
+			function openWindow(url,caption,w,h) {
+			        
+			        win=new UI.URLWindow({
+					resizable:false,
+					draggable:false,
+			        width: w||800, 
+			        height: h||600,
+			        theme: "vista",
+					shadow: true, 
+					shadowTheme: "drop_shadow", 
+			        url: url});
+			        UI.defaultWM.options.blurredWindowsDontReceiveEvents = true;
+			        win.setHeader(caption);
+			        win.center({auto:true});
+			        win.show(true).focus();
+			 }
+ </script>
+  -->
+<script type="text/javascript" src="html/common/tree/xtree.js"></script>
+<script type="text/javascript" src="html/common/tree/xmlextras.js"></script>
+<script type="text/javascript" src="html/common/tree/xloadtree.js"></script>
+<script>
+// 设置对话框全局默认配置
+(function(){
+    var d = art.dialog.defaults;
+    
+    // 按需加载要用到的皮肤，数组第一个为默认皮肤
+    // 如果只使用默认皮肤，可以不填写skin
+    d.skin = ['default', 'chrome', 'facebook', 'aero'];
+    
+    // 支持拖动
+    d.drag = true;
+    
+    // 超过此面积大小的对话框使用替身拖动
+    d.showTemp = 100000;
+})();
+</script>
+
+<style>
+
+.pS{
+	color:#FF0000;
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+}
+.aS{
+	font-family: ms sans serif, arial;
+	color:#0000FF;
+	font-size: 8pt;
+}
+
+
+</style>
+<script type="text/javaScript">
+
+var globalAction;
+var globalNodeID;
+var baseUrl='${baseUrl}';
+function callBack(rs){
+	//
+	//alert(globalAction);
+	switch(globalAction){
+		case 'refresh':
+		{
+			refreshNode(rs);
+			break;
+		}
+		case 'site_publish':
+		{
+			
+			publishNode(rs);
+			break;
+		}
+		case "site_unpublish":
+		{
+			unpublishNode(rs);
+			break;
+		}
+		case "site_republish":
+		{
+			republishNode(rs);
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
+}
+</script>
+<script type="text/javascript">
+<#include "../publish.js">
+</script>
+
+
+
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"  class="maintable" >
+  <tbody>
+    <!-- <tr class="table_td2" height=25>
+	  <td ><B>内容发布管理</B></td>     
+  </tr> -->
+  <!--start-->
+  <tr class="table_td2" >
+    <td nowrap>
+  		<script type="text/javascript">
+//XP Look
+webFXTreeConfig.rootIcon		= "html/common/tree/images/xp/folder_p_closed.gif";
+webFXTreeConfig.openRootIcon	= "html/common/tree/images/xp/folder_p_out.gif";
+webFXTreeConfig.folderIcon		= "html/common/tree/images/xp/folder_p_closed.gif";
+webFXTreeConfig.openFolderIcon	= "html/common/tree/images/xp/folder_p_out.gif";
+webFXTreeConfig.fileIcon		= "html/common/tree/images/xp/folder_p_closed.gif";
+webFXTreeConfig.lMinusIcon		= "html/common/tree/images/xp/Lminus.png";
+webFXTreeConfig.lPlusIcon		= "html/common/tree/images/xp/Lplus.png";
+webFXTreeConfig.tMinusIcon		= "html/common/tree/images/xp/Tminus.png";
+webFXTreeConfig.tPlusIcon		= "html/common/tree/images/xp/Tplus.png";
+webFXTreeConfig.iIcon			= "html/common/tree/images/xp/I.png";
+webFXTreeConfig.lIcon			= "html/common/tree/images/xp/L.png";
+webFXTreeConfig.tIcon			= "html/common/tree/images/xp/T.png";
+webFXTreeConfig.blankIcon		= "html/common/tree/images/blank.png";
+//
+WebFXTree.prototype.toString = function() {
+	var str = "" +
+		"<div id=\"" + this.id + "-cont\" class=\"webfx-tree-container\" style=\"display: " + ((this.open)?'block':'none') + ";\">";
+	var sb = [];
+	for (var i = 0; i < this.childNodes.length; i++) {
+		sb[i] = this.childNodes[i].toString(i, this.childNodes.length);
+	}
+	this.rendered = true;
+	return str + sb.join("") + "</div>";
+};
+//
+WebFXTreeItem.prototype.toString = function (nItem, nItemCount) {
+	var foo = this.parentNode;
+	var indent = '';
+	if (nItem + 1 == nItemCount) { this.parentNode._last = true; }
+	var i = 0;
+	while (foo.parentNode) {
+		foo = foo.parentNode;
+		indent = "<img id=\"" + this.id + "-indent-" + i + "\" src=\"" + ((foo._last)?webFXTreeConfig.blankIcon:webFXTreeConfig.iIcon) + "\">" + indent;
+		i++;
+	}
+	this._level = i;
+	if (this.childNodes.length) { this.folder = 1; }
+	else { this.open = false; }
+	if ((this.folder) || (webFXTreeHandler.behavior != 'classic')) {
+		if (!this.icon) { this.icon = webFXTreeConfig.folderIcon; }
+		if (!this.openIcon) { this.openIcon = webFXTreeConfig.openFolderIcon; }
+	}
+	else if (!this.icon) { this.icon = webFXTreeConfig.fileIcon; }
+	//var label = this.text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	label = this.text;
+	var str = "<div id=\"" + this.id + "\" ondblclick=\"webFXTreeHandler.toggle(this);\" class=\"webfx-tree-item\" onkeydown=\"return webFXTreeHandler.keydown(this, event)\"" +
+		" onmouseover='this.style.backgroundColor=\"#C0C0C0\"' "+
+		" onmouseout='this.style.backgroundColor=\"#FFFFFF\"' "+
+		">"+
+		indent +
+		"<img id=\"" + this.id + "-plus\" src=\"" + ((this.folder)?((this.open)?((this.parentNode._last)?webFXTreeConfig.lMinusIcon:webFXTreeConfig.tMinusIcon):((this.parentNode._last)?webFXTreeConfig.lPlusIcon:webFXTreeConfig.tPlusIcon)):((this.parentNode._last)?webFXTreeConfig.lIcon:webFXTreeConfig.tIcon)) + "\" onclick=\"webFXTreeHandler.toggle(this);\">" +
+		"<img id=\"" + this.id + "-icon\" class=\"webfx-tree-icon\" src=\"" + ((webFXTreeHandler.behavior == 'classic' && this.open)?this.openIcon:this.icon) + "\" onclick=\"webFXTreeHandler.select(this);\">" +
+		"<a href=\"javascript:site_doing('content_manager','"+this.cId+"')\" id=\"" + this.id + "-anchor\" onfocus=\"webFXTreeHandler.focus(this);\" onblur=\"webFXTreeHandler.blur(this);\"" +
+		 +
+		" oncontextmenu=\"rightMenu('" + this.cId + "', '" + this.extra + "');return false;\">" + label + "</a>"+
+		"&nbsp;-"+
+		"[<a href=\"javascript:site_doing('view_index','"+this.cId+"')\">查看首页</a>]&nbsp;"+
+		"[<a href=\"javascript:site_doing('refresh_index','"+this.cId+"')\">刷新首页</a>]&nbsp;"+
+		"[<a href=\"javascript:site_doing('newdoc','"+this.cId+"')\">新建内容</a>]&nbsp;"+
+      	"[<a href=\"javascript:site_doing('refresh','"+this.cId+"')\">更新结点</a>]&nbsp;"+
+      	"[<a href=\"javascript:site_doing('site_publish','"+this.cId+"')\">发布结点</a>]&nbsp;"+
+      	"[<a href=\"javascript:site_doing('site_unpublish','"+this.cId+"')\">取消发布结点</a>]&nbsp;"+
+      	"[<a href=\"javascript:site_doing('site_republish','"+this.cId+"')\">重新发布结点</a>]&nbsp;"+
+		"</div>" +
+		"<div id=\"" + this.id + "-cont\" class=\"webfx-tree-container\" style=\"display: " + ((this.open)?'block':'none') + ";\">";
+	var sb = [];
+	for (var i = 0; i < this.childNodes.length; i++) {
+		sb[i] = this.childNodes[i].toString(i,this.childNodes.length);
+	}
+	this.plusIcon = ((this.parentNode._last)?webFXTreeConfig.lPlusIcon:webFXTreeConfig.tPlusIcon);
+	this.minusIcon = ((this.parentNode._last)?webFXTreeConfig.lMinusIcon:webFXTreeConfig.tMinusIcon);
+	return str + sb.join("") + "</div>";
+}
+
+var tree = new WebFXTree("站点根");
+	<#list rootNodes as node>
+	<#assign allCount=dynamicContentManager.getNodeAllContentCount(node.nodeId) />
+	<#assign pCount=dynamicContentManager.getNodeAllPublishContentCount(node.nodeId) />
+	
+	<#if nodeManager.getNodeCount(node.nodeId,0,0)==0>
+	tree.add(new WebFXTreeItem("${node.name}[${node.nodeId?c}](<span class=pS>${pCount?c}</span>/<span class=aS>${allCount?c}</span>)","${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}&type=main", "main", "${node.nodeId?c}"));
+	<#else>
+	tree.add(new WebFXLoadTreeItem("${node.name}[${node.nodeId?c}](<span class=pS>${pCount?c}</span>/<span class=aS>${allCount?c}</span>)", "${baseUrl}admin/publish.jhtml?action=PublishXml&nodeId=${node.nodeId?c}", "${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}&type=main", "main", "${node.nodeId?c}"));
+	</#if>
+	</#list>
+//
+document.write(tree);
+</script>
+  	</td>  	
+  </tr>
+  <!--end-->	
+  </tbody>
+</table>
+<#include "/plugin/cms/common/includes/footer.htm"/>

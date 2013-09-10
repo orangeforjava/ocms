@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<description>
+		bootstrap context,it will be load by BaseConfigurationListener.
+	</description>
+	<bean id="bootstrapManager"
+		class="org.openuap.runtime.setup.support.DefaultBootstrapManager">
+		<description>bootstrap Manager bean</description>
+		<property name="homeLocator">
+			<bean
+				class="org.openuap.runtime.setup.support.BaseHomeLocator">
+				<property name="configFileName">
+					<value>runtime.cfg.xml</value>
+				</property>
+				<property name="propertiesFile">
+					<value>runtime-init.properties</value>
+				</property>
+				<property name="homePropertyKey">
+					<value>runtime.home</value>
+				</property>
+			</bean>
+		</property>
+		<property name="setupPersister">
+			<ref local="setupPersister" />
+		</property>
+		<property name="applicationConfig">
+			<ref local="applicationConfig" />
+		</property>
+		<property name="hibernateConfig">
+			<ref local="hibernateConfig" />
+		</property>
+		<property name="hibernateConfigurator">
+			<ref local="hibernateConfigurator" />
+		</property>
+		<property name="jdbcDataSourceConfig">
+			<ref local="jdbcDataSourceConfig" />
+		</property>
+	</bean>
+	<bean id="applicationConfig"
+		class="org.openuap.runtime.setup.support.BaseApplicationConfig">
+
+	</bean>
+	<bean id="hibernateConfig"
+		class="org.openuap.runtime.setup.persistence.hibernate.HibernateConfig"
+		lazy-init="true">
+		<property name="applicationConfig">
+			<ref local="applicationConfig" />
+		</property>
+	</bean>
+	<bean id="jdbcDataSourceConfig"
+		class="org.openuap.runtime.setup.persistence.jdbc.JdbcDataSourceConfig"
+		lazy-init="true">
+		<property name="applicationConfig">
+			<ref local="applicationConfig" />
+		</property>
+	</bean>
+	<bean id="setupPersister"
+		class="org.openuap.runtime.setup.support.DefaultSetupPersister">
+		<property name="applicationConfig">
+			<ref local="applicationConfig" />
+		</property>
+	</bean>
+	<bean id="hibernateConfigurator"
+		class="org.openuap.runtime.setup.support.DefaultHibernateConfigurator"
+		lazy-init="true" />
+	<bean id="dispatcherRefreshTool"
+		class="org.openuap.runtime.setup.spring.DispatcherRefreshTool" />
+	<bean id="serviceManager"
+		class="org.openuap.service.support.DefaultServiceManager">
+	</bean>
+	<bean id="factoryService"
+		class="org.openuap.service.factory.DefaultFactoryService">
+	</bean>
+	<bean id="poolService"
+		class="org.openuap.service.pool.DefaultPoolService">
+		<property name="serviceManager" ref="serviceManager" />
+		<property name="factoryService" ref="factoryService" />
+	</bean>
+</beans>

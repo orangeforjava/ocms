@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: plugin-user.xml 1914 2008-03-19 07:41:27Z orangeforjava $
+-->
+<beans>
+	<description>用户应用插件</description>
+	<import resource="cms-module-user-orm.xml"/>
+	<import resource="cms-module-user-orm-oracle.xml"/>
+	
+	<bean id="baseUserDaoImpl"
+		class="org.openuap.cms.user.dao.hibernate.BaseUserDaoImpl">
+		<description>用户DAO实现</description>
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="entityName" value="BaseUser"></property>
+	</bean>
+	<bean id="baseUserDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<description>用户DAO</description>
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target" ref="baseUserDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="baseRoleDaoImpl"
+		class="org.openuap.cms.user.dao.hibernate.BaseRoleDaoImpl">
+		<description>角色DAO实现</description>
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="entityName" value="BaseRole"></property>
+		<property name="userEntityName" value="BaseUser"></property>
+		<property name="userRoleEntityName" value="BaseUserRole"></property>
+	</bean>
+	<bean id="baseRoleDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<description>角色DAO</description>
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target" ref="baseRoleDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="set*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="permissionDaoImpl"
+		class="org.openuap.cms.user.dao.hibernate.PermissionDaoImpl">
+		<description>权限DAO实现</description>
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="rolePermEntityName"
+			value="BaseRolePermission">
+		</property>
+		<property name="userPermEntityName"
+			value="BaseUserPermission">
+		</property>
+		<property name="userRoleEntityName" value="BaseUserRole"></property>
+
+	</bean>
+	<bean id="permissionDao"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true">
+		<description>权限DAO</description>
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target" ref="permissionDaoImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="set*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<!---->
+	<bean id="baseUserManager"
+		class="org.openuap.cms.user.manager.impl.BaseUserManagerDBImpl">
+		<description>用户管理者</description>
+		<property name="userDao">
+			<ref bean="baseUserDao" />
+		</property>
+	</bean>
+	<bean id="baseRoleManager"
+		class="org.openuap.cms.user.manager.impl.BaseRoleManagerDBImpl">
+		<description>角色管理者</description>
+		<property name="roleDao">
+			<ref bean="baseRoleDao" />
+		</property>
+	</bean>
+	<bean id="permissionManager"
+		class="org.openuap.cms.user.manager.impl.PermissionManagerDBImpl">
+		<description>权限管理者</description>
+		<property name="permissionDao">
+			<ref bean="permissionDao" />
+		</property>
+		<property name="userDao">
+			<ref bean="baseUserDao" />
+		</property>
+	</bean>
+	<bean id="permissionPluginManager"
+		class="org.openuap.cms.user.security.manager.support.DefaultPermissionPluginManager">
+	</bean>
+	<!--  -->
+	<bean id="userPermissionControlPanel"
+		class="org.openuap.cms.user.security.permissions.UserPluginPermissionControlPanel">
+		<description>用户权限控制面板</description>
+	</bean>
+	<bean id="org.openuap.user.reflection" class="org.openuap.cms.user.security.permissions.UserResourceReflection">
+		<property name="userManager" ref="baseUserManager"/>
+	</bean>
+	<!--  -->
+	<bean id="authService"
+		class="org.openuap.cms.user.security.support.DbAuthFactory">
+		<property name="userManager" ref="baseUserManager"></property>
+		<property name="permissionManager" ref="permissionManager"></property>
+	</bean>
+</beans>

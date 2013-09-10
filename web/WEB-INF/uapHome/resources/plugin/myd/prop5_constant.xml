@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 工作年限 -->
+<directory>
+  <props>
+    <prop key="0">--请选择--</prop>
+	<prop key="1">5年以下</prop>
+	<prop key="2">5-10年</prop>
+	<prop key="3">10-15年</prop>
+	<prop key="4">15-20年</prop>
+	<prop key="5">20年以上</prop>
+  </props>
+</directory>

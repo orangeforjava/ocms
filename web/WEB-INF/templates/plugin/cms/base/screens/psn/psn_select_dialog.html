@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>发布点选择</title>
+<base  href="${baseUrl}"/>
+<link rel='stylesheet' type='text/css' href='html/plugin/cms/base/css/style.css' />
+
+<script language="javascript" type="text/javascript">
+function psn_backward()
+{
+	window.history.go(-1);
+}
+
+function psn_updir()
+{
+
+	var PATH =  document.workFrame.PATH;
+	//
+	var PSNID = document.form1.psn.options[document.form1.psn.selectedIndex].value
+	//alert(PSNID)
+	workFrame.location = '${baseUrl}admin/psn.jhtml?action=PsnListFile&extra=updir&PATH=' + encodeURIComponent(PATH)+"&psnId="+PSNID;
+}
+
+function psn_mkdir()
+{
+	var PATH =  document.workFrame.PATH;
+	var PSNID = document.form1.psn.options[document.form1.psn.selectedIndex].value
+
+ var dirname= showModalDialog("${baseUrl}admin/select.jhtml?action=InputDialog&title="+encodeURIComponent('文件夹名'),"color","dialogWidth:300px;dialogHeight:150px;help:0;status:0;scroll:no");
+ if(dirname != null && dirname != '') {
+ 	workFrame.location = '${baseUrl}admin/psn.jhtml?action=PsnListFile&extra=mkdir&dirname='+ encodeURIComponent(dirname) +'&PATH=' + encodeURIComponent(PATH)+"&psnId="+PSNID;
+
+ }
+
+
+}
+function ok()
+{
+	var psn = document.form1.psn.options[document.form1.psn.selectedIndex].value + '}' + document.form1.fileName.value ;
+	
+	var parent = art.dialog.parent;
+	
+	parent.callback('psnSelect',psn);
+	
+	art.dialog.close();
+}
+function cancel()
+{
+	art.dialog.close();
+}
+</script>
+</head>
+<body style="margin:0pt;padding:0pt;border: 1px buttonhighlight;" onLoad="workFrameReload()">
+<form name="form1" method="post" action="">
+<table width="100%" border="0" cellspacing="5">
+  
+    <tr>
+      <td colspan="3" align="right"><table width="100%" border="0" cellspacing="0">
+          <tr>
+            <td width="10%">搜索:</td>
+            <td  width="200">
+			<select name="psn" id="select" onChange="if(this.options[this.selectedIndex].value != ''){
+workFrame.location=('${baseUrl}admin/psn.jhtml?action=PsnListFile&psnId='+this.options[this.selectedIndex].value);
+} ">
+
+              <option value="">请选择发布点(PSN)..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+			 [#list psns as psn]
+			 <option value="${psn.id}">[ ${psn.name} ]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+			 [/#list]
+             </select></td>
+            <td align=left ><script src="resource.jhtml?path=html/plugin/cms/base/js/psn_icon.js" type="text/javaScript"></script></td>
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" align="center">
+		<iframe name=workFrame  frameborder=1 class=button src="" style="width:100%;height:234;" >
+        </iframe> 
+       </td>
+    </tr>
+    <tr>
+      <td width="18%">目录名称:</td>
+      <td width="59%">
+        <input name="fileName" type="text" size="36">
+        <input name="selectPSN" type="hidden" id="selectPSN">
+      </td>
+      <td width="20%"><input type="button" name="Submit" value="  确定  " onClick="return ok();"></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><input type="button" name="Submit2" value="  取消  " onclick='return cancel();'></td>
+    </tr>
+  
+</table>
+</form>
+<script language="javascript">
+function workFrameReload() {
+	var PSNID = '${psnId?default("")}';
+	var PATH = '';
+	if(PSNID != '') {
+		//alert(PSNID);
+		document.form1.fileName.value = PATH + '/';
+		workFrame.location = 'admin/psn.jhtml?action=PsnListFile&default_name=&psnId=' + PSNID + '&PATH=' + PATH
+		//workFrame.location.reload()
+
+	}
+}
+</script>
+</body>
+</html>

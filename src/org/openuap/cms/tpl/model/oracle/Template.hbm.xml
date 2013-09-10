@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: Template.hbm.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.tpl.model">
+	<class name="Template" table="cms_tpl">
+		<id name="id" type="long">
+			<column name="id" precision="22" scale="0" />
+			<generator class="sequence">
+				<param name="sequence">cms_tpl_seq</param>
+			</generator>
+		</id>
+		<property name="tcid" type="long">
+			<column name="tcid" precision="22" scale="0"
+				not-null="true" />
+		</property>
+		<property name="tplName" type="string">
+			<column name="tplName" length="200" not-null="true" />
+		</property>
+		<property name="tplTitle" type="string">
+			<column name="tplTitle" length="200" />
+		</property>
+		<property name="tplImg" type="string">
+			<column name="tplImg" length="200" />
+		</property>
+		<property name="tplPath" type="string">
+			<column name="tplPath" length="200" not-null="true" />
+		</property>
+		<property name="tplContent" type="text">
+			<column name="tplContent" />
+		</property>
+		<property name="tplIntro" type="text">
+			<column name="tplIntro" />
+		</property>
+		<property name="tplType" type="long">
+			<column name="tplType" precision="22" scale="0"
+				not-null="true" />
+		</property>
+		<property name="tplStatus" type="long">
+			<column name="tplStatus" precision="22" scale="0"
+				not-null="true" />
+		</property>
+		<property name="tplSort" type="long">
+			<column name="tplSort" precision="22" scale="0"
+				not-null="true" />
+		</property>
+		<property name="tplTop" type="long">
+			<column name="tplTop" precision="22" scale="0"
+				not-null="true" />
+		</property>
+		<property name="tplPink" type="long">
+			<column name="tplPink" precision="22" scale="0"
+				not-null="true" />
+		</property>
+		<property name="creationUid" type="long">
+			<column name="creationUid" precision="22" scale="0"
+				not-null="true" />
+		</property>
+		<property name="creationUserName" type="string">
+			<column name="creationUserName" length="200"
+				not-null="true" />
+		</property>
+		<property name="lastModifiedUid" type="long">
+			<column name="lastModifiedUid" precision="22" scale="0"
+				not-null="true" />
+		</property>
+		<property name="creationDate" type="long">
+			<column name="creationDate" precision="22" scale="0"
+				not-null="true" />
+		</property>
+		<property name="modifiedDate" type="long">
+			<column name="modifiedDate" precision="22" scale="0"
+				not-null="true" />
+		</property>
+	</class>
+</hibernate-mapping>

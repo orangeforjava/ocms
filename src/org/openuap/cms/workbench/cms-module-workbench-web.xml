@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+	<!--
+		- $Id: cms-module-workbench-web.xml 3942 2010-10-28 04:15:34Z
+		orangeforjava $
+	-->
+<beans default-lazy-init="false">
+
+
+	<bean id="workbenchHandlerMappingAdmin"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/index.jhtml">
+					<ref local="workbenchAction" />
+				</entry>
+				<entry key="/admin/workbench.jhtml">
+					<ref local="workbenchAction" />
+				</entry>
+				<entry key="/admin/cmsstatus.jhtml">
+					<ref local="cmsStatusAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="workbenchAction" class="org.openuap.cms.workbench.action.WorkbenchAction">
+		<property name="nodeManager">
+			<ref bean="nodeManager"></ref>
+		</property>
+	</bean>
+	<bean id="cmsStatusAction" class="org.openuap.cms.workbench.action.StatusAction" />
+</beans>

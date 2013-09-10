@@ -1,0 +1,133 @@
+<#macro showTreeTable quickQuery rootId=0 level=0 placeholder="" selId=0>
+  <#assign nodes=quickQuery.getNodeChildren(rootId)>
+  <#assign size=nodes?size>
+  <#list nodes as node>
+     <#local child=quickQuery.getNodeChildrenCount(node.nodeId)/>
+  <tr class="table_td1" id="${node['nodeId']?c}" onmouseover='this.style.backgroundColor="#FFFFFF"'
+                    onmouseout='this.style.backgroundColor=""' >
+      <td noWrap >
+      	<input type="checkbox" name="pData" value="${node['nodeId']?c}" id="p_${node['nodeId']?c}" ></td>
+      <td align="center" noWrap>
+      	<div class="subtitleholder">${node['nodeId']?c}</div></td>	  
+	 <td noWrap style="cursor:hand" id="">
+		<table  border="0"  cellpadding="0" cellspacing="0"  >
+		<tr>
+		<td>
+		<#compress>
+			  <div class="titleholder">
+			    <#if level gt 0>
+				  	<#list 1..level as i>
+				  		<img src="html/common/tree/images/xp/I.png" border=0/>
+				  	</#list>
+			  	</#if>
+			  	<#if child gt 0>
+			  		<img src="html/common/tree/images/xp/Tminus.png" border=0/><img src="html/common/tree/images/xp/folder.png" border=0/>
+			  	<#else>
+			  		<#if (size gt 1)&&((node_index+1) lt size)>
+			  			<img src="html/common/tree/images/xp/T.png" border=0/>
+			  		<#else>
+			  			<img src="html/common/tree/images/xp/L.png" border=0/>	
+			  		</#if>			  				  		
+			  		<img src="html/common/tree/images/xp/file.png" border=0/>
+			  	</#if>
+			  	<a href="admin/nodeEdit.jhtml?mode=edit&nodeId=${node.nodeId?c}">${node['name']}[${node['nodeId']?c}]</a>		  		    
+			  </div>
+		</#compress>
+		</td>
+		<td>&nbsp;</td>
+		</tr>
+		</table>
+	  </td>
+      <td align="center" noWrap >${node.nodeSort!'0'}</div></td>
+      <td align="center" noWrap >
+      	可用
+      </td>
+ 	  <td align="center" nowrap>
+ 	  <#assign nodeType=node.nodeType />
+      <#if nodeType==1>
+      	实
+      <#else>
+      	虚
+      </#if></td>
+      <td colspan="5" align="center" noWrap>
+      	<a href="admin/nodeEdit.jhtml?mode=edit&nodeId=${node.nodeId?c}">编辑</a>&nbsp;
+      	<a href="javascript:going('create_node','${node.nodeId?c}');">创建子结点</a>&nbsp;
+      	<a href="javascript:going('create_node_based','${node.nodeId?c}')">创建子结点基于</a>&nbsp;
+      	<a href="javascript:going('sort_node','${node.nodeId?c}')">排序权重</a>&nbsp;	
+      	<a href="javascript:going('move_node','${node.nodeId?c}')">移动</a>&nbsp;
+      	<a href="javascript:going('del_node','${node.nodeId?c}')">删除</a>&nbsp;	
+	  </td>
+	 
+  </tr>
+  		<#if child gt 0>
+			<@showTreeTable quickQuery=quickQuery rootId=node.nodeId level=level+1 placeholder=placeholder+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" selId=selId/>
+		</#if>
+  </#list>
+ </#macro>
+ 
+ <#macro showTreeTable quickQuery rootId=0 level=0 placeholder="" selId=0>
+  <#assign nodes=quickQuery.getNodeChildren(rootId)>
+  <#assign size=nodes?size>
+  <#list nodes as node>
+     <#local child=quickQuery.getNodeChildrenCount(node.nodeId)/>
+  <tr class="table_td1" id="${node['nodeId']?c}" onmouseover='this.style.backgroundColor="#FFFFFF"'
+                    onmouseout='this.style.backgroundColor=""' >
+      <td noWrap >
+      	<input type="checkbox" name="pData" value="${node['nodeId']?c}" id="p_${node['nodeId']?c}" ></td>
+      <td align="center" noWrap>
+      	<div class="subtitleholder">${node['nodeId']?c}</div></td>	  
+	 <td noWrap style="cursor:hand" id="">
+		<table  border="0"  cellpadding="0" cellspacing="0"  >
+		<tr>
+		<td>
+		<#compress>
+			  <div class="titleholder">
+			    <#if level gt 0>
+				  	<#list 1..level as i>
+				  		<img src="html/common/tree/images/xp/I.png" border=0/>
+				  	</#list>
+			  	</#if>
+			  	<#if child gt 0>
+			  		<img src="html/common/tree/images/xp/Tminus.png" border=0/><img src="html/common/tree/images/xp/folder.png" border=0/>
+			  	<#else>
+			  		<#if (size gt 1)&&((node_index+1) lt size)>
+			  			<img src="html/common/tree/images/xp/T.png" border=0/>
+			  		<#else>
+			  			<img src="html/common/tree/images/xp/L.png" border=0/>	
+			  		</#if>			  				  		
+			  		<img src="html/common/tree/images/xp/file.png" border=0/>
+			  	</#if>
+			  	<a href="admin/nodeEdit.jhtml?mode=edit&nodeId=${node.nodeId?c}">${node['name']}[${node['nodeId']?c}]</a>		  		    
+			  </div>
+		</#compress>
+		</td>
+		<td>&nbsp;</td>
+		</tr>
+		</table>
+	  </td>
+      <td align="center" noWrap >${node.nodeSort!'0'}</div></td>
+      <td align="center" noWrap >
+      	可用
+      </td>
+ 	  <td align="center" nowrap>
+ 	  <#assign nodeType=node.nodeType />
+      <#if nodeType==1>
+      	实
+      <#else>
+      	虚
+      </#if></td>
+      <td colspan="5" align="center" noWrap>
+      	<a href="admin/nodeEdit.jhtml?mode=edit&nodeId=${node.nodeId?c}">编辑</a>&nbsp;
+      	<a href="javascript:going('create_node','${node.nodeId?c}');">创建子结点</a>&nbsp;
+      	<a href="javascript:going('create_node_based','${node.nodeId?c}')">创建子结点基于</a>&nbsp;
+      	<a href="javascript:going('sort_node','${node.nodeId?c}')">排序权重</a>&nbsp;	
+      	<a href="javascript:going('move_node','${node.nodeId?c}')">移动</a>&nbsp;
+      	<a href="javascript:going('del_node','${node.nodeId?c}')">删除</a>&nbsp;	
+	  </td>
+	 
+  </tr>
+  		<#if child gt 0>
+			<@showTreeTable quickQuery=quickQuery rootId=node.nodeId level=level+1 placeholder=placeholder+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" selId=selId/>
+		</#if>
+  </#list>
+ </#macro>

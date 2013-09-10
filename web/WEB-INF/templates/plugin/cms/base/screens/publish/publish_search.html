@@ -1,0 +1,381 @@
+ <#assign actionTitle="综合查询" /> 
+ <#assign _TITLE_="综合查询" /> 
+ <#assign actions=[ ]> 
+ 
+ <#include "/plugin/cms/common/includes/header.htm"/>
+ 
+ <#import "/plugin/cms/base/macros/node-macros.html" as mynode />
+ <#import "/plugin/cms/base/macros/tabler-macros.html" as tabler />
+ <script type="text/javascript" src="html/common/js/jquery-1.4.3.min.js"></script>
+ <link rel="stylesheet" type="text/css" media="all" href="/html/common/cal/calendar-blue2.css" title="system" />
+<script type="text/javascript" src="/html/common/cal/calendar.js"></script>
+<script type="text/javascript" src="/html/common/cal/calendar-zh.js"></script>
+<script type="text/javascript" src="/html/common/cal/calendar-setup.js"></script>
+<script type="text/javascript" src="html/plugin/cms/base/js/table.js"></script>
+ <script type="text/javascript">
+<#include "./publish.js">
+</script>
+ <script type="text/javascript">
+<!--
+var authorAry=[];
+function addAuthor(form,authorName){
+	var authors=form.author.value;
+	if(authorName!=""){
+		if(authors!=""){
+			if(jQuery.inArray(authorName, authorAry)==-1){
+				authorAry.push(authorName);
+				form.author.value=authors+","+authorName;
+			}
+			
+		}else{
+			form.author.value=authorName;
+		}
+	}
+	return true;
+}
+function clearAuthor(form){
+	form.author.value="";
+	authorAry.length=0;
+}
+
+//数据表排序
+var order_desc='${order!""}';
+var order_mode='${order_mode!""}';
+var baseUrl='${baseUrl}';
+//-->
+</script>
+ 
+<div class="colorarea02">
+	<h2>搜索条件</h2>
+	<form name="searchForm" method="post"
+		action='${baseUrl}/admin/publishSearch.jhtml'>
+		 <input type="hidden" name="action" value="Search"/>
+		 <input name="order" type="hidden" value="${order!''}"/>
+		 <input name="order_mode" type="hidden" value="${order_mode!''}"/>
+		 <input name="order_name" type="hidden" value="${order_name!''}"/>
+		 <input name="page" type="hidden" value="${page!'1'}"/>	 
+		 <input name="pageNum" type="hidden" value="${pageNum!'15'}"/>
+	<table cellspacing="0" cellpadding="0" width="100%" border="0"
+			class="maintable">
+
+			<tbody>
+				<tr>
+					<th width="20%">
+						搜索关键字
+					</th>
+					<td width="80%">
+						<input name="keyword" type='text' class='flat' tabindex='8'
+							size='80' value="${keyword!''}">
+					</td>
+				</tr>
+				<tr>
+					<th>
+						搜索字段						
+					</th>
+					<td>
+						
+						<input id="field-all" type="radio" name="fields" value="all" checked/><label for="field-all">搜索标题、内容、关键字等可检索字段</label>
+						<input id="field-title" type="radio" name="fields" value="title" /><label for="field-title">只搜索标题</label>
+					</td>
+
+				</tr>
+				<tr>
+					<th>
+						作者<br/>
+						多个作者之间用","分割，空为不限作者						
+					</th>
+					<td>
+						<input type="text" name="author" value="${author!''}" size="35"/>
+						<select name="selAuthor" >
+						<#list authors as author>
+							<option value="${author.name}">${author.title?default(author.name)}(${author.name})</option>
+						</#list>
+						</select>
+						<input type="button" value="添加" onclick="return addAuthor(this.form,this.form.selAuthor.value);"/>
+						<input type="button" value="我自己" onclick="return addAuthor(this.form,'${currentUserName}');"/>
+						<input type="button" value="不限" onclick="return clearAuthor(this.form);"/>
+					</td>
+
+				</tr>
+				<tr>
+					<th>
+						搜索类型:
+					</th>
+					<td>
+					    <#if state?default('-1')=='-1'>
+						<input id="all-doc" type="radio" name="state" value="-1" checked="checked">
+						<#else>
+						<input id="all-doc" type="radio" name="state" value="-1" >
+						</#if>
+						<label for="all-doc">所有文档</label>
+						<#if state?default('-1')=='1'>
+						<input id="publish-doc" type="radio" name="state" value="1" checked="checked">
+						<#else>
+						<input id="publish-doc" type="radio" name="state" value="1" >
+						</#if>
+						<label for="publish-doc">已发布文档</label>
+						<#if state?default('-1')=='0'>	
+						<input id="unpublish-doc" type="radio" name="state" value="0" checked="checked">
+						<#else>
+						<input id="unpublish-doc" type="radio" name="state" value="0">
+						</#if>
+						<label for="unpublish-doc">未发布文档</label>
+										
+					</td>
+
+				</tr>
+				<tr>
+					<th>
+						搜索分类:
+						<br />
+						(可多选，不选择则搜索该内容模型下的所有分类)
+					</th>
+					<td>
+						<select name="nodeId" id="select">
+						    <#assign nid=nodeId/>
+							<@mynode.showNodesSel nodeManager=nodeManager selId=nid/>
+						</select>
+						<input type="checkbox" name="sub" id="sub" value="1" checked>
+						<label for="sub">
+							包含子分类
+						</label>
+					</td>
+
+				</tr>
+				<tr>
+					<th>
+						日期限制:
+					</th>
+					<td>
+						<input id="dateNear" type="radio" name="dateType" value="dateNear" checked="checked"/>
+						<label for="dateNear">最近</label>
+						<select name="dateNum" id="Time">
+							<#list dateNears as dateNear>
+								<#if dateNum?default('0')==dateNear.key>
+								<option selected value="${dateNear.key}">${dateNear.value}</option>
+								<#else>
+								<option value="${dateNear.key}">${dateNear.value}</option>
+								</#if>
+							</#list>
+						</select>
+						<br/>
+						<input id="dateSpan" type="radio" name="dateType" value="dateSpan"/>
+						<label for="dateSpan">时间段</label>
+						<input type="text" name="pubDate"   id="pubDate" onFocus="return Calendar.setup({
+				        inputField     :    'pubDate',
+				        ifFormat       :    '%Y-%m-%d',
+				        showsTime      :    false});" value="${pubDate?default('')}" />
+       				 	至
+						<input type="text" name="pubDate2"   id="pubDate2" onFocus="return Calendar.setup({
+				        inputField     :    'pubDate2',
+				        ifFormat       :    '%Y-%m-%d',
+				        showsTime      :    false});" value="${pubDate2?default('')}" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="table_td2" align=center>
+						<input type='submit' name='submit1' value=' 开始搜索 ' tabindex='13'>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="reset" name="reset1" value=" 重 置 ">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</form>
+</div>
+
+<#if ac?default('')=='search'>
+<form method="post" action="${baseUrl}admin/publish.jhtml?type=main&nodeId=${node.nodeId?c}" name="documentlist" >
+
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"  class="table_border" >
+  <tbody>
+ 
+    <tr class="table_td2">
+	  <@tabler.table_header orderBy=order_name sort=order_mode header_content=" 
+      <td align='center' height=25></td>
+      <td align='center'><B><a href='javascript:sorter(@ci.indexId@,@asc@,@I^D@);'>ID</a></B></td>
+      <td align='center'><B><a href='javascript:sorter(@ci.nodeId@,@asc@,@I^D@);'>结点</a></B></td>
+	  <td align='center'><B><a href='javascript:sorter(@ci.sort@,@asc@,@排^序@);'>排序</a></B></td>	  
+	  <td align='center'><B><a href='javascript:sorter(@ci.hitsTotal@,@asc@,@点^击@);'>点击</a></B></td>
+	  <td align='center'><B><a href='javascript:sorter(@ci.contentTitle@,@asc@,@标^题@);'>标题</a></B></td>
+	  <td align='center'><B><a href='javascript:sorter(@ci.creationUserName@,@asc@,@编^辑@);'>编辑</a></B></td>      
+      <td align='center'><B><a href='javascript:sorter(@ci.publishDate@,@asc@,@发布^日期@);'>发布日期</a></B></td>
+	   <td align='center'><B><a href='javascript:sorter(@ci.state@,@asc@,@状^态@);'>状态</a></B></td>
+	  <td align='center' colspan='5'><B>执行操作</B></td>
+	  <td align='center' title='类型'><B>T</B></td>">
+	  </@tabler.table_header>
+     
+  </tr>
+  <!--start-->
+<#list contents as content>
+  
+  <#assign type=content["type"]?default(1)/>
+  <#assign node=nodeManager.getNode(content['nodeId'])/>
+  <#assign nodeName=node['name']/>
+  <tr class="table_td1" id="${content["indexId"]?c}" onmouseover='this.style.backgroundColor="#FFFFFF"'
+                    onmouseout='this.style.backgroundColor=""' >
+
+
+
+      <td noWrap > <input type='checkbox' name='pData' value='${content["indexId"]?c}' id="p_${content["indexId"]?c}" ></td>
+      
+      <td align="center" noWrap   ><div class="subtitleholder">${content["indexId"]?c}</div></td>
+	  <td noWrap ><a href="${baseUrl}admin/publish.jhtml?action=ContentList2&nodeId=${node.nodeId?c}">${nodeName}</a></td>
+	  <td noWrap > ${content["sort"]?c}</td>
+	  <td align="center" noWrap   ><div class="subtitleholder">${content["hitsTotal"]}</div></td>
+	 	 		      <td   noWrap  style="cursor:hand" id="">
+<table  border="0" cellpadding="0" cellspacing="0" style="border:0" >
+<tr>
+<td style="border:0">
+<#compress>
+<#assign state=content["state"]/>
+	  <div class="titleholder">
+	  &nbsp;&nbsp;
+	  <#if content["top"] gt 0>
+		<img src="html/plugin/cms/base/images/top.gif" title="置顶[${content["top"]}]" border=0 align="middle">
+	  </#if>
+	  <#if content["pink"] gt 0>
+		<img src="html/plugin/cms/base/images/pink.gif" title="精华[${content["pink"]}]" border=0 align="middle">
+      </#if>
+      <#assign title=StringUtil.highlightWords(content['contentTitle']!'',keyword!'')/>
+	  <#if type==1>
+		  <#if state==1>
+		  <A href="javascript:void(0);" onClick="doing('view','${content["indexId"]?c}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu(event,'${content["indexId"]?c}', '1','1','0','0','0');return false;" title="${content['contentTitle']!''}">${title}</A>
+		  <#else>
+		  <A href="javascript:void(0);" onClick="doing('view','${content["indexId"]?c}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu(event,'${content["indexId"]?c}', '0','1','0','0','0');return false;" title="${content['contentTitle']!''}">${title}</A>
+		  </#if>
+	  <#elseif type==0>
+	  	  <#if state==1>
+			  <A href="javascript:void(0);" onClick="doing('view','${content["indexId"]?c}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu(event,'${content["indexId"]?c}', '1','0','0');return false;" title="${content['contentTitle']!''}"><span class="ltsep">${title}</span></A>
+		  <#else>
+			  <A href="javascript:void(0);" onClick="doing('view','${content["indexId"]?c}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu(event,'${content["indexId"]?c}', '0','0','0');return false;" title="${content['contentTitle']!''}"><span class="ltsep">${title}</span></A>
+		  </#if>
+	  <#elseif type==2>
+	    <#if state==1>
+			  <A href="javascript:void(0);" onClick="doing('view','${content["indexId"]?c}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu(event,'${content["indexId"]?c}', '1','2','0','0','0');return false;" title="${content['contentTitle']!''}">${title}</A>
+		  <#else>
+			  <A href="javascript:void(0);" onClick="doing('view','${content["indexId"]?c}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu(event,'${content["indexId"]?c}', '0','2','0','0','0');return false;" title="${content['contentTitle']!''}">${title}</A>
+		  </#if>
+	  </#if>	  
+	  </div>
+</#compress>
+</td>
+<td style="border:0">&nbsp;
+      <#if photoFieldName?exists>
+	  	<#if content['contentPhoto']?default("")!="">
+			<a href="${baseUrl}${action.getPhotoUrl(content['contentPhoto'])}" target="_blank"><img title="首页图片，点击查看" src="html/common/images/image.gif" border=0></a>
+		</#if>
+	  </#if></td>
+</tr>
+</table>
+	  </td>
+
+
+	       <td align="center" noWrap  ><div class="subtitleholder" title="${content['creationUserName']!''}">${content['creationUserName']!''}</div></td>
+      <td align="center" noWrap ><div class="timeholder">${(action.getDate(content["publishDate"]))?string("yyyy-MM-dd HH:mm")}</div></td>
+      <td align="center" noWrap  >
+	  <div class="subtitleholder">
+
+	  <#if state==1>
+<FONT  COLOR="#3300CC">	已发布</FONT>
+	  <#else>
+<FONT  COLOR="#3300CC">	待发布</FONT>
+	  </#if>
+	  </div>
+
+	  </td>
+     <td colspan="5" align="center" noWrap>
+	 <#if type==1>
+		 <#if state==1>
+			<A HREF="${content['url']!'#'}" target="_blank" id="URL_${content['indexId']?c}">浏览</A>
+			<A HREF="${baseUrl}admin/publish.jhtml?action=Refresh&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}">更新</A>
+		 <#else>
+			<A HREF="${baseUrl}admin/publish.jhtml?action=Publish&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}">发布</A>
+		 </#if>
+		  <#if state==1>
+		 <A href="${baseUrl}comment/view.htm?id=${content['indexId']?c}" target="_blank">评论(${content['commentNum']?c})</A>
+		 </#if>
+		  <A HREF="javascript:void(0);" onClick="javaScript:doing('edit','${content["indexId"]?c}','${node.nodeId?c}')">编辑</A>
+		  <A HREF="${baseUrl}admin/publishEdit.jhtml?action=Del&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}" onClick="return confirm('确认删除吗?')">删除</A>
+	  <#elseif type==0>
+	  		<#if state==1>
+				<A HREF="${content['url']?default('#')}" target="_blank" id="URL_${content['indexId']}">浏览</A>
+				<A HREF="${baseUrl}admin/publish.jhtml?action=Refresh&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}">更新</A>				
+			<#else>
+				<A HREF="${baseUrl}admin/publish.jhtml?action=Publish&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}">发布</A>
+			</#if>
+			 <A HREF="${baseUrl}admin/publishEdit.jhtml?action=Del&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}" onClick="return confirm('确认删除吗?')">删除</A>
+	  <#elseif type==2>
+	  		<#if state==1>
+				<A HREF="${content["url"]?default("#")}" target="_blank" id="URL_${content['indexId']?c}">浏览</A>			
+			<#else>
+				<A HREF="${baseUrl}admin/publish.jhtml?action=Publish&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}">发布</A>
+			</#if>
+			 <A HREF="${baseUrl}admin/publishEdit.jhtml?action=Del&indexId=${content['indexId']?c}&nodeId=${content['nodeId']?c}" onClick="return confirm('确认删除吗?')">删除</A>
+	  </#if>
+	  </td>
+ <td align="center" width="28">
+ 	
+	<#if type==1>
+		实
+	<#elseif type==0>
+		<font color="#AAAAAA">虚</font>
+	<#elseif type==2>
+		<font color="blue">索引</font>
+	</#if>
+</td>
+ </tr>
+ </#list>
+ <!--end-->
+    <tr class="Tablelistbg">
+      <td colspan="17" align="left" bgcolor="#F5F5F5"> 
+      <table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align=left>
+            <input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  >
+              <label for="chkall" >全选</label>&nbsp;&nbsp;
+
+			 <select name="actionMap" id="actionMap" >
+          <option value="refresh">更新</option>
+            <option value="publish">发布</option>
+          <option value="unpublish">取消发布</option>
+              <option value="copy">复制</option>
+            <option value="cut">转移</option>
+          <option value="del">删除</option>
+            <option value="createLink">创建虚链接</option>
+              <option value="createIndexLink">创建索引链接</option>
+
+
+			  </select>
+
+			  <input type="button" value="执行" class="button" onClick="going(this.form,actionMap.options[actionMap.selectedIndex].value)">
+
+            </td>
+			<td height="20" align="right" nowrap="nowrap"> <INPUT name="go_display" TYPE="button" value="显示:" onClick="doing('display_record')" ></td>
+	  <td   height="20" nowrap="nowrap" align="right"  width=80> &nbsp;&nbsp;<INPUT TYPE="text" NAME="offset" size=1 value="${pageNum}"> 条记录
+
+   </td>
+          </tr>
+        </table></td>
+    </tr>
+	
+  
+  <#if pb.pages() gt 1>
+  <tr class="Tablelistbg">
+    <td colspan="15" height=25 >
+	<table border=0 align="right" width="100%" bgcolor="#FFFFFF">
+	<tr>
+	<td align=right>
+	<#assign pageUrl=baseUrl+"admin/publish.jhtml?action=ContentList2&nodeId="+nodeId?string+"&where=${where}&order=${order}&order_mode=${order_mode}&order_name=${order_name}&pageNum="+pageNum+"&page="/>
+	<@mypager.pageBuilder2 pb=pb baseUrl=pageUrl closeUrl=""/>
+	</td>
+	</tr>
+	</table>
+	 </td>
+  </tr>
+  </#if>
+  </tbody>
+</table>
+</form>
+</#if>
+<#include "/plugin/cms/common/includes/footer.htm"/>

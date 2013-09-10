@@ -1,0 +1,372 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>recycle bin</title>
+<base  href="${baseUrl}"/>	
+<link rel='stylesheet' type='text/css' href='html/plugin/cms/base/css/style.css' />
+<LINK href="html/common/menu/skins/officexp/officexp.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="html/common/menu/poslib.js"></script>
+<script type="text/javascript" src="html/common/menu/scrollbutton.js"></script>
+<script type="text/javascript" src="html/common/menu/menu4.js"></script>
+<script type="text/javascript" src="${baseUrl}resource.jhtml?path=html/common/js/functions.js"></script>
+<script type="text/javascript" src="html/common/js/prototype.js"></script>
+<link rel="stylesheet" href="html/common/cal/calendar.css" type="text/css">
+
+<style>
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 200;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;			
+}		
+div.subtitleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;			
+}
+div.timeholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 90;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;			
+}	
+</style>
+<script language='JavaScript'>
+var doImage = doImage;
+var TType = TType;
+
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	if (document.getElementById)
+		t = document.getElementById(tbl);
+	else
+		t = document.all(tbl);
+	if (t == null) return;
+	if (t.getElementsByTagName)
+		d = t.getElementsByTagName("TD");
+	else
+		d = t.all.tags("TD");
+	if (d == null) return;
+	if (d.length <= idx) return;
+	d[idx].className = cls;
+}
+
+</script>
+<SCRIPT>
+var elo;
+var loadmenuok=false;
+var type = 'main';
+var NodeID = '${node.nodeId?c}';
+function initrightmenu(){
+	loadmenuok = true;
+}
+
+
+
+
+function addThread(url,TaskID) {
+	top.CrawlerTaskFrame.addThread(url , TaskID)
+	
+}
+
+function doing(action, IndexID) {
+	var returnValue;
+	switch(action) {
+		case 'restore':
+				{
+				var url='${baseUrl}/admin/publishEdit.jhtml?action=Restore&type=' + type + '&indexId=' + IndexID + '&nodeId=' + NodeID;
+				new Ajax.Request(url,{
+					method: 'post',
+					onSuccess: function(transport) {
+						var returnValue=transport.responseText;
+						if(returnValue!=null&&returnValue!="-1"){
+							alert('恢复成功！');
+							document.location.reload();
+							return true;
+						}else{
+							alert('恢复失败！');
+							document.location.reload();
+							return false;
+						}
+					}
+				});		
+			break;
+			}
+		case 'destroy':
+			if(confirm("确认永久删除吗，该操作将不可恢复！")) {
+			    var url='${baseUrl}/admin/publishEdit.jhtml?action=Destroy&type=' + type + '&indexId=' + IndexID + '&nodeId=' + NodeID;
+				new Ajax.Request(url,{
+					method: 'post',
+					onSuccess: function(transport) {
+						var returnValue=transport.responseText;
+						if(returnValue!=null&&returnValue!="-1"){
+							alert('永久删除成功！');
+							document.location.reload();
+							return true;
+						}else{
+							alert('永久删除失败！');
+							document.location.reload();
+							return false;
+						}
+					}
+				});			
+			}
+			break;
+		case 'view':
+		{
+			var leftPos = (screen.availWidth-800) / 2
+			var topPos = (screen.availHeight-600) / 2 
+			 window.open('${baseUrl}/admin/publish.jhtml?action=View&nodeId='+NodeID  + '&indexId=' + IndexID,'','width=800,height=600,scrollbars=yes,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+			break;
+		}
+	}
+}
+
+cssFile='${baseUrl}/html/menu/skins/officexp/officexp.css';
+//
+Menu.prototype.cssFile = cssFile;
+
+function rightMenu(pId, State, Type, Top,Pink) {
+	   var toolMenu = new Menu();
+
+
+		toolMenu.add(new MenuItem('查看','javascript:doing("view","'+ pId +'")'));
+		toolMenu.add(new MenuItem('恢复','javascript:doing("restore","'+ pId +'")'));
+		toolMenu.add(new MenuItem('永久删除','javascript:doing("destroy","'+ pId +'")'));
+		
+
+
+	/*toolMenu.add(new WebFXMenuSeparator());
+	toolMenu.add(new WebFXMenuItem('拷贝本页URL','javascript:copyurl()','拷贝本页的URL到剪贴板，您可以用CTRL-V粘贴。'));
+	toolMenu.add(new WebFXMenuItem('收藏本文','javascript:add2fav()','将本文添加到我的收藏夹。'));
+	toolMenu.add(new WebFXMenuItem('打印模式','javascript:printit(134855)','显示可供打印机输出的版本。'));
+	toolMenu.add(new WebFXMenuItem('推荐给好友','javascript:recommandit()','将本文推荐给您的朋友。'));
+	//document.write(toolMenu);*/
+	var left,top;
+	left = window.event.screenX;
+	top = window.event.screenY;
+	toolMenu.invalidate();
+	toolMenu.show( left, top );
+	//initrightmenu();
+
+}
+</SCRIPT>
+
+<SCRIPT language=JavaScript>
+<!--
+function CheckAll(form)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall' && e.name !='copy')       e.checked = form.chkall.checked; 
+   }
+  }
+
+//-->
+
+
+</script>
+<script>
+var mousemovecolor="#D4D4D4";
+var selectcolor ="#DDDDDD";
+var oldcolor;
+
+function GetRow(oElem)
+{
+	while (oElem)
+	{	//alert(oElem.tagName.toLowerCase())
+		if (oElem.tagName.toLowerCase() == "tr" || oElem.parentElement.tagName.toLowerCase() == "tbody") 
+		    return oElem;
+		if (oElem.tagName.toLowerCase() == "table" || oElem.tagName.toLowerCase() == "th") return false;
+		oElem = oElem.parentElement;
+	}
+}
+
+
+function selected()
+{	//alert(pid)
+
+	var trstyle = GetRow( window.event.srcElement );
+	var a;
+	if( !trstyle )
+		return false;
+
+	if( trstyle.style.backgroundColor.toLowerCase() == selectcolor.toLowerCase())
+	{
+		trstyle.style.backgroundColor = "";
+		a=eval("p_"+ trstyle.id);	
+		//alert(trstyle.id)
+		if (a!=null || a.checked) 
+			a.checked=false
+		oldcolor = "";
+	}
+	else
+	{		
+		trstyle.style.backgroundColor = selectcolor;
+		a=eval("p_"+ trstyle.id);
+		//alert(trstyle.id)
+		if (a!=null) 
+			a.checked=true
+		oldcolor = selectcolor;
+
+	
+	}
+}
+/**
+*批量处理
+**/
+function going(form, o)
+{
+	document.documentlist.referer.value = document.location;
+
+	with(form) {
+		switch(o) {
+			case 'restore':
+			{
+				//从回收站恢复
+				document.documentlist.action = '${baseUrl}admin/publishEdit.jhtml?action=Restore&multi=1&nodeId=' + NodeID  ;
+				document.documentlist.submit();
+				break;
+			}
+			case 'destroy':
+			{
+				if(confirm("确认永久删除吗，该操作将不可恢复！")) {
+					document.documentlist.referer.value = document.location;
+					document.documentlist.action = '${baseUrl}admin/publishEdit.jhtml?action=Destroy&&multi=1&nodeId=' + NodeID  ;
+					document.documentlist.submit();
+					
+				}
+				break;
+			}
+			case 'empty_recycle_bin':
+			{
+				if(confirm("确认清空回收站吗，该操作将不可恢复！")) {
+					document.documentlist.action = '${baseUrl}admin/publishEdit.jhtml?action=EmptyRecycle&nodeId=' + NodeID  ;
+					document.documentlist.submit();					
+				}
+				break;
+			}			
+		}
+	}
+}
+</script>
+</head>
+<BODY  style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px" >
+<div id="menudata"></div>
+<table width="100%" border="0" align="center" cellpadding="2" cellspacing="1"  class="table_border" >
+  <TBODY>
+  <form method="post" action="" name="documentlist" >
+
+    <tr class="table_td2"> 
+      <td align="center" height=25></td>
+ <td align="center"><B>ID</B></td>	  
+		<td align="center"><B>标题</B></td>
+	        <td align="center"><B>编辑</B></td>
+      <td align="center"><B>日期</B></td>
+      <td colspan="5" align="center"><B>执行操作</B></td>
+ 
+       <td align="center" title="类型"><B>T</B></td>
+  </tr>
+
+<#list contents as content>
+  <#list content as ct>
+  	<#if ct_index==0>
+		<#assign content_sys=ct>
+	<#elseif ct_index==1>
+		<#assign content_user=ct>
+	</#if>
+  </#list>
+<!------onmouseover='this.style.backgroundColor="#FFFFFF"' 
+                    onmouseout='this.style.backgroundColor=""'------>
+    <tr class="table_td1" id="73753" onmouseover='this.style.backgroundColor="#FFFFFF"' 
+                    onmouseout='this.style.backgroundColor=""'> 
+      <td noWrap > <input type='checkbox' name='pData' value='${content_sys["indexId"]?c}' id="p_${content_sys["indexId"]}" ></td>
+      <td align="center" noWrap   ><div class="subtitleholder">${content_sys["indexId"]}</div></td>
+	 		      <td   noWrap  style="cursor:hand" id="">
+<table  border="0"  cellpadding="0" cellspacing="0"  >
+<tr>
+<td>
+	  <div class="titleholder">
+	 
+	 
+	  <A HREF="javascript:void(0);" onClick="doing('view','${content_sys["indexId"]}')" class="o" style="cursor:hand"   oncontextmenu="rightMenu('${content_sys["indexId"]}', '-1','1','0','0');return false;" title="${content_user[titleFieldName]}">${content_user[titleFieldName]}</A>   
+	  </div>
+</td>
+<td>
+
+</td>
+</tr>
+</table>
+
+	  
+	  </td>
+
+		
+
+	       <td align="center" noWrap  ><div class="subtitleholder" title="${content_user["lastModifiedUserName"]?default("")}">${content_user["lastModifiedUserName"]?default("")}</div></td>
+      <td align="center" noWrap ><div class="timeholder">${(action.getDate(content_sys["publishDate"]))?string("yyyy-MM-dd HH:mm")}</div></td>
+    
+	 <td colspan="5" align="center" noWrap>
+	    
+	  <A HREF="javascript:doing('restore','${content_sys["indexId"]}')">恢复</A>
+	  
+	  <A HREF="javascript:doing('destroy','${content_sys["indexId"]}')" >删除</A> 
+	 
+
+	  
+	  </td>
+<td align="center" width="28">
+<#assign type=content_sys["type"]?default(1)/>
+	<#if type==1>
+		实
+	<#elseif type==0>
+		虚
+	<#else>
+		索引
+	</#if>
+	</td>
+ </tr>
+</#list>
+
+    <tr class="Tablelistbg"> 
+      <td colspan="13" align="left" bgcolor="#F5F5F5"> <table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr> 
+            <td align=left> 
+            <input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  > 
+              <label for="chkall" >全选</label>&nbsp;&nbsp;
+			               
+			 <select name="actionMap" id="actionMap" > 
+              <option value="destroy">永久删除</option>
+              <option value="restore">恢复</option>
+              <option value="empty_recycle_bin">清空回收站</option>
+			 </select>
+
+			  <input type="button" value="Go" class=button onClick="going(this.form,actionMap.options[actionMap.selectedIndex].value)"> 
+         
+            </td>
+          </tr>
+        </table></td>
+    </tr>
+	<INPUT TYPE="hidden" name="referer" value ="" >
+  </form>
+  <tr class="table_td1"> 
+    <td colspan="13" height=25 align=right><font color="#FF0000">[1]</font>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+  </tbody> 
+</table>
+</BODY>
+</HTML>

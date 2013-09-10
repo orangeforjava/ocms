@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-vfs.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<beans>
+	<import resource="cms-module-vfs-dao.xml" />
+	<!-- BIZ -->
+	<bean id="ftpSettingManager"
+		class="org.openuap.cms.vfs.manager.impl.FtpSettingManagerImpl">
+		<property name="dao">
+			<ref bean="ftpSettingDao" />
+		</property>
+	</bean>
+</beans>

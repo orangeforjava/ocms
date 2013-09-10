@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <positionnames>
+    <positionname key="不限">工作岗位不限</positionname>
+    <positionname key="护士">护士</positionname>
+	<positionname key="护理师">护理师</positionname>
+  </positionnames>
+</directory>

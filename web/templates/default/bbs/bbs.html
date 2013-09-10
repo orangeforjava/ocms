@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>BBS调用演示</title>
+</head>
+<body>
+论坛新贴(不带详细内容):
+<hr/>
+[@dz.newthread return="list"/]
+<ul>
+[#list list as thread]
+<li>
+[${thread['name']}]<a href="http://bbs.ccun.cn/viewthread.php?tid=${thread['tid']?c}" target="_blank">${thread['subject']}</a>
+</li>
+[/#list]
+</ul>
+<hr/>
+论坛新贴(带详细内容):
+<hr/>
+[@dz.newthread return="list" detail=1/]
+<ul>
+[#list list as thread]
+<li>
+[${thread['name']}]<a href="http://bbs.ccun.cn/viewthread.php?tid=${thread['tid']?c}" target="_blank">${thread['subject']}</a>
+</li>
+<br/>
+详细内容：${dzUtil.getMessageText(thread['message']!'')}
+[/#list]
+</ul>
+<hr/>
+论坛热贴:
+<hr/>
+[@dz.hotpost return="list" nums="15"/]
+<ul>
+[#list list as thread]
+<li>
+[${thread['name']}]<a href="http://bbs.ccun.cn/viewthread.php?tid=${thread['tid']?c}" target="_blank">${thread['subject']}</a>
+</li>
+[/#list]
+</ul>
+<hr/>
+
+论坛精华贴:
+<hr/>
+[@dz.digest return="list" nums="15"/]
+<ul>
+[#list list as thread]
+<li>
+[${thread['name']}]<a href="http://bbs.ccun.cn/viewthread.php?tid=${thread['tid']?c}" target="_blank">${thread['subject']}</a>
+</li>
+[/#list]
+</ul>
+<hr/>
+
+论坛置顶贴:
+<hr/>
+[@dz.topper return="list" nums="15"/]
+<ul>
+[#list list as thread]
+<li>
+[${thread['name']}]<a href="http://bbs.ccun.cn/viewthread.php?tid=${thread['tid']?c}" target="_blank">${thread['subject']}</a>
+</li>
+[/#list]
+</ul>
+<hr/>
+论坛精华贴方式2,调用板块id为98的精华3级别的帖子:
+<hr/>
+[@dz.digest2 return="list" nums="15" level="3" fid="98"/]
+<ul>
+[#list list as thread]
+<li>
+[${thread['name']}]<a href="http://bbs.ccun.cn/viewthread.php?tid=${thread['tid']?c}" target="_blank" title="${thread['subject']}">[@util.substr  target=thread['subject'] start=0 limit=20/]</a>
+</li>
+[/#list]
+</ul>
+<hr/>
+
+论坛图片贴:
+<hr/>
+[@dz.photo return="list" nums="15"/]
+<ul>
+[#list list as thread]
+<li>
+<img src="http://bbs.ccun.cn/attachments/${thread['attachment']!''}" />
+<a href="http://bbs.ccun.cn/viewthread.php?tid=${thread['tid']}" target="_blank">${thread['subject']}</a>
+</li>
+[/#list]
+</ul>
+<hr/>
+
+论坛图片并精华贴，板块id为98的论坛，精华值为2:
+<hr/>
+[@dz.photo return="list" nums="15" digest="2" fid="98"/]
+<ul>
+[#list list as thread]
+<li>
+<img src="http://bbs.ccun.cn/attachments/${thread['attachment']!''}" />
+<a href="http://bbs.ccun.cn/viewthread.php?tid=${thread['tid']?c}" target="_blank">${thread['subject']}</a>
+</li>
+[/#list]
+</ul>
+<hr/>
+</body>
+</html>

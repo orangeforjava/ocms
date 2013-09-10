@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench>
+   <tab id="tab-modules">
+		<sidebar id="sidebar-ad" name="广告管理">
+			<item id="ad-list" name="广告列表"
+				url="admin/advertise.htm" description="广告列表" />
+			<item id="ad-add" name="新建广告"
+				url="admin/advertise.htm" description="点击这里新建广告" />
+			
+		</sidebar>
+	</tab>
+</workbench>

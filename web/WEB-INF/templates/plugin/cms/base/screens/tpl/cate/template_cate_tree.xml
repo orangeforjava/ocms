@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="${encoding}"?>
+<tree>
+  <#list templateCates as tplCate>
+  	<tree text="${tplCate.cateTitle?default("")}[${tplCate.id}]" action="${helper.getBaseURL()}/admin/template.jhtml?action=ListByCate&amp;tcid=${tplCate.id}" src="${helper.getBaseURL()}/admin/template.jhtml?action=TplCateXml&amp;parentId=${tplCate.id}" target="panelWork" cId="${tplCate.cateName}"/>
+  </#list>
+</tree>

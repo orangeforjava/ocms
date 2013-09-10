@@ -1,0 +1,172 @@
+<#macro contentUI category=0 >
+<table   border=0 width=100%   cellpadding=5 cellspacing=0 >
+	<#list cfs as cf>
+		<#assign fieldInputPicker=cf.fieldInputPicker?default("")/>
+		<#assign fieldInputPickerExtra=cf.fieldInputPickerExtra?default("")/>
+		<#assign enableStatics=cf.enableStatics?default(0)/>
+		<#assign fieldTitle=cf.fieldTitle/>
+		<#assign fieldName=cf.fieldName/>
+		<#if cf.otherCategory!=category>
+		<#else>
+		
+		
+	<#if enableStatics==1>
+	<#else>
+	
+	<#if cf.fieldInput=="text">
+
+		<#if fieldInputPicker=="">
+ 		<!--一般的单行文本输入-->
+ 		<tr class="tablelist">
+    		<td align="right"  width="80"><b>${fieldTitle}:</b></td>
+    		<td valign='middle'>
+			<#if mode=="edit">
+			<input name="data_${fieldName}" type="text" value="${content[fieldName]?default('')}" size="100%">
+			<#else>
+			<input name="data_${fieldName}" type="text" value="" size="100%">
+			</#if>
+			</td>
+		</tr>
+		<#elseif fieldInputPicker=="upload">
+		<!--图片输入-->
+ 		<tr class="tablelist">
+    		<td align=right  width=80><b>${fieldTitle}:</b></td>
+        	<td valign='middle'>
+			<#if mode=="edit">
+			<input name="data_${fieldName}" type="text" value="${content[fieldName]?default("")}" size="100%">
+			<#else>
+			<input name="data_${fieldName}" type="text" value="" size="100%">
+			</#if>
+			&nbsp;<input name="sel_${fieldName}" type='button'  value='...' onclick="SelectResource(this.form,'data_${fieldName}','img')">
+			</td>
+		</tr>
+		<#elseif fieldInputPicker=="upload_attach">
+		<!---附件输入--->
+		<tr class='tablelist'>
+    		<td align=right  width=80><b>${fieldTitle}:</b></td>
+        	<td valign='middle'>
+			<#if mode=="edit">
+			<input name="data_${fieldName}" type="text" value="${content[fieldName]?default("")}" size=100%  >
+			<#else>
+			<input name="data_${fieldName}" type="text" value="" size=100%  >
+			</#if>
+			&nbsp;<input name="sel_${fieldName}" type='button'  value='...' onclick="SelectResource(this.form,'data_${fieldName}','attach')"></td>
+		</tr>
+		<#elseif fieldInputPicker=="upload_sattach">
+		<!---受控附件输入--->
+		<tr class='tablelist'>
+    		<td align=right  width=80><b>${fieldTitle}:</b></td>
+        	<td valign='middle'>
+			<#if mode=="edit">
+			<input name="data_${fieldName}" type="text" value="${content[fieldName]?default("")}" size=100%  >
+			<#else>
+			<input name="data_${fieldName}" type="text" value="" size=100%  >
+			</#if>
+			&nbsp;<input name="sel_${fieldName}" type='button'  value='...' onclick="SelectSResource(this.form,'data_${fieldName}','sattach','${fieldInputPickerExtra}')"></td>
+		</tr>
+		<#elseif fieldInputPicker=="flash">
+		<!--Flash输入-->
+		<tr class='tablelist'>
+    		<td align=right  width=80><b>${fieldTitle}:</b></td>
+        	<td valign='middle'>
+			<#if mode=="edit">
+			<input name="data_${fieldName}" type="text" value="${content[fieldName]?default("")}" size=100%  >
+			<#else>
+			<input name="data_${fieldName}" type="text" value="" size=100%  >
+			</#if>
+			&nbsp;<input name="sel_${fieldName}" type='button'  value='...' onclick="SelectResource(this.form,'data_${fieldName}','flash')"></td>
+		</tr>		
+		<#elseif fieldInputPicker=="color">
+		<!---颜色输入--->
+		<tr class='tablelist'>
+   			<td align=right  width=80><b>${fieldTitle}:</b></td>
+    		<td valign='middle'>
+			<#if mode=="edit">
+			<input name='data_${fieldName}' type='text' value='${content[fieldName]?default("")}' size=100%  >
+			<#else>
+			<input name='data_${fieldName}' type='text' value='' size=100%  >
+			</#if>
+			&nbsp;<input name="button5" type="button" tabindex="13" value="..." onclick="FieldInputTpl='';FieldDefaultValue='';InputPicker('color',this.form,'data_${fieldName}')">
+		</td>
+		<#elseif cf.fieldInputPicker=="content">
+		<!---相关内容输入--->
+ 		<tr class='tablelist'>
+    	<td align=right  width=80><b>${fieldTitle}:</b></td>
+        <td valign="middle"><table   border="0"  cellpadding="2" cellspacing="0" ><tr><td >
+		<select name="data_${fieldName}" name="select" size="10">
+	 <#if mode=="edit"&&content[fieldName]?default("")!=""&&content[fieldName]?default("")!="undefined">
+	    
+	 	<@cms.content return="contentList" IndexID=content[fieldName]/>
+	 	<#if contentList?is_sequence>
+	 		<#list contentList as cl>
+				<option value="${cl['indexId']}">${cl['Title']}</option>
+			</#list>
+	 	<#else>
+	 		<option value="${contentList['indexId']}">${contentList['Title']}</option>
+	 	</#if>
+	 </#if>
+	 </select>
+	<input type='hidden' name='data_${fieldName}_value' value=""></td><td class='line_height'>
+	&nbsp;<input name='button5' type='button' tabindex='13' value='×' onclick=del(this.form.data_${fieldName})><br><br>&nbsp;<input name='button5' type='button' tabindex='13' value='∧' onclick=moveUp(this.form.data_${fieldName})><br>&nbsp;<input name='button5' type='button' tabindex='13' value='∨' onclick=moveDown(this.form.data_${fieldName})><br><br>&nbsp;<input name="button5" type='button' tabindex='13' value='...' onclick=editContentLink('${fieldName}')></td><td>&nbsp;<input name='button5' type='button' tabindex='13' value='&nbsp;Go&nbsp;' onclick=GoSelect(this.form.data_${fieldName})></td></tr></table> </td>
+		</tr>
+		</#if>
+	</tr>
+	<#elseif cf.fieldInput=="RichEditor">
+	<!---复杂内容输入--->
+	<tr class='tablelist'>
+    	<td align=right  width=80><b>${fieldTitle}:</b></td>
+        <td valign='middle'>
+		<#if mode=="edit">
+		<textarea style="display: none" id="data_${fieldName}" name="data_${fieldName}" >${content[fieldName]?default("")}</textarea>
+		<@editor.editor instanceName="data_${fieldName}" value=content[fieldName]?default("") height="400" toolbarSet="CMS"/>
+		<#else>
+		<textarea style="display: none" id="data_${fieldName}" name="data_${fieldName}" ></textarea>
+		<@editor.editor instanceName="data_${fieldName}" value="" height="400" toolbarSet="CMS"/>		
+		</#if>
+		
+		<#--<iframe id="eWebEditor1" src="editor/htmleditor.html?id=data_${fieldName}&style=coolblue" frameborder="0" scrolling="no"  style="width: 100%" height="350"></iframe>-->
+		</td>
+	</tr>
+	<#elseif cf.fieldInput=='textarea' || cf.fieldInput=='textaera'>
+	<tr class='tablelist'>
+    	<td align=right  width=80><b>${fieldTitle}:</b></td>
+        <td valign='middle'>
+		<#if mode=="edit">
+		<textarea  id="${fieldName}" name="data_${fieldName}" rows="5" cols="80">${content[fieldName]?default("")}</textarea>
+		
+		<#else>
+		<textarea  id="${fieldName}" name="data_${fieldName}" rows="5" cols="80"></textarea>	
+		</#if>
+		
+		</td>
+	</tr>
+	<#elseif cf.fieldInput='MultiImg'>
+	<tr class='tablelist'>
+    	<td align=right  width=80><b>${fieldTitle}:</b></td>
+        <td valign='middle'>
+        <script language="JavaScript" type="text/JavaScript">var ${fieldName}_MultiImg=new Array();</script>
+		<#if mode=="edit">
+		<input type="hidden" id="${fieldName}" name="data_${fieldName}" value="${content[fieldName]?default('')}"/>
+		<fieldset class="blue pad-10">
+        <legend>图片列表</legend><center><div class='onShow' id='${fieldName}-nameTip'>请点击下面<font color=red>选择图片</font>按钮选择图片！</div></center><div id="${fieldName}-DIV" class="picList"></div>
+		</fieldset>
+		<div class="bk10"></div>
+		<div class='picBut cu'><button onclick="return SelectMultiImg(this.form,'${fieldName}','img');"> 选择图片</button> </div>	
+		<#else>
+		<input type="hidden" id="${fieldName}" name="data_${fieldName}" value=""/>
+		<fieldset class="blue pad-10">
+        <legend>图片列表</legend><center><div class='onShow' id='${fieldName}-nameTip'>请点击下面<font color=red>选择图片</font>按钮选择图片！</div></center><div id="${fieldName}-DIV" class="picList"></div>
+		</fieldset>
+		<div class="bk10"></div>
+		<div class='picBut cu'><button onclick="return SelectMultiImg(this.form,'${fieldName}','img');"> 选择图片</button> </div>	
+		</#if>
+		
+		</td>
+	</tr>
+	<!---其它输入...--->
+	</#if>
+	</#if>
+	</#if>
+	</#list>
+</table>
+</#macro>

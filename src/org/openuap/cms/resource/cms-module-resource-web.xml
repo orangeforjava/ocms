@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- Middle tier application context definition for the CMS application.
+-->
+<beans>
+	<bean id="resHandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/resource.jhtml">
+					<ref local="resourceAction" />
+				</entry>
+				<entry key="/admin/resourceSelect.jhtml">
+					<ref local="resourceSelectAction" />
+				</entry>
+				<entry key="/admin/download.jhtml">
+					<ref local="downloadAction" />
+				</entry>
+				<entry key="/admin/upload.jhtml">
+					<ref local="uploadAction" />
+				</entry>
+				<entry key="/resource.jhtml">
+					<ref local="uriResourceAction" />
+				</entry>
+				<entry key="/util/automini.jhtml">
+					<ref local="autominiAction" />
+				</entry>
+				<entry key="/admin/path.jhtml">
+					<ref local="pathSelAction" />
+				</entry>				
+			</map>
+		</property>
+	</bean>
+	<bean id="uriResourceAction"
+		class="org.openuap.cms.resource.action.URIResourceAction" />
+	<bean id="resourceAction"
+		class="org.openuap.cms.resource.action.ResourceAction">
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="resourceManager">
+			<ref bean="cmsResourceManager" />
+		</property>
+	</bean>
+	<bean id="uploadAction"
+		class="org.openuap.cms.resource.action.UploadAction">
+		<property name="resourceManager">
+			<ref bean="cmsResourceManager" />
+		</property>
+		<property name="pathNameStrategy">
+			<ref bean="pathNameStrategy" />
+		</property>
+	</bean>
+	<bean id="autominiAction"
+		class="org.openuap.cms.resource.action.AutominiAction">
+		<description />
+	</bean>
+	<bean id="resourceSelectAction"
+		class="org.openuap.cms.resource.action.ResourceSelectAction">
+		<property name="nodeManager">
+			<ref bean="nodeManager" />
+		</property>
+		<property name="resourceManager">
+			<ref bean="cmsResourceManager" />
+		</property>
+	</bean>	
+	<bean id="downloadAction"
+		class="org.openuap.cms.resource.action.ResourceDownloadAction">
+		<property name="resourceManager">
+			<ref bean="cmsResourceManager" />
+		</property>
+	</bean>
+	<bean id="pathSelAction"
+		class="org.openuap.cms.resource.action.PathSelectAction">
+	</bean>
+</beans>

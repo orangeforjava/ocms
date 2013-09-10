@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-badwords.xml 3925 2010-10-26 11:54:14Z orangeforjava $
+-->
+<beans>
+	
+	<import resource="cms-module-badwords-core.xml"/>
+</beans>

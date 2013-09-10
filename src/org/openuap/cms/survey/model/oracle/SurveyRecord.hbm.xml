@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: SurveyRecord.hbm.xml 3951 2010-11-02 10:13:17Z orangeforjava $
+-->
+<hibernate-mapping>
+	<class name="org.openuap.cms.survey.model.SurveyRecord"
+		table="cms_survey_record">
+		<id name="surveyRecordId" type="long" column="surveyRecordId">
+			<generator class="sequence">
+				<param name="sequence">cms_survey_record_seq</param>
+			</generator>
+		</id>
+		<property name="recordTitle" type="string" column="recordTitle"
+			length="220" not-null="true" />
+		<property name="recordDesc" type="text" column="recordDesc" />
+		<property name="surveyId" type="long" column="surveyId" />
+		<property name="startDate" type="long" column="startDate" />
+		<property name="endDate" type="long" column="endDate" />
+		<property name="status" type="integer" column="status" />
+		<property name="type" type="integer" column="type" />
+		<property name="creationUserId" type="long"
+			column="creationUserId" />
+		<property name="creationUserName" type="string"
+			column="creationUserName" />
+		<property name="viewResultStatus" type="integer">
+			<column name="viewResultStatus" not-null="true" default="0"></column>
+		</property>
+	</class>
+</hibernate-mapping>

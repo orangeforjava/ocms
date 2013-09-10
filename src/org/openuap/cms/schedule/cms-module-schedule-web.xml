@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- $Id: cms-module-schedule-web.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<beans>	
+	<bean id="scheduleHandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/schedule.jhtml">
+					<ref local="scheduleAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="scheduleAction"
+		class="org.openuap.cms.schedule.action.ScheduleAction">
+		<property name="scheduleManager" ref="scheduleManager" />
+		<property name="scheduleService" ref="scheduleService" />
+	</bean>
+</beans>

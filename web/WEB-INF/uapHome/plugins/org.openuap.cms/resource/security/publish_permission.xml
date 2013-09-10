@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- created by Weiping Ju $Date: 2006/08/31 02:26:01 $-->
+<directory>
+	<object type="1" name="publish" key="org.openuap.cms.publish" title="内容发布管理">
+		<permission key="1" name="viewContent">查看发布内容</permission>
+		<permission key="2" name="addContent">添加发布内容</permission>
+		<permission key="3" name="editContent">编辑发布内容</permission>
+		<permission key="4" name="deleteContent">删除发布内容</permission>		
+		<permission key="5" name="copyContent">复制内容</permission>
+		<permission key="6" name="cutContent">剪切内容</permission>
+		<permission key="7" name="publish">发布内容</permission>
+		<permission key="8" name="unPublish">取消内容发布</permission>
+		<permission key="9" name="refresh">更新发布</permission>
+		<permission key="10" name="viewRecycleBin">查看回收站</permission>
+		<permission key="11" name="emptyRecycleBin">清空回收站</permission>
+		<permission key="12" name="setTop">置顶设置</permission>
+		<permission key="13" name="setPink">精华设置</permission>
+		<permission key="14" name="setSort">排序设置</permission>
+		<permission key="15" name="createLink">创建虚链接</permission>
+		<permission key="16" name="createIndexLink">创建索引链接</permission>
+		<permission key="17" name="viewLink">查看链接状态</permission>
+		<permission key="18" name="search">搜索内容</permission>
+		<permission key="19" name="searchPro">高级搜索</permission>
+		<permission key="20" name="editIndexTpl">编辑首页模版</permission>
+		<permission key="21" name="editContentTpl">编辑内容页模版</permission>
+		<permission key="22" name="editImgTpl">编辑图片页模版</permission>
+		<permission key="23" name="refreshIndex">刷新首页</permission>
+		<permission key="24" name="refreshNode">结点更新</permission>
+		<permission key="25" name="publishNode">结点发布</permission>
+		<permission key="26" name="viewExtraPublish">查看附加发布</permission>
+		<permission key="27" name="addExtraPublish">添加附加发布</permission>
+		<permission key="28" name="editExtraPublish">编辑附加发布</permission>
+		<permission key="29" name="deleteExtraPublish">删除附加发布</permission>
+		<permission key="30" name="republishNode">结点重新发布</permission>
+		<permission key="31" name="restore">恢复内容</permission>
+		<permission key="32" name="unpublishNode">结点取消发布</permission>
+	</object>
+</directory>

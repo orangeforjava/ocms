@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>模版目录选择</title>
+<base  href="${helper.getBaseURL()}"/>
+<link type="text/css" rel="StyleSheet" href="html/plugin/cms/base/css/style.css" />
+<script language="javascript">
+function setTargetNodeID(targetNodeID)
+{
+	document.form1.targetNodeID.value = targetNodeID
+	//alert(targetNodeID);
+}
+function returnNodeID()
+{
+	if(document.form1.targetNodeID.value == '') {
+		alert("请选择目标目录");
+		return false;
+	} else {
+		window.returnValue = document.form1.targetNodeID.value;
+		window.close();
+
+	}
+}
+</script>
+</HEAD>
+<body bgcolor="threedface" STYLE="margin:3pt;padding:0pt;border: 1px buttonhighlight;" onLoad="workFrameReload()">
+<table width="100%" border="0" cellspacing="5">
+  <form name="form1" method="post" action="">
+    <tr>
+      <td colspan="3" align="right">
+	  <table width="100%" border="0" cellspacing="0">
+          <tr>
+            <td width="10%">选择目录</td>
+          </tr>
+          <tr>
+            <td width="10%" height=10> </td>
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" align="center">
+				<iframe name=workFrame  frameborder=1 class=button style="width:100%;height:203;" src="${baseUrl}/admin/adminSelect.jhtml?action=SelTplDir" >
+                </iframe> </td>
+    </tr>
+  <tr>
+            <td colspan="3" height=10> </td>
+  </tr>
+
+	<tr>
+      <td  ><input name="targetNodeID" type="hidden" ></td>
+      <td  >
+       </td>
+      <td  align=right> <input type="button" name="Submit" value=" 确定 " onClick="returnNodeID();"> &nbsp;&nbsp;<input type="button" name="Submit2" value=" 取消 " onclick='window.close();'></td>
+    </tr>
+
+  </form>
+</table>
+<script language="javascript" type="text/javaScript">
+function workFrameReload() {
+
+}
+
+</script>
+</body>
+</html>

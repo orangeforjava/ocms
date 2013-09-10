@@ -1,0 +1,24 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<#if mode="edit">
+<title>内容编辑</title>
+<#else>
+<title>新增内容</title>
+</#if>
+
+<base  href="${baseUrl}"/>
+</head>
+
+<frameset rows="39,0,*" frameborder="NO" border="0" framespacing="0">
+  <frame src="admin/publishEdit.jhtml?action=ContentEditorHeader&mode=${mode}&nodeId=${nodeId}&indexId=${indexId?default("")}" name="topFrame" scrolling="no" noresize >
+  <frame src="UntitledFrame-2" name="actionFrame" scrolling="no" noresize >
+  <frame src="admin/publishEdit.jhtml?action=Edit&mode=${mode}&nodeId=${nodeId}&indexId=${indexId?default("")}" name="mainFrame" scrolling="yes">
+</frameset>
+<noframes>
+<body>
+</body>
+</noframes>
+</html>

@@ -1,0 +1,349 @@
+<#macro pageBuilder pb baseUrl closeUrl style="0">
+<#local pages = pb.slider(11)/>
+<#local pge  = pb.page()/>
+<#if pb.pages() gt 1>
+
+<table width='95%'  cellspacing=0 cellpadding=2 border=0>
+<tr>
+<td align='right'>
+	<table border=0 cellspacing=0 cellpadding=0>
+	<tr>
+	<td>
+	${lang.get("pager.pager")}:<font color=red>${pge}</font>/${pb.pages()} 
+	<#if style=="0"> 
+	${lang.get("pager.pp")}${pb.itemsPerPage()} ${lang.get("pager.nowp")} ${pb.beginIndex()}- ${pb.endIndex()} ${lang.get("pager.item")}, ${lang.get("pager.total")}${pb.items()}${lang.get("pager.itemcount")}
+	</#if>
+	</td>
+<#if style=="0"> 
+<#if pb.pages() gt 11>
+	<td>
+	<b>(${lang.get("pager.pagecount")} ${pb.pages()} ${lang.get("pager.page")})</b> &nbsp;
+	</td>
+</#if>
+</#if>
+    <#if style=="0">
+	<td bgcolor=#b4b4b4>
+	<#elseif style=="1">
+	<td>
+	</#if> 
+	    <#if style=="0">
+		<table border=0 cellspacing=1 cellpadding=0>
+		<#elseif style=="1">
+		<table border=0 cellspacing=1 cellpadding=0>
+		</#if> 
+		<tr align=center>
+		<#if pge!=pb.firstPage()>
+		    <#if style=="0">
+			<td bgcolor=#e4e4e4>
+			<#elseif style=="1">
+			<td>
+			</#if> 
+				<a href="${baseUrl}${pb.firstPage()}${closeUrl}"><#compress>
+				<#if style=="0">
+				<img src='html/common/pager/fp.gif' align='absmiddle' alt='${lang.get("pager.firstpage")}' border=0>
+				<#elseif style=="1">
+				${lang.get("pager.firstpage")}
+				</#if>
+				</#compress></a>
+			</td>
+			<#if style=="0">
+			<td bgcolor=#e4e4e4>
+			<#elseif style=="1">
+			<td>			
+			</#if> 
+				<a href="${baseUrl}${pb.previousPage()}${closeUrl}"><#compress>
+				<#if style=="0">
+				<img src='html/common/pager/pp.gif' align='absmiddle' alt='${lang.get("pager.prevpage")}' border=0>				
+				<#elseif style=="1">
+				${lang.get("pager.prevpage")}</#if></#compress></a>
+			
+			</td>
+		<#else>
+			<#if style=="0">
+			<td bgcolor=#5d7790>
+			<#elseif style=="1">
+			<td>
+			</#if>
+			<#compress> 
+			    <#if style=="0">
+				<img src='html/common/pager/fp_d.gif' align='absmiddle' alt='${lang.get("pager.firstpage")}' border=0>
+				<#elseif style=="1">
+				${lang.get("pager.firstpage")}
+				</#if>
+				</#compress>
+			</td>
+			<#if style=="0">
+			<td bgcolor=#5d7790>
+			<#elseif style=="1">
+			<td>
+			</#if><#compress> 
+			    <#if style=="0">
+				<img src='html/common/pager/pp_d.gif' align='absmiddle' alt='${lang.get("pager.prevpage")}' border=0>
+				<#elseif style=="1">
+				${lang.get("pager.prevpage")}
+				</#if>
+				</#compress>
+			</td>
+		</#if>
+		<#list pages as p>
+			<#if pb.isDisabledPage(p)>
+			<#if style=="0">
+			<td bgcolor=#5d7790>
+			<#elseif style=="1">
+			<td>
+			</#if> &nbsp;<font class=curpage><b>${p}</b></font>&nbsp;</td>
+			<#else>
+			<#if style=="0">
+			<td bgcolor=#e4e4e4>
+			<#elseif style=="1">
+			<td>
+			</#if> &nbsp;<a href="${baseUrl}${p}${closeUrl}" class=page><b>${p}</b></a>&nbsp;</td>
+			</#if>
+		</#list>
+
+		<#if pge!=pb.lastPage()>
+			<#if style=="0">
+			<td bgcolor=#e4e4e4>
+			<#elseif style=="1">
+			<td>
+			</#if> 
+			<a href="${baseUrl}${pb.nextPage()}${closeUrl}"><#compress>
+			<#if style=="0">
+			<img src='html/common/pager/np.gif'border=0 align='absmiddle' alt='${lang.get("pager.nextpage")}'>
+			<#elseif style=="1">
+				${lang.get("pager.nextpage")}
+			</#if></#compress></a></td>
+			<#if style=="0">
+			<td bgcolor=#e4e4e4>
+			<#elseif style=="1">
+			<td>
+			</#if> 
+			<a href="${baseUrl}${pb.lastPage()}${closeUrl}"><#compress>
+			<#if style=="0">
+			<img src='html/common/pager/lp.gif'border=0 align='absmiddle' alt='${lang.get("pager.lastpage")}'>
+			<#elseif style=="1">
+				${lang.get("pager.lastpage")}
+			</#if></#compress></a></td>
+		<#else>
+			<#if style=="0">
+			<td bgcolor=#5d7790>
+			<#elseif style=="1">
+			<td>
+			</#if><#compress>
+			<#if style=="0">
+			<img src='html/common/pager/np_d.gif'border=0 align='absmiddle' alt='${lang.get("pager.nextpage")}'>
+			<#elseif style=="1">
+				${lang.get("pager.nextpage")}
+			</#if></#compress>
+			</td>
+			<#if style=="0">
+			<td bgcolor=#5d7790>
+			<#elseif style=="1">
+			<td>
+			</#if><#compress>
+			<#if style=="0">
+			<img src='html/common/pager/lp_d.gif'border=0 align='absmiddle' alt='${lang.get("pager.lastpage")}'>
+			<#elseif style=="1">
+				${lang.get("pager.lastpage")}
+			</#if></#compress>
+			</td>
+		</#if>
+		</tr>
+		</table>
+	</td>
+	</tr>
+	</table>
+</td>
+</tr>
+</table>
+</#if>
+</#macro>
+<#macro pager url totalCount pageSize page >
+	<#local totalPage=totalCount/pageSize />
+	<#if (totalCount%pageSize) gt 0>
+	<#local totalPage=totalPage?int+1/>
+
+	</#if>
+	<#if page gt 1 >
+	<b><a href='${url}&page=${page-1}' >${lang.get("pager.prevpage")}</a></b>&nbsp;&nbsp;
+	</#if>
+
+	<#list 1..totalPage as ii>
+		<#if page==ii>
+		<font color="#FF0000">[${ii}]</font>&nbsp;&nbsp;
+		<#else>
+		<a href='${url}&page=${ii}'>[${ii}]</a>&nbsp;&nbsp;
+		</#if>
+	</#list>
+
+	<#if page !=totalPage >
+	<b><a href='${url}&page=${page+1}' >${lang.get("pager.nextpage")}</a></b>&nbsp;&nbsp;
+	</#if>
+</#macro>
+<#macro pageBuilder2 pb baseUrl closeUrl style="0">
+<#local pages = pb.slider(11)/>
+<#local pge  = pb.page()/>
+<#if pb.pages() gt 1>
+
+<table width='95%'  cellspacing=0 cellpadding=2 border=0>
+<tr>
+<td align='right'>
+	<table border=0 cellspacing=0 cellpadding=0>
+	<tr>
+	<td>
+	${lang.get("pager.pager")}：<font color=red>${pge}</font>/${pb.pages()} 
+	<#if style=="0"> 
+	${lang.get("pager.pp")}${pb.itemsPerPage()} ${lang.get("pager.nowp")} ${pb.beginIndex()}- ${pb.endIndex()} ${lang.get("pager.item")}, ${lang.get("pager.total")}${pb.items()}${lang.get("pager.itemcount")}
+	</#if>
+	</td>
+<#if style=="0"> 
+<#if pb.pages() gt 11>
+	<td>
+	<b>(${lang.get("pager.pagecount")} ${pb.pages()} ${lang.get("pager.page")})</b> &nbsp;
+	</td>
+</#if>
+</#if>
+    <#if style=="0">
+	<td >
+	<#elseif style=="1">
+	<td>
+	</#if> 
+	    <#if style=="0">
+		<table border=0 cellspacing=1 cellpadding=0>
+		<#elseif style=="1">
+		<table border=0 cellspacing=1 cellpadding=0>
+		</#if> 
+		<tr align=center>
+		<#if pge!=pb.firstPage()>
+		    <#if style=="0">
+			<td bgcolor=#e4e4e4>
+			<#elseif style=="1">
+			<td>
+			</#if> 
+				<a href="javaScript:page_nav('${pb.firstPage()}')"><#compress>
+				<#if style=="0">
+				<img src='html/common/pager/fp.gif' align='absmiddle' alt='${lang.get("pager.firstpage")}' border=0>
+				<#elseif style=="1">
+				${lang.get("pager.firstpage")}
+				</#if>
+				</#compress></a>
+			</td>
+			<#if style=="0">
+			<td bgcolor=#e4e4e4>
+			<#elseif style=="1">
+			<td>			
+			</#if> 
+				<a href="javaScript:page_nav('${pb.previousPage()}')"><#compress>
+				<#if style=="0">
+				<img src='html/common/pager/pp.gif' align='absmiddle' alt='${lang.get("pager.prevpage")}' border=0>				
+				<#elseif style=="1">
+				${lang.get("pager.prevpage")}</#if></#compress></a>
+			
+			</td>
+		<#else>
+			<#if style=="0">
+			<td bgcolor=#5d7790>
+			<#elseif style=="1">
+			<td>
+			</#if>
+			<#compress> 
+			    <#if style=="0">
+				<img src='html/common/pager/fp_d.gif' align='absmiddle' alt='${lang.get("pager.firstpage")}' border=0>
+				<#elseif style=="1">
+				${lang.get("pager.firstpage")}
+				</#if>
+				</#compress>
+			</td>
+			<#if style=="0">
+			<td bgcolor=#5d7790>
+			<#elseif style=="1">
+			<td>
+			</#if><#compress> 
+			    <#if style=="0">
+				<img src='html/common/pager/pp_d.gif' align='absmiddle' alt='${lang.get("pager.prevpage")}' border=0>
+				<#elseif style=="1">
+				${lang.get("pager.prevpage")}
+				</#if>
+				</#compress>
+			</td>
+		</#if>
+		<#list pages as p>
+			<#if pb.isDisabledPage(p)>
+			<#if style=="0">
+			<td bgcolor=#5d7790>
+			<#elseif style=="1">
+			<td>
+			</#if> &nbsp;<font class=curpage><b>${p}</b></font>&nbsp;</td>
+			<#else>
+			<#if style=="0">
+			<td bgcolor=#e4e4e4>
+			<#elseif style=="1">
+			<td>
+			</#if> &nbsp;<a href="javaScript:page_nav('${p}')" class=page><b>${p}</b></a>&nbsp;</td>
+			</#if>
+		</#list>
+
+		<#if pge!=pb.lastPage()>
+			<#if style=="0">
+			<td bgcolor=#e4e4e4>
+			<#elseif style=="1">
+			<td>
+			</#if> 
+			<a href="javaScript:page_nav('${pb.nextPage()}')"><#compress>
+			<#if style=="0">
+			<img src='html/common/pager/np.gif'border=0 align='absmiddle' alt='${lang.get("pager.nextpage")}'>
+			<#elseif style=="1">
+				${lang.get("pager.nextpage")}
+			</#if></#compress></a></td>
+			<#if style=="0">
+			<td bgcolor=#e4e4e4>
+			<#elseif style=="1">
+			<td>
+			</#if> 
+			<a href="javaScript:page_nav('${pb.lastPage()}')"><#compress>
+			<#if style=="0">
+			<img src='html/common/pager/lp.gif'border=0 align='absmiddle' alt='${lang.get("pager.lastpage")}'>
+			<#elseif style=="1">
+				${lang.get("pager.lastpage")}
+			</#if></#compress></a></td>
+		<#else>
+			<#if style=="0">
+			<td bgcolor=#5d7790>
+			<#elseif style=="1">
+			<td>
+			</#if><#compress>
+			<#if style=="0">
+			<img src='html/common/pager/np_d.gif'border=0 align='absmiddle' alt='${lang.get("pager.nextpage")}'>
+			<#elseif style=="1">
+				${lang.get("pager.nextpage")}
+			</#if></#compress>
+			</td>
+			<#if style=="0">
+			<td bgcolor=#5d7790>
+			<#elseif style=="1">
+			<td>
+			</#if><#compress>
+			<#if style=="0">
+			<img src='html/common/pager/lp_d.gif'border=0 align='absmiddle' alt='${lang.get("pager.lastpage")}'>
+			<#elseif style=="1">
+				${lang.get("pager.lastpage")}
+			</#if></#compress>
+			</td>
+		</#if>
+		</tr>
+		</table>
+	</td>
+	</tr>
+	</table>
+</td>
+</tr>
+</table>
+</#if>
+</#macro>
+<#macro pageBuilder3 pb baseUrl closeUrl style="0">
+<#local pages = pb.slider(11)/>
+<#local pge  = pb.page()/>
+<#if pb.lastPage() gt 1>
+<#compress><div id="pagebar">${lang.get("pager.result")}:<#if pge!=pb.firstPage()><a href="${baseUrl}${pb.previousPage()}${closeUrl}">${lang.get("pager.prevpage")}</a><#else></#if><#list pages as p><#if pb.isDisabledPage(p)>&nbsp;${p}<#else>&nbsp;<a href="${baseUrl}${p}${closeUrl}">[${p}]</a></#if></#list><#if pge!=pb.lastPage()>&nbsp;<a href="${baseUrl}${pb.nextPage()}${closeUrl}">${lang.get("pager.nextpage")}&gt;&gt;</a><#else></#if></div></#compress>
+</#if>
+</#macro>

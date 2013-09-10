@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tree>
+  <#list nodes as node>
+  <#if nodeManager.getChildNodesCount(node.nodeId)==0>
+  	<tree text="${node.name}[${node.nodeId?c}]" action="javascript:parent.setTargetNodeID('${node.nodeId?c}','${node.name}')" target="" cId="${node.nodeId?c}"/>
+  <#else>
+  	<tree text="${node.name}[${node.nodeId?c}]" action="javascript:parent.setTargetNodeID('${node.nodeId?c}','${node.name}')" src="${baseUrl}admin/node.jhtml?action=NodeSelXml&amp;nodeId=${node.nodeId?c}" target="" cId="${node.nodeId?c}"/>
+  </#if>
+  </#list>
+</tree>

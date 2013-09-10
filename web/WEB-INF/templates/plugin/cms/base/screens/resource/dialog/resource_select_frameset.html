@@ -1,0 +1,18 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="Pragma"  CONTENT="no-cache"/>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+<title>publish frameset</title>
+<base  href="${baseUrl}"/>
+</head>
+
+<frameset rows="0,*" frameborder="NO" border="0" framespacing="0">
+  <frame src="UntitledFrame-3" name="actionFrame" scrolling="no" noresize >
+  <frame src="admin/resourceSelect.jhtml?action=ResourceDialog&nodeId=${nodeId}&category=${category}&customCategory=${customCategory?default('')}" name="mainFrame" scrolling="yes">
+</frameset>
+<noframes>
+<body>
+</body>
+</noframes>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+	<HEAD>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta HTTP-EQUIV="Pragma" CONTENT="no-cache" />
+		<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache" />
+		<TITLE>结点浏览</TITLE>
+		<base href="${helper.getBaseURL()}" />
+		<link rel='stylesheet' type='text/css'
+			href='html/plugin/cms/base/css/style.css' />
+		<script language="javascript">
+
+
+function setTargetNodeID(targetNodeID,targetNodeName)
+{
+	<#if extra?default("")=="full">
+	document.form1.targetNodeID.value = targetNodeID+","+targetNodeName;
+	<#else>
+	document.form1.targetNodeID.value =targetNodeID;
+	</#if>
+	
+	//alert(targetNodeID);
+}
+function returnNodeID()
+{
+	if(document.form1.targetNodeID.value == '') {
+		alert("请选择目标结点");
+		return false;
+	} else {
+		window.returnValue = document.form1.targetNodeID.value;
+		window.close();
+		//var rs=document.form1.targetNodeID.value;
+		//parent.callBack(rs);
+		//parent.win.hide();
+	}
+}
+</script>
+	</HEAD>
+	<body bgcolor="threedface"
+		STYLE="margin: 3pt; padding: 0pt; border: 1px buttonhighlight;">
+		<table width="100%" border="0" cellspacing="5">
+			<form name="form1" method="post" action="">
+			<tr>
+				<td colspan="3" align="right">
+					<table width="100%" border="0" cellspacing="0">
+						<tr>
+							<td width="10%">
+								选择目标结点
+							</td>
+						</tr>
+						<tr>
+							<td width="10%" height=10>
+							</td>
+						</tr>
+					</table>
+
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3" align="center">
+					<iframe name=workFrame frameborder=1 class=button
+						style="width: 100%; height: 100%;"
+						src="${baseUrl}admin/node.jhtml?action=NodeSelect&extra=${extra?default("")}" >
+					</iframe>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3" height=10>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<input name="targetNodeID" type="hidden">
+				</td>
+				<td>
+				</td>
+				<td align=right>
+					<input type="button" name="Submit" value="确定"
+						onClick="returnNodeID();">
+					&nbsp;&nbsp;
+					<input type="button" name="Submit2" value="取消"
+						onclick='window.close();'>
+				</td>
+			</tr>
+
+			</form>
+		</table>
+	</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-comment-orm-oracle.xml 3950 2010-11-02 09:10:01Z orangeforjava $
+-->
+<beans>	
+	<bean id="comment-OracleMapping"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<property name="dialect">
+			<value>org.hibernate.dialect.Oracle9Dialect</value>
+		</property>
+		<property name="mappings">
+			<list>
+				<value>
+					org/openuap/cms/comment/model/oracle/CommentThread.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/comment/model/oracle/CommentPost.hbm.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+</beans>

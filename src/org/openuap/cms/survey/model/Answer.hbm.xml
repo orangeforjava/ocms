@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.openuap.cms.survey.model">
+	<class name="Answer" table="cms_survey_answer">
+		<composite-id>
+			<key-property name="voterId" type="long">
+				<column name="voterId" not-null="true" />
+			</key-property>
+			<key-property name="questionId" type="long">
+				<column name="questionId" not-null="true" />
+			</key-property>
+			<key-property name="surveyRecordId" type="long">
+				<column name="surveyRecordId" not-null="true" />
+			</key-property>
+		</composite-id>
+		<property name="questionId" type="long" column="questionId"
+			not-null="true" insert="false" update="false" />
+		<property name="voterId" type="long" column="voterId"
+			not-null="true" insert="false" update="false" />
+		<property name="surveyRecordId" type="long"
+			column="surveyRecordId" not-null="true" insert="false"
+			update="false" />
+		<property name="surveyId" type="long" column="surveyId"
+			not-null="true" />
+		<property name="answer" type="string" column="answer" />
+		<property name="answerInputText" type="text"
+			column="answerInputText" />
+		<!-- associations -->
+	</class>
+</hibernate-mapping>

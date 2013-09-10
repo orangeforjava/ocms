@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- $Id: cms-module-cache-web.xml 3937 2010-10-27 02:52:17Z orangeforjava $
+-->
+<beans default-lazy-init="true">
+	<bean id="cacheHandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/cache.jhtml">
+					<ref local="cacheAction" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="cacheAction"
+		class="org.openuap.cms.cache.action.CacheAction" />
+</beans>

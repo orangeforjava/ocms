@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>DZX论坛调用演示</title>
+</head>
+<body>
+问题1:专家答疑精华文章(15):
+<hr/>
+[@dzx.digest2 return="list" nums="15" fid="457"/]
+<ul>
+[#list list as thread]
+<li>
+[${thread['name']}]<a href="http://bbs.ccun.cn/forum.php?mod=viewthread&tid=${thread['tid']?c}" target="_blank" title="${thread['subject']}">[@util.substr  target=thread['subject'] start=0 limit=20/]</a>
+</li>
+[/#list]
+</ul>
+<hr/>
+
+问题2:专家答疑-老人专家分类文章调用(15)
+<hr/>
+[@dzx.threads return="list" nums="15" fid="457" typeid="3"/]
+<ul>
+[#list list as thread]
+<li>
+[${thread['name']}]<a href="http://bbs.ccun.cn/forum.php?mod=viewthread&tid=${thread['tid']?c}" target="_blank" title="${thread['subject']}">[@util.substr  target=thread['subject'] start=0 limit=20/]</a>
+</li>
+[/#list]
+</ul>	
+<hr/>
+问题3:社区调用专业老人板块中http://bbs.ccun.cn/forum.php?mod=forumdisplay&fid=451精华文章(6):
+<hr/>
+[@dzx.digest2 return="list" nums="6" fid="451"/]
+<ul>
+[#list list as thread]
+<li>
+[${thread['name']}]<a href="http://bbs.ccun.cn/forum.php?mod=viewthread&tid=${thread['tid']?c}" target="_blank" title="${thread['subject']}">[@util.substr  target=thread['subject'] start=0 limit=20/]</a>
+</li>
+[/#list]
+</ul>
+<hr/>
+
+问题4:调用专家答疑中母婴分类的文章(5)http://bbs.ccun.cn/forum.php?mod=forumdisplay&fid=457&filter=typeid&typeid=2
+<hr/>
+[@dzx.threads return="list" nums="5" fid="457" typeid="2"/]
+<ul>
+[#list list as thread]
+<li>
+[${thread['name']}]<a href="http://bbs.ccun.cn/forum.php?mod=viewthread&tid=${thread['tid']?c}" target="_blank" title="${thread['subject']}">[@util.substr  target=thread['subject'] start=0 limit=20/]</a>
+</li>
+[/#list]
+</ul>
+
+问题5:母婴板块中的精华文章(5)http://bbs.ccun.cn/forum.php?mod=forumdisplay&fid=452
+<hr/>
+[@dzx.digest2 return="list" nums="5" fid="452"/]
+<ul>
+[#list list as thread]
+<li>
+[${thread['name']}]<a href="http://bbs.ccun.cn/forum.php?mod=viewthread&tid=${thread['tid']?c}" target="_blank" title="${thread['subject']}">[@util.substr  target=thread['subject'] start=0 limit=20/]</a>
+</li>
+[/#list]
+</ul>
+<hr/>
+
+
+</body>
+</html>

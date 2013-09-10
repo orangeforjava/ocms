@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>${workbench.appName!''}</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Pragma"  content="no-cache"/>
+		<meta http-equiv="Cache-Control" content="no-cache"/>
+		<base  href="${baseUrl}"/>
+		<script language="JavaScript" type="text/javascript" src="html/common/js/prototype.js"></script>
+		<script language="JavaScript" type="text/javascript">
+		<!--
+		if (self.parent.frames.length != 0) {
+			self.parent.location=document.location;
+		}
+        function updateFields(el) {
+            if (el.checked) {
+                document.loginForm.username.disabled = true;
+                document.loginForm.password.disabled = true;
+            }
+            else {
+                document.loginForm.username.disabled = false;
+                document.loginForm.password.disabled = false;
+                document.loginForm.username.focus();
+            }
+        }
+        //
+        function admin_login_submit(){
+			var MId,user_name,user_pass,targeturl;
+			var	user_name = document.loginForm.username.value;
+			var user_pass = document.loginForm.password.value;
+			[#if userConfig.isEnableSecureCode()]
+			var user_code=document.loginForm.code.value;
+			//
+			var success=true;
+			if(user_code==''){
+				alert("请输入安全校验码！");
+				return false;
+			}else{
+			    var url='${baseUrl}user/login.jhtml?action=CheckSecurityCode&code='+user_code;
+				new Ajax.Request(url,{
+				method: 'post',asynchronous:false,
+				onSuccess: function(transport) {
+					var returnValue=transport.responseText;
+					if(returnValue== '0'){
+						alert("安全校验码不匹配,请重新输入！");
+						success=false;
+					}
+				}
+				});				
+			}
+			if(!success){
+				return false;
+			}
+			[/#if]
+			//
+			if((user_name!='') && (user_pass!='')){
+				  return true;
+		
+				}else{
+					alert("请输入用户名和密码！");
+				}
+				return false;
+			}
+		//-->
+	</script>
+		<link href="html/plugin/cms/user/images/global.css" type="text/css" rel="stylesheet">
+		<style type=text/css>
+.uap-login-form {
+	WIDTH: 100%;
+	POSITION: relative;
+	TOP: 148px;
+	TEXT-ALIGN: center
+}
+
+.uap-login-form .uap-login-label {
+	FONT-SIZE: 0.8em
+}
+
+.uap-login-form .uap-footer {
+	FONT-WEIGHT: bold;
+	FONT-SIZE: 0.8em
+}
+
+#uap-login-text-image {
+	PADDING-RIGHT: 0px;
+	PADDING-LEFT: 0px;
+	PADDING-BOTTOM: 10px;
+	MARGIN: 0px;
+	PADDING-TOP: 18px
+}
+
+#uap-logo-image {
+	PADDING-RIGHT: 10px;
+	PADDING-LEFT: 0px;
+	PADDING-BOTTOM: 0px;
+	MARGIN: 0px;
+	PADDING-TOP: 0px
+}
+
+BODY {
+	PADDING-RIGHT: 0px;
+	PADDING-LEFT: 0px;
+	BACKGROUND-IMAGE:
+		url("${baseUrl}html/plugin/cms/user/images/login-back.gif");
+	PADDING-BOTTOM: 0px;
+	MARGIN: 0px;
+	PADDING-TOP: 0px;
+	BACKGROUND-REPEAT: repeat-x;
+	BACKGROUND-COLOR: #fff
+}
+</style>
+	</head>
+	<body>
+		<form name="loginForm" action="${baseUrl}user/login.jhtml" method="post" onsubmit="return admin_login_submit();">
+			<input type="hidden" name="done" value="${done!''}">
+			<input type="hidden" name="action" value="Login">
+			<div class=uap-login-form>
+				<table cellspacing=0 cellpadding=0 width="100%" border=0>
+					<tbody>
+						<tr>
+							<td width="48%">
+								&nbsp;
+							</td>
+							<td nowrap width="1%">
+								<table cellspacing=0 cellpadding=3 border=0>
+									<tbody>
+										<tr valign="center">
+											<td nowrap align=middle rowspan=99>
+												<img style="PADDING-RIGHT: 1.5em; PADDING-TOP: 2px"
+													alt="${workbench.appName!''}"
+													src="${workbench.loginLogoImage!('')}"
+													border=0>
+											</td>
+											<td colspan=3>
+												<div id=uap-login-text-image>
+													${workbench.appName!''}
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td colspan=4 align="center">
+												 [#if errorMsg?exists]
+												 	<font color=red>${errorMsg}</font>
+												 [/#if]
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input id="username" maxlength=50 size=15 name="username">
+											</td>
+											<td>
+												<input id=p01 type="password" maxlength=50 size=15
+													name="password">
+											</td>
+											[#if userConfig.isEnableSecureCode()]
+											<td nowrap>
+												<input id=c01 type="text" maxlength=4 size=4
+													name="code"><img src="${baseUrl}sc.jhtml?key=${key}" border=0 align="absmiddle" style="POSITION: relative; TOP: 0px">
+											</td>
+											[/#if]
+											<td align="middle">
+												<input type=submit value="用户登录">
+											</td>
+										</tr>
+										<tr valign=top>
+											<td class=uap-login-label>
+												<label for=u01>
+													${lang.get("login.username")}
+												</label>
+											</td>
+											<td class=uap-login-label>
+												<label for=p01>
+													${lang.get("login.password")}
+												</label>
+											</td>
+											[#if userConfig.isEnableSecureCode()]
+											<td class=uap-login-label>
+												<label for=p01>
+													${lang.get("login.code")}
+												</label>
+											</td>
+											[/#if]
+											<td>
+												&nbsp;
+											</td>
+										</tr>
+										<tr class=uap-login-label>
+											<td colspan=4>
+												<img height=4 alt="" src="" width=1 border=0>
+											</td>
+										</tr>
+										<tr class=uap-footer>
+											<td nowrap colspan=4>
+												<span style="FONT-SIZE: 0.8em"></span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+							<td width="48%">
+								&nbsp;
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</form>
+		<script language=JavaScript type=text/javascript>
+<!--
+	$("username").focus();
+//-->
+</script>
+	</body>
+</html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench>
+   <tab id="tab-node-plugin">
+		<sidebar id="sidebar-survey" name="调查问卷" pos="100">
+			<item id="n-site-survey-area" name="调查内容位管理"
+				url="plugin/survey/area.jhtml?nodeId=NODE_ID" description="调查内容位管理" />
+			<item id="n-site-survey-list" name="调查问卷管理"
+				url="plugin/survey/survey.jhtml?nodeId=NODE_ID" description="调查问卷管理" />
+			
+		</sidebar>
+	</tab>
+</workbench>

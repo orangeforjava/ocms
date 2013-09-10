@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<description>Survey插件</description>
+
+	<bean id="surveyMappingResources"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<property name="mappings">
+			<list>
+				<value>
+					org/openuap/cms/survey/model/SurveyArea.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/Survey.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/Question.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/QuestionItem.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/Voter.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/Answer.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/AnswerItem.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/SurveyRecord.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/QuestionItemRecord.hbm.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+</beans>

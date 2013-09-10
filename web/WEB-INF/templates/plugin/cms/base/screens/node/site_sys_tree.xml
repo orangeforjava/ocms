@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tree>
+  <#list nodes as node>
+  <#if nodeManager.getNodeCount(node.nodeId,0,0)==0>
+  	<tree text="${node.name?replace('&','&amp;')}[${node.nodeId?c}]" action="admin/nodeEdit.jhtml?mode=edit&amp;nodeId=${node.nodeId?c}&amp;extra=system" target="main" cId="${node.nodeId?c}" extra="system"/>
+  <#else>
+  	<tree text="${node.name?replace('&','&amp;')}[${node.nodeId?c}]" action="admin/nodeEdit.jhtml?mode=edit&amp;nodeId=${node.nodeId?c}" src="admin/node.jhtml?action=SiteSystemXml&amp;nodeId=${node.nodeId?c}&amp;extra=system" target="main" cId="${node.nodeId?c}" extra="system"/>
+  </#if>
+  </#list>
+</tree>

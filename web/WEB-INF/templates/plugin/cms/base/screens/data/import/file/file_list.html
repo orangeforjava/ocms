@@ -1,0 +1,227 @@
+[#assign actionTitle="备份文件列表" /]
+[#assign _TITLE_="备份文件列表" /]
+[#assign actions=[
+{"action":"","title":"打包下载所有文件","url":"${baseUrl}admin/content.jhtml","class":"view"},
+{"action":"Add","title":"清空所有文件","url":"${baseUrl}admin/contentEdit.jhtml","class":"add"}
+
+]]
+
+[#include "/plugin/cms/common/includes/header.htm"/]
+<style>
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 100;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.subtitleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.timeholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 60;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.table_plan_td1 {
+	background-color: #FDEEB9
+}
+</style>
+
+
+<SCRIPT>
+
+/**
+* single process!
+**/
+function doing(action, id,indexId,form) {
+	
+	switch(action) {
+		
+		case 'display_record':
+		{
+			searchForm.pageNum.value=document.documentlist.offset.value;
+			//
+			searchForm.submit();
+			break;
+		}
+		
+	}	
+}
+
+
+
+function rightMenu(pId, State, Type, Top,Pink, ContributionID) {
+	return false;
+	var toolMenu = new Menu();
+
+
+	
+	var left,top;
+	left = window.event.screenX;
+	top = window.event.screenY;
+	toolMenu.invalidate();
+	toolMenu.show( left, top );
+
+	//initrightmenu();
+
+}
+</SCRIPT>
+
+<SCRIPT language=JavaScript>
+<!--
+function CheckAll(form)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall' && e.name !='copy')       e.checked = form.chkall.checked;
+   }
+  }
+
+//-->
+
+
+</script>
+<script>
+var mousemovecolor="#D4D4D4";
+var selectcolor ="#DDDDDD";
+var oldcolor;
+
+function GetRow(oElem)
+{
+	while (oElem)
+	{	//alert(oElem.tagName.toLowerCase())
+		if (oElem.tagName.toLowerCase() == "tr" || oElem.parentElement.tagName.toLowerCase() == "tbody")
+		    return oElem;
+		if (oElem.tagName.toLowerCase() == "table" || oElem.tagName.toLowerCase() == "th") return false;
+		oElem = oElem.parentElement;
+	}
+}
+/**
+* batch process!
+**/
+function going(form, o)
+{
+		with(form) {
+		var count = 0;
+      	var checkboxObj = pData;
+
+      	if(checkboxObj == null)
+      	{
+        	return ;
+      	}
+      	else
+      	{
+        	for (var i = 0; i < checkboxObj.length; i++)
+        	{
+          		if(checkboxObj[i].checked)
+          		count++;
+        	}
+      	}
+		if(count > 0 || (checkboxObj.length == null && checkboxObj.checked))
+		{
+			switch(o) {
+				case 'import':
+				{
+					
+				}
+			}//end switch
+		}
+		else{
+			alert("请选择一个或多个信息。");
+		}
+	}//with
+}
+
+function sorter(sort_desc,mode,name){
+	if(order_desc==sort_desc){
+		if(order_mode=='asc'){
+			searchForm.order_mode.value='desc';
+		}else{
+			searchForm.order_mode.value='asc';
+		}
+	}else{
+		//new sort field
+		searchForm.order_mode.value=mode;
+	}
+	//
+	searchForm.order.value=sort_desc;
+	searchForm.order_name.value=name;
+	//
+	searchForm.submit();
+}
+function page_nav(page){
+	searchForm.page.value=page;
+	searchForm.submit();
+}
+</script>
+
+<form method="post" action="" name="documentlist" >
+<table width="100%" border="0" align="center" cellpadding="2" cellspacing="1"  class="maintable" >
+  <tbody>
+    <tr >
+	  <td align='center' height=25></td>
+      <td align='center'><B>序号</B></td>
+	  <td align='center'><B>名称</B></td>	  
+	  <td align='center'><B>大小</B></td>
+	   <td align='center'><B>备份日期</B></td>
+      <td colspan='5' align='center'><B>执行操作</B></td>
+  </tr>
+  <!--start-->
+[#list files as file]
+
+  <tr class="table_td1" id="${file['name']}" onmouseover='this.style.backgroundColor="#FFFFFF"' onmouseout='this.style.backgroundColor=""' >
+      <td noWrap style="width:80"> <input type='checkbox' name='pData' value="${file['name']}" id="p_${file['name']}" ><input type='checkbox' style='visibility:hidden' name='pData2' value="${file['name']}" id="p2_${file['name']}"></td>
+      <td align="center" noWrap   ><div class="subtitleholder">${file_index}</div></td>
+	  <td   noWrap  style="cursor:hand" id="">
+[#compress]
+	  <div noWrap>
+	  &nbsp;&nbsp;
+	  <A HREF="${baseUrl}admin/data/impFile.jhtml?action=View&name=${file['name']}" onClick="javascript:void(0);" class="o" style="cursor:hand"   oncontextmenu="javascript:void(0);" title="${file['name']}">${file['name']}</A>	  	  
+	  </div>
+[/#compress]
+	  </td>
+	  <td align="center"  ><div class="subtitleholder" title="${file.length()/1024.0}KB">${file.length()/1024.0}KB</div></td>
+	  <td align="center" ><div style="width:80" title="">${action.getDate(file.lastModified())?string("yyyy-MM-dd HH:mm")}</div></td>
+	  <td align="center" noWrap>	
+	 	<a HREF="${baseUrl}admin/data/import.jhtml?action=Import&name=${importer['name']}&fileName=${file['name']}" onClick="javascript:return confirm('您是否确认恢复此对象？');">恢复</A>&nbsp;
+	 	<a HREF="${baseUrl}admin/data/impFile.jhtml?action=View&name=${importer['name']}&fileName=${file['name']}">查看</A>&nbsp;
+	 	<a HREF="${baseUrl}admin/data/impFile.jhtml?action=Download&name=${importer['name']}&fileName=${file['name']}">下载</A>&nbsp;
+	  </td>
+ </tr>
+ [/#list]
+ <!--end-->
+    <tr class="Tablelistbg">
+      <td colspan="6" align="left" bgcolor="#F5F5F5"> <table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align=left>
+            <input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  >
+              <label for="chkall" >全选</label>&nbsp;&nbsp;
+
+			 <select name="actionMap" id="actionMap" >
+            	 <option value="import">恢复</option> 			
+			 </select>
+
+			  <input type="button" value="执行" class=button onClick="going(this.form,actionMap.options[actionMap.selectedIndex].value)">
+
+            </td>
+          </tr>
+        </table></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+<br/>
+[#include "/plugin/cms/common/includes/footer.htm"/]

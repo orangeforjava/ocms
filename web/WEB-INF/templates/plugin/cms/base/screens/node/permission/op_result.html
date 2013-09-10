@@ -1,0 +1,69 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<title>node permission operation result</title>
+		<base href="${baseUrl}" />
+		<link type="text/css" rel="StyleSheet"
+			href="html/plugin/cms/base/css/style.css" />
+		<#if rs=="success"> 
+			<#if op=="edit"||op=="add"||op="init">
+			<meta http-equiv="refresh"
+				content="2;url='${baseUrl}admin/node/permission.jhtml?id=${id}'">
+			<#else>
+			<meta http-equiv="refresh"
+				content="2;url='${baseUrl}admin/node/permission.jhtml?id=${id}'">
+			</#if> 
+		</#if>
+	</head>
+	<body>
+		<br>
+		<br>
+		<div align=center>
+			<table width="100%" height="100%" border="0" cellpadding="20"
+				cellspacing="0">
+				<td align="center" valign="top">
+					<table width="50%" height="100" border="0" cellpadding="4"
+						cellspacing="1" class="table_border">
+						<tr class="table_td2">
+							<td>
+								<#if op=="edit"> 
+									<#if rs=="success"> 
+										编辑角色权限成功 
+									<#else>
+									编辑角色权限失败，原因为:${msgs?default("")} 
+									</#if>
+								<#elseif op=="add"> 
+									<#if rs=="success"> 
+										添加角色成功 
+									<#else> 
+										添加角色失败，原因为:<br/>${msgs?default("")}
+									</#if>
+								<#elseif op="init">
+									<#if rs=="success"> 
+										初始化角色成功. 
+									<#else>
+										初始化角色失败，原因为:${msgs?default("")} 
+									</#if>																	
+								</#if>
+								<br/>
+								<br/>
+								<#if rs=="success"> 
+									<#if op=="edit"|| op=="add">
+									<a href="${baseUrl}admin/node/permission.jhtml?id=${cid}">如果您的浏览器没有自动跳转，请点击这里</a>
+									<br />
+									<#else>
+									<a href="${baseUrl}admin/node/permission.jhtml?id=${id}">如果您的浏览器没有自动跳转，请点击这里</a>
+									<br />
+									</#if> 
+								</#if>
+							</td>
+						</tr>
+					</table>
+				</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

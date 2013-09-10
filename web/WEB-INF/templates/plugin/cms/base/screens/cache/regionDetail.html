@@ -1,0 +1,36 @@
+
+[#assign actionTitle="缓存管理" /]
+[#assign _TITLE_="缓存管理" /]
+[#assign actions=[
+{"action":"","title":"缓存管理","url":"${baseUrl}admin/cache.jhtml","class":"view"},
+{"action":"Detail","title":"缓存详情","url":"${baseUrl}admin/cache.jhtml?action=Detail&cacheName=${cacheName}","class":"view"}
+] 
+/]
+[#include "/plugin/cms/common/includes/header.htm"/]
+
+
+<table border=0 cellspacing=0 cellpadding=0 width='100%' class="table_border">
+    <tr class="table_td2" align=center>
+        <td height=25> 键值 </td>
+        <td> 永久? </td>
+        <td> 产生日期 </td>
+        <td> 最大生命 (s) </td>
+        <td> 过期剩余 (s) </td>
+        <td> 操作 </td>
+    </tr>
+
+	[#list elementInfoRecords as element]
+        <tr class="table_td1">
+            <td height=25> ${element.key}</td>
+            <td> [#if element.eternal]yes[#else]no[/#if]</td>
+            <td> ${element.createTime}</td>
+            <td> ${element.maxLifeSeconds?c}</td>
+            <td> ${element.expiresInSeconds?c}</td>
+            <td> <a href="admin/cache.jhtml?action=Remove&cacheName=${cacheName}&key=${element.key}"> 移除 </a> </td>
+        </tr>
+    [/#list]
+
+</table>
+
+<br/>
+[#include "/plugin/cms/base/includes/footer.html"]

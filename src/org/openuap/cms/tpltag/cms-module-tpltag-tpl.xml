@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-tpltag-tpl.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<beans>
+	<bean id="templateTagEngine"
+		class="org.openuap.cms.tpltag.engine.support.DefaultTemplateTagEngine">
+		
+	</bean>
+	<bean id="tagFreeMarkerEngineContentFilter"
+		class="org.openuap.cms.tpltag.engine.filter.TemplateTagFreeMarkerEngineContentFilter">
+		<property name="templateTagEngine" ref="templateTagEngine" />
+	</bean>
+</beans>

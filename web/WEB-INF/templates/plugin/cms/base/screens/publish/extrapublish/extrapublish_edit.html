@@ -1,0 +1,227 @@
+<#assign layout="/plugin/cms/base/layouts/admin.html"/> 
+
+<#assign actionTitle="${node.name}<font id=description>[<B>${node.nodeId?c}</B>]</font>" />
+<#assign _TITLE_="附件发布管理" />
+<#assign actions=[
+{"action":"ContentList","title":"发布管理","url":"${baseUrl}admin/publish.jhtml?action=ContentList&nodeId=${node.nodeId?c}","class":"view"},
+{"action":"","title":"添加附加发布","url":"javascript:doing('extrapublish_add','${node.nodeId?c}')","class":"add"}
+{"action":"List","title":"附加发布","url":"${baseUrl}admin/extrapublish.jhtml?action=List&nodeId=${node.nodeId?c}","class":"view"}
+{"action":"Resource","title":"资源管理","url":"${baseUrl}admin/resource.jhtml?action=ListResource&nodeId=${node.nodeId?c}","class":"view"}
+{"action":"Node","title":"站点设置","url":"${baseUrl}admin/nodeEdit.jhtml?mode=edit&nodeId=${node.nodeId?c}","class":"view"}
+{"action":"Recycle","title":"回收站","url":"${baseUrl}admin/publish.jhtml?action=RecycleContentList&nodeId=${node.nodeId?c}","class":"view"}
+
+]>
+
+<script src="html/common/dialog/artDialog.js" type="text/javascript"></script> 
+<script type="text/javascript" language="javascript">
+
+
+function doing(action)
+{
+	if(document.clientform.data_TplName.value=='') {
+		alert("");
+		return false;
+	}
+	var leftPos = (screen.availWidth-800) / 2
+	var topPos = (screen.availHeight-600) / 2 
+	switch(action) {
+		case 'editor':
+			 
+			break;
+		case 'upload':
+ 			
+			break;
+ 
+			
+		
+	}
+}
+var psn=null;
+var psn_ele;
+var url_ele;
+var form_global;
+var ele;
+function psnSelect(psn,form, psn_element,url_element) {
+	//showModalDialog
+
+	var caption="发布点目录选择";
+	var url="${baseUrl}admin/psn.jhtml?action=SelPsnDialog&psn=" + psn;
+	art.dialog.open(url, {title: caption,lock:true,width:640,height:380});
+	//var arr = showModalDialog("${baseUrl}admin/psn.jhtml?action=SelPsnDialog&psn=" + psn,"color","dialogWidth:428px;dialogHeight:"+(266+addheight)+"px;help:0;status:0;scroll:no");
+	psn_ele=psn_element;
+	url_ele=url_element;
+	form_global=form;
+
+}//end function psnSelect
+function callback(action,rs){
+	switch(action){
+		case 'psnSelect':{	
+			    if(rs != null) {
+					var PSN = '{PSN:'+ rs;
+					var URL = '{PSN-URL:'+ rs;
+					//
+					$('#'+psn_ele).val(PSN);
+					$('#'+url_ele).val(URL);
+					
+				}
+				break;
+		}
+		case 'tplSelect':
+		{
+			if(rs!=null&&rs!=''){
+				$('#'+ele).val(rs);
+			}
+			break;	
+		}
+	}
+}
+function tplSelect(tpl,form, element)
+{
+	//showModalDialog
+	ele=element;
+	var url="${baseUrl}admin/template.jhtml?action=SelTplDialog&tpl=" + tpl;
+	var caption='模板选择';
+	art.dialog.open(url, {title: caption,lock:true,width:428,height:266});
+	//var arr = showModalDialog("${baseUrl}admin/template.jhtml?action=SelTplDialog&tpl=" + tpl,"color","dialogWidth:428px;dialogHeight:"+(286+addheight)+"px;help:0;status:0;scroll:no");
+	
+}//end functin tplSelect
+function InputPicker(action, form, element)
+{
+	
+	switch(action) {
+		case 'color':
+			
+			break;
+		case 'date':
+			showCalendar(element, 'y-mm-dd');
+			break;
+		case 'upload':
+			
+			break;
+		case 'tpl':
+			with(form){
+
+				eval("var varlue1=" + element + ".value;")
+
+			}
+
+			var arr = showModalDialog("${baseUrl}admin/template.jhtml?action=SelTplDialog&tpl=" + varlue1,"color","dialogWidth:428px;dialogHeight:286px;help:0;status:0;scroll:no");
+			break;	
+		case 'psn':
+			
+			break;
+	}
+
+	if(arr != null) {
+		with(form){
+
+			eval(element + ".value= '" +  arr + "'")
+
+		}
+
+
+	}
+
+}
+
+</script>
+<#import "/spring.ftl" as spring />
+<form name='clientform' id="clientform" method='post' action='${baseUrl}admin/extrapublish.jhtml' >
+    <input type="hidden" name="nodeId" value="${nodeId}"/>
+	<input type="hidden" name="mode" value="${mode}"/>
+<div class="colorarea02">
+		<h2>
+			新增附加发布
+		</h2>
+<table border="0" cellspacing="0" cellpadding="2" width="100%"  align="center" class="maintable">
+
+   <tr> 
+      <th width="200">发布名称 :</th>
+      <td class="table_td2">
+	  <@spring.bind "publish.publishName"/>
+	  <input name='${spring.status.expression}' type='text' class='flat' id="${spring.status.expression}" tabindex='8'   size='25' value="${spring.status.value?default("")}">
+	  </td>
+    </tr>
+   <tr>
+	<th>发布文件名:</th>
+    <td class="table_td2">
+	   <@spring.bind "publish.publishFileName"/>
+	   <input name='${spring.status.expression}' id="${spring.status.expression}" type='text'   size=80% value="${spring.status.value?default("")}" >
+	 </td>
+   </tr>
+   <tr>
+	<th>套用模板:</th>
+     <td class="table_td2">
+	 <@spring.bind "publish.tpl"/>
+	 <input name='${spring.status.expression}' id="${spring.status.expression}" type='text' value='${spring.status.value?default("")}' size=80%  >&nbsp;<input name="button5" type='button' tabindex='13' value='...' onClick="tplSelect('tpl',this.form,'${spring.status.expression}')">
+	</td>
+   </tr>
+   <tr>
+	<th>自动关联刷新模式:</th>
+     <td class="table_td2">
+	 <@spring.bind "publish.autoRefreshMode"/>
+	 <select name="${spring.status.expression}" id="${spring.status.expression}"  class='flat' >
+	  	<#list autoRefreshModes as refreshMode>
+			<#if publish.autoRefreshMode?default(0)==refreshMode.mode>
+				<option value="${refreshMode.mode}" selected>${refreshMode.title}</option>
+			<#else>
+				<option value="${refreshMode.mode}" >${refreshMode.title}</option>
+			</#if>
+		</#list>
+	  </select>
+	</td>
+   </tr>
+   
+   <tr>
+		<th>自定义发布点(PSN):</th>
+    	<td class="table_td2">
+		<@spring.bind "publish.selfPsn"/>
+		<input name='${spring.status.expression}' id="${spring.status.expression}" type='text' value='${spring.status.value?default("")}' size=80%  >&nbsp; <input name="button6" type='button' tabindex='13' value='...' onClick="psnSelect('',this.form,'${spring.status.expression}','${spring.status.expression}Url')"></td>
+   </tr>
+   <tr>
+     <th>自定义发布URL :</th>
+     <td class="table_td2">
+	 <@spring.bind "publish.selfPsnUrl"/>
+    <input name='${spring.status.expression}' id="${spring.status.expression}" type='text' value='${spring.status.value?default("")}' size=80%  >&nbsp;
+    </td>
+  </tr>
+  <tr>
+  	<th>自定义发布模式:</th>
+  	<td> 
+  			<@spring.bind "publish.publishMode"/>
+			 <#list publishModes as pubMode>
+			 <#if publish.publishMode?default(-1)==pubMode.mode>
+			 <input name="${spring.status.expression}" type="radio" value="${pubMode.mode}" id="${spring.status.expression}_${pubMode.mode}" checked >
+			 <#else>
+			 <input name="${spring.status.expression}" type="radio" value="${pubMode.mode}" id="${spring.status.expression}_${pubMode.mode}">
+			 </#if>
+			<label for="${spring.status.expression}_${pubMode.mode}"  >${pubMode.title}</label>
+			 </#list>
+	</td>
+  </tr>
+  <tr>
+	  <th>自定义附加页入口URL:</th>
+	  <td>
+	  <@spring.bind "publish.extraPortalUrl"/>
+	  <input name='${spring.status.expression}' id="${spring.status.expression}" type='text' value='${spring.status.value?default("")}' size=80>
+	  </td>
+ </tr>
+ <tr> 
+      <th>附加注释:</th>
+      <td>
+	  <@spring.bind "publish.intro"/>
+	  <TEXTAREA NAME="${spring.status.expression}" ROWS="8" COLS="80"><#compress>
+	  ${spring.status.value?default("")}
+	  </#compress></TEXTAREA> </td>
+ </tr>
+  </table>
+</div>
+	
+	
+	<br />
+	<div class="buttons2">
+		<input type="submit" name="submit" value="提交保存" class="submit">
+		<input type="reset" name="reset" value="重置">
+	</div>
+</form>
+<br/>

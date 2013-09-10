@@ -1,0 +1,481 @@
+<#assign actionTitle="模板文件列表" />
+<#assign _TITLE_="模板文件列表" />
+<#assign actions=[{"action":"","title":"新建目录","url":"javaScript:newdir()"},
+{"action":"","title":"上传模板","url":"javaScript:uploadtpl()"},
+{"action":"","title":"新建模板","url":"javaScript:newfile()"}
+]>
+
+
+<#include "/plugin/cms/common/includes/header.htm"/>
+
+<script src="html/common/dialog/artDialog.js" type="text/javascript"></script>
+
+<script language="javascript">
+lastDiv = null;
+if('${path}' == '/') {
+	var PATH = '';
+
+} else {
+	var PATH = '${path}';
+
+}
+
+function divClick(theDiv,filename)
+{
+	if (lastDiv) {
+		//lastDiv.style.border = "1 solid #CCCCCC";
+		lastDiv.style.background = "#FFFFFF";
+		lastDiv.style.color = "#000000"
+	}
+	lastDiv = theDiv;
+	//theDiv.style.border = "2 solid #316AC5";
+	theDiv.style.background = "#000066";
+	lastDiv.style.color = "#FFFFFF"
+	//parent.document.form1.fileName.value= PATH + '/' + filename
+	//document.getElementById("FileToDelete").value = filename;
+
+}
+
+function opendir(dirname)
+{
+	PATH = PATH + '/' + dirname;
+	window.location = '${baseUrl}/admin/template.jhtml?action=List&path=' + encodeURIComponent(PATH);
+}
+
+function viewfile(filename)
+{
+	//
+	window.open('${baseUrl}/admin/template.jhtml?action=View&targetFile='+ encodeURIComponent(filename) +'&path=' + encodeURIComponent(PATH),'');
+	return false;
+}
+
+function letsgo(targetlocation)
+{
+	window.location = '${baseUrl}/admin/template.jhtml?action=List&path=' + encodeURIComponent(targetlocation);
+
+}
+
+function delfile(filename)
+{
+	if(confirm("确认删除吗?")) {
+		//
+		var oBao = new ActiveXObject("Microsoft.XMLHTTP");
+		var returnValue;
+		var ac="action=Del&targetFile="+encodeURIComponent(filename)+"&path="+ encodeURIComponent(PATH);
+		oBao.open("POST","${baseUrl}/admin/template.jhtml",false);
+		oBao.setRequestHeader("Content-Length",ac.length);
+		oBao.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		oBao.send(ac);
+		//
+		returnValue = unescape(oBao.responseText);
+
+		if(returnValue == '1') {
+			alert("文件删除成功")
+			document.location = document.location;
+		} else if(returnValue == '0') {
+			alert("文件删除失败")
+			document.location = document.location;
+
+		}
+	}
+	return false;
+}
+/**
+* edit the template file
+**/
+function editfile(filename)
+{
+    //check the filename is a text file
+	var regexp=/\S*.(htm|html|shtml|txt|js|css|vm|ftl)/ig
+	if(!regexp.test(filename)){
+		alert('您不能在线编辑非文本文件:'+filename+',允许编辑(htm|html|shtml|txt|js|css)!');
+		return false;
+	}
+	//
+	//var targetNodeID = showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=TargetNodeWindow","color","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+
+	/*if(targetNodeID != null && targetNodeID != '') {
+		var IndexID = prompt('输入IndexID（可选）', '0');
+		if(IndexID==null) {
+			IndexID = '';
+		}
+		var popupWin = window.open('${baseUrl}/admin/template.jhtml?action=EditorFrameset&mode=edit&path='+encodeURIComponent(PATH)+'&targetFile=' + encodeURIComponent(filename) + '&nodeId=' + targetNodeID + '&indexId=' + IndexID, '','width=800,height=600,scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+
+	}*/
+	var targetNodeID="0";
+	var IndexID="0";
+	var url='${baseUrl}/admin/templateEdit.jhtml?action=Edit&mode=edit&path='+encodeURIComponent(PATH)+'&targetFile=' + encodeURIComponent(filename) + '&nodeId=' + targetNodeID + '&indexId=' + IndexID;
+	var caption="在线模板编辑";
+	art.dialog.open(url, {title: caption,lock:true,width:800,height:600});
+	return false;
+}//end function editfile(filename);
+
+function newfile()
+{
+	var leftPos = (screen.availWidth-800) / 2
+	var topPos = (screen.availHeight-600) / 2
+	var popupWin = window.open('${baseUrl}/admin/template.jhtml?action=EditorFrameset&mode=add&path='+encodeURIComponent(PATH), '','width=800,height=600,scrollbars=no,resizable=yes,titlebar=0,top=' + topPos + ',left=' + leftPos);
+
+}
+
+function updir(dirname)
+{
+	PATH = PATH + '/' + dirname;
+	//alert(PATH);
+	window.location = '${baseUrl}/admin/template.jhtml?action=List&extra=updir&path=' + encodeURIComponent(PATH);
+}
+
+function newdir()
+{
+	var dirname= showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=InputDialog&Title="+encodeURIComponent('文件夹名'),"folderName","dialogWidth:300px;dialogHeight:150px;help:0;status:0;scroll:no");
+
+	if(dirname != null) {
+		var oBao = new ActiveXObject("Microsoft.XMLHTTP");
+		var returnValue;
+		//
+		var ac="action=MkDir&dirName="+encodeURIComponent(dirname)+"&path="+ encodeURIComponent(PATH);
+		oBao.open("POST","${baseUrl}/admin/template.jhtml",false);
+		oBao.setRequestHeader("Content-Length",ac.length);
+		oBao.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		oBao.send(ac);
+		//
+		returnValue = unescape(oBao.responseText);
+
+		if(returnValue == '1') {
+			alert("新建目录成功")
+			document.location = document.location;
+		} else if(returnValue == '0') {
+			alert("新建目录失败")
+			document.location = document.location;
+
+		}
+
+	}
+
+}
+
+function changenamefile(filename)
+{
+    //
+	var newfilename= showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=InputDialog&title="+encodeURIComponent('改名')+"&value="+encodeURIComponent(filename),"color","dialogWidth:300px;dialogHeight:150px;help:0;status:0;scroll:no");
+
+	if(newfilename != null && newfilename!= '' ) {
+		var oBao = new ActiveXObject("Microsoft.XMLHTTP");
+		var returnValue;
+		var ac="action=ChangeFileName&targetFile="+encodeURIComponent(filename)+"&newFile="+ encodeURIComponent(newfilename)+"&path="+ encodeURIComponent(PATH);
+		oBao.open("POST","${baseUrl}/admin/template.jhtml",false);
+		oBao.setRequestHeader("Content-Length",ac.length);
+		oBao.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		oBao.send(ac);
+		returnValue = unescape(oBao.responseText);
+
+		if(returnValue == '1') {
+			alert("文件改名成功")
+			document.location = document.location;
+		} else if(returnValue == '0') {
+			alert("文件改名失败")
+			document.location = document.location;
+		}
+	}
+	return false;
+}
+
+function movefile(filename)
+{
+	var targetPath = showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=SelTplDirDialog","color","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+	//alert(encodeURIComponent(PATH));
+	if(targetPath != null && targetPath!= '' ) {
+		var oBao = new ActiveXObject("Microsoft.XMLHTTP");
+		var returnValue;
+		var ac="action=Move&targetFile="+encodeURIComponent(filename)+"&targetPath="+ encodeURIComponent(targetPath)+"&path="+ encodeURIComponent(PATH);
+		oBao.open("POST","${baseUrl}/admin/template.jhtml",false);
+		oBao.setRequestHeader("Content-Length",ac.length);
+		oBao.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		oBao.send(ac);
+		returnValue = unescape(oBao.responseText);
+
+		if(returnValue == '1') {
+			alert("文件移动成功")
+			document.location = document.location;
+		} else if(returnValue == '0') {
+			alert("文件移动失败")
+			document.location = document.location;
+
+		}
+
+	}
+
+}
+
+function copyfile(filename)
+{
+	var targetPath = showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=SelTplDirDialog","tplDir","dialogWidth:324px;dialogHeight:331px;help:0;status:0;scroll:no");
+
+	if(targetPath != null && targetPath!= '' ) {
+		var oBao = new ActiveXObject("Microsoft.XMLHTTP");
+		var ac="action=Copy&targetFile="+encodeURIComponent(filename)+"&targetPath="+ encodeURIComponent(targetPath)+"&path="+ encodeURIComponent(PATH);
+		var returnValue;
+		oBao.open("POST","${baseUrl}/admin/template.jhtml",false);
+		oBao.setRequestHeader("Content-Length",ac.length);
+		oBao.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		oBao.send(ac);
+		returnValue = unescape(oBao.responseText);
+		if(returnValue == '1') {
+			alert("文件复制成功")
+			document.location = document.location;
+		} else if(returnValue == '0') {
+			alert("文件复制失败")
+			document.location = document.location;
+
+		}
+
+	}
+
+
+}
+
+function changenamedir(dirname)
+{
+	var newdirname= showModalDialog("${baseUrl}/admin/adminSelect.jhtml?action=InputDialog&title="+encodeURIComponent('改名')+"&value="+encodeURIComponent(dirname),"color","dialogWidth:300px;dialogHeight:150px;help:0;status:0;scroll:no");
+
+	if(newdirname != null && newdirname!= '' ) {
+		var oBao = new ActiveXObject("Microsoft.XMLHTTP");
+		var returnValue;
+		var ac="action=ChangeDirName&targetFile="+encodeURIComponent(filename)+"&newFile="+ encodeURIComponent(newdirname)+"&path="+ encodeURIComponent(PATH);
+		oBao.open("POST","${baseUrl}/admin/template.jhtml",false);
+		oBao.setRequestHeader("Content-Length",ac.length);
+		oBao.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		oBao.send(ac);
+		returnValue = unescape(oBao.responseText);
+
+		if(returnValue == '1') {
+			alert("目录改名成功")
+			document.location = document.location;
+		} else if(returnValue == '0') {
+			alert("目录改名失败")
+			document.location = document.location;
+
+		}
+
+	}
+	return false;
+}
+
+function uploadtpl()
+{
+	var url="${baseUrl}/admin/template.jhtml?action=Upload&path="+encodeURIComponent(PATH);
+	var caption="上传本地模板文件";
+	art.dialog.open(url, {title: caption,lock:true});
+	//var uploadfilename= showModalDialog("${baseUrl}/admin/template.jhtml?action=Upload&path="+encodeURIComponent(PATH),"upload","dialogWidth:380px;dialogHeight:150px;help:0;status:0;scroll:no");
+	//if(uploadfilename != null && uploadfilename!= ''){
+		//document.documentlist.action="${baseUrl}/admin/template.jhtml?action=UploadSubmit&path="+encodeURIComponent(PATH);
+		//document.documentlist.target="hiddenActionFrame";
+		//document.documentlist.uploadFile.value=uploadfilename;
+		//document.documentlist.submit();
+	//}
+
+}
+
+function deldir(dirname)
+{
+	if(confirm("确认删除该目录吗,如果该目录不为空,你将无法删除该目录?")) {
+		var oBao = new ActiveXObject("Microsoft.XMLHTTP");
+		var returnValue;
+		oBao.open("POST","admin_tpl.php?sId=15fc993341c8f85102f7ad64cd14d478&o=deldir&dirname="+dirname+"&PATH="+ PATH,false);
+		oBao.send();
+		returnValue = unescape(oBao.responseText);
+
+		if(returnValue == '1') {
+			alert("删除目录成功")
+			document.location = document.location;
+		} else if(returnValue == '0') {
+			alert("删除目录失败")
+			document.location = document.location;
+
+		}
+	}
+
+}
+
+var message = ''
+switch(message) {
+	case '1':
+		alert("新建目录成功");
+		break;
+	case '2':
+		alert("新建目录失败");
+		break;
+
+}
+
+
+</script>
+
+
+<SCRIPT>
+var elo;
+var loadmenuok=false;
+var type = 'main';
+var NodeID = '';
+
+
+//
+function rightMenu(filename) {
+	var toolMenu = new Menu();
+
+
+
+	toolMenu.add(new MenuItem('编辑','javascript:editfile("' + filename + '")'));
+	toolMenu.add(new MenuItem('删除','javascript:delfile("' + filename + '")'));
+	toolMenu.add(new MenuItem('重命名','javascript:changenamefile("' + filename + '")'));
+	toolMenu.add(new MenuItem('移动到..','javascript:movefile("' + filename + '")'));
+	toolMenu.add(new MenuItem('复制到..','javascript:copyfile("' + filename + '")'));
+
+	//menudata.innerHTML = toolMenu
+	var left, top;
+	el=window.event.srcElement;
+	while ( el != null && el.tagName != "TR" )
+		el = el.parentNode;
+
+	var showToolMenu = el != null && el.tagName == "TR";
+	//
+	if(showToolMenu){
+		left = window.event.screenX;
+		top = window.event.screenY;
+		toolMenu.invalidate();
+		toolMenu.show( left, top );
+	}
+}
+
+
+</SCRIPT>
+
+<SCRIPT language=JavaScript>
+function CheckAll(form)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall' && e.name !='copy')       e.checked = form.chkall.checked;
+   }
+  }
+
+
+
+</script>
+<script>
+
+
+function going(form, o)
+{
+	document.documentlist.referer.value = document.location;
+
+	with(form) {
+		switch(o) {
+			case 'copy':
+				//
+
+				break;
+			case 'cut':
+				//
+				break;
+			case 'del':
+				//
+				break;
+
+		}
+
+	}
+}
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	if (document.getElementById)
+		t = document.getElementById(tbl);
+	else
+		t = document.all(tbl);
+	if (t == null) return;
+	if (t.getElementsByTagName)
+		d = t.getElementsByTagName("TD");
+	else
+		d = t.all.tags("TD");
+	if (d == null) return;
+	if (d.length <= idx) return;
+	d[idx].className = cls;
+
+}
+
+</script>
+
+<body leftmargin="0" topmargin="0" ondragstart="window.event.returnValue=false" oncontextmenu="window.event.returnValue=false" onselectstart="event.returnValue=false">
+<div id="body" class="webfx-columnlist-body">
+			<form method="post" action="" name="documentlist" enctype="multipart/form-data" >
+			<div style="display:none"><input type="file" name="uploadFile" /></div>
+			
+<TABLE border="0" cellpadding="1" cellspacing="0" width=100% >
+
+  
+
+<tr>
+<td colspan="1"  class="3d" height=15>&nbsp;&nbsp;名称</td>
+<td width="51" align=right class="3d">大小&nbsp;&nbsp;</td>
+<td width="184" class="3d">&nbsp;&nbsp;更改日期</td>
+<td width="63" class="3d">&nbsp;&nbsp;属性</td>
+<td width="178" class="3d">&nbsp;&nbsp;执行操作</td>
+</tr>
+<#if path!="/"&&path!="">
+<tr >
+<td  >&nbsp;<img src="html/common/images/icon/updir.gif" width="16" height="16" onDblClick="updir('')"><label   class="imageholder" onDblClick="updir('')"     > 上级目录 </label></td>
+
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</#if>
+<#list tplFiles as tplFile>
+<#if tplFile.isFolder()>
+<tr height="20">
+      <td nowrap ><#compress><input type='checkbox' name='pData' value='${tplFile.name}' id="p_${tplFile_index}" ><img src="html/common/images/icon/${tplFile.icon}.gif" width="16" height="16" align="absmiddle" onDblClick="opendir('${tplFile.name}')" >
+		  <a  href="#" onClick="return false;" onDblClick="opendir('${tplFile.name}');return false;"> ${tplFile.name}</a></#compress></TD>
+				<td align=right>--</td>
+<td nowrap ><#compress>&nbsp;&nbsp;${tplFile.createDate?string("yyyy-MM-dd HH:mm:ss")}</#compress></td>
+<td >&nbsp;&nbsp;${tplFile.property}</td>
+<td nowrap >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [<a href="#" onClick="return deldir('${tplFile.name}')">删除</a>]&nbsp;&nbsp;[<a href="#" onClick="return changenamedir('${tplFile.name}')">改名</a>]</td>
+</tr>
+<#else>
+<TR height="20">
+      <td nowrap ><#compress><input type='checkbox' name='pData' value='${tplFile.name}' id="p_${tplFile_index}" ><img  src="html/common/images/icon/${tplFile.icon}.gif" width="16" height="16" align="absmiddle" ><a  href="#" onClick="return false;"  onDblClick="return viewfile('${tplFile.name}');" oncontextmenu="rightMenu('${tplFile.name}');return false;">${tplFile.name}</a></#compress></TD>
+
+				<#assign fileSize=(tplFile.size/1024)?int/>
+				<#if tplFile.size%1024!=0>
+				<#assign fileSize=fileSize+1/>
+				</#if>
+				<td  align=right>${fileSize}&nbsp;KB&nbsp;</td>
+<td nowrap ><#compress>&nbsp;&nbsp;${tplFile.createDate?string("yyyy-MM-dd HH:mm:ss")}</#compress></td>
+<td >&nbsp;&nbsp;${tplFile.property}</td>
+<td nowrap >&nbsp;&nbsp;[<a href="void(0)" onclick="return editfile('${tplFile.name}')">编辑</a>]&nbsp;&nbsp;[<a href="#" onClick="return delfile('${tplFile.name}')">删除</a>]&nbsp;&nbsp;[<a href="#" onClick="return changenamefile('${tplFile.name}')">改名</a>]</td>
+</TR>
+</#if>
+</#list>
+</table>
+<table border="0" cellpadding="1" cellspacing="0" width=100% >
+<TR >
+      <td colspan="5" ><input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  >
+<label for="chkall">全选</label>
+&nbsp;&nbsp;&nbsp;&nbsp;<select name="actionMap" id="actionMap" >
+
+
+          <option value="del">删除</option>
+
+
+			  </select>
+<input TYPE="hidden" name="referer">
+			  <input type="button" value="执行" class=button onClick="going(this.form,actionMap.options[actionMap.selectedIndex].value)">
+</td>
+</TR>
+
+</table>
+</form>
+</div>
+
+<iframe src="" name="hiddenActionFrame" height=0 width=0 style="display:none"></iframe>
+<#include "/plugin/cms/common/includes/footer.htm"/>

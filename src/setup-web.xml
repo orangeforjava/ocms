@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+  - DispatcherServlet application context for the cms setup application.
+
+-->
+<beans>
+  <bean id="cmsViewResolver" class="org.openuap.base.web.mvc.view.BaseFreeMarkerViewResolver">
+    <property name="viewClass">
+      <value>org.openuap.setup.view.SetupFreeMarkerView</value>
+    </property>
+  </bean>
+  <bean id="handlerMappingSetup" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <property name="urlMap">
+      <map>
+        <entry key="/setup/index.setup">
+          <ref local="setupAction"/>
+        </entry>
+      </map>
+    </property>
+  </bean>
+  <bean id="setupAction" class="org.openuap.setup.action.SetupController">
+    <property name="setupPersister">
+      <ref bean="setupPersister"/>
+    </property>
+  </bean>
+</beans>

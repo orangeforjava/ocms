@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <terms>
+    <term key="长期有效">长期有效</term>
+    <term key="一星期">一星期</term>
+	<term key="一个月">一个月</term>
+	<term key="半年">半年</term>
+	<term key="两年">两年</term>
+	<term key="三年">三年</term>
+	<term key="三年以上">三年以上</term>
+  </terms>
+</directory>

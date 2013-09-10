@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-log.xml 3995 2011-01-05 15:13:31Z orangeforjava $
+-->
+<beans>
+	
+	<!-- BIZ -->
+	<!-- <bean id="dataSourceManager"
+		class="org.openuap.cms.ds.manager.impl.DataSourceManagerImpl">
+		<property name="dataSourceDao">
+			<ref bean="dataSourceDao" />
+		</property>
+	</bean> -->
+</beans>

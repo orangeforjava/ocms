@@ -1,0 +1,184 @@
+
+
+<#assign actionTitle="站点权限[${node.name}(${node.nodeId?c})]" />
+<#assign _TITLE_="权限管理" />
+<#assign actions=[
+{"action":"EditNode","title":"结点管理","url":"${baseUrl}admin/nodeEdit.jhtml?mode=edit&nodeId=${node.nodeId?c}","class":"view"},
+{"action":"","title":"权限管理","url":"${baseUrl}admin/node/permission.jhtml?id=${nodeId}","class":"view"},
+{"action":"AddRole","title":"添加角色","url":"${baseUrl}admin/node/permission.jhtml?action=AddRole&id=${nodeId}","class":"add"},
+{"action":"InitRole","title":"初始化缺省角色","url":"${baseUrl}admin/node/permission.jhtml?action=InitRole&id=${nodeId}","class":"view"}
+
+]>
+<#include "/plugin/cms/common/includes/header.htm"/>
+<style>
+
+div.titleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 100;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.subtitleholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.timeholder {
+	font-family: ms sans serif, arial;
+	font-size: 8pt;
+	width: 90;
+	text-overflow: ellipsis;
+	margin: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.table_plan_td1 {
+	background-color: #FDEEB9
+}
+</style>
+
+<script language='JavaScript'>
+
+function refreshWorkArea()
+{
+ document.location =  document.location
+}
+
+var doImage = doImage;
+var TType = TType;
+
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	if (document.getElementById)
+		t = document.getElementById(tbl);
+	else
+		t = document.all(tbl);
+	if (t == null) return;
+	if (t.getElementsByTagName)
+		d = t.getElementsByTagName("TD");
+	else
+		d = t.all.tags("TD");
+	if (d == null) return;
+	if (d.length <= idx) return;
+	d[idx].className = cls;
+}
+
+</script>
+
+<script>
+
+/**
+* single process!
+**/
+function doing(action, userId) {
+	
+	switch(action) {
+		case 'edit':
+		{
+			//alert(userId);
+			document.location="${baseUrl}/admin/userEdit.jhtml?mode=edit&userId="+userId;
+			alert('${baseUrl}/admin/userEdit.jhtml?mode=edit&userId='+userId);
+			break;
+		}
+	}	
+}
+
+</script>
+
+<script language=JavaScript>
+<!--
+function CheckAll(form)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall' && e.name !='copy')       e.checked = form.chkall.checked;
+   }
+  }
+
+//-->
+
+
+</script>
+<script>
+var mousemovecolor="#D4D4D4";
+var selectcolor ="#DDDDDD";
+var oldcolor;
+
+function GetRow(oElem)
+{
+	while (oElem)
+	{	//alert(oElem.tagName.toLowerCase())
+		if (oElem.tagName.toLowerCase() == "tr" || oElem.parentElement.tagName.toLowerCase() == "tbody")
+		    return oElem;
+		if (oElem.tagName.toLowerCase() == "table" || oElem.tagName.toLowerCase() == "th") return false;
+		oElem = oElem.parentElement;
+	}
+}
+/**
+* batch process!
+**/
+function going(form, o)
+{
+	
+}
+</script>
+
+
+<form method="post" action="" name="documentlist" >
+<table width="100%" border="0" align="center" cellpadding="1" cellspacing="0"  class="table_border" >
+  <TBODY>
+  
+
+    <tr class="table_td2">
+      <td align="center" height=25></td>
+      <td align="center"><B>ID</B></td>
+      <td align="center"><B>排序</B></td>
+	  <td align="center"><B>角色名</B></td>      
+      <td align="center"><B>状态</B></td>
+	  <td align="center"><B>产生日期</B></td>
+	  <td align="center"><B>修改日期</B></td>
+      <td colspan="5" align="center"><B>执行操作</B></td>
+  </tr>
+  <!--start-->
+<#list roles as role>
+  <tr class="table_td1" id="${role.roleId?c}" onmouseover='this.style.backgroundColor="#FFFFFF"' onmouseout='this.style.backgroundColor=""' >
+      <td noWrap > <input type='checkbox' name='pData' value='${role.roleId?c}' id="p_${role.roleId?c}" ></td>
+      <td align="center" noWrap   ><div class="subtitleholder">${role.roleId?c}</div></td>
+	  <td noWrap >${role.pos}</td>
+	 <td   noWrap  style="cursor:hand" id="">
+<#compress>
+	  <A HREF="javascript:void(0);" onClick="javascript:void(0);" class="o" style="cursor:hand"   oncontextmenu="javascript:void(0);" title="${role.title}">${role.title}</A>	  	  
+</#compress>
+	  </td>
+	  <td align="center" noWrap  ><div class="subtitleholder">${role.status}</div></td>
+      <td align="center" noWrap ><div class="timeholder">${(action.getDate(role.creationDate?default(0)))?string("yyyy-MM-dd HH:mm")}</div></td>
+	  <td align="center" noWrap ><div class="timeholder">${(action.getDate(role.modificationDate?default(0)))?string("yyyy-MM-dd HH:mm")}</div></td>
+     <td colspan="5" align="center" noWrap>
+	 <#assign userCount=roleManager.getRoleUserCount(role.roleId)/>
+	 <A HREF="${baseUrl}/admin/user.jhtml?action=ViewRolePermission2&roleId=${role.roleId?c}" onClick="javascript:void(0);">权限</A>&nbsp;<A HREF="${baseUrl}/admin/user.jhtml?action=ViewRoleUsers&roleId=${role.roleId?c}" onClick="javascript:void(0);">包含用户(<font color=red>${userCount}</font>)</A>&nbsp;<A HREF="${baseUrl}/admin/roleEdit.jhtml?mode=edit&roleId=${role.roleId?c}" onClick="javascript:void(0);">编辑</A>&nbsp;<A HREF="javascript:void(0);" onClick="return confirm('确认删除吗?')">删除</A>
+	  </td>
+ </tr>
+ </#list>
+ <!--end-->
+    <tr class="Tablelistbg">
+      <td colspan="12" align="left" bgcolor="#F5F5F5"> <table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align=left>
+            
+
+            </td>
+          </tr>
+        </table></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+<br/>
+<#include "/plugin/cms/common/includes/footer.htm"/>

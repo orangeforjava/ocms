@@ -1,0 +1,160 @@
+<#assign noLayout="true"/>
+<#import "/plugin/cms/base/macros/node-macros.html" as mynode />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma"  content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>publish content header</title>
+<base  href="${baseUrl}"/>
+<link rel="stylesheet" type="text/css" href="html/plugin/cms/base/css/style.css"/>
+<link type="text/css" rel="StyleSheet" href="html/common/css/ui/ui-lightness/jquery-ui-1.8.6.custom.css" />
+
+
+<script src="html/common/js/jquery-1.4.3.min.js" language="javaScript"></script>
+<script src="html/common/js/jquery-ui-1.8.6.custom.min.js" language="javaScript"></script>
+<script LANGUAGE=javascript>
+var sp_isRefresh = false;
+
+function window_onbeforeunload() {
+        if(!sp_isRefresh)
+        {
+	var str="";
+	str="你的数据还未保存，您真的要关闭窗口吗？";
+	return str;
+        } else {
+		 //return false;
+		}
+}
+
+</script>
+</head>
+<body  style="margin:0pt;padding:0pt;border: 1px buttonhighlight;">
+<script language='JavaScript'>
+
+var NodeID = '${node.nodeId?c}'
+function doing(action)
+{
+	switch(action) {
+		case 'createContent':
+			parent.mainFrame.location = '${baseUrl}admin/publishEdit.jhtml?action=Edit&type=main&nodeId=' +NodeID;
+			break;
+		case 'saveContent':
+			//
+			var returnValue;
+			if(!confirm("确认保存吗?")) return false;
+			
+			<#list cfs as cf>
+				<#assign fieldInputPicker=cf.fieldInputPicker?default("")/>
+				<#assign fieldTitle=cf.fieldTitle/>
+				<#assign fieldName=cf.fieldName/>
+				<#if cf.fieldInput=="text">
+					<#if fieldInputPicker=="content">
+						parent.mainFrame.document.FM.data_${fieldName}_value.value = parent.mainFrame.setContentLinkValue('${fieldName}');
+					</#if>
+				</#if>
+			</#list>
+			//准备提交
+			if(parent.mainFrame.prepareSubmit()){
+			parent.mainFrame.document.FM.redirection.value="edit";
+			//提交
+		    parent.mainFrame.document.FM.submit();
+			}
+
+			break;
+		case 'saveAndNewContent':
+			{
+			var returnValue;
+			if(!confirm("确认保存吗?")) return false;
+			
+			<#list cfs as cf>
+				<#assign fieldInputPicker=cf.fieldInputPicker?default("")/>
+				<#assign fieldTitle=cf.fieldTitle/>
+				<#assign fieldName=cf.fieldName/>
+				<#if cf.fieldInput=="text">
+					<#if fieldInputPicker=="content">
+						parent.mainFrame.document.FM.data_${fieldName}_value.value = parent.mainFrame.setContentLinkValue('${fieldName}');
+					</#if>
+				</#if>
+			</#list>
+			//准备提交
+			if(parent.mainFrame.prepareSubmit()){
+			parent.mainFrame.document.FM.redirection.value="new";
+			//提交
+		    parent.mainFrame.document.FM.submit();
+			}
+			break;
+			}
+		case 'close':
+			sp_isRefresh = true;
+			if(parent.parent&&parent.parent.win){
+				parent.parent.win.close();
+			}
+			parent.window.close();
+			//
+			break;
+		case 'changeNode':
+			NodeID = changeNode.options[changeNode.selectedIndex].value
+ 			parent.mainFrame.location = '${baseUrl}admin/publishEdit.jhtml?action=Edit&type=main&nodeId=' +NodeID;
+	}
+}
+
+$(function() {
+		$( "#newdoc" ).button({
+			text: true,
+			icons: {
+				primary: "ui-icon-document"
+			}
+		});
+		$( "#savedoc" ).button({
+			text: true,
+			icons: {
+				primary: "ui-icon-disk"
+			}
+		});
+		$( "#savenewdoc" ).button({
+			text: true,
+			icons: {
+				primary: "ui-icon-disk"
+			}
+		});
+		$( "#close" ).button({
+			text: true,
+			icons: {
+				primary: "ui-icon-close"
+			}
+		});
+		$( "#changenode" ).button({
+			text: true,
+			icons: {
+				primary: "ui-icon-document"
+			}
+		});
+});
+</script>
+<div class="toolbar">
+	<table cellpadding="0" cellspacing="2" width="100%" height="19" border="0">
+    <tr>
+      <td align="left">
+      		   
+      		   
+      		   <button id="newdoc" onclick="doing('createContent')">新建文档</button>
+               <button id="savedoc" onclick="doing('saveContent')">保存文档</button>
+               <button id="savenewdoc" onclick="doing('saveAndNewContent')">保存并新建文档</button>
+               <button id="close" onclick="doing('close')">关闭</button>
+               
+               
+      </td>
+      <td align="right">
+        <#--<select  name="changeNode" id="changeNode">
+         <@mynode.showNodesSel nodeManager=nodeManager selId=node.nodeId/>
+ 	   </select>
+ 		<button id="changenode" onclick="doing('changeNode')">新建文档</button>
+ 		-->
+      </td>
+     </tr>
+     </table> 
+</div>
+
+</body>
+</html>

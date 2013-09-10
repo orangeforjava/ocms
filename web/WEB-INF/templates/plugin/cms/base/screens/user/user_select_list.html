@@ -1,0 +1,236 @@
+[#import "/plugin/cms/base/screens/user/macros/pager-macros.html" as mypager /]
+[#assign actionTitle="选择用户" />
+[#assign _TITLE_="选择用户" /]
+[#include "/plugin/cms/common/includes/header.htm"/]
+<script language='JavaScript' type="text/javascript">
+
+function refreshWorkArea()
+{
+ document.location =  document.location
+}
+
+var doImage = doImage;
+var TType = TType;
+
+function mhHover(tbl, idx, cls)
+{
+	var t, d;
+	if (document.getElementById)
+		t = document.getElementById(tbl);
+	else
+		t = document.all(tbl);
+	if (t == null) return;
+	if (t.getElementsByTagName)
+		d = t.getElementsByTagName("TD");
+	else
+		d = t.all.tags("TD");
+	if (d == null) return;
+	if (d.length <= idx) return;
+	d[idx].className = cls;
+}
+
+</script>
+
+<script type="text/javascript">
+/**
+* single process!
+**/
+function doing(action, userId) {
+	
+	switch(action) {
+		case 'edit':
+		{
+			//alert(userId);
+			//
+			break;
+		}
+	}	
+}
+
+
+
+</script>
+
+<script language="JavaScript" type="text/javascript">
+<!--
+function CheckAll(form)  {
+  for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall' && e.name !='copy')       
+    	e.checked = form.chkall.checked;
+   }
+}
+
+//-->
+
+
+</script>
+<script type="text/javascript">
+var mousemovecolor="#D4D4D4";
+var selectcolor ="#DDDDDD";
+var oldcolor;
+
+function GetRow(oElem)
+{
+	while (oElem)
+	{	//alert(oElem.tagName.toLowerCase())
+		if (oElem.tagName.toLowerCase() == "tr" || oElem.parentElement.tagName.toLowerCase() == "tbody")
+		    return oElem;
+		if (oElem.tagName.toLowerCase() == "table" || oElem.tagName.toLowerCase() == "th") return false;
+		oElem = oElem.parentElement;
+	}
+}
+/**
+* batch process!
+**/
+function going(form, o)
+{
+	
+}
+function returnOk(form,field){
+	var rs=returnValue(form,field);
+	if(rs==''){
+		alert('对不起，您没有选择任何用户！');
+		return;
+	}else{
+		var cf=confirm('您确认选择这些用户吗？');
+		if(cf){
+		    //
+		    var parent = art.dialog.parent;
+			parent.callBack(rs);
+			art.dialog.close();
+			
+		}else{
+			return;
+		}
+	}
+}
+function returnValue(form,field){
+	var rs='';
+	with(form) {
+		var count = 0;
+      	var checkboxObj = field;
+		
+      	if(checkboxObj == null)
+      	{
+        	return rs;
+      	}
+      	else
+      	{
+        	for (var i = 0; i < checkboxObj.length; i++)
+        	{
+          		if(checkboxObj[i].checked){
+					if(rs==''){
+						rs=checkboxObj[i].value;
+					}else{
+						rs=rs+','+checkboxObj[i].value;
+					}
+          			count++;
+				}
+        	}
+      	}
+		if(count==0&&(checkboxObj.length == null && checkboxObj.checked)){
+			rs=checkboxObj.value;
+		}
+		//
+		return rs;
+	}//end with
+}
+</script>
+
+
+<div id="toolbar">
+  <form action="" method="get"> 
+  <table cellpadding="0" cellspacing="2" width="100%" height="19" border="0">
+   <tr>
+      
+      <td height="20" align="right" nowrap="nowrap" >按日期查询:</td>
+	  <td height="20" align="left" nowrap="nowrap"   >
+        <input type="text" name="dTime"   id="dTime" onfocus="return showCalendar('dTime', 'y-mm-dd');" value="" >
+        <input name="Go" type="button" value="执行" onclick="doing('date_search')">
+      </td>
+      <td height="20" align="right" nowrap="nowrap" >用户名查询: </td>
+	  <td   height="20" nowrap="nowrap" > <input type="text" name="SearchKeywords" id="SearchKeywords"   value="">
+        <input name="Go" type="button"  value="执行" onclick="doing('keyword_search')">
+
+   </td>
+   </tr>
+  </table>
+  </form>
+</div>
+
+<form method="post" action="" name="documentlist" >
+<table width="100%" border="0" align="center" cellpadding="2" cellspacing="1"  class="table_border" >
+  <TBODY>
+  
+
+    <tr class="table_td2">
+      <td align="center" height=25><input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  ></td>
+      <td align="center"><B>ID</B></td>
+      <td align="center"><B>排序</B></td>
+	  <td align="center"><B>登录名</B></td>
+	  <td align="center"><B>用户名</B></td> 
+	  <td align="center"><B>类型</B></td>    
+      <td align="center"><B>状态</B></td>
+	  <td align="center"><B>产生日期</B></td>
+  </tr>
+  <!--start-->
+[#list users as user]
+  <tr class="table_td1" id="${user.id?c}" onmouseover='this.style.backgroundColor="#FFFFFF"' onmouseout='this.style.backgroundColor=""' >
+      <td noWrap > <input type='checkbox' name='pData' value='${user.id?c}' id="p_${user.id?c}" ></td>
+      <td align="center" noWrap   ><div class="subtitleholder">${user.id?c}</div></td>
+	  <td noWrap > <input type='text' name='sort_${user.id?c}' value='${user.pos}'  size=1 style="border:1px #000000;" onClick="this.form.p_${user.id?c}.checked = true;"></td>
+	 <td   noWrap  style="cursor:hand" id="">
+[#compress]
+	  <div class="titleholder">
+	  &nbsp;&nbsp;
+	  <A HREF="javascript:void(0);" onClick="javascript:void(0);" class="o" style="cursor:hand"   oncontextmenu="javascript:void(0);" title="${user.name}">${user.name}</A>	  	  
+	  </div>
+[/#compress]
+	  </td>
+	  <td   noWrap  style="cursor:hand" id="">
+[#compress]
+	  <div>
+	  &nbsp;&nbsp;
+	  <A HREF="javascript:void(0);" onClick="javascript:void(0);" class="o" style="cursor:hand"   oncontextmenu="javascript:void(0);" title="${user.title?default("")}">${user.title?default("")}</A>	  	  
+	  </div>
+[/#compress]
+	  </td>
+	  <td align="center" noWrap  ><div class="subtitleholder">${user.type}</div></td>
+	  <td align="center" noWrap  ><div class="subtitleholder">${user.status}</div></td>
+      <td align="center" noWrap ><div class="timeholder">${(action.getDate(user.creationDate?default(0)))?string("yyyy-MM-dd HH:mm")}</div></td>
+     
+ </tr>
+[/#list]
+ <!--end-->
+    <tr >
+      <td colspan="8" align="left" bgcolor="#F5F5F5"> 
+      	<table border="0" align="center"  cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align=left>
+            <input type="checkbox" name="chkall" value="on" onClick="CheckAll(this.form)" id="chkall"  >
+              <label for="chkall" >全选</label>&nbsp;&nbsp;
+			  <input type="button" value="确定" class=button onClick="return returnOk(this.form,documentlist.pData)">
+
+            </td>
+			<td height="20" align="right" nowrap="nowrap"> <INPUT name="go_display" TYPE="button" value="显示:" onClick="doing('display_record')" ></td>
+	  		<td   height="20" nowrap="nowrap" align="right"  width=80> &nbsp;&nbsp;<INPUT TYPE="text" NAME="offset" size=1 value="${pageNum}"> 条记录
+
+   			</td>
+          </tr>
+        </table></td>
+    </tr>
+
+
+
+  <tr >
+    <td colspan="8" height=25 align=right>	
+	
+	[#assign pageUrl=baseUrl+"admin/user.jhtml?action=SelUserList&pageNum="+pageNum+"&page="/]
+	[@mypager.pageBuilder pb=pb baseUrl=pageUrl closeUrl=""/]	
+	 </td>
+  </tr>
+  </tbody>
+</table>
+  </form>
+[#include "/plugin/cms/base/includes/footer.html"]

@@ -1,0 +1,33 @@
+<#macro showNodesSel nodeManager rootId=0 level=0 placeholder="" selId=0>
+    <#if rootId!=0>
+	<#local ct_node=nodeManager.getNode(rootId)/>
+		<#if ct_node.nodeId==selId>
+		<option value="${ct_node.nodeId?c}" selected>${placeholder}|-${ct_node.name}</option>
+		<#else>
+		<option value="${ct_node.nodeId?c}">${placeholder}|-${ct_node.name}</option>
+		</#if>	
+	</#if>
+	<#local nodes=nodeManager.getChildNodes(rootId)/>
+	<#list nodes as node>
+	<#if node.nodeId==selId>
+		<#if placeholder=="">
+		<option value="${node.nodeId?c}" selected>${placeholder+"&nbsp;&nbsp;&nbsp;&nbsp;"}|-${node.name}</option>
+		<#else>
+		<option value="${node.nodeId?c}" selected>${placeholder+"|&nbsp;&nbsp;&nbsp;&nbsp;"}|-${node.name}</option>
+		</#if>
+	
+	<#else>
+		<#if placeholder=="">
+		<option value="${node.nodeId?c}">${placeholder+"&nbsp;&nbsp;&nbsp;&nbsp;"}|-${node.name}</option>
+		<#else>
+		<option value="${node.nodeId?c}">${placeholder+"|&nbsp;&nbsp;&nbsp;&nbsp;"}|-${node.name}</option>
+		</#if>	
+	</#if>
+		<#if nodeManager.getChildNodesCount(node.nodeId) gt 0>
+		<#local childNodes=nodeManager.getChildNodes(node.nodeId)/>
+		<#list childNodes as childNode>
+		<@showNodesSel nodeManager=nodeManager rootId=childNode.nodeId level=level+1 placeholder=placeholder+"&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;" selId=selId/>
+		</#list>
+		</#if>
+	</#list>
+</#macro>

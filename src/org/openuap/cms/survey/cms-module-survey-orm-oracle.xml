@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<description>Survey插件 Oracle ORM</description>
+
+	<bean id="surveyOracle-MappingResources"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<property name="dialect">
+			<value>org.hibernate.dialect.Oracle9Dialect</value>
+		</property>
+		<property name="mappings">
+			<list>
+				<value>
+					org/openuap/cms/survey/model/oracle/SurveyArea.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/oracle/Survey.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/oracle/Question.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/oracle/QuestionItem.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/oracle/Voter.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/oracle/Answer.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/oracle/AnswerItem.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/oracle/SurveyRecord.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/survey/model/oracle/QuestionItemRecord.hbm.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+</beans>

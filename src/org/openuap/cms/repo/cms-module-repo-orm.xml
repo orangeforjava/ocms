@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	$Id: cms-module-repo-orm.xml 3938 2010-10-27 03:25:16Z orangeforjava $
+-->
+<beans>
+	<bean id="repoMapping"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<property name="mappings">
+			<list>
+				<value>
+					org/openuap/cms/repo/model/ContentIndex.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/repo/model/ContentIndexProp.hbm.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="repoOracleMapping"
+		class="org.openuap.runtime.setup.persistence.hibernate.MappingResources">
+		<property name="dialect">
+			<value>org.hibernate.dialect.Oracle9Dialect</value>
+		</property>
+		<property name="mappings">
+			<list>
+				<value>
+					org/openuap/cms/repo/model/oracle/ContentIndex.hbm.xml
+				</value>
+				<value>
+					org/openuap/cms/repo/model/oracle/ContentIndexProp.hbm.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	- Middle tier application context definition for the CMS application.
+-->
+<beans default-lazy-init="true">
+	<bean id="utilHandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/admin/select.jhtml">
+					<ref local="selectAction" />
+				</entry>
+				<entry key="/error.jhtml">
+					<ref local="errorAction" />
+				</entry>
+				<entry key="/remote.jhtml">
+					<ref local="remoteAction" />
+				</entry>
+			</map>
+		</property>
+		<property name="order" value="10" />
+	</bean>
+	<!-- <bean id="util2HandlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="urlMap">
+			<map>
+				<entry key="/**/*.jhtml">
+					<ref local="urlFilenameViewAction" />
+				</entry>
+			</map>
+		</property>
+		
+	</bean>
+	
+	<bean id="urlFilenameViewAction"
+		class="org.openuap.cms.web.action.CmsUrlFilenameViewAction">
+		
+	</bean> -->
+	<bean id="remoteAction"
+		class="org.openuap.cms.core.action.CmsAjaxAction">
+		<property name="serviceKey" value="org.openuap.cms"></property>
+	</bean>
+	<bean id="selectAction"
+		class="org.openuap.cms.util.action.SelectAction">
+	</bean>
+	<bean id="errorAction"
+		class="org.openuap.cms.util.action.ErrorAction" />
+</beans>

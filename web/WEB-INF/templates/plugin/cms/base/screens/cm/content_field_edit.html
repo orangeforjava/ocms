@@ -1,0 +1,256 @@
+[#assign actionTitle="模型属性编辑" /]
+[#assign _TITLE_="模型属性编辑" /]
+[#if contentField.contentFieldId??]
+[#assign actions=[
+{"action":"List","title":"内容模型管理","url":"${baseUrl}admin/content.jhtml","class":"view"},
+{"action":"CTEdit","title":"内容模型编辑","url":"${baseUrl}admin/contentEdit.jhtml?tableId=${contentField.contentTable.tableId}","class":"view"},
+{"action":"","title":"编辑属性","url":"${baseUrl}admin/fieldEdit.jhtml?mode=edit&tableId=${contentField.contentTable.tableId}&contentFieldId=${contentField.contentFieldId}","class":"view"}
+]]
+[#else]
+[#assign actions=[
+{"action":"List","title":"内容模型管理","url":"${baseUrl}admin/content.jhtml","class":"view"},
+{"action":"CTEdit","title":"内容模型编辑","url":"${baseUrl}admin/contentEdit.jhtml?tableId=${contentField.contentTable.tableId}","class":"view"},
+{"action":"","title":"新建属性","url":"${baseUrl}admin/fieldEdit.jhtml?mode=add&tableId=${contentField.contentTable.tableId}","class":"add"}
+]]
+[/#if]
+
+[#include "/plugin/cms/common/includes/header.htm"/]
+
+[#if messageCode?exists]
+ <center><div class='errormessage' style='width: 400px;' ><img class='errormessage' src='html/common/images/info.gif' align='absmiddle'/>&nbsp;<span class='tab-r'>${messageCode}</span></div></center><br></center>
+[/#if]
+<script language="JavaScript">
+function tplSelect(tpl,form, element)
+{
+	var arr = showModalDialog("${baseUrl}admin/adminSelect.jhtml?action=SelTplDialog&tpl=" + tpl,"color","dialogWidth:428px;dialogHeight:286px;help:0;status:0;scroll:no");
+	if(arr != null) {
+		with(form){
+
+			eval(element + ".value= '" +  arr + "'")
+
+		}
+	}
+}
+</script>
+<br/>
+[#import "/spring.ftl" as spring /]
+<form action="${baseUrl}admin/fieldEdit.jhtml" method="post"  name="clientform" id="clientform">
+    <input type="hidden" name="mode" value="${mode}"/>
+	<div class="colorarea02">
+			<h3>
+				属性基本信息
+			</h3>
+	<table border="0" cellspacing="0" cellpadding="4" width="98%"  align=center class="maintable">
+
+    <tr>
+      <th>字段显示名:</th>
+      <td>
+	  [@spring.bind "contentField.fieldTitle"/]
+	  <input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" value="${spring.status.value?default("")}" tabindex="8" />
+        &nbsp;</td>
+    </tr>
+	<tr>
+      <th>字段名:</th>
+      <td>
+	  [@spring.bind "contentField.fieldName"/]
+	  <input name="${spring.status.expression}" type="text" class="flat" id="${spring.status.expression}" value="${spring.status.value?default("")}" tabindex="8" />
+        &nbsp;字母或数字</td>
+    </tr>
+
+    <tr>
+      <th>字段类型:</th>
+      <td>
+	  [@spring.bind "contentField.fieldType"/]
+	  <select name="${spring.status.expression}" id="${spring.status.expression}">
+	  	  [#list fieldTypes as fieldType]
+		  [#if spring.status.value?default("varchar")==fieldType.name]
+		  	<option value="${fieldType.name}" selected="selected" >${fieldType.title}</option>
+		  [#else]
+		    <option value="${fieldType.name}">${fieldType.title}</option>
+		  [/#if]
+		  [/#list]
+        </select> &nbsp;		
+		</td>
+    </tr>
+	 <tr>
+      <th>统计字段:</th>
+      <td>
+	  [@spring.bind "contentField.enableStatics"/]
+		[#if spring.status.value?default(0)==0]
+		<input name="${spring.status.expression}" type="radio" value="0" checked />否<input name="${spring.status.expression}" type="radio" value="1" />是
+		[#else]
+		<input name="${spring.status.expression}" type="radio" value="0"  />否<input name="${spring.status.expression}" type="radio" value="1" checked/>是
+		[/#if]
+        &nbsp;</td>
+    </tr>
+    <tr>
+      <th>字段长度:</th>
+      <td>
+	  [@spring.bind "contentField.fieldSize"/]
+	  <input name="${spring.status.expression}" value="${spring.status.value?default("")}" type="text" class="flat" id="${spring.status.expression}" tabindex="8" />
+        &nbsp;</td>
+    </tr>
+    <tr>
+      <th>字段输入界面类型:</th>
+      <td colspan=6 class="table_td2">
+	  [@spring.bind "contentField.fieldInput"/]
+	  <select name="${spring.status.expression}" id="${spring.status.expression}">
+	  	  [#list fieldInputTypes as inputType]
+		  [#if spring.status.value?default("text")==inputType.name]
+          	<option value="${inputType.name}" selected="selected">${inputType.title}</option>
+		  [#else]
+          	<option value="${inputType.name}">${inputType.title}</option>
+		  [/#if]
+		  [/#list]
+     </select>&nbsp;
+	 </td>
+    </tr>
+	<tr>
+	  <th>字段可选值:<p>多个可选值之间以;分隔</p></th>
+	<td>
+	[@spring.bind "contentField.fieldDefaultValue"/]
+	<input name="${spring.status.expression}" value="${spring.status.value?default("")}"  type="text" class="flat" id="${spring.status.expression}" tabindex="8"   size="50" />&nbsp;</td>
+	</tr>
+
+  	<tr>
+	  <th>表单输入限制:</th>
+	<td>
+	[@spring.bind "contentField.fieldInputFilter"/]
+	   <select name="${spring.status.expression}" id="${spring.status.expression}">
+		  [#list fieldInputFilter as inputFilter]
+		  [#if spring.status.value?default("")==inputFilter.name]
+		  <option value="${inputFilter.name}" selected="selected">${inputFilter.title}</option>
+		  [#else]
+		  <option value="${inputFilter.name}" >${inputFilter.title}</option>
+		  [/#if]
+		  [/#list]
+        </select> &nbsp;
+        &nbsp;</td>
+	</tr>
+  	<tr>
+	  <th>表单值采集器:</th>
+	<td >
+	[@spring.bind "contentField.fieldInputPicker"/]
+		<select name="${spring.status.expression}" id="${spring.status.expression}">
+			[#list fieldInputPicker as inputPicker]
+				[#if spring.status.value?default("")==inputPicker.name]
+					<option value="${inputPicker.name}" selected="selected">${inputPicker.title}</option>
+				[#else]
+					<option value="${inputPicker.name}">${inputPicker.title}</option>
+				[/#if]
+			[/#list]
+       </select> &nbsp;
+        &nbsp;</td>
+	</tr>
+	<tr>
+	  <th>表单值采集器附加参数:<p>参数被附加到采集器请求URL,如type=1&amp;s=2形式</p></th>
+	<td>
+	[@spring.bind "contentField.fieldInputPickerExtra"/]
+		<input name="${spring.status.expression}" value="${spring.status.value?default("")}"  type="text" class="flat" id="${spring.status.expression}" tabindex="8"   size="40">
+		</td>
+	</tr>
+	<tr>
+	  <th>表单输入预设模板:</th>
+	<td>
+	[@spring.bind "contentField.fieldInputTpl"/]
+	<input name="${spring.status.expression}" id="${spring.status.expression}" value="${spring.status.value?default("")}" size="30"  class="flat" />
+        <input name="button2" type='button' tabindex='13' value='...' onclick="tplSelect('0',this.form,'${spring.status.expression}')" /> &nbsp;
+        &nbsp;</td>
+	</tr>
+	<tr>
+	 <th>字段附加信息:</th>
+	<td>
+	[@spring.bind "contentField.fieldDescription"/]
+	<textarea name="${spring.status.expression}" cols="50" rows="5" class="flat" id="${spring.status.expression}" tabindex="8">${spring.status.value?default("")}</textarea>
+        &nbsp;</td>
+	</tr>
+	</table>
+	</div>
+	<div class="colorarea02">
+			<h3>
+				搜索引擎索引属性
+			</h3>
+	<table border="0" cellspacing="0" cellpadding="4" width="100%"  align=center class="maintable">
+    <!-- 索引类型 -->
+	<tr>
+	  <th>索引类型:</th>
+	<td>
+	[@spring.bind "contentField.indexType"/]
+	<select name="${spring.status.expression}" id="${spring.status.expression}">
+			[#list indexTypes as iType]
+			[#if spring.status.value?default("")==iType]
+				<option value="${iType}" selected="selected">${iType}</option>
+			[#else]
+				<option value="${iType}">${iType}</option>
+			[/#if]
+			[/#list]
+    </select>
+	</td>
+	</tr>
+	<!--存储类型  -->
+	<tr>
+	  <th>存储类型:</th>
+	<td>
+	[@spring.bind "contentField.storeType"/]
+	<select name="${spring.status.expression}" id="${spring.status.expression}">
+			[#list storeTypes as sType]
+			[#if spring.status.value?default("")==sType]
+				<option value="${sType}" selected="selected">${sType}</option>
+			[#else]
+				<option value="${sType}">${sType}</option>
+			[/#if]
+			[/#list]
+    </select>
+	</td>
+	</tr>
+	<!--向量类型  -->
+	<tr>
+	  <th>向量类型:</th>
+	<td>
+	[@spring.bind "contentField.termVectorType"/]
+	<select name="${spring.status.expression}" id="${spring.status.expression}">
+			[#list termVectorTypes as vType]
+			[#if spring.status.value?default("")==vType]
+				<option value="${vType}" selected="selected">${vType}</option>
+			[#else]
+				<option value="${vType}">${vType}</option>
+			[/#if]
+			[/#list]
+    </select>
+	</td>
+	</tr>
+    </table>
+    </div>
+    <br />
+	<div class="buttons">
+		<input type="submit" name="submit" value="提交保存" class="submit">
+		<input type="reset" name="reset" value="重置">
+		<input type='button' name='button' onclick="doing('newfield')" value='新增字段' tabindex='13'>
+	</div>
+</form>
+<script language='JavaScript'>
+function check(form,id)
+{
+	eval("var ischecked = " + form + "." + id + ".checked");
+
+	if(ischecked) {
+		eval( form + "." + id + "_hidden.value = '1'");
+	} else {
+		eval( form + "." + id + "_hidden.value = '0'");
+
+	}
+
+}
+function doing(action)
+{
+	switch(action) {
+		
+		case 'newfield':
+			window.location='${baseUrl}admin/fieldEdit.jhtml?tableId=${contentField.contentTable.tableId}'
+			break;
+
+	}
+}
+</script>
+<br/>
+[#include "/plugin/cms/common/includes/footer.htm"/]

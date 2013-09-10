@@ -1,0 +1,62 @@
+##############################################################
+################## DEFAULT CACHE REGION  #####################
+# sets the default aux value for any non configured caches
+jcs.default=
+jcs.default.cacheattributes=org.apache.jcs.engine.CompositeCacheAttributes
+jcs.default.cacheattributes.MaxObjects=200001
+jcs.default.cacheattributes.MemoryCacheName=org.apache.jcs.engine.memory.lru.LRUMemoryCache
+jcs.default.cacheattributes.UseMemoryShrinker=true
+jcs.default.cacheattributes.MaxMemoryIdleTimeSeconds=3600
+jcs.default.cacheattributes.ShrinkerIntervalSeconds=60
+jcs.default.elementattributes=org.apache.jcs.engine.ElementAttributes
+jcs.default.elementattributes.IsEternal=true
+jcs.default.elementattributes.MaxLifeSeconds=700
+jcs.default.elementattributes.IdleTime=1800
+jcs.default.elementattributes.IsSpool=true
+jcs.default.elementattributes.IsRemote=true
+jcs.default.elementattributes.IsLateral=true
+
+
+##############################################################
+################## CACHE REGIONS AVAILABLE ###################
+# Regions preconfirgured for caching
+
+
+jcs.region.node=
+jcs.region.node.cacheattributes=org.apache.jcs.engine.CompositeCacheAttributes
+jcs.region.node.cacheattributes.MaxObjects=100000
+jcs.region.node.cacheattributes.MemoryCacheName=org.apache.jcs.engine.memory.lru.LRUMemoryCache
+jcs.region.node.cacheattributes.UseMemoryShrinker=false
+jcs.region.node.cacheattributes.MaxMemoryIdleTimeSeconds=10
+jcs.region.node.cacheattributes.ShrinkerIntervalSeconds=60
+jcs.region.node.elementattributes=org.apache.jcs.engine.ElementAttributes
+jcs.region.node.elementattributes.IsEternal=true
+jcs.region.node.elementattributes.MaxLifeSeconds=1800
+jcs.region.node.elementattributes.IsSpool=true
+jcs.region.node.elementattributes.IsRemote=false
+jcs.region.node.elementattributes.IsLateral=true
+
+jcs.region.cm=
+jcs.region.cm.cacheattributes=org.apache.jcs.engine.CompositeCacheAttributes
+jcs.region.cm.cacheattributes.MaxObjects=100000
+jcs.region.cm.cacheattributes.MemoryCacheName=org.apache.jcs.engine.memory.lru.LRUMemoryCache
+jcs.region.cm.cacheattributes.UseMemoryShrinker=false
+jcs.region.cm.cacheattributes.MaxMemoryIdleTimeSeconds=10
+jcs.region.cm.cacheattributes.ShrinkerIntervalSeconds=60
+jcs.region.cm.elementattributes=org.apache.jcs.engine.ElementAttributes
+jcs.region.cm.elementattributes.IsEternal=true
+jcs.region.cm.elementattributes.MaxLifeSeconds=1800
+jcs.region.cm.elementattributes.IsSpool=true
+jcs.region.cm.elementattributes.IsRemote=false
+jcs.region.cm.elementattributes.IsLateral=true
+
+##############################################################
+################## OPTIONAL THREAD POOL CONFIGURATION ###################
+# Default thread pool config
+thread_pool.default.boundarySize=2000
+thread_pool.default.maximumPoolSize=150
+thread_pool.default.minimumPoolSize=4
+thread_pool.default.keepAliveTime=350000
+#RUN ABORT WAIT BLOCK DISCARDOLDEST
+thread_pool.default.whenBlockedPolicy=RUN
+thread_pool.default.startUpSize=4

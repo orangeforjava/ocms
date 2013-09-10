@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+	$Id: CmsComment.hbm.xml 3932 2010-10-26 12:05:48Z orangeforjava $
+-->
+<hibernate-mapping>
+	<class entity-name="CmsComment" table="cms_comment">
+		<id name="commentId" type="long" unsaved-value="0">
+			<column name="commentId" />
+			<generator class="sequence">
+				<param name="sequence">cms_comment_seq</param>
+			</generator>
+		</id>
+		<property name="indexId" type="long">
+			<column name="indexId" not-null="true" />
+		</property>
+		<property name="contentId" type="long">
+			<column name="contentId" not-null="true" />
+		</property>
+		<property name="nodeId" type="long">
+			<column name="nodeId" not-null="true" />
+		</property>
+		<property name="creationDate" type="long">
+			<column name="creationDate" not-null="true" />
+		</property>
+		<property name="author" type="string">
+			<column name="author" length="100" />
+		</property>
+		<property name="ip" type="string">
+			<column name="ip" length="15" />
+		</property>
+		<property name="comment" type="text">
+			<column name="comment2" />
+		</property>
+	</class>
+</hibernate-mapping>

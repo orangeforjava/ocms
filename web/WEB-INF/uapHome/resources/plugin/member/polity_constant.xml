@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <polities>
+    <polity key="请选择">请在以下列表中选择</polity>
+    <polity key="党员">党员</polity>
+	<polity key="团员">团员</polity>
+	<polity key="群众">群众</polity>
+	<polity key="民主党派">民主党派</polity>
+	<polity key="其它">其它</polity>
+  </polities>
+</directory>

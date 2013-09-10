@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+                            "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                            "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<!--
+	$Id: Resource.hbm.xml 3939 2010-10-27 08:41:36Z orangeforjava $
+-->
+<hibernate-mapping package="org.openuap.cms.resource.model">
+	<class name="Resource" table="cms_resource">
+		<id name="resourceId" column="ResourceID" type="long"
+			unsaved-value="0">
+			<generator class="sequence">
+				<param name="sequence">cms_resource_seq</param>
+			</generator>
+		</id>
+		<property name="nodeId" type="long">
+			<column name="NodeID" not-null="true" />
+		</property>
+		<property name="parentId" type="long">
+			<column name="ParentID" not-null="true" />
+		</property>
+		<property name="type" type="integer">
+			<column name="Type2" />
+		</property>
+		<property name="category" type="string">
+			<column name="Category2" not-null="true" />
+		</property>
+		<property name="name" type="string">
+			<column name="Name2" />
+		</property>
+		<property name="path" type="string">
+			<column name="Path" not-null="true" />
+		</property>
+		<property name="size" type="integer">
+			<column name="Size2" />
+		</property>
+		<property name="info" type="string">
+			<column name="Info" />
+		</property>
+		<property name="creationDate" type="long">
+			<column name="CreationDate" />
+		</property>
+		<property name="modifiedDate" type="long">
+			<column name="ModifiedDate" />
+		</property>
+		<property name="src" type="string">
+			<column name="Src" />
+		</property>
+		<property name="title" type="string">
+			<column name="Title" not-null="true" />
+		</property>
+		<property name="creationUserId" type="long">
+			<column name="CreationUserID" not-null="true" />
+		</property>
+		<property name="userName" type="string">
+			<column name="userName" />
+		</property>
+		<property name="downloadTimes" type="integer">
+			<column name="downloadTimes" />
+		</property>
+		<property name="customCategory" type="string">
+			<column name="customCategory" />
+		</property>
+	</class>
+</hibernate-mapping>

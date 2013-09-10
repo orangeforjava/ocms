@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<directory>
+  <schoolowners>
+    <schoolowner key="请选择">请选择学校所有制</schoolowner>
+    <schoolowner key="公立学校">公立学校</schoolowner>
+	<schoolowner key="私立学校">私立学校</schoolowner>
+  </schoolowners>
+</directory>
